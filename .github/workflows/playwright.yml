@@ -4,10 +4,13 @@ on:
     branches:
       - main
       - master
+      - rec
   pull_request: null
   workflow_dispatch: null
 jobs:
   test:
+    env:
+      node_version: 18
     timeout-minutes: 60
     runs-on: ubuntu-latest
     steps:

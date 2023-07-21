@@ -4,9 +4,11 @@ on:
   push:
     branches:
       - main
+      - rec
   pull_request:
     branches:
       - main
+      - rec
   workflow_dispatch:
 
 defaults:

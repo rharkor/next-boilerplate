@@ -12,6 +12,8 @@ With this template, you get all the awesomeness you need:
 - 🏎️ **[Next.js](https://nextjs.org/)** - Fast by default, with config optimized for performance
 - 💅 **[Tailwind CSS](https://tailwindcss.com/)** - A utility-first CSS framework for rapid UI development
 - ✨ **[ESlint](https://eslint.org/)** and **[Prettier](https://prettier.io/)** - For clean, consistent, and error-free code
+- 📦 **[Dev Container](https://code.visualstudio.com/docs/remote/containers)** - For a consistent development environment
+- 🐳 **[Docker](https://www.docker.com/)** - For easy deployment
 - 🛠️ **[Extremely strict TypeScript](https://www.typescriptlang.org/)** - With [`ts-reset`](https://github.com/total-typescript/ts-reset) library for ultimate type safety
 - 📊 **[Bundle analyzer plugin](https://www.npmjs.com/package/@next/bundle-analyzer)** - Keep an eye on your bundle size
 - 🧪 **[Jest](https://jestjs.io/)** and **[React Testing Library](https://testing-library.com/react)** - For rock-solid unit and integration tests
@@ -40,6 +42,7 @@ With this template, you get all the awesomeness you need:
   - [Table of Contents](#table-of-contents)
   - [🎯 Getting Started](#-getting-started)
   - [📃 Scripts Overview](#-scripts-overview)
+  - [🐳 Container Stack](#-container-stack)
   - [🔗 Coupling Graph](#-coupling-graph)
   - [🧪 Testing](#-testing)
     - [Running Tests](#running-tests)
@@ -59,6 +62,8 @@ With this template, you get all the awesomeness you need:
 
 ## 🎯 Getting Started
 
+_If you want to use the dev container, please follow the [container stack](#-container-stack) instructions._
+
 To get started with this boilerplate, follow these steps:
 
 1. Fork & clone repository:
@@ -68,21 +73,27 @@ To get started with this boilerplate, follow these steps:
 git clone https://github.com/rharkor/next-boilerplate
 ```
 
-2. Install the dependencies:
+2. Initialize the project:
+
+```bash
+npm run init
+```
+
+3. Install the dependencies:
 
 ```bash
 npm ci
 ```
 
-3. Run the development server:
+4. Run the development server:
 
 ```bash
 npm dev
 ```
 
-4. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+5. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-5. This project uses a git hook to enforce [conventional commits](https://github.com/qoomon/git-conventional-commits). To install the git hook, run the following command in the root directory of the project:
+6. This project uses a git hook to enforce [conventional commits](https://github.com/qoomon/git-conventional-commits). To install the git hook, run the following command in the root directory of the project:
 
 ```sh
 brew install pre-commit
@@ -93,6 +104,7 @@ pre-commit install -t commit-msg
 
 The following scripts are available in the `package.json`:
 
+- `init`: Initializes the project by setting up your information
 - `dev`: Starts the development server with colorized output
 - `build`: Builds the app for production
 - `start`: Starts the production server
@@ -110,6 +122,26 @@ The following scripts are available in the `package.json`:
 - `postinstall`: Applies patches to external dependencies
 - `preinstall`: Ensures the project is installed with Npm
 - `coupling-graph`: **Generates a coupling and cohesion graph for the components**
+
+## 🐳 Container Stack
+
+The boilerplate comes with a pre-configured Docker container stack and a dev container. The stack includes the following services:
+
+- **Next.js** - A React framework for building fast and scalable web applications
+- **PostgreSQL** - A powerful, open-source relational database system
+- **Redis** - An in-memory data structure store, used as a database, cache, and message broker
+
+To start the development container in vsCode [see](https://code.visualstudio.com/docs/remote/containers#_quick-start-open-an-existing-folder-in-a-container).
+You can also use [devPod](https://github.com/loft-sh/devpod) to easily start the development container.
+
+<!-- [![Open in DevPod!](https://devpod.sh/assets/open-in-devpod.svg)](https://devpod.sh/open#https://github.com/rharkor/next-boilerplate) -->
+
+Ports:
+
+- Next.js: 3000
+- PostgreSQL: 5432
+- Redis: 6379
+- Desktop: 6080
 
 ## 🔗 Coupling Graph
 
@@ -259,9 +291,20 @@ This project is licensed under the MIT License. For more information, see the [L
 <table>
   <tbody>
     <tr>
+     <td align="center" valign="top" width="14.28%"><a href="https://bstefanski.com/"><img src="https://avatars.githubusercontent.com/u/28964599?v=4?s=100" width="100px;" alt="Bart Stefanski"/><br /><sub><b>Bart Stefanski</b></sub></a><br /><a href="https://github.com/Blazity/next-enterprise/commits?author=bmstefanski" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/jjablonski-it"><img src="https://avatars.githubusercontent.com/u/51968772?v=4?s=100" width="100px;" alt="Jakub Jabłoński"/><br /><sub><b>Jakub Jabłoński</b></sub></a><br /><a href="#infra-jjablonski-it" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://louis.huort.com/"><img src="https://avatars.githubusercontent.com/u/70844594?v=4?s=100" width="100px;" alt="Louis Huort"/><br /><sub><b>Louis Huort</b></sub></a><br /><a href="https://github.com/rharkor/next-boilerplate/commits?author=rharkor" title="Code">💻</a></td>
     </tr>
   </tbody>
+  <tfoot>
+    <tr>
+      <td align="center" size="13px" colspan="7">
+        <img src="https://raw.githubusercontent.com/all-contributors/all-contributors-cli/1b8533af435da9854653492b1327a23a4dbd0a10/assets/logo-small.svg">
+          <a href="https://all-contributors.js.org/docs/en/bot/usage">Add your contributions</a>
+        </img>
+      </td>
+    </tr>
+  </tfoot>
 </table>
 
 <!-- markdownlint-restore -->

@@ -5,11 +5,14 @@ on:
     branches:
       - main
       - master
+      - rec
   pull_request:
   workflow_dispatch:
 
 jobs:
   check:
+    env:
+      node_version: 18
     name: Check
     runs-on: ubuntu-latest
     steps:
