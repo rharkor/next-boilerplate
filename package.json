@@ -11,7 +11,7 @@
     "lint:fix": "next lint --fix",
     "prettier": "prettier --check \"**/*.{js,jsx,ts,tsx}\"",
     "prettier:fix": "prettier --write \"**/*.{js,jsx,ts,tsx}\"",
-    "analyze": "cross-env ANALYZE=true npm build",
+    "analyze": "cross-env ANALYZE=true npm run build",
     "storybook": "cross-env FORCE_COLOR=1 storybook dev -p 6006",
     "test-storybook": "cross-env FORCE_COLOR=1 test-storybook",
     "build-storybook": "cross-env FORCE_COLOR=1 storybook build",
@@ -19,8 +19,8 @@
     "e2e:headless": "playwright test",
     "e2e:ui": "playwright test --ui",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "postinstall": "npx patch-package -y",
-    "preinstall": "npx only-allow npm",
+    "postinstall": "npx -y patch-package",
+    "preinstall": "npx -y only-allow npm",
     "coupling-graph": "npx madge --extensions js,jsx,ts,tsx,css,md,mdx ./ --exclude '.next|tailwind.config.js|reset.d.ts|prettier.config.js|postcss.config.js|playwright.config.ts|next.config.js|next-env.d.ts|instrumentation.ts|e2e/|README.md|.storybook/|.eslintrc.js' --image graph.svg"
   },
   "dependencies": {
@@ -54,6 +54,7 @@
     "lucide-react": "^0.263.0",
     "next": "^13.4.11",
     "next-compose-plugins": "^2.2.1",
+    "prisma": "^5.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "tailwind-merge": "^1.14.0",
