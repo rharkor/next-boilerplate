@@ -1,5 +1,5 @@
 {
-  "name": "next-enterprise",
+  "name": "next-boilerplate",
   "version": "0.0.0",
   "private": true,
   "scripts": {
@@ -25,6 +25,7 @@
   },
   "dependencies": {
     "@next/bundle-analyzer": "^13.3.0",
+    "@prisma/client": "^5.0.0",
     "@radix-ui/react-accordion": "^1.1.1",
     "@radix-ui/react-checkbox": "^1.0.3",
     "@radix-ui/react-dialog": "^1.0.3",
@@ -47,6 +48,7 @@
     "@semantic-release/npm": "^10.0.3",
     "@semantic-release/release-notes-generator": "^11.0.1",
     "@t3-oss/env-nextjs": "^0.6.0",
+    "@tanstack/react-query": "^4.32.0",
     "@vercel/otel": "^0.3.0",
     "class-variance-authority": "^0.6.1",
     "clsx": "^2.0.0",
@@ -106,10 +108,12 @@
     "tailwindcss": "^3.2.7",
     "ts-jest": "^29.1.0",
     "tsc": "^2.0.4",
-    "typescript": "5.1.6",
     "vitest": "^0.33.0"
   },
   "engines": {
     "node": ">=18.15.0"
+  },
+  "prisma": {
+    "schema": "src/prisma/schema.prisma"
   }
 }
