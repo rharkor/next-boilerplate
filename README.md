@@ -56,8 +56,6 @@ With this template, you get all the awesomeness you need:
     - [CVA - A New Approach to Variants](#cva---a-new-approach-to-variants)
   - [💾 State Management](#-state-management)
     - [Zustand](#zustand)
-    - [Jotai](#jotai)
-    - [Recoil](#recoil)
   - [💻 Environment Variables handling](#-environment-variables-handling)
   - [🤝 Contribution](#-contribution)
   - [Support](#support)
@@ -228,16 +226,6 @@ While this boilerplate doesn't include a specific state management library, we b
 ### Zustand
 
 [Zustand](https://github.com/pmndrs/zustand) is a small, fast, and scalable state management library. It's designed to be simple and intuitive, making it a great choice for small to medium-sized projects. It's also optimized for bundle size, ensuring minimal impact on your app's performance.
-
-### Jotai
-
-[Jotai](https://github.com/pmndrs/jotai) is an atom-based state management library for React that focuses on providing a minimal and straightforward API. Its atom-based approach allows you to manage your state in a granular way while still being highly optimized for bundle size.
-
-### Recoil
-
-[Recoil](https://recoiljs.org/) is a state management library developed by Facebook, specifically designed for React applications. By utilizing atoms and selectors, Recoil allows you to efficiently manage state and derived state. Its key benefit is the ability to update components only when the state they're subscribed to changes, reducing unnecessary re-renders and keeping your application fast and efficient. Recoil also offers great developer experience with built-in debugging tools.
-
-Choose the library that best fits your requirements and project structure to ensure an efficient state management solution for your application.
 
 ## 💻 Environment Variables handling
 
