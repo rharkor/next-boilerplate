@@ -83,7 +83,7 @@ const main = async () => {
 
   console.log("*".repeat(50))
   console.log("\x1b[32mAll tokens replaced successfully\x1b[0m")
-  console.log("\x1b[31mDon't forget to change the license & logo\x1b[0m")
+  console.log("\x1b[31mDon't forget to change the license & logo for production\x1b[0m")
   console.log("*".repeat(50))
 
   exit(0)
