@@ -15,9 +15,11 @@ module.exports = {
       presets: [require.resolve("next/babel")],
     },
   },
+  plugins: ["@typescript-eslint", "unused-imports"],
   rules: {
     "testing-library/prefer-screen-queries": "off",
     "@next/next/no-html-link-for-pages": "off",
+    "unused-imports/no-unused-imports": "error",
     "@typescript-eslint/no-unused-vars": [
       "warn",
       {
