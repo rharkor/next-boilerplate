@@ -1,5 +1,5 @@
 #Creates a layer from node:alpine image.
-FROM node:${templateOption:imageVariantProduction}
+FROM node:18-alpine
 
 #Creates directories
 RUN mkdir -p /usr/src/app

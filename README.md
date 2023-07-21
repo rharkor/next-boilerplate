@@ -65,7 +65,7 @@ To get started with this boilerplate, follow these steps:
 
 ```bash
 ## Don't forget to ⭐ star and fork it first :)
-git clone https://github.com/<your_username)/next-enterprise.git
+git clone https://github.com/rharkor/next-boilerplate
 ```
 
 2. Install the dependencies:

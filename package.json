@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "init": "node ./scripts/init",
+    "init": "node ./scripts/init.mjs",
     "dev": "cross-env FORCE_COLOR=1 next dev",
     "build": "next build",
     "start": "next start",

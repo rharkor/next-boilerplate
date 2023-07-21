@@ -12,7 +12,7 @@ import * as url from "url"
 
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url))
 
-const filesToCheck = [".devcontainer/devcontainer.json", "docker/docker-compose.yml"]
+const filesToCheck = ["docker/docker-compose.yml"]
 
 //? Find all tokens of all the files in the root directory
 const findTokens = () => {
@@ -83,7 +83,7 @@ const main = async () => {
 
   console.log("*".repeat(50))
   console.log("\x1b[32mAll tokens replaced successfully\x1b[0m")
-  console.log("\x1b[31mDon't forget to change the license\x1b[0m")
+  console.log("\x1b[31mDon't forget to change the license & logo\x1b[0m")
   console.log("*".repeat(50))
 
   exit(0)

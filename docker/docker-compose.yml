@@ -3,6 +3,7 @@ version: "3.8"
 services:
   app:
     build: .
+    # Specify the image registry here
     image: #{DOCKER_DEPLOY_APP_IMAGE}#
     restart: unless-stopped
     logging:
