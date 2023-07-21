@@ -78,6 +78,7 @@ const main = async () => {
     //? Replace the token with the value
     await replaceToken(token, value)
     console.log(`\x1b[32mToken ${token} replaced with ${value}\x1b[0m`)
+    rl.close()
   }
   exit(0)
 }

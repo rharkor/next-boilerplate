@@ -1,14 +1,14 @@
-version: '3.8'
+version: "3.8"
 
 services:
   app:
     build: .
-    image: #{APP_IMAGE}#
+    image: #{DOCKER_DEPLOY_APP_IMAGE}#
     restart: unless-stopped
     logging:
-      driver: 'json-file'
+      driver: "json-file"
       options:
-        max-size: '50m'
+        max-size: "50m"
 
   db:
     image: postgres:latest
@@ -19,19 +19,19 @@ services:
       POSTGRES_USER: ${DATABASE_USER}
       POSTGRES_PASSWORD: ${DATABASE_PASS}
       POSTGRES_DB: ${DATABASE_NAME}
-    
+
     logging:
-      driver: 'json-file'
+      driver: "json-file"
       options:
-        max-size: '50m'
+        max-size: "50m"
 
   redis:
     restart: unless-stopped
     image: redis:latest
     logging:
-      driver: 'json-file'
+      driver: "json-file"
       options:
-        max-size: '50m'
+        max-size: "50m"
     environment:
       REDIS_PASSWORD: ${REDIS_PASS}
     volumes:

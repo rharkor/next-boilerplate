@@ -21,8 +21,6 @@
 
   // Configure tool-specific properties.
   "customizations": {
-    // Replace the "username" below with your GitHub username to set the correct repository URL.
-    "repository": "#{GITHUB_USERNAME}#/#{GITHUB_REPOSITORY}#",
     "postCreateCommand": "npm preinstall && npm install"
   }
 
