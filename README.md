@@ -145,7 +145,7 @@ Ports:
 - Next.js: 3000
 - PostgreSQL: 5432
 - Redis: 6379
-- Desktop: 6080
+- Desktop (password: vscode): 6080
 
 ## 🔗 Coupling Graph
 
