@@ -80,6 +80,12 @@ const main = async () => {
     console.log(`\x1b[32mToken ${token} replaced with ${value}\x1b[0m`)
     rl.close()
   }
+
+  console.log("*".repeat(50))
+  console.log("\x1b[32mAll tokens replaced successfully\x1b[0m")
+  console.log("\x1b[31mDon't forget to change the license\x1b[0m")
+  console.log("*".repeat(50))
+
   exit(0)
 }
 
