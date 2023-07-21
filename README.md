@@ -14,6 +14,10 @@ With this template, you get all the awesomeness you need:
 - ✨ **[ESlint](https://eslint.org/)** and **[Prettier](https://prettier.io/)** - For clean, consistent, and error-free code
 - 📦 **[Dev Container](https://code.visualstudio.com/docs/remote/containers)** - For a consistent development environment
 - 🐳 **[Docker](https://www.docker.com/)** - For easy deployment
+- 🐘 **[PostgreSQL](https://www.postgresql.org/)** - A powerful, open-source relational database system
+- 🗃️ **[Prisma](https://www.prisma.io/)** - Next-generation ORM for Node.js and TypeScript
+- ⚡ **[Redis](https://redis.io/)** - An in-memory data structure store, used as a database, cache, and message broker
+- 🔑 **[Auth.js](https://authjs.dev/)** - A simple, lightweight authentication library
 - 🛠️ **[Extremely strict TypeScript](https://www.typescriptlang.org/)** - With [`ts-reset`](https://github.com/total-typescript/ts-reset) library for ultimate type safety
 - 📊 **[Bundle analyzer plugin](https://www.npmjs.com/package/@next/bundle-analyzer)** - Keep an eye on your bundle size
 - 🧪 **[Jest](https://jestjs.io/)** and **[React Testing Library](https://testing-library.com/react)** - For rock-solid unit and integration tests
