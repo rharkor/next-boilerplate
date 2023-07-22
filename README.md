@@ -124,6 +124,7 @@ The following scripts are available in the `package.json`:
 - `postinstall`: Applies patches to external dependencies
 - `preinstall`: Ensures the project is installed with Npm
 - `coupling-graph`: **Generates a coupling and cohesion graph for the components**
+- `seed`: Seeds the database with test data
 
 ## 🐳 Container Stack
 
