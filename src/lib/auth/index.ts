@@ -1,13 +1,16 @@
+import { PrismaAdapter } from "@next-auth/prisma-adapter"
 import { NextAuthOptions } from "next-auth"
 import Credentials from "next-auth/providers/credentials"
 import GithubProvider from "next-auth/providers/github"
 import { signInSchema } from "@/types/auth"
 import { env } from "env.mjs"
+// import { PrismaAdapter } from "./prisma-adapter"
 import { bcryptCompare } from "../bcrypt"
 import { prisma } from "../prisma"
 
 export const nextAuthOptions: NextAuthOptions = {
   secret: env.NEXTAUTH_SECRET,
+  adapter: PrismaAdapter(prisma),
   providers: [
     Credentials({
       name: "credentials",
@@ -36,7 +39,7 @@ export const nextAuthOptions: NextAuthOptions = {
 
         if (!user.password) {
           //? this should happen if the user signed up with a provider
-          return null
+          throw new Error("You signed up with a provider, please sign in with it")
         }
 
         const isValidPassword = await bcryptCompare(creds.password, user.password)
@@ -59,22 +62,27 @@ export const nextAuthOptions: NextAuthOptions = {
   ],
   callbacks: {
     jwt: async ({ token, user }) => {
+      console.log("jwt", token, user)
       if (user) {
         token.id = user.id
         token.email = user.email
         if ("username" in user) token.username = user.username
+        if ("role" in user) token.role = user.role
       }
 
       return token
     },
-    session: async ({ session, token }) => {
-      return {
+    session: async ({ session, token, user }) => {
+      const sessionFilled = {
         ...session,
         user: {
           ...session.user,
-          id: token.id,
+          id: token?.id,
+          username: "username" in user ? user.username : undefined,
+          role: "role" in user ? user.role : undefined,
         },
       }
+      return sessionFilled
     },
   },
   jwt: {
@@ -86,6 +94,6 @@ export const nextAuthOptions: NextAuthOptions = {
     newUser: "/sign-up",
   },
   session: {
-    strategy: "jwt",
+    strategy: "database",
   },
 }

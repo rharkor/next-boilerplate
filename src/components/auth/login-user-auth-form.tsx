@@ -50,6 +50,10 @@ export function LoginUserAuthForm({ searchParams, ...props }: UserAuthFormProps)
       if (!res?.error) {
         router.push(callbackUrl)
       } else {
+        console.error(res.error)
+        if (typeof res.error === "string") {
+          throw new Error(res.error)
+        }
         throw new Error("Invalid credentials. Please try again.")
       }
     } catch (error) {
