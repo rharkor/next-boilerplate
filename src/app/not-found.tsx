@@ -1,5 +1,14 @@
+import Link from "next/link"
 import React from "react"
+import { buttonVariants } from "@/components/ui/button"
 
 export default function Page404() {
-  return <h1>Not found</h1>
+  return (
+    <main className="container flex min-h-screen flex-1 flex-col items-center justify-center gap-3">
+      <h1 className="text-4xl font-bold">Page not found</h1>
+      <Link href="/" className={buttonVariants({ variant: "ghost" })}>
+        Home
+      </Link>
+    </main>
+  )
 }

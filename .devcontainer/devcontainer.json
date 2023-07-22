@@ -62,7 +62,8 @@
 		"donjayamanne.githistory",
 		"ms-azuretools.vscode-docker",
 		"ftonato.password-generator",
-		"adamhartford.vscode-base64"
+		"adamhartford.vscode-base64",
+		"ChakrounAnas.turbo-console-log"
 	]
     }
   },

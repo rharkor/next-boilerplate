@@ -10,6 +10,8 @@ export const env = createEnv({
     PASSWORD_HASHER_SECRET: z.string().nonempty().min(16),
     JWT_SECRET: z.string().nonempty().min(16),
     DATABASE_URL: z.string().nonempty(),
+    NEXTAUTH_SECRET: z.string().nonempty().min(16),
+    NEXTAUTH_URL: z.string().nonempty(),
   },
   client: {},
   runtimeEnv: {
@@ -17,5 +19,7 @@ export const env = createEnv({
     PASSWORD_HASHER_SECRET: process.env.PASSWORD_HASHER_SECRET,
     JWT_SECRET: process.env.JWT_SECRET,
     DATABASE_URL: process.env.DATABASE_URL,
+    NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
+    NEXTAUTH_URL: process.env.NEXTAUTH_URL,
   },
 })

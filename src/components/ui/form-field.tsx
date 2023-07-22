@@ -1,6 +1,5 @@
 import { HTMLInputTypeAttribute } from "react"
-import { ControllerRenderProps, Path, UseFormReturn } from "react-hook-form"
-import * as z from "zod"
+import { ControllerRenderProps, FieldPath, FieldValues, UseFormReturn } from "react-hook-form"
 import {
   FormControl,
   FormDescription,
@@ -18,9 +17,12 @@ export type InputWithOmittedProps = Omit<
   "form" | "type" | "defaultValue" | "id"
 >
 
-export interface FormFieldProps<T extends z.ZodTypeAny> extends InputWithOmittedProps {
-  form: UseFormReturn<z.infer<T>>
-  name: Path<z.TypeOf<T>>
+export interface FormFieldProps<
+  TFieldValues extends FieldValues = FieldValues,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+> extends InputWithOmittedProps {
+  form: UseFormReturn<TFieldValues>
+  name: TName
   label?: string
   placeholder?: string
   description?: string
@@ -29,18 +31,30 @@ export interface FormFieldProps<T extends z.ZodTypeAny> extends InputWithOmitted
   className?: string
 }
 
-function getInner<T extends z.ZodTypeAny>(
-  { field, autoComplete, placeholder, type, form }: FormFieldProps<T> & { field: ControllerRenderProps<z.TypeOf<T>> },
+function getInner<
+  TFieldValues extends FieldValues = FieldValues,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+>(
+  {
+    field,
+    autoComplete,
+    placeholder,
+    type,
+    form,
+  }: FormFieldProps<TFieldValues> & { field: ControllerRenderProps<TFieldValues, TName> },
   props: InputWithOmittedProps
 ) {
-  if (type === "password") {
+  if (type === "password-eye-slash") {
     return <PasswordEyeSlash placeholder={placeholder} autoComplete={autoComplete} {...props} {...field} />
   } else {
     return <Input placeholder={placeholder} type={type} autoComplete={autoComplete} {...props} {...field} />
   }
 }
 
-export default function FormField<T extends z.ZodTypeAny>({
+export default function FormField<
+  TFieldValues extends FieldValues = FieldValues,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+>({
   form,
   name,
   label,
@@ -50,7 +64,7 @@ export default function FormField<T extends z.ZodTypeAny>({
   autoComplete,
   className,
   ...props
-}: FormFieldProps<T>) {
+}: FormFieldProps<TFieldValues, TName>) {
   return (
     <FormFieldComponent
       control={form.control}
