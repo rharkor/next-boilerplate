@@ -12,6 +12,8 @@ export const env = createEnv({
     DATABASE_URL: z.string().nonempty(),
     NEXTAUTH_SECRET: z.string().nonempty().min(16),
     NEXTAUTH_URL: z.string().nonempty(),
+    GITHUB_CLIENT_ID: z.string().nonempty(),
+    GITHUB_CLIENT_SECRET: z.string().nonempty(),
   },
   client: {},
   runtimeEnv: {
@@ -21,5 +23,7 @@ export const env = createEnv({
     DATABASE_URL: process.env.DATABASE_URL,
     NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
     NEXTAUTH_URL: process.env.NEXTAUTH_URL,
+    GITHUB_CLIENT_ID: process.env.GITHUB_CLIENT_ID,
+    GITHUB_CLIENT_SECRET: process.env.GITHUB_CLIENT_SECRET,
   },
 })

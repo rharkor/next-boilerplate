@@ -1,5 +1,6 @@
 import { NextAuthOptions } from "next-auth"
 import Credentials from "next-auth/providers/credentials"
+import GithubProvider from "next-auth/providers/github"
 import { signInSchema } from "@/types/auth"
 import { env } from "env.mjs"
 import { bcryptCompare } from "../bcrypt"
@@ -50,6 +51,10 @@ export const nextAuthOptions: NextAuthOptions = {
           username: user.username,
         }
       },
+    }),
+    GithubProvider({
+      clientId: env.GITHUB_CLIENT_ID,
+      clientSecret: env.GITHUB_CLIENT_SECRET,
     }),
   ],
   callbacks: {

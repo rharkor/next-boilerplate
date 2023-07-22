@@ -1,14 +1,17 @@
 import Link from "next/link"
+import { getProviders } from "next-auth/react"
+import GithubSignIn from "@/components/auth/github-sign-in"
 import { LoginUserAuthForm } from "@/components/auth/login-user-auth-form"
-import { Icons } from "@/components/icons"
-import { Button, buttonVariants } from "@/components/ui/button"
+import { buttonVariants } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 
-export default function SignInPage({
+export default async function SignInPage({
   searchParams,
 }: {
   searchParams: { [key: string]: string | string[] | undefined }
 }) {
+  const providers = await getProviders()
+
   return (
     <main className="container relative grid flex-1 flex-col items-center justify-center lg:max-w-none lg:grid-cols-2 lg:px-0">
       <Link
@@ -36,10 +39,7 @@ export default function SignInPage({
                 <span className="bg-background px-2 text-muted-foreground">Or continue with</span>
               </div>
             </div>
-            <Button variant="outline" type="button">
-              <Icons.gitHub className="mr-2 h-4 w-4" />
-              Github
-            </Button>
+            {providers?.github && <GithubSignIn provider={providers.github} />}
           </div>
           <p className="px-8 text-center text-sm text-muted-foreground">
             By clicking continue, you agree to our{" "}
