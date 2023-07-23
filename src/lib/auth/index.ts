@@ -66,6 +66,7 @@ export const nextAuthOptions: NextAuthOptions = {
   ],
   callbacks: {
     jwt: async ({ token, user }) => {
+      // logger.debug("JWT token", token)
       if (user) {
         token.id = user.id
         token.email = user.email
@@ -76,6 +77,7 @@ export const nextAuthOptions: NextAuthOptions = {
       return token
     },
     session: async ({ session, token }) => {
+      // logger.debug("Session token", token)
       const sessionFilled = {
         ...session,
         user: {
