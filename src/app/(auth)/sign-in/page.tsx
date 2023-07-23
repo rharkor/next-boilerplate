@@ -3,6 +3,7 @@ import { getProviders } from "next-auth/react"
 import GithubSignIn from "@/components/auth/github-sign-in"
 import { LoginUserAuthForm } from "@/components/auth/login-user-auth-form"
 import { buttonVariants } from "@/components/ui/button"
+import { authRoutes } from "@/lib/auth/constants"
 import { cn } from "@/lib/utils"
 
 export default async function SignInPage({
@@ -15,7 +16,7 @@ export default async function SignInPage({
   return (
     <main className="container relative grid flex-1 flex-col items-center justify-center lg:max-w-none lg:grid-cols-2 lg:px-0">
       <Link
-        href="/sign-up"
+        href={authRoutes.signUp[0]}
         className={cn(buttonVariants({ variant: "ghost" }), "absolute right-4 top-4 md:right-8 md:top-8")}
       >
         Sign up

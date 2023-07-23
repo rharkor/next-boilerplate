@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation"
 import { RegisterUserAuthForm } from "@/components/auth/register-user-auth-form"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { authRoutes } from "@/lib/auth/constants"
 
 export default function SignupByCredentials({
   searchParams,
@@ -9,7 +10,7 @@ export default function SignupByCredentials({
 }) {
   //? If there is no email in the search params, redirect to the sign-up page
   if (!searchParams?.email) {
-    redirect("/sign-up")
+    redirect(authRoutes.signUp[0])
   }
 
   return (

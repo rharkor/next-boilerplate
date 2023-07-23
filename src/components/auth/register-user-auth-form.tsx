@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation"
 import * as React from "react"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
+import { authRoutes } from "@/lib/auth/constants"
 import { handleSignError } from "@/lib/auth/handle-sign-errors"
 import { cn, handleFetch } from "@/lib/utils"
 import { signUpSchema } from "@/types/auth"
@@ -149,7 +150,7 @@ export function RegisterUserAuthForm({ isMinimized, searchParams, ...props }: Us
                     variant: "ghost",
                   })
                 )}
-                href={{ pathname: "/sign-up", query: { email: form.getValues("email") } }}
+                href={{ pathname: authRoutes.signUp[0], query: { email: form.getValues("email") } }}
                 passHref
               >
                 Edit

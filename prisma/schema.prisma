@@ -31,10 +31,11 @@ model Account {
 
 model Session {
   id           String   @id @default(cuid())
-  sessionToken String   @unique
+  sessionToken String   @unique // for credentials, it's a uuid
   userId       String
   expires      DateTime
   ua           String // User Agent
+  ip           String
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 

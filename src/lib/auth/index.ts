@@ -2,8 +2,11 @@ import { PrismaAdapter } from "@next-auth/prisma-adapter"
 import { NextAuthOptions } from "next-auth"
 import Credentials from "next-auth/providers/credentials"
 import GithubProvider from "next-auth/providers/github"
+import requestIp from "request-ip"
+import { randomUUID } from "crypto"
 import { signInSchema } from "@/types/auth"
 import { env } from "env.mjs"
+import { authRoutes, JWT_MAX_AGE } from "./constants"
 import { bcryptCompare } from "../bcrypt"
 import { logger } from "../logger"
 import { prisma } from "../prisma"
@@ -22,7 +25,7 @@ export const nextAuthOptions: NextAuthOptions = {
         },
         password: { label: "Password", type: "password" },
       },
-      authorize: async (credentials) => {
+      authorize: async (credentials, req) => {
         const creds = await signInSchema.parseAsync(credentials)
 
         if (!creds.email || !creds.password) {
@@ -51,11 +54,26 @@ export const nextAuthOptions: NextAuthOptions = {
           return null
         }
 
+        //* Store user agent and ip address in session
+        const uuid = randomUUID()
+        const ua = req.headers?.["user-agent"] ?? ""
+        const ip = requestIp.getClientIp(req) ?? ""
+        await prisma.session.create({
+          data: {
+            userId: user.id,
+            expires: new Date(Date.now() + JWT_MAX_AGE * 1000),
+            ua,
+            ip,
+            sessionToken: uuid,
+          },
+        })
+
         logger.debug("User logged in", user.id)
         return {
           id: user.id.toString(),
           email: user.email,
           username: user.username,
+          uuid,
         }
       },
     }),
@@ -65,40 +83,14 @@ export const nextAuthOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
-    jwt: async ({ token, user, account, trigger }) => {
+    jwt: async ({ token, user }) => {
       // logger.debug("JWT token", token)
       if (user) {
         token.id = user.id
         token.email = user.email
         if ("username" in user) token.username = user.username
         if ("role" in user) token.role = user.role
-      }
-
-      //* On login or sign up
-      if (trigger === "signUp" || trigger === "signIn") {
-        //? If the user signed up with a provider, create a session with the provider
-        if (account?.provider) {
-          if (!account.access_token) {
-            logger.error("No access token found", token, user, account)
-            throw new Error("No access token found")
-          }
-          await prisma.session.upsert({
-            where: { sessionToken: account.access_token },
-            create: {
-              userId: user?.id,
-              expires: account.expires_at ? new Date(account.expires_at) : undefined,
-              ua: "",
-              sessionToken: account.access_token,
-            },
-            update: {
-              expires: account.expires_at ? new Date(account.expires_at) : undefined,
-              ua: "",
-            },
-          })
-        } else {
-          logger.error("No provider found", token, user, account)
-          throw new Error("No provider found")
-        }
+        if ("uuid" in user) token.uuid = user.uuid
       }
 
       return token
@@ -112,6 +104,7 @@ export const nextAuthOptions: NextAuthOptions = {
           id: token?.id,
           username: token && "username" in token ? token.username : undefined,
           role: token && "role" in token ? token.role : undefined,
+          uuid: token && "uuid" in token ? token.uuid : undefined,
         },
       }
       return sessionFilled
@@ -119,11 +112,11 @@ export const nextAuthOptions: NextAuthOptions = {
   },
   jwt: {
     secret: env.JWT_SECRET,
-    maxAge: 30 * 24 * 30 * 60, // 30 days
+    maxAge: JWT_MAX_AGE, // 30 days
   },
   pages: {
-    signIn: "/sign-in",
-    newUser: "/sign-up",
+    signIn: authRoutes.signIn[0],
+    newUser: authRoutes.signUp[0],
   },
   session: {
     strategy: "jwt", //? Strategy database could not work with credentials provider for security reasons
