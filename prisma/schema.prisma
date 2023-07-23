@@ -33,7 +33,7 @@ model Session {
   id           String   @id @default(cuid())
   sessionToken String   @unique
   userId       String
-  expires      DateTime
+  expires      DateTime?
   ua           String // User Agent
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
