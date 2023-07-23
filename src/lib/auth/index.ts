@@ -65,13 +65,40 @@ export const nextAuthOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
-    jwt: async ({ token, user }) => {
+    jwt: async ({ token, user, account, trigger }) => {
       // logger.debug("JWT token", token)
       if (user) {
         token.id = user.id
         token.email = user.email
         if ("username" in user) token.username = user.username
         if ("role" in user) token.role = user.role
+      }
+
+      //* On login or sign up
+      if (trigger === "signUp" || trigger === "signIn") {
+        //? If the user signed up with a provider, create a session with the provider
+        if (account?.provider) {
+          if (!account.access_token) {
+            logger.error("No access token found", token, user, account)
+            throw new Error("No access token found")
+          }
+          await prisma.session.upsert({
+            where: { sessionToken: account.access_token },
+            create: {
+              userId: user?.id,
+              expires: account.expires_at ? new Date(account.expires_at) : undefined,
+              ua: "",
+              sessionToken: account.access_token,
+            },
+            update: {
+              expires: account.expires_at ? new Date(account.expires_at) : undefined,
+              ua: "",
+            },
+          })
+        } else {
+          logger.error("No provider found", token, user, account)
+          throw new Error("No provider found")
+        }
       }
 
       return token

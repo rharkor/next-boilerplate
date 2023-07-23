@@ -63,7 +63,8 @@
 		"ms-azuretools.vscode-docker",
 		"ftonato.password-generator",
 		"adamhartford.vscode-base64",
-		"ChakrounAnas.turbo-console-log"
+		"ChakrounAnas.turbo-console-log",
+		"yoavbls.pretty-ts-errors"
 	]
     }
   },
