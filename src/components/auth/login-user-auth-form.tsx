@@ -6,6 +6,7 @@ import { signIn } from "next-auth/react"
 import * as React from "react"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
+import { handleSignError } from "@/lib/auth/handle-sign-errors"
 import { logger } from "@/lib/logger"
 import { cn } from "@/lib/utils"
 import { signInSchema } from "@/types/auth"
@@ -27,8 +28,15 @@ export function LoginUserAuthForm({ searchParams, ...props }: UserAuthFormProps)
   const router = useRouter()
 
   const callbackUrl = searchParams?.callbackUrl?.toString() || "/profile"
+  const error = searchParams?.error?.toString()
 
   const [isLoading, setIsLoading] = React.useState<boolean>(false)
+  const [errorDisplayed, setErrorDisplayed] = React.useState<string | null>(null)
+
+  if (error && (!errorDisplayed || errorDisplayed !== error)) {
+    setErrorDisplayed(error)
+    handleSignError(error)
+  }
 
   const form = useForm<IForm>({
     resolver: zodResolver(formSchema),
@@ -52,7 +60,7 @@ export function LoginUserAuthForm({ searchParams, ...props }: UserAuthFormProps)
       } else {
         console.error(res.error)
         if (typeof res.error === "string") {
-          throw new Error(res.error)
+          if (res.error === "You signed up with a provider, please sign in with it") throw new Error(res.error)
         }
         throw new Error("Invalid credentials. Please try again.")
       }

@@ -16,12 +16,9 @@ export default function GithubSignIn({ provider }: { provider: ClientSafeProvide
       const res = await signIn(provider.id, {
         callbackUrl: `${window.location.origin}/profile`,
       })
-      console.log(res)
+      logger.debug("SignIn result:", res)
 
-      if (!res?.error) {
-        // router.push(callbackUrl)
-        console.log("success")
-      } else {
+      if (res?.error) {
         if (res?.error === "OAuthAccountNotLinked") {
         } else {
           throw new Error("Invalid credentials. Please try again.")

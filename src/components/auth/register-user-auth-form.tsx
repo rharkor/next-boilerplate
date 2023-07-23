@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation"
 import * as React from "react"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
+import { handleSignError } from "@/lib/auth/handle-sign-errors"
 import { cn, handleFetch } from "@/lib/utils"
 import { signUpSchema } from "@/types/auth"
 import { Button, buttonVariants } from "../ui/button"
@@ -47,12 +48,14 @@ export function RegisterUserAuthForm({ isMinimized, searchParams, ...props }: Us
   const router = useRouter()
 
   const emailFromSearchParam = searchParams?.email?.toString()
+  const error = searchParams?.error?.toString()
 
   const [isLoading, setIsLoading] = React.useState<boolean>(false)
-  //? This state is used to avoid a useEffect to set the email value
   const [emailSettedBySearchParam, setEmailSettedBySearchParam] = React.useState<string | undefined>(
     searchParams?.email?.toString()
   )
+
+  const [errorDisplayed, setErrorDisplayed] = React.useState<string | null>(null)
 
   const form = useForm<IForm | IFormMinimized>({
     resolver: zodResolver(getFormSchema(isMinimized)),
@@ -72,6 +75,11 @@ export function RegisterUserAuthForm({ isMinimized, searchParams, ...props }: Us
   ) {
     form.setValue("email", emailFromSearchParam)
     setEmailSettedBySearchParam(emailFromSearchParam)
+  }
+
+  if (error && (!errorDisplayed || errorDisplayed !== error)) {
+    setErrorDisplayed(error)
+    handleSignError(error)
   }
 
   async function onSubmit(data: IForm | IFormMinimized) {

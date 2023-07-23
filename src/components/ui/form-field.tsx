@@ -40,8 +40,8 @@ function getInner<
     autoComplete,
     placeholder,
     type,
-    form,
-  }: FormFieldProps<TFieldValues> & { field: ControllerRenderProps<TFieldValues, TName> },
+  }: // form,
+  FormFieldProps<TFieldValues> & { field: ControllerRenderProps<TFieldValues, TName> },
   props: InputWithOmittedProps
 ) {
   if (type === "password-eye-slash") {
