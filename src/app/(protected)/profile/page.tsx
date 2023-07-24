@@ -1,11 +1,9 @@
 import { getServerSession } from "next-auth"
-import requireAuth from "@/components/auth/require-auth"
 import SignoutButton from "@/components/auth/sign-out-button"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { nextAuthOptions } from "@/lib/auth"
 
 export default async function Profile() {
-  await requireAuth("/profile")
   const session = await getServerSession(nextAuthOptions)
   const user = session?.user
 

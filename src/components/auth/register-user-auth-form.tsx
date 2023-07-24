@@ -7,14 +7,13 @@ import * as React from "react"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
 import { authRoutes } from "@/lib/auth/constants"
-import { handleSignError } from "@/lib/auth/handle-sign-errors"
-import { cn, handleFetch } from "@/lib/utils"
+import { handleSignError, handleSignUp } from "@/lib/auth/handle-sign"
+import { cn } from "@/lib/utils"
 import { signUpSchema } from "@/types/auth"
 import { Button, buttonVariants } from "../ui/button"
 import { Form } from "../ui/form"
 import FormField from "../ui/form-field"
 import { Label } from "../ui/label"
-import { toast } from "../ui/use-toast"
 
 type UserAuthFormProps = React.HTMLAttributes<HTMLFormElement> & {
   isMinimized?: boolean
@@ -58,7 +57,7 @@ export function RegisterUserAuthForm({ isMinimized, searchParams, ...props }: Us
 
   const [errorDisplayed, setErrorDisplayed] = React.useState<string | null>(null)
 
-  const form = useForm<IForm | IFormMinimized>({
+  const form = useForm<IForm>({
     resolver: zodResolver(getFormSchema(isMinimized)),
     defaultValues: {
       email: emailFromSearchParam || "",
@@ -83,49 +82,27 @@ export function RegisterUserAuthForm({ isMinimized, searchParams, ...props }: Us
     handleSignError(error)
   }
 
-  async function onSubmit(data: IForm | IFormMinimized) {
+  async function onSubmitMinimized(data: IFormMinimized) {
     if (isMinimized) {
       const searchParams = new URLSearchParams()
       searchParams.set("email", data.email)
       return router.push("/sign-up/credentials?" + searchParams.toString())
     }
-    //? Verify if data is IForm
-    if (!("username" in data)) {
-      return
-    }
+  }
+
+  async function onSubmit(data: IForm) {
     setIsLoading(true)
-    const request = fetch("/api/register", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    })
-    const res = await handleFetch(request, (error) => {
-      if (error === "Email already exists") {
-        return form.setError("email", {
-          type: "manual",
-          message: "Email already exists",
-        })
-      } else if (error === "Username already exists") {
-        return form.setError("username", {
-          type: "manual",
-          message: "Username already exists",
-        })
-      }
-      toast({
-        title: "Error",
-        description: error,
-        variant: "destructive",
-      })
-    })
-    if (res) {
-      router.push("/profile")
-    }
+    await handleSignUp(data, form, router, true)
     setIsLoading(false)
   }
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} {...props} className={cn("grid gap-2", props.className)}>
+      <form
+        onSubmit={form.handleSubmit(isMinimized ? onSubmitMinimized : onSubmit)}
+        {...props}
+        className={cn("grid gap-2", props.className)}
+      >
         <div className="grid gap-1">
           <Label className="sr-only" htmlFor="email">
             Email

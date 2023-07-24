@@ -1,5 +1,5 @@
 import { PrismaAdapter } from "@next-auth/prisma-adapter"
-import { NextAuthOptions } from "next-auth"
+import { NextAuthOptions, Session } from "next-auth"
 import Credentials from "next-auth/providers/credentials"
 import GithubProvider from "next-auth/providers/github"
 import requestIp from "request-ip"
@@ -73,6 +73,7 @@ export const nextAuthOptions: NextAuthOptions = {
           id: user.id.toString(),
           email: user.email,
           username: user.username,
+          role: user.role,
           uuid,
         }
       },
@@ -85,6 +86,7 @@ export const nextAuthOptions: NextAuthOptions = {
   callbacks: {
     jwt: async ({ token, user }) => {
       // logger.debug("JWT token", token)
+
       if (user) {
         token.id = user.id
         token.email = user.email
@@ -95,15 +97,46 @@ export const nextAuthOptions: NextAuthOptions = {
 
       return token
     },
-    session: async ({ session, token }) => {
+    session: async ({ session, token, user }) => {
       // logger.debug("Session token", token)
+
+      if (!token.id || typeof token.id !== "string") {
+        logger.debug("Missing token id")
+        return {} as Session
+      }
+
+      //? Verify that the user still exists
+      const userExists = await prisma.user.findUnique({
+        where: {
+          id: token.id,
+        },
+      })
+      if (!userExists) {
+        logger.debug("User not found", token.id)
+        return {} as Session
+      }
+
+      let username
+      if (user && "username" in user) {
+        username = user.username
+      } else if (token && "username" in token) {
+        username = token.username
+      }
+
+      let role
+      if (user && "role" in user) {
+        role = user.role
+      } else if (token && "role" in token) {
+        role = token.role
+      }
+
       const sessionFilled = {
         ...session,
         user: {
           ...session.user,
-          id: token?.id,
-          username: token && "username" in token ? token.username : undefined,
-          role: token && "role" in token ? token.role : undefined,
+          id: token.id,
+          username: username ?? undefined,
+          role: role ?? undefined,
           uuid: token && "uuid" in token ? token.uuid : undefined,
         },
       }
