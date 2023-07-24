@@ -68,6 +68,17 @@ export const nextAuthOptions: NextAuthOptions = {
           },
         })
 
+        //* Remove old sessions
+        const { count } = await prisma.session.deleteMany({
+          where: {
+            userId: user.id,
+            expires: {
+              lt: new Date(),
+            },
+          },
+        })
+        logger.debug("Deleted old sessions", count)
+
         logger.debug("User logged in", user.id)
         return {
           id: user.id.toString(),
