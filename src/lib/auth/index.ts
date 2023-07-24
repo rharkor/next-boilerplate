@@ -105,7 +105,7 @@ export const nextAuthOptions: NextAuthOptions = {
         return {} as Session
       }
 
-      //? Verify that the user still exists
+      //* Verify that the user still exists
       const userExists = await prisma.user.findUnique({
         where: {
           id: token.id,
@@ -116,6 +116,23 @@ export const nextAuthOptions: NextAuthOptions = {
         return {} as Session
       }
 
+      //* Verify that the session still exists
+      if (!token.uuid || typeof token.uuid !== "string") {
+        logger.debug("Missing token uuid")
+        return {} as Session
+      }
+
+      const sessionExists = await prisma.session.findUnique({
+        where: {
+          sessionToken: token.uuid,
+        },
+      })
+      if (!sessionExists) {
+        logger.debug("Session not found", token.uuid)
+        return {} as Session
+      }
+
+      //* Fill session with user data
       let username
       if (user && "username" in user) {
         username = user.username
