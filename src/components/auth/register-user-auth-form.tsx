@@ -92,8 +92,9 @@ export function RegisterUserAuthForm({ isMinimized, searchParams, ...props }: Us
 
   async function onSubmit(data: IForm) {
     setIsLoading(true)
-    await handleSignUp(data, form, router, true)
-    setIsLoading(false)
+    const isPushingRoute = await handleSignUp(data, form, router, true)
+    //? If isPushingRoute is true, it means that the user is being redirected to the callbackUrl
+    if (!isPushingRoute) setIsLoading(false)
   }
 
   return (

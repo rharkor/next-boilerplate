@@ -31,7 +31,7 @@ export const handleSignIn = async (
   callbackUrl: string,
   router: AppRouterInstance
 ) => {
-  return new Promise<void>(async (resolve) => {
+  return new Promise<void | boolean>(async (resolve) => {
     logger.debug("Signing in with credentials", data)
     try {
       const res = await signIn("credentials", {
@@ -43,6 +43,7 @@ export const handleSignIn = async (
       if (!res?.error) {
         logger.debug("Sign in successful pushing to", callbackUrl)
         router.push(callbackUrl)
+        resolve(true)
       } else {
         console.error(res.error)
         if (typeof res.error === "string") {
@@ -77,39 +78,42 @@ export const handleSignUp = async (
   router: AppRouterInstance,
   loginOnSignUp = true
 ) => {
-  logger.debug("Signing up with credentials", data)
-  const request = fetch("/api/register", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(data),
-  })
-  const res = await handleFetch(request, (error) => {
-    if (error === "Email already exists") {
-      return form.setError("email", {
-        type: "manual",
-        message: "Email already exists",
-      })
-    } else if (error === "Username already exists") {
-      return form.setError("username", {
-        type: "manual",
-        message: "Username already exists",
-      })
-    }
-    toast({
-      title: "Error",
-      description: error,
-      variant: "destructive",
+  return new Promise<void | boolean>(async (resolve) => {
+    logger.debug("Signing up with credentials", data)
+    const request = fetch("/api/register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
     })
-  })
-  if (res) {
-    logger.debug("Sign up successful")
-    if (loginOnSignUp) {
-      logger.debug("Logging in after sign up")
-      await handleSignIn({ email: data.email, password: data.password }, "/profile", router)
-    } else {
-      logger.debug("Pushing to profile page")
-      router.push("/profile")
+    const res = await handleFetch(request, (error) => {
+      if (error === "Email already exists") {
+        return form.setError("email", {
+          type: "manual",
+          message: "Email already exists",
+        })
+      } else if (error === "Username already exists") {
+        return form.setError("username", {
+          type: "manual",
+          message: "Username already exists",
+        })
+      }
+      toast({
+        title: "Error",
+        description: error,
+        variant: "destructive",
+      })
+    })
+    if (res) {
+      logger.debug("Sign up successful")
+      if (loginOnSignUp) {
+        logger.debug("Logging in after sign up")
+        return handleSignIn({ email: data.email, password: data.password }, "/profile", router)
+      } else {
+        logger.debug("Pushing to profile page")
+        router.push("/profile")
+        resolve(true)
+      }
     }
-  }
-  return res
+    resolve()
+  })
 }

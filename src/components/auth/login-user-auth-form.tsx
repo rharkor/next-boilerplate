@@ -45,8 +45,9 @@ export function LoginUserAuthForm({ searchParams, ...props }: UserAuthFormProps)
 
   async function onSubmit(data: IForm) {
     setIsLoading(true)
-    await handleSignIn(data, callbackUrl, router)
-    setIsLoading(false)
+    const isPushingRoute = await handleSignIn(data, callbackUrl, router)
+    //? If isPushingRoute is true, it means that the user is being redirected to the callbackUrl
+    if (!isPushingRoute) setIsLoading(false)
   }
 
   return (
