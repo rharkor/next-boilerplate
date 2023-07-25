@@ -36,6 +36,8 @@ model Session {
   expires      DateTime
   ua           String // User Agent
   ip           String
+  lastUsedAt   DateTime?
+  createdAt    DateTime @default(now())
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
