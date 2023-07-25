@@ -47,7 +47,7 @@ export type IFormMinimized = z.infer<typeof formMinizedSchema>
 
 export function RegisterUserAuthForm({ isMinimized, searchParams, ...props }: UserAuthFormProps) {
   const router = useRouter()
-  const apiFetch = useApiStore((state) => state.apiFetch)
+  const apiFetch = useApiStore((state) => state.apiFetch(router))
 
   const emailFromSearchParam = searchParams?.email?.toString()
   const error = searchParams?.error?.toString()

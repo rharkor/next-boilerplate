@@ -83,7 +83,7 @@ export const handleSignUp = async ({
   form: UseFormReturn<z.infer<typeof registerFormSchema>>
   router: AppRouterInstance
   loginOnSignUp: boolean
-  apiFetch: IApiState["apiFetch"]
+  apiFetch: ReturnType<IApiState["apiFetch"]>
 }) => {
   return new Promise<void | boolean>(async (resolve) => {
     logger.debug("Signing up with credentials", data)

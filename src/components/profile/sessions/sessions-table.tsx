@@ -2,6 +2,7 @@
 
 import { Prisma } from "@prisma/client"
 import { useQuery } from "@tanstack/react-query"
+import { useRouter } from "next/navigation"
 import { useSession } from "next-auth/react"
 import { useState } from "react"
 import {
@@ -24,7 +25,8 @@ const itemsPerPageInitial = 5
 
 export default function SessionsTable() {
   const { data: curSession } = useSession()
-  const apiFetch = useApiStore((state) => state.apiFetch)
+  const router = useRouter()
+  const apiFetch = useApiStore((state) => state.apiFetch(router))
 
   const [selectedSession, setSelectedSession] = useState<string | null>(null)
   const [currentPage, setCurrentPage] = useState(1)
