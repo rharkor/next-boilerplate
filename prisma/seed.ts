@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client"
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library"
-import { hash as bhash } from "bcrypt"
+import { hash as bhash } from "bcryptjs"
 import crypto from "crypto-js"
 import * as dotenv from "dotenv"
 

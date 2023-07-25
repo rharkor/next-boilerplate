@@ -18,7 +18,7 @@ import {
 import Pagination from "@/components/ui/pagination"
 import { toast } from "@/components/ui/use-toast"
 import { useApiStore } from "@/contexts/api.store"
-import { IJsonApiResponse } from "@/lib/json-api"
+import { IJsonApiResponse, jsonApiQuery } from "@/lib/json-api"
 import SessionRow from "./session-row"
 
 const itemsPerPageInitial = 5
@@ -35,13 +35,21 @@ export default function SessionsTable() {
   const { data: sessions, refetch } = useQuery({
     queryKey: ["session", curSession, currentPage, itemsPerPage],
     queryFn: async () => {
-      const res = (await apiFetch(fetch("/api/sessions/active"), () => {
-        toast({
-          title: "Error",
-          description: "Could not fetch sessions. Please try again later.",
-          variant: "destructive",
-        })
-      })) as IJsonApiResponse<Prisma.SessionGetPayload<undefined>>
+      const res = (await apiFetch(
+        fetch(
+          `/api/sessions/active?${jsonApiQuery({
+            page: currentPage,
+            perPage: itemsPerPage,
+          })}`
+        ),
+        () => {
+          toast({
+            title: "Error",
+            description: "Could not fetch sessions. Please try again later.",
+            variant: "destructive",
+          })
+        }
+      )) as IJsonApiResponse<Prisma.SessionGetPayload<undefined>>
       return res
     },
     enabled: !!curSession?.user?.id,
