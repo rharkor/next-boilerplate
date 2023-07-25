@@ -56,17 +56,23 @@ export const nextAuthOptions: NextAuthOptions = {
 
         //* Store user agent and ip address in session
         const uuid = randomUUID()
-        const ua = req.headers?.["user-agent"] ?? ""
-        const ip = requestIp.getClientIp(req) ?? ""
-        await prisma.session.create({
-          data: {
-            userId: user.id,
-            expires: new Date(Date.now() + JWT_MAX_AGE * 1000),
-            ua,
-            ip,
-            sessionToken: uuid,
-          },
-        })
+        try {
+          const ua = req.headers?.["user-agent"] ?? ""
+          const ip = requestIp.getClientIp(req) ?? ""
+          await prisma.session.create({
+            data: {
+              userId: user.id,
+              expires: new Date(Date.now() + JWT_MAX_AGE * 1000),
+              ua,
+              ip,
+              sessionToken: uuid,
+              lastUsedAt: new Date(),
+              createdAt: new Date(),
+            },
+          })
+        } catch (error) {
+          logger.error("Error creating session", error)
+        }
 
         //* Remove old sessions
         const { count } = await prisma.session.deleteMany({
@@ -133,14 +139,24 @@ export const nextAuthOptions: NextAuthOptions = {
         return {} as Session
       }
 
-      const sessionExists = await prisma.session.findUnique({
+      const loginSession = await prisma.session.findUnique({
         where: {
           sessionToken: token.uuid,
         },
       })
-      if (!sessionExists) {
+      if (!loginSession) {
         logger.debug("Session not found", token.uuid)
         return {} as Session
+      } else {
+        //? Update session lastUsed
+        await prisma.session.update({
+          where: {
+            id: loginSession.id,
+          },
+          data: {
+            lastUsedAt: new Date(),
+          },
+        })
       }
 
       //* Fill session with user data
