@@ -1,8 +1,9 @@
 import { NextResponse } from "next/server"
-import requireAuth from "@/components/auth/require-auth"
+import { requireAuthApi } from "@/components/auth/require-auth"
 
 export async function GET() {
-  const session = await requireAuth()
+  const { session, error } = await requireAuthApi()
+  if (error) return error
 
   return NextResponse.json({
     session,
