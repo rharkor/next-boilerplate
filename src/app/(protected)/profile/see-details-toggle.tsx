@@ -5,7 +5,7 @@ import UserActiveSessions from "@/components/auth/user-active-sessions"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 
 export default function SeeDetailsToggle() {
-  const [showDetails, setShowDetails] = useState<string | undefined>("session-toggle")
+  const [showDetails, setShowDetails] = useState<string | undefined>()
 
   return (
     <div className="-z-10 -translate-y-4 rounded-b-lg border bg-card p-2 pt-6 text-muted-foreground shadow-sm">
