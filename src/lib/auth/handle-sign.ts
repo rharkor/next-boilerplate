@@ -42,7 +42,12 @@ export const handleSignIn = async (
       })
       if (!res?.error) {
         logger.debug("Sign in successful pushing to", callbackUrl)
-        router.push(callbackUrl)
+        //! Push with next/router doesn't work
+        //? When the user come from a basic route the click to a protected route and get
+        //? redirected here, the router.push doesn't work because the response is cached
+        //? and the user is infinitely redirected to the login page
+        // router.push(callbackUrl)
+        router.replace(callbackUrl)
         resolve(true)
       } else {
         console.error(res.error)

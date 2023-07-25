@@ -6,7 +6,6 @@ import SeeDetailsToggle from "./see-details-toggle"
 
 export default async function Profile() {
   const session = await getServerSession(nextAuthOptions)
-  const user = session?.user
 
   return (
     <main className="container flex flex-1 items-center justify-center">
@@ -16,11 +15,7 @@ export default async function Profile() {
             <CardTitle>Profile</CardTitle>
           </CardHeader>
           <CardContent>
-            {!user ? (
-              <p>Loading...</p>
-            ) : (
-              <pre className="overflow-auto rounded bg-muted p-2">{JSON.stringify(session, null, 2)}</pre>
-            )}
+            <pre className="overflow-auto rounded bg-muted p-2">{JSON.stringify(session, null, 2)}</pre>
           </CardContent>
           <CardFooter>
             <div className="ml-auto">

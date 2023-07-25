@@ -19,7 +19,7 @@ export type InputWithOmittedProps = Omit<
 
 export interface FormFieldProps<
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > extends InputWithOmittedProps {
   form: UseFormReturn<TFieldValues>
   name: TName
@@ -33,7 +33,7 @@ export interface FormFieldProps<
 
 function getInner<
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >(
   {
     field,
@@ -53,7 +53,7 @@ function getInner<
 
 export default function FormField<
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >({
   form,
   name,

@@ -86,6 +86,7 @@ export function RegisterUserAuthForm({ isMinimized, searchParams, ...props }: Us
 
   async function onSubmitMinimized(data: IFormMinimized) {
     if (isMinimized) {
+      setIsLoading(true)
       const searchParams = new URLSearchParams()
       searchParams.set("email", data.email)
       return router.push("/sign-up/credentials?" + searchParams.toString())
