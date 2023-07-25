@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation"
 import * as React from "react"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
+import { useApiStore } from "@/contexts/api.store"
 import { authRoutes } from "@/lib/auth/constants"
 import { handleSignError, handleSignUp } from "@/lib/auth/handle-sign"
 import { cn } from "@/lib/utils"
@@ -46,6 +47,7 @@ export type IFormMinimized = z.infer<typeof formMinizedSchema>
 
 export function RegisterUserAuthForm({ isMinimized, searchParams, ...props }: UserAuthFormProps) {
   const router = useRouter()
+  const apiFetch = useApiStore((state) => state.apiFetch)
 
   const emailFromSearchParam = searchParams?.email?.toString()
   const error = searchParams?.error?.toString()
@@ -92,7 +94,7 @@ export function RegisterUserAuthForm({ isMinimized, searchParams, ...props }: Us
 
   async function onSubmit(data: IForm) {
     setIsLoading(true)
-    const isPushingRoute = await handleSignUp(data, form, router, true)
+    const isPushingRoute = await handleSignUp({ data, form, router, loginOnSignUp: true, apiFetch })
     //? If isPushingRoute is true, it means that the user is being redirected to the callbackUrl
     if (!isPushingRoute) setIsLoading(false)
   }
