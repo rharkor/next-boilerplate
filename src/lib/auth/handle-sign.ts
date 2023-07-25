@@ -6,9 +6,9 @@ import { UseFormReturn } from "react-hook-form"
 import * as z from "zod"
 import { formSchema as registerFormSchema } from "@/components/auth/register-user-auth-form"
 import { toast } from "@/components/ui/use-toast"
+import { IApiState } from "@/contexts/api.store"
 import { signInSchema, signUpSchema } from "@/types/auth"
 import { logger } from "../logger"
-import { handleFetch } from "../utils"
 
 export const handleSignError = (error: string) => {
   if (error == "OAuthAccountNotLinked") {
@@ -72,37 +72,48 @@ export const handleSignIn = async (
   })
 }
 
-export const handleSignUp = async (
-  data: z.infer<typeof signUpSchema>,
-  form: UseFormReturn<z.infer<typeof registerFormSchema>>,
-  router: AppRouterInstance,
-  loginOnSignUp = true
-) => {
+export const handleSignUp = async ({
+  data,
+  form,
+  router,
+  apiFetch,
+  loginOnSignUp = true,
+}: {
+  data: z.infer<typeof signUpSchema>
+  form: UseFormReturn<z.infer<typeof registerFormSchema>>
+  router: AppRouterInstance
+  loginOnSignUp: boolean
+  apiFetch: IApiState["apiFetch"]
+}) => {
   return new Promise<void | boolean>(async (resolve) => {
     logger.debug("Signing up with credentials", data)
-    const request = fetch("/api/register", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    })
-    const res = await handleFetch(request, (error) => {
-      if (error === "Email already exists") {
-        return form.setError("email", {
-          type: "manual",
-          message: "Email already exists",
-        })
-      } else if (error === "Username already exists") {
-        return form.setError("username", {
-          type: "manual",
-          message: "Username already exists",
-        })
+    const res = await apiFetch(
+      fetch("/api/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      }),
+      {
+        onError: (error) => {
+          if (error === "Email already exists") {
+            return form.setError("email", {
+              type: "manual",
+              message: "Email already exists",
+            })
+          } else if (error === "Username already exists") {
+            return form.setError("username", {
+              type: "manual",
+              message: "Username already exists",
+            })
+          }
+          toast({
+            title: "Error",
+            description: error,
+            variant: "destructive",
+          })
+        },
       }
-      toast({
-        title: "Error",
-        description: error,
-        variant: "destructive",
-      })
-    })
+    )
     if (res) {
       logger.debug("Sign up successful")
       if (loginOnSignUp) {
