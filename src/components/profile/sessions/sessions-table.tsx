@@ -40,6 +40,7 @@ export default function SessionsTable() {
           `/api/sessions/active?${jsonApiQuery({
             page: currentPage,
             perPage: itemsPerPage,
+            sort: ["-lastUsedAt"],
           })}`
         ),
         () => {
@@ -91,15 +92,15 @@ export default function SessionsTable() {
       <div className="mt-4 flex flex-col space-y-4">
         <AlertDialog>
           {sessions ? rows : skelRows}
-          {sessions && (sessions.meta.totalPages > 1 || itemsPerPageInitial !== itemsPerPage) && (
-            <Pagination
-              currentPage={sessions.meta.page}
-              totalPages={sessions.meta.totalPages}
-              setCurrentPage={setCurrentPage}
-              itemsPerPage={sessions.meta.perPage}
-              setItemsPerPage={setItemsPerPage}
-            />
-          )}
+          <Pagination
+            show={sessions && (sessions.meta.totalPages > 1 || itemsPerPageInitial !== itemsPerPage)}
+            currentNumberOfItems={sessions?.data?.length ?? 0}
+            currentPage={sessions?.meta.page}
+            totalPages={sessions?.meta.totalPages}
+            setCurrentPage={setCurrentPage}
+            itemsPerPage={sessions?.meta.perPage}
+            setItemsPerPage={setItemsPerPage}
+          />
           <AlertDialogContent>
             <AlertDialogHeader>
               <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>

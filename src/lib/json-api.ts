@@ -76,7 +76,17 @@ export const jsonApiQuery = (query: IJsonApiQuery) => {
   return searchParams
 }
 
-export const parseJsonApiQuery = (query: URLSearchParams | string): IJsonApiQuery => {
+export const jsonApiDefaults = {
+  page: 1,
+  perPage: 10,
+}
+
+export type IJsonApiQueryWithDefaults = IJsonApiQuery & typeof jsonApiDefaults
+
+export const parseJsonApiQuery = (
+  query: URLSearchParams | string,
+  defaults = jsonApiDefaults
+): IJsonApiQueryWithDefaults => {
   const searchParams = new URLSearchParams(query)
 
   const page = searchParams.get("page")
@@ -87,8 +97,8 @@ export const parseJsonApiQuery = (query: URLSearchParams | string): IJsonApiQuer
   const fields = searchParams.get("fields")
 
   return {
-    page: page ? parseInt(page) : undefined,
-    perPage: perPage ? parseInt(perPage) : undefined,
+    page: page ? parseInt(page) : defaults.page,
+    perPage: perPage ? parseInt(perPage) : defaults.perPage,
     sort: sort ? sort.split(",") : undefined,
     filter: filter
       ? filter.split(",").map((filter) => {
@@ -99,4 +109,22 @@ export const parseJsonApiQuery = (query: URLSearchParams | string): IJsonApiQuer
     include: include ? include.split(",") : undefined,
     fields: fields ? fields.split(",") : undefined,
   }
+}
+
+export const getJsonApiSkip = ({ page, perPage }: { page: number; perPage: number }) => {
+  return perPage * (page - 1)
+}
+
+export const getJsonApiTake = ({ perPage }: { perPage: number }) => {
+  return perPage
+}
+
+export const getJsonApiSort = ({ sort }: { sort?: string[] }) => {
+  if (!sort) return undefined
+
+  return sort.map((sort) => {
+    const direction = sort[0] === "-" ? "desc" : "asc"
+    const field = sort.replace(/^-/, "")
+    return { [field]: direction }
+  })
 }

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server"
 import { requireAuthApi } from "@/components/auth/require-auth"
-import { IJsonApiResponse, parseJsonApiQuery } from "@/lib/json-api"
+import { getJsonApiSkip, getJsonApiSort, getJsonApiTake, IJsonApiResponse, parseJsonApiQuery } from "@/lib/json-api"
 import { prisma } from "@/lib/prisma"
 
 export async function GET(request: Request) {
@@ -9,9 +9,17 @@ export async function GET(request: Request) {
 
   const { searchParams } = new URL(request.url)
   const query = parseJsonApiQuery(searchParams)
-  console.log(query)
 
   const activeSessions = await prisma.session.findMany({
+    where: {
+      userId: session.user.id,
+    },
+    skip: getJsonApiSkip(query),
+    take: getJsonApiTake(query),
+    orderBy: getJsonApiSort(query),
+  })
+
+  const total = await prisma.session.count({
     where: {
       userId: session.user.id,
     },
@@ -21,13 +29,11 @@ export async function GET(request: Request) {
     data: activeSessions,
     meta: {
       total: activeSessions.length,
-      page: 1,
-      perPage: 10,
-      totalPages: 1,
+      page: query.page,
+      perPage: query.perPage,
+      totalPages: Math.ceil(total / query.perPage),
     },
   }
-
-  NextResponse.next
 
   return NextResponse.json(response)
 }
