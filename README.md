@@ -143,7 +143,7 @@ The boilerplate comes with a pre-configured Docker container stack and a dev con
 To start the development container in vsCode [see](https://code.visualstudio.com/docs/remote/containers#_quick-start-open-an-existing-folder-in-a-container).
 You can also use [devPod](https://github.com/loft-sh/devpod) to easily start the development container.
 
-<!-- [![Open in DevPod!](https://devpod.sh/assets/open-in-devpod.svg)](https://devpod.sh/open#https://github.com/rharkor/next-boilerplate) -->
+[![Open in DevPod!](https://devpod.sh/assets/open-in-devpod.svg)](https://devpod.sh/open#https://github.com/rharkor/next-boilerplate)
 
 Ports:
 
