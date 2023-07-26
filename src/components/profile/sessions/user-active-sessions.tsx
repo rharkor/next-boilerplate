@@ -1,4 +1,4 @@
-import SessionsTable from "../profile/sessions/sessions-table"
+import SessionsTable from "./sessions-table"
 
 export default function UserActiveSessions() {
   return (

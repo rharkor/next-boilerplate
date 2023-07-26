@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import UserActiveSessions from "@/components/auth/user-active-sessions"
+import UserActiveSessions from "@/components/profile/sessions/user-active-sessions"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 
 export default function SeeDetailsToggle() {
