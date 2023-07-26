@@ -77,44 +77,40 @@ export default function SessionsTable() {
 
   const skelRows = (
     <>
-      <SessionRow skeleton />
-      <SessionRow skeleton />
-      <SessionRow skeleton />
+      {Array.from({ length: itemsPerPageInitial }).map((_, i) => (
+        <SessionRow skeleton key={i} />
+      ))}
     </>
   )
 
+  const showPagination = Boolean(sessions && (sessions.meta.totalPages > 1 || itemsPerPageInitial !== itemsPerPage))
+
   return (
-    <section>
-      <header>
-        <h3 className="text-lg font-medium">Logged in devices</h3>
-        <p className="text-sm text-muted-foreground">You can manage your logged in devices here.</p>
-      </header>
-      <div className="mt-4 flex flex-col space-y-4">
-        <AlertDialog>
-          {sessions ? rows : skelRows}
-          <Pagination
-            show={sessions && (sessions.meta.totalPages > 1 || itemsPerPageInitial !== itemsPerPage)}
-            currentNumberOfItems={sessions?.data?.length ?? 0}
-            currentPage={sessions?.meta.page}
-            totalPages={sessions?.meta.totalPages}
-            setCurrentPage={setCurrentPage}
-            itemsPerPage={sessions?.meta.perPage}
-            setItemsPerPage={setItemsPerPage}
-          />
-          <AlertDialogContent>
-            <AlertDialogHeader>
-              <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-              <AlertDialogDescription>
-                This action will disconnect the device connected to this session.
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-              <AlertDialogCancel>Cancel</AlertDialogCancel>
-              <AlertDialogAction onClick={deleteSession}>Continue</AlertDialogAction>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
-      </div>
-    </section>
+    <div className="mt-4 flex flex-col space-y-4">
+      <AlertDialog>
+        {sessions ? rows : skelRows}
+        <Pagination
+          show={showPagination}
+          currentNumberOfItems={sessions?.data?.length ?? 0}
+          currentPage={sessions?.meta.page}
+          totalPages={sessions?.meta.totalPages}
+          setCurrentPage={setCurrentPage}
+          itemsPerPage={sessions?.meta.perPage}
+          setItemsPerPage={setItemsPerPage}
+        />
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action will disconnect the device connected to this session.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={deleteSession}>Continue</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </div>
   )
 }
