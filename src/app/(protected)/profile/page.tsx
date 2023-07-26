@@ -8,9 +8,9 @@ export default async function Profile() {
   const session = await getServerSession(nextAuthOptions)
 
   return (
-    <main className="container flex flex-1 items-center justify-center">
-      <div className="">
-        <Card className="relative z-10 mx-auto max-w-full">
+    <main className="container flex flex-1 flex-col items-center justify-center p-6">
+      <div>
+        <Card className="relative z-10 m-auto max-w-full">
           <CardHeader>
             <CardTitle>Profile</CardTitle>
           </CardHeader>
