@@ -15,7 +15,8 @@ export default async function Profile() {
             <CardTitle>Profile</CardTitle>
           </CardHeader>
           <CardContent>
-            <pre className="overflow-auto rounded bg-muted p-2">{JSON.stringify(session, null, 2)}</pre>
+            <p className="text-muted-foreground">The following data are retrieve server-side.</p>
+            <pre className="mt-2 overflow-auto rounded bg-muted p-2">{JSON.stringify(session, null, 2)}</pre>
           </CardContent>
           <CardFooter>
             <div className="ml-auto">

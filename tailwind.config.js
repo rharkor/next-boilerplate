@@ -60,6 +60,23 @@ module.exports = {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: 0 },
         },
+        "bounce-up": {
+          from: {
+            transform: "translateY(100%)",
+          },
+          "40%": {
+            transform: "cale(0.9) translateY(40%)",
+          },
+          "60%": {
+            transform: "scale(1.043) translateY(0%)",
+          },
+          "80%": {
+            transform: "scale(0.95) translateY(0%)",
+          },
+          to: {
+            transform: "scale(1)",
+          },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",

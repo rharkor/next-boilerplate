@@ -50,7 +50,7 @@ export default function SessionsTable() {
             variant: "destructive",
           })
         }
-      )) as IJsonApiResponse<Prisma.SessionGetPayload<undefined>>
+      )) as IJsonApiResponse<Prisma.SessionGetPayload<undefined>> | void
       return res
     },
     enabled: !!curSession?.user?.id,

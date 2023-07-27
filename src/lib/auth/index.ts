@@ -123,12 +123,12 @@ export const nextAuthOptions: NextAuthOptions = {
       }
 
       //* Verify that the user still exists
-      const userExists = await prisma.user.findUnique({
+      const dbUser = await prisma.user.findUnique({
         where: {
           id: token.id,
         },
       })
-      if (!userExists) {
+      if (!dbUser) {
         logger.debug("User not found", token.id)
         return {} as Session
       }
@@ -160,19 +160,11 @@ export const nextAuthOptions: NextAuthOptions = {
       }
 
       //* Fill session with user data
-      let username
-      if (user && "username" in user) {
-        username = user.username
-      } else if (token && "username" in token) {
-        username = token.username
-      }
+      const username = dbUser.username
+      const role = dbUser.role
 
-      let role
-      if (user && "role" in user) {
-        role = user.role
-      } else if (token && "role" in token) {
-        role = token.role
-      }
+      //* Fill session with token data
+      const uuid = token && "uuid" in token ? token.uuid : undefined
 
       const sessionFilled = {
         ...session,
@@ -181,7 +173,7 @@ export const nextAuthOptions: NextAuthOptions = {
           id: token.id,
           username: username ?? undefined,
           role: role ?? undefined,
-          uuid: token && "uuid" in token ? token.uuid : undefined,
+          uuid,
         },
       }
       return sessionFilled

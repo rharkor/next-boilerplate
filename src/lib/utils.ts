@@ -2,7 +2,7 @@ import { type ClassValue, clsx } from "clsx"
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context"
 import { NextResponse } from "next/server"
 import { twMerge } from "tailwind-merge"
-import { IApiError } from "@/types"
+import { IApiError } from "@/types/api"
 import { logger } from "./logger"
 
 export function cn(...inputs: ClassValue[]) {
