@@ -16,20 +16,23 @@ function isApiError(error: unknown): error is IApiError {
 export async function handleFetch(
   fetch: Promise<Response>,
   responseOptions: {
-  onError: (error: string) => void,
-    router: AppRouterInstance,
-  redirectOnUnauthorized: boolean
+    onError: (error: string) => void
+    onResponse?: (response: Response) => void
+    router: AppRouterInstance
+    redirectOnUnauthorized: boolean
   }
 ): Promise<unknown | void> {
   try {
     const response = await fetch
+    if (responseOptions.onResponse) {
+      responseOptions.onResponse(response)
+    }
     if (!response.ok) {
       //? If response is unauthorized, redirect to login
       if (response.status === 401 && responseOptions.redirectOnUnauthorized) {
         responseOptions.router.push("/login")
         return
       }
-
 
       let data: unknown
       try {

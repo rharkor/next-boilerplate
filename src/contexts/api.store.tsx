@@ -27,6 +27,11 @@ export const useApiStore = create<IApiState>(() => ({
       onError = (error) => logger.error(error)
     }
 
+    const onResponse = async (res: Response) => {
+      const { url, status } = res
+      logger.debug("api called", url, "received status", status)
+    }
+
     let redirectOnUnauthorized: boolean
     if (typeof responseOptions === "object" && responseOptions.redirectOnUnauthorized !== undefined) {
       redirectOnUnauthorized = responseOptions.redirectOnUnauthorized
@@ -36,6 +41,7 @@ export const useApiStore = create<IApiState>(() => ({
 
     const res = await handleFetch(fetchRequest, {
       onError,
+      onResponse,
       redirectOnUnauthorized,
       router,
     })
