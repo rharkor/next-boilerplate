@@ -11,11 +11,18 @@ export const env = createEnv({
     JWT_SECRET: z.string().nonempty().min(16),
     DATABASE_URL: z.string().nonempty(),
     NEXTAUTH_SECRET: z.string().nonempty().min(16),
-    NEXTAUTH_URL: z.string().nonempty(),
+    NEXTAUTH_URL: z.string().optional(),
     GITHUB_CLIENT_ID: z.string().nonempty(),
     GITHUB_CLIENT_SECRET: z.string().nonempty(),
     AUTH_ADMIN_EMAIL: z.string().nonempty(),
     AUTH_ADMIN_PASSWORD: z.string().nonempty(),
+    REDIS_HOST: z.string().nonempty(),
+    REDIS_PORT: z
+      .string()
+      .nonempty()
+      .transform((value) => parseInt(value)),
+    REDIS_USERNAME: z.string().optional(),
+    REDIS_PASSWORD: z.string().optional(),
   },
   client: {},
   runtimeEnv: {
@@ -29,6 +36,10 @@ export const env = createEnv({
     GITHUB_CLIENT_SECRET: process.env.GITHUB_CLIENT_SECRET,
     AUTH_ADMIN_EMAIL: process.env.AUTH_ADMIN_EMAIL,
     AUTH_ADMIN_PASSWORD: process.env.AUTH_ADMIN_PASSWORD,
+    REDIS_HOST: process.env.REDIS_HOST,
+    REDIS_PORT: process.env.REDIS_PORT,
+    REDIS_USERNAME: process.env.REDIS_USERNAME,
+    REDIS_PASSWORD: process.env.REDIS_PASSWORD,
   },
   onValidationError: (error) => {
     console.error(error)
