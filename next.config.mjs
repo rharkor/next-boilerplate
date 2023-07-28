@@ -21,6 +21,9 @@ const config = withPlugins([[withBundleAnalyzer({ enabled: env.ANALYZE })]], {
       { source: "/signup", destination: "/sign-up" },
     ]
   },
+  compiler: {
+    styledComponents: true,
+  },
 })
 
 export default config
