@@ -2,18 +2,16 @@
 
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useRouter } from "next/navigation"
-import { signIn } from "next-auth/react"
 import * as React from "react"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
-import { logger } from "@/lib/logger"
+import { handleSignError, handleSignIn } from "@/lib/auth/handle-sign"
 import { cn } from "@/lib/utils"
 import { signInSchema } from "@/types/auth"
 import { Button } from "../ui/button"
 import { Form } from "../ui/form"
 import FormField from "../ui/form-field"
 import { Label } from "../ui/label"
-import { toast } from "../ui/use-toast"
 
 type UserAuthFormProps = React.HTMLAttributes<HTMLFormElement> & {
   searchParams: { [key: string]: string | string[] | undefined }
@@ -27,8 +25,15 @@ export function LoginUserAuthForm({ searchParams, ...props }: UserAuthFormProps)
   const router = useRouter()
 
   const callbackUrl = searchParams?.callbackUrl?.toString() || "/profile"
+  const error = searchParams?.error?.toString()
 
   const [isLoading, setIsLoading] = React.useState<boolean>(false)
+  const [errorDisplayed, setErrorDisplayed] = React.useState<string | null>(null)
+
+  if (error && (!errorDisplayed || errorDisplayed !== error)) {
+    setErrorDisplayed(error)
+    handleSignError(error)
+  }
 
   const form = useForm<IForm>({
     resolver: zodResolver(formSchema),
@@ -40,35 +45,9 @@ export function LoginUserAuthForm({ searchParams, ...props }: UserAuthFormProps)
 
   async function onSubmit(data: IForm) {
     setIsLoading(true)
-    try {
-      const res = await signIn("credentials", {
-        redirect: false,
-        email: data.email,
-        password: data.password,
-        callbackUrl,
-      })
-      if (!res?.error) {
-        router.push(callbackUrl)
-      } else {
-        throw new Error("Invalid credentials. Please try again.")
-      }
-    } catch (error) {
-      logger.error(error)
-      if (error instanceof Error) {
-        toast({
-          title: "Error",
-          description: error.message,
-          variant: "destructive",
-        })
-      } else {
-        toast({
-          title: "Error",
-          description: "An unknown error occurred",
-          variant: "destructive",
-        })
-      }
-    }
-    setIsLoading(false)
+    const isPushingRoute = await handleSignIn(data, callbackUrl, router)
+    //? If isPushingRoute is true, it means that the user is being redirected to the callbackUrl
+    if (!isPushingRoute) setIsLoading(false)
   }
 
   return (

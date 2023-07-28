@@ -1,5 +1,6 @@
 import Link from "next/link"
 import { buttonVariants } from "@/components/ui/button"
+import { authRoutes } from "@/lib/auth/constants"
 
 export default function Home() {
   return (
@@ -8,12 +9,12 @@ export default function Home() {
       <nav className="flex flex-col items-center justify-center">
         <ul className="flex flex-row items-center justify-center gap-2">
           <li>
-            <Link href="/sign-in" className={buttonVariants({ variant: "ghost" })}>
+            <Link href={authRoutes.signIn[0]} className={buttonVariants({ variant: "ghost" })}>
               Sign In
             </Link>
           </li>
           <li>
-            <Link href="/sign-up" className={buttonVariants({ variant: "ghost" })}>
+            <Link href={authRoutes.signUp[0]} className={buttonVariants({ variant: "ghost" })}>
               Sign Up
             </Link>
           </li>
@@ -22,6 +23,7 @@ export default function Home() {
               Profile
             </Link>
           </li>
+          <a href="/profile">Test</a>
         </ul>
       </nav>
     </main>

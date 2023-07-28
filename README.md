@@ -75,27 +75,33 @@ To get started with this boilerplate, follow these steps:
 git clone https://github.com/rharkor/next-boilerplate
 ```
 
-2. Initialize the project:
+2. Create a `.env.local` file and add the following environment variables:
+
+```bash
+cp .env.example .env.local
+```
+
+3. Initialize the project:
 
 ```bash
 npm run init
 ```
 
-3. Install the dependencies:
+4. Install the dependencies:
 
 ```bash
 npm ci
 ```
 
-4. Run the development server:
+5. Run the development server:
 
 ```bash
 npm dev
 ```
 
-5. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+6. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-6. This project uses a git hook to enforce [conventional commits](https://github.com/qoomon/git-conventional-commits). To install the git hook, run the following command in the root directory of the project:
+7. This project uses a git hook to enforce [conventional commits](https://github.com/qoomon/git-conventional-commits). To install the git hook, run the following command in the root directory of the project:
 
 ```sh
 brew install pre-commit
@@ -124,6 +130,7 @@ The following scripts are available in the `package.json`:
 - `postinstall`: Applies patches to external dependencies
 - `preinstall`: Ensures the project is installed with Npm
 - `coupling-graph`: **Generates a coupling and cohesion graph for the components**
+- `seed`: Seeds the database with test data
 
 ## 🐳 Container Stack
 
@@ -136,7 +143,7 @@ The boilerplate comes with a pre-configured Docker container stack and a dev con
 To start the development container in vsCode [see](https://code.visualstudio.com/docs/remote/containers#_quick-start-open-an-existing-folder-in-a-container).
 You can also use [devPod](https://github.com/loft-sh/devpod) to easily start the development container.
 
-<!-- [![Open in DevPod!](https://devpod.sh/assets/open-in-devpod.svg)](https://devpod.sh/open#https://github.com/rharkor/next-boilerplate) -->
+[![Open in DevPod!](https://devpod.sh/assets/open-in-devpod.svg)](https://devpod.sh/open#https://github.com/rharkor/next-boilerplate)
 
 Ports:
 

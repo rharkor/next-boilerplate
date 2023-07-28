@@ -31,9 +31,13 @@ model Account {
 
 model Session {
   id           String   @id @default(cuid())
-  sessionToken String   @unique
+  sessionToken String   @unique // for credentials, it's a uuid
   userId       String
   expires      DateTime
+  ua           String // User Agent
+  ip           String
+  lastUsedAt   DateTime?
+  createdAt    DateTime @default(now())
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
@@ -47,7 +51,7 @@ model User {
   sessions      Session[]
 
   // Custom fields
-  username String @unique
+  username String? @unique
   role     String @default("user")
   password String?
 }
