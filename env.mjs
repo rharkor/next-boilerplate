@@ -11,7 +11,7 @@ export const env = createEnv({
     JWT_SECRET: z.string().nonempty().min(16),
     DATABASE_URL: z.string().nonempty(),
     NEXTAUTH_SECRET: z.string().nonempty().min(16),
-    NEXTAUTH_URL: z.string().nonempty(),
+    NEXTAUTH_URL: z.string().optional(),
     GITHUB_CLIENT_ID: z.string().nonempty(),
     GITHUB_CLIENT_SECRET: z.string().nonempty(),
     AUTH_ADMIN_EMAIL: z.string().nonempty(),
