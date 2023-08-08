@@ -114,7 +114,7 @@ export const nextAuthOptions: NextAuthOptions = {
 
       return token
     },
-    session: async ({ session, token, user }) => {
+    session: async ({ session, token }) => {
       // logger.debug("Session token", token)
 
       if (!token.id || typeof token.id !== "string") {

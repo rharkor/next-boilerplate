@@ -121,7 +121,9 @@ export function RegisterUserAuthForm({ isMinimized, searchParams, ...props }: Us
               disabled={isLoading || !isMinimized}
               form={form}
               name="email"
-              className={cn(!isMinimized && "pointer-events-none")}
+              className={cn({
+                "pointer-events-none": !isMinimized,
+              })}
             />
             {!isMinimized && (
               <Link
