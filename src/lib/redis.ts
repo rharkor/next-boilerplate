@@ -8,5 +8,6 @@ const options: RedisOptions = {
   password: env.REDIS_PASSWORD,
 }
 
-console.log("Options", options)
-export const redis = new Redis(options)
+const redisUrl = env.REDIS_URL ?? `redis://${options.username}:${options.password}@${options.host}:${options.port}`
+
+export const redis = new Redis(redisUrl)

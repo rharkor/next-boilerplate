@@ -16,13 +16,14 @@ export const env = createEnv({
     GITHUB_CLIENT_SECRET: z.string().nonempty(),
     AUTH_ADMIN_EMAIL: z.string().nonempty(),
     AUTH_ADMIN_PASSWORD: z.string().nonempty(),
-    REDIS_HOST: z.string().nonempty(),
+    REDIS_HOST: z.string().optional(),
     REDIS_PORT: z
       .string()
-      .nonempty()
+      .optional()
       .transform((value) => parseInt(value)),
     REDIS_USERNAME: z.string().optional(),
     REDIS_PASSWORD: z.string().optional(),
+    REDIS_URL: z.string().optional(),
   },
   client: {},
   runtimeEnv: {
@@ -40,6 +41,8 @@ export const env = createEnv({
     REDIS_PORT: process.env.REDIS_PORT,
     REDIS_USERNAME: process.env.REDIS_USERNAME,
     REDIS_PASSWORD: process.env.REDIS_PASSWORD,
+    REDIS_TLS: process.env.REDIS_TLS,
+    REDIS_URL: process.env.REDIS_URL,
   },
   onValidationError: (error) => {
     console.error(error)
