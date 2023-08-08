@@ -1,5 +1,6 @@
 import Redis, { RedisOptions } from "ioredis"
 import { env } from "env.mjs"
+import { logger } from "./logger"
 
 const options: RedisOptions = {
   host: env.REDIS_HOST,
@@ -8,5 +9,9 @@ const options: RedisOptions = {
   password: env.REDIS_PASSWORD,
 }
 
-console.log("Options", options)
-export const redis = new Redis(options)
+const redisUrl = env.REDIS_URL ?? `redis://${options.username}:${options.password}@${options.host}:${options.port}`
+
+logger.debug("Redis URL", redisUrl)
+export const redis = new Redis(redisUrl, {
+  tls: env.REDIS_USE_TLS ? {} : undefined,
+})

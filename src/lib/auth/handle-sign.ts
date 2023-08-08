@@ -42,12 +42,9 @@ export const handleSignIn = async (
       })
       if (!res?.error) {
         logger.debug("Sign in successful pushing to", callbackUrl)
-        //! Push with next/router doesn't work
-        //? When the user come from a basic route the click to a protected route and get
-        //? redirected here, the router.push doesn't work because the response is cached
-        //? and the user is infinitely redirected to the login page
-        // router.push(callbackUrl)
-        router.replace(callbackUrl)
+        router.push(callbackUrl)
+        //? Refreshing the router is necessary due to next.js client cache, see: https://nextjs.org/docs/app/building-your-application/caching
+        router.refresh()
         resolve(true)
       } else {
         console.error(res.error)
@@ -127,6 +124,8 @@ export const handleSignUp = async ({
       } else {
         logger.debug("Pushing to profile page")
         router.push("/profile")
+        //? Refreshing the router is necessary due to next.js client cache, see: https://nextjs.org/docs/app/building-your-application/caching
+        router.refresh()
         resolve(true)
       }
     }

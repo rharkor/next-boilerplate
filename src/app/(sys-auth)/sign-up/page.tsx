@@ -22,7 +22,7 @@ export default async function SignUpPage({
         Login
       </Link>
       <div className="relative hidden h-full flex-col bg-muted p-10 text-white dark:border-r lg:flex ">
-        <div className="absolute inset-0 bg-zinc-900" />
+        <div className="absolute inset-0 bg-muted" />
       </div>
       <div className="lg:p-8">
         <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
