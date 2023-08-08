@@ -24,6 +24,10 @@ export const env = createEnv({
     REDIS_USERNAME: z.string().optional(),
     REDIS_PASSWORD: z.string().optional(),
     REDIS_URL: z.string().optional(),
+    REDIS_USE_TLS: z
+      .enum(["true", "false"])
+      .optional()
+      .transform((value) => value === "true"),
   },
   client: {},
   runtimeEnv: {
@@ -43,6 +47,7 @@ export const env = createEnv({
     REDIS_PASSWORD: process.env.REDIS_PASSWORD,
     REDIS_TLS: process.env.REDIS_TLS,
     REDIS_URL: process.env.REDIS_URL,
+    REDIS_USE_TLS: process.env.REDIS_USE_TLS,
   },
   onValidationError: (error) => {
     console.error(error)
