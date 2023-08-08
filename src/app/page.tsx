@@ -23,7 +23,6 @@ export default function Home() {
               Profile
             </Link>
           </li>
-          <a href="/profile">Test</a>
         </ul>
       </nav>
     </main>
