@@ -18,7 +18,7 @@ defaults:
 
 jobs:
   analyze:
-    permissions: write-all
+    if: github.event.pull_request.head.repo.full_name == github.repository
     env:
       SKIP_ENV_VALIDATION: true
     runs-on: ubuntu-latest
