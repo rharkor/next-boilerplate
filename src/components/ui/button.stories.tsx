@@ -4,28 +4,42 @@ import { Button } from "./button"
 const meta: Meta<typeof Button> = {
   title: "Button",
   component: Button,
+  args: {
+    children: "Button",
+    variant: "default",
+    size: "default",
+    disabled: false,
+    isLoading: false,
+    disabledWhileLoading: true,
+  },
   argTypes: {
     children: {
-      defaultValue: "Button",
-      control: "text",
+      control: {
+        type: "text",
+      },
     },
     variant: {
-      defaultValue: "default",
-      control: "select",
+      control: { type: "select" },
       options: ["default", "destructive", "outline", "secondary", "ghost", "link"],
     },
     size: {
-      defaultValue: "default",
       control: "select",
-      options: ["sm", "lg", "icon"],
+      options: ["default", "sm", "lg", "icon"],
     },
     disabled: {
-      defaultValue: false,
-      control: "boolean",
+      control: {
+        type: "boolean",
+      },
     },
     isLoading: {
-      defaultValue: false,
-      control: "boolean",
+      control: {
+        type: "boolean",
+      },
+    },
+    disabledWhileLoading: {
+      control: {
+        type: "boolean",
+      },
     },
     onClick: {
       action: "clicked",
