@@ -10,12 +10,12 @@ describe("Button", () => {
     expect(button).toBeInTheDocument()
   })
 
-  it("calls the onClick function when clicked", () => {
+  it("calls the onClick function when clicked", async () => {
     const handleClick = jest.fn()
     render(<Button onClick={handleClick}>Click me</Button>)
     const button = screen.getByRole("button", { name: /click me/i })
-    userEvent.click(button)
-    expect(handleClick).toHaveBeenCalledTimes(1)
+    await userEvent.click(button)
+    expect(handleClick).toBeCalledTimes(1)
   })
 
   it("disables the button when isLoading is true", () => {
