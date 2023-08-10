@@ -135,3 +135,12 @@ export const getTimeBetween = (
   // Construct and return the time elapsed string
   return `${timeValue} ${timeUnit}${timeValue !== 1 ? "s" : ""}`
 }
+
+// Function to ensure an url is relative to the current domain
+export const ensureRelativeUrl = (url: string | undefined) => {
+  if (url && url.startsWith("http")) {
+    const urlObject = new URL(url)
+    return urlObject.pathname
+  }
+  return url
+}
