@@ -9,9 +9,9 @@ const options: RedisOptions = {
   password: env.REDIS_PASSWORD,
 }
 
-const redisUrl = env.REDIS_URL ?? `redis://${options.username}:${options.password}@${options.host}:${options.port}`
+const redisUrl = env.REDIS_URL || `redis://${options.username}:${options.password}@${options.host}:${options.port}`
 
-logger.debug("Redis URL", redisUrl)
+logger.info(`Connecting to Redis at ${redisUrl}`)
 export const redis = new Redis(redisUrl, {
   tls: env.REDIS_USE_TLS ? {} : undefined,
 })

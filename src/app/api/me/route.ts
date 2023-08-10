@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server"
 import { requireAuthApi } from "@/components/auth/require-auth"
 import { prisma } from "@/lib/prisma"
-import { apiRateLimiter } from "@/lib/rate-limit"
+import { apiRateLimiter, mergeRateLimitHeaders } from "@/lib/rate-limit"
 import { ApiError } from "@/lib/utils"
 import { UpdateUserSchema } from "@/types/api"
 
@@ -26,13 +26,15 @@ export async function PATCH(request: Request) {
   const { session, error: authError } = await requireAuthApi()
   if (authError) return authError
 
+  //? Rate limit for updating user
   const {
     success,
     errorResponse: throttlerErrorResponse,
     headers,
   } = await apiRateLimiter(request, {
-    limitPerSecond: 10,
+    limitPerInterval: 10,
     duration: 60,
+    preprendIdentifier: `update_user:${session.user.id}`,
   })
   if (!success) return throttlerErrorResponse
 
@@ -54,7 +56,7 @@ export async function PATCH(request: Request) {
       success: true,
     },
     {
-      headers,
+      headers: mergeRateLimitHeaders(request.headers, headers),
     }
   )
 }
