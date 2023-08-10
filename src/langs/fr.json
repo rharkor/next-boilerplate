@@ -1,0 +1,47 @@
+{
+  "home": "Accueil",
+  "homePage": {
+    "title": "Accueil"
+  },
+  "signUpPage": {
+    "createAnAccount": "Créer un compte",
+    "enterEmail": "Entrez votre adresse email pour créer un compte"
+  },
+  "signInPage": {
+    "loginToYourAccount": "Connectez-vous à votre compte",
+    "enterDetails": "Entrez vos détails pour vous connecter"
+  },
+  "profilePage": {
+    "serverSideData": "Les données ci-dessous ont été générée du serveur",
+    "profileDetails": {
+      "toggle": "Voir les détails",
+      "updateAccount": "Mettre à jour le compte",
+      "updateAccountDescription": "Vous pouvez mettre à jour votre compte ci-dessous",
+      "username": {
+        "label": "Nom d'utilisateur",
+        "placeholder": "Nom d'utilisateur"
+      },
+      "loggedDevices": "Appareils connectés",
+      "loggedDevicesDescription": "Vous pouvez voir les appareils connectés à votre compte ci-dessous",
+      "deleteLoggedDevice": {
+        "description": "Cette action va déconnecter l'appareil de votre compte"
+      }
+    }
+  },
+  "auth": {
+    "orContinueWith": "Ou continuez avec",
+    "clickingAggreement": "En cliquant sur Inscription, vous acceptez nos",
+    "termsOfService": "Conditions d'utilisation",
+    "privacyPolicy": "Politique de confidentialité"
+  },
+  "and": "et",
+  "profile": "Profil",
+  "signUp": "Inscription",
+  "signIn": "Connexion",
+  "signOut": "Déconnexion",
+  "notFound": "Page non trouvée",
+  "login": "Connexion",
+  "cancel": "Annuler",
+  "continue": "Confirmer",
+  "areYouAbsolutelySure": "Êtes-vous absolument sûr ?"
+}

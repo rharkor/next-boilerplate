@@ -4,13 +4,20 @@ import GithubSignIn from "@/components/auth/github-sign-in"
 import { RegisterUserAuthForm } from "@/components/auth/register-user-auth-form"
 import { buttonVariants } from "@/components/ui/button"
 import { authRoutes } from "@/lib/auth/constants"
+import { getDictionary } from "@/lib/langs"
 import { cn } from "@/lib/utils"
+import { Locale } from "i18n-config"
 
 export default async function SignUpPage({
   searchParams,
+  params: { lang },
 }: {
   searchParams: { [key: string]: string | string[] | undefined }
+  params: {
+    lang: Locale
+  }
 }) {
+  const dictionary = await getDictionary(lang)
   const providers = await getProviders()
 
   return (
@@ -19,7 +26,7 @@ export default async function SignUpPage({
         href={authRoutes.signIn[0]}
         className={cn(buttonVariants({ variant: "ghost" }), "absolute right-4 top-4 md:right-8 md:top-8")}
       >
-        Login
+        {dictionary.login}
       </Link>
       <div className="relative hidden h-full flex-col bg-muted p-10 text-white dark:border-r lg:flex ">
         <div className="absolute inset-0 bg-muted" />
@@ -27,8 +34,8 @@ export default async function SignUpPage({
       <div className="lg:p-8">
         <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
           <div className="flex flex-col space-y-2 text-center">
-            <h1 className="text-2xl font-semibold tracking-tight">Create an account</h1>
-            <p className="text-sm text-muted-foreground">Enter your email below to create your account</p>
+            <h1 className="text-2xl font-semibold tracking-tight">{dictionary.signUpPage.createAnAccount}</h1>
+            <p className="text-sm text-muted-foreground">{dictionary.signUpPage.enterEmail}</p>
           </div>
           <div className="grid gap-6">
             <RegisterUserAuthForm isMinimized searchParams={searchParams} />
@@ -37,19 +44,19 @@ export default async function SignUpPage({
                 <span className="w-full border-t" />
               </div>
               <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-background px-2 text-muted-foreground">Or continue with</span>
+                <span className="bg-background px-2 text-muted-foreground">{dictionary.auth.orContinueWith}</span>
               </div>
             </div>
             {providers?.github && <GithubSignIn provider={providers.github} />}
           </div>
           <p className="px-8 text-center text-sm text-muted-foreground">
-            By clicking continue, you agree to our{" "}
+            {dictionary.auth.clickingAggreement}{" "}
             <Link href="/terms" className="underline underline-offset-4 hover:text-primary">
-              Terms of Service
-            </Link>{" "}
-            and{" "}
+              {dictionary.auth.termsOfService}
+            </Link>
+            {dictionary.and}
             <Link href="/privacy" className="underline underline-offset-4 hover:text-primary">
-              Privacy Policy
+              {dictionary.auth.privacyPolicy}
             </Link>
             .
           </p>

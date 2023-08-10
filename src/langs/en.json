@@ -1,0 +1,47 @@
+{
+  "home": "Home",
+  "homePage": {
+    "title": "Hello World!"
+  },
+  "signUpPage": {
+    "createAnAccount": "Create an account",
+    "enterEmail": "Enter your email below to create your account"
+  },
+  "signInPage": {
+    "loginToYourAccount": "Login to your account",
+    "enterDetails": "Enter your details below."
+  },
+  "profilePage": {
+    "serverSideData": "The following data are retrieve server-side.",
+    "profileDetails": {
+      "toggle": "See details",
+      "updateAccount": "Update your account",
+      "updateAccountDescription": "You can update your account details here.",
+      "username": {
+        "label": "Username",
+        "placeholder": "Enter your username"
+      },
+      "loggedDevices": "Logged in devices",
+      "loggedDevicesDescription": "Manage your logged in devices here.",
+      "deleteLoggedDevice": {
+        "description": "This action will disconnect the device connected to this session."
+      }
+    }
+  },
+  "auth": {
+    "orContinueWith": "Or continue with",
+    "clickingAggreement": "By clicking continue, you agree to our",
+    "termsOfService": "Terms of Service",
+    "privacyPolicy": "Privacy Policy"
+  },
+  "and": "and",
+  "profile": "Profile",
+  "signUp": "Sign Up",
+  "signIn": "Sign In",
+  "signOut": "Sign Out",
+  "notFound": "Not Found",
+  "login": "Login",
+  "cancel": "Cancel",
+  "continue": "Continue",
+  "areYouAbsolutelySure": "Are you absolutely sure?"
+}

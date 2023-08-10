@@ -6,7 +6,7 @@ import * as React from "react"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
 import { handleSignError, handleSignIn } from "@/lib/auth/handle-sign"
-import { cn } from "@/lib/utils"
+import { cn, ensureRelativeUrl } from "@/lib/utils"
 import { signInSchema } from "@/types/auth"
 import { Button } from "../ui/button"
 import { Form } from "../ui/form"
@@ -24,7 +24,7 @@ export type IForm = z.infer<typeof formSchema>
 export function LoginUserAuthForm({ searchParams, ...props }: UserAuthFormProps) {
   const router = useRouter()
 
-  const callbackUrl = searchParams?.callbackUrl?.toString() || "/profile"
+  const callbackUrl = ensureRelativeUrl(searchParams?.callbackUrl?.toString()) || "/profile"
   const error = searchParams?.error?.toString()
 
   const [isLoading, setIsLoading] = React.useState<boolean>(false)

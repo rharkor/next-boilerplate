@@ -19,7 +19,16 @@ export const nonSensibleSchema = UpdateUserSchema
 
 export type INonSensibleForm = z.infer<typeof nonSensibleSchema>
 
-export default function UpdateAccount() {
+export default function UpdateAccount({
+  dictionary,
+}: {
+  dictionary: {
+    username: {
+      label: string
+      placeholder: string
+    }
+  }
+}) {
   const { data: curSession, update } = useSession()
   const router = useRouter()
   const apiFetch = useApiStore((state) => state.apiFetch(router))
@@ -77,8 +86,8 @@ export default function UpdateAccount() {
         <form onSubmit={form.handleSubmit(onUpdateNonSensibleInforation)} className="grid gap-2">
           <div className="grid gap-1">
             <FormField
-              label="Username"
-              placeholder="Enter your username"
+              label={dictionary.username.label}
+              placeholder={dictionary.username.placeholder}
               type="text"
               disabled={form.formState.isSubmitting || !curSession}
               form={form}

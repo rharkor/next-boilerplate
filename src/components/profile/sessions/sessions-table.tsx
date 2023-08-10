@@ -23,7 +23,18 @@ import SessionRow from "./session-row"
 
 const itemsPerPageInitial = 5
 
-export default function SessionsTable() {
+export default function SessionsTable({
+  dictionary,
+}: {
+  dictionary: {
+    areYouAbsolutelySure: string
+    deleteLoggedDevice: {
+      description: string
+    }
+    cancel: string
+    continue: string
+  }
+}) {
   const { data: curSession } = useSession()
   const router = useRouter()
   const apiFetch = useApiStore((state) => state.apiFetch(router))
@@ -100,14 +111,12 @@ export default function SessionsTable() {
         />
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-            <AlertDialogDescription>
-              This action will disconnect the device connected to this session.
-            </AlertDialogDescription>
+            <AlertDialogTitle>{dictionary.areYouAbsolutelySure}</AlertDialogTitle>
+            <AlertDialogDescription>{dictionary.deleteLoggedDevice.description}</AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={deleteSession}>Continue</AlertDialogAction>
+            <AlertDialogCancel>{dictionary.cancel}</AlertDialogCancel>
+            <AlertDialogAction onClick={deleteSession}>{dictionary.continue}</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
