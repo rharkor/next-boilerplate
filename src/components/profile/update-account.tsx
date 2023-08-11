@@ -27,6 +27,7 @@ export default function UpdateAccount({
       label: string
       placeholder: string
     }
+    error: string
   }
 }) {
   const { data: curSession, update } = useSession()
@@ -68,7 +69,7 @@ export default function UpdateAccount({
       }),
       (err) => {
         toast({
-          title: "Error",
+          title: dictionary.error,
           description: err,
           variant: "destructive",
         })

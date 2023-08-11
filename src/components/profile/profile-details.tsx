@@ -10,6 +10,7 @@ export default function ProfileDetails({
       label: string
       placeholder: string
     }
+    error: string
   }
 }) {
   return (

@@ -29,7 +29,12 @@ export default function SeeDetailsToggle({ dictionary }: { dictionary: TDictiona
                 },
               }}
             />
-            <ProfileDetails dictionary={dictionary.profilePage.profileDetails} />
+            <ProfileDetails
+              dictionary={{
+                ...dictionary.profilePage.profileDetails,
+                error: dictionary.error,
+              }}
+            />
           </AccordionContent>
         </AccordionItem>
       </Accordion>
