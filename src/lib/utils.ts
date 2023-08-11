@@ -144,3 +144,15 @@ export const ensureRelativeUrl = (url: string | undefined) => {
   }
   return url
 }
+
+export const formatCouldNotMessage = async ({
+  couldNotMessage,
+  action,
+  subject,
+}: {
+  couldNotMessage: string
+  action: string
+  subject: string
+}) => {
+  return couldNotMessage.replace("{action}", action).replace("{subject}", subject)
+}

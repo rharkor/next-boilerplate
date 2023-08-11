@@ -25,7 +25,9 @@
       "loggedDevicesDescription": "Vous pouvez voir les appareils connectés à votre compte ci-dessous",
       "deleteLoggedDevice": {
         "description": "Cette action va déconnecter l'appareil de votre compte"
-      }
+      },
+      "session": "la session",
+      "sessions": "les sessions"
     }
   },
   "auth": {
@@ -43,5 +45,11 @@
   "login": "Connexion",
   "cancel": "Annuler",
   "continue": "Confirmer",
-  "areYouAbsolutelySure": "Êtes-vous absolument sûr ?"
+  "areYouAbsolutelySure": "Êtes-vous absolument sûr ?",
+  "error": "Erreur",
+  "couldNotMessage": "Impossible de {action} {subject}. Veuillez ressayer plus tard.",
+  "fetch": "récupérer",
+  "create": "créer",
+  "update": "mettre à jour",
+  "delete": "supprimer"
 }

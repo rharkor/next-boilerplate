@@ -20,6 +20,12 @@ export default function SeeDetailsToggle({ dictionary }: { dictionary: TDictiona
                   cancel: dictionary.cancel,
                   continue: dictionary.continue,
                   deleteLoggedDevice: dictionary.profilePage.profileDetails.deleteLoggedDevice,
+                  session: dictionary.profilePage.profileDetails.session,
+                  sessions: dictionary.profilePage.profileDetails.sessions,
+                  error: dictionary.error,
+                  delete: dictionary.delete,
+                  fetch: dictionary.fetch,
+                  couldNotMessage: dictionary.couldNotMessage,
                 },
               }}
             />

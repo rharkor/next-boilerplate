@@ -25,7 +25,9 @@
       "loggedDevicesDescription": "Manage your logged in devices here.",
       "deleteLoggedDevice": {
         "description": "This action will disconnect the device connected to this session."
-      }
+      },
+      "session": "session",
+      "sessions": "sessions"
     }
   },
   "auth": {
@@ -43,5 +45,11 @@
   "login": "Login",
   "cancel": "Cancel",
   "continue": "Continue",
-  "areYouAbsolutelySure": "Are you absolutely sure?"
+  "areYouAbsolutelySure": "Are you absolutely sure?",
+  "error": "Error",
+  "couldNotMessage": "Could not {action} {subject}. Please try again later.",
+  "fetch": "fetch",
+  "create": "create",
+  "update": "update",
+  "delete": "delete"
 }

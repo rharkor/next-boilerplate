@@ -13,6 +13,12 @@ export default function UserActiveSessions({
       }
       cancel: string
       continue: string
+      session: string
+      sessions: string
+      error: string
+      delete: string
+      fetch: string
+      couldNotMessage: string
     }
   }
 }) {
