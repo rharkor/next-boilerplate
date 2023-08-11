@@ -3,6 +3,7 @@ import Negotiator from "negotiator"
 import { NextResponse } from "next/server"
 import type { NextRequest } from "next/server"
 
+import { logger } from "./lib/logger"
 import { i18n } from "../i18n-config"
 
 function getLocale(request: NextRequest): string | undefined {
@@ -44,7 +45,10 @@ export function middleware(request: NextRequest) {
 
     // e.g. incoming request is /products
     // The new URL is now /en-US/products
-    return NextResponse.redirect(new URL(`/${locale}${pathname.startsWith("/") ? "" : "/"}${pathname}`, request.url))
+    const params = new URLSearchParams(request.nextUrl.search)
+    const redirectUrl = new URL(`/${locale}${pathname.startsWith("/") ? "" : "/"}${pathname}?${params}`, request.url)
+    logger.debug("Redirecting to locale", { from: request.url, to: redirectUrl.href })
+    return NextResponse.redirect(redirectUrl)
   }
 }
 
