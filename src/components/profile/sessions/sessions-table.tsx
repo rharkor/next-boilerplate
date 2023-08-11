@@ -19,29 +19,13 @@ import Pagination from "@/components/ui/pagination"
 import { toast } from "@/components/ui/use-toast"
 import { useApiStore } from "@/contexts/api.store"
 import { IJsonApiResponse, jsonApiQuery } from "@/lib/json-api"
+import { TDictionary } from "@/lib/langs"
 import { formatCouldNotMessage } from "@/lib/utils"
 import SessionRow from "./session-row"
 
 const itemsPerPageInitial = 5
 
-export default function SessionsTable({
-  dictionary,
-}: {
-  dictionary: {
-    areYouAbsolutelySure: string
-    deleteLoggedDevice: {
-      description: string
-    }
-    cancel: string
-    continue: string
-    session: string
-    sessions: string
-    error: string
-    delete: string
-    fetch: string
-    couldNotMessage: string
-  }
-}) {
+export default function SessionsTable({ dictionary }: { dictionary: TDictionary }) {
   const { data: curSession } = useSession()
   const router = useRouter()
   const apiFetch = useApiStore((state) => state.apiFetch(router))
@@ -65,13 +49,14 @@ export default function SessionsTable({
             sort: ["-lastUsedAt"],
           })}`
         ),
+        dictionary,
         () => {
           toast({
             title: dictionary.error,
             description: formatCouldNotMessage({
               couldNotMessage: dictionary.couldNotMessage,
               action: dictionary.fetch,
-              subject: dictionary.sessions,
+              subject: dictionary.profilePage.profileDetails.sessions,
             }),
             variant: "destructive",
           })
@@ -99,13 +84,13 @@ export default function SessionsTable({
       }
     })
     //? Delete from DB
-    const res = await apiFetch(fetch(`/api/sessions/${selectedSession}`, { method: "DELETE" }), () => {
+    const res = await apiFetch(fetch(`/api/sessions/${selectedSession}`, { method: "DELETE" }), dictionary, () => {
       toast({
         title: dictionary.error,
         description: formatCouldNotMessage({
           couldNotMessage: dictionary.couldNotMessage,
           action: dictionary.delete,
-          subject: dictionary.session,
+          subject: dictionary.profilePage.profileDetails.session,
         }),
         variant: "destructive",
       })
@@ -146,7 +131,9 @@ export default function SessionsTable({
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>{dictionary.areYouAbsolutelySure}</AlertDialogTitle>
-            <AlertDialogDescription>{dictionary.deleteLoggedDevice.description}</AlertDialogDescription>
+            <AlertDialogDescription>
+              {dictionary.profilePage.profileDetails.deleteLoggedDevice.description}
+            </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>{dictionary.cancel}</AlertDialogCancel>

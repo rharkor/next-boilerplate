@@ -12,23 +12,7 @@ export default function SeeDetailsToggle({ dictionary }: { dictionary: TDictiona
             {dictionary.profilePage.profileDetails.toggle}
           </AccordionTrigger>
           <AccordionContent>
-            <UserActiveSessions
-              dictionary={{
-                ...dictionary.profilePage.profileDetails,
-                sessionTable: {
-                  areYouAbsolutelySure: dictionary.areYouAbsolutelySure,
-                  cancel: dictionary.cancel,
-                  continue: dictionary.continue,
-                  deleteLoggedDevice: dictionary.profilePage.profileDetails.deleteLoggedDevice,
-                  session: dictionary.profilePage.profileDetails.session,
-                  sessions: dictionary.profilePage.profileDetails.sessions,
-                  error: dictionary.error,
-                  delete: dictionary.delete,
-                  fetch: dictionary.fetch,
-                  couldNotMessage: dictionary.couldNotMessage,
-                },
-              }}
-            />
+            <UserActiveSessions dictionary={dictionary} />
             <ProfileDetails dictionary={dictionary} />
           </AccordionContent>
         </AccordionItem>

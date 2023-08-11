@@ -59,7 +59,8 @@
     "username": {
       "required": "Nom d'utilisateur requis",
       "min3": "Le nom d'utilisateur doit être au moins 3 caractères long.",
-      "max30": "Le nom d'utilisateur doit être au maximum 30 caractères long."
+      "max30": "Le nom d'utilisateur doit être au maximum 30 caractères long.",
+      "exist": "Le nom d'utilisateur existe déjà."
     },
     "password": {
       "regex": "Le mot de passe doit contenir au moins une lettre majuscule, une lettre minuscule et un chiffre.",
@@ -70,7 +71,11 @@
     },
     "email": {
       "required": "Email requis",
-      "invalid": "Email invalide"
-    }
+      "invalid": "Email invalide",
+      "exist": "L'email existe déjà."
+    },
+    "unknownError": "Une erreur inconnue s'est produite. Veuillez ressayer plus tard.",
+    "wrongProvider": "Vous avez déjà un compte avec un autre provider. Veuillez vous connecter avec celui-ci.",
+    "invalidCredentials": "Les informations d'identification sont invalides."
   }
 }

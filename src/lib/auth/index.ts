@@ -43,6 +43,7 @@ export const nextAuthOptions: NextAuthOptions & {
             nextAuthOptions.loadedDictionary.set(lang, dictionary)
             return dictionary
           })())
+
         const creds = await signInSchema(dictionary).parseAsync(credentials)
 
         if (!creds.email || !creds.password) {
@@ -61,7 +62,7 @@ export const nextAuthOptions: NextAuthOptions & {
 
         if (!user.password) {
           //? this should happen if the user signed up with a provider
-          throw new Error("You signed up with a provider, please sign in with it")
+          throw new Error(dictionary.errors.wrongProvider)
         }
 
         const isValidPassword = await bcryptCompare(creds.password, user.password)

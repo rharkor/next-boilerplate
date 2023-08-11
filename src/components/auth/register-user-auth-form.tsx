@@ -86,7 +86,7 @@ export function RegisterUserAuthForm({ dictionary, isMinimized, searchParams, ..
 
   if (error && (!errorDisplayed || errorDisplayed !== error)) {
     setErrorDisplayed(error)
-    handleSignError(error)
+    handleSignError(error, dictionary)
   }
 
   async function onSubmitMinimized(data: IFormMinimized) {
@@ -100,7 +100,7 @@ export function RegisterUserAuthForm({ dictionary, isMinimized, searchParams, ..
 
   async function onSubmit(data: IForm) {
     setIsLoading(true)
-    const isPushingRoute = await handleSignUp({ data, form, router, loginOnSignUp: true, apiFetch })
+    const isPushingRoute = await handleSignUp({ data, form, router, loginOnSignUp: true, apiFetch, dictionary })
     //? If isPushingRoute is true, it means that the user is being redirected to the callbackUrl
     if (!isPushingRoute) setIsLoading(false)
   }

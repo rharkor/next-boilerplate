@@ -34,7 +34,7 @@ export function LoginUserAuthForm({ dictionary, searchParams, ...props }: UserAu
 
   if (error && (!errorDisplayed || errorDisplayed !== error)) {
     setErrorDisplayed(error)
-    handleSignError(error)
+    handleSignError(error, dictionary)
   }
 
   const form = useForm<IForm>({
@@ -47,7 +47,7 @@ export function LoginUserAuthForm({ dictionary, searchParams, ...props }: UserAu
 
   async function onSubmit(data: IForm) {
     setIsLoading(true)
-    const isPushingRoute = await handleSignIn(data, callbackUrl, router)
+    const isPushingRoute = await handleSignIn({ data, callbackUrl, router, dictionary })
     //? If isPushingRoute is true, it means that the user is being redirected to the callbackUrl
     if (!isPushingRoute) setIsLoading(false)
   }

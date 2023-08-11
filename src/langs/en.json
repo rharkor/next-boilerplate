@@ -59,7 +59,8 @@
     "username": {
       "required": "Username is required.",
       "min3": "Username must be at least 3 characters long.",
-      "max30": "Username must be at most 30 characters long."
+      "max30": "Username must be at most 30 characters long.",
+      "exist": "Username already exists."
     },
     "password": {
       "regex": "Password must contain at least one uppercase letter, one lowercase letter, and one number",
@@ -70,7 +71,11 @@
     },
     "email": {
       "required": "Email is required.",
-      "invalid": "Email is invalid."
-    }
+      "invalid": "Email is invalid.",
+      "exist": "Email already exists."
+    },
+    "unknownError": "An unknown error has occurred. Please try again later.",
+    "wrongProvider": "You already have an account with a different provider. Please sign in with it.",
+    "invalidCredentials": "Invalid credentials. Please try again."
   }
 }

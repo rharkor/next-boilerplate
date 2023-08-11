@@ -58,6 +58,7 @@ export default function UpdateAccount({ dictionary }: { dictionary: TDictionary 
         method: "PATCH",
         body: JSON.stringify(data),
       }),
+      dictionary,
       (err) => {
         toast({
           title: dictionary.error,

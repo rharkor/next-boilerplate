@@ -1,6 +1,4 @@
 import Link from "next/link"
-import { getProviders } from "next-auth/react"
-import GithubSignIn from "@/components/auth/github-sign-in"
 import { LoginUserAuthForm } from "@/components/auth/login-user-auth-form"
 import { buttonVariants } from "@/components/ui/button"
 import { authRoutes } from "@/lib/auth/constants"
@@ -8,6 +6,7 @@ import { getDictionary } from "@/lib/langs"
 import { cn } from "@/lib/utils"
 import { Locale } from "i18n-config"
 import PrivacyAcceptance from "../privacy-acceptance"
+import Providers from "../providers"
 
 export default async function SignInPage({
   searchParams,
@@ -19,8 +18,6 @@ export default async function SignInPage({
   }
 }) {
   const dictionary = await getDictionary(lang)
-
-  const providers = await getProviders()
 
   return (
     <main className="container relative grid flex-1 flex-col items-center justify-center lg:max-w-none lg:grid-cols-2 lg:px-0">
@@ -49,7 +46,7 @@ export default async function SignInPage({
                 <span className="bg-background px-2 text-muted-foreground">{dictionary.auth.orContinueWith}</span>
               </div>
             </div>
-            {providers?.github && <GithubSignIn provider={providers.github} />}
+            <Providers dictionary={dictionary} />
           </div>
           <PrivacyAcceptance dictionary={dictionary} />
         </div>
