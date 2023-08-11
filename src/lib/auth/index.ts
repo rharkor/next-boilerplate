@@ -6,12 +6,18 @@ import requestIp from "request-ip"
 import { randomUUID } from "crypto"
 import { signInSchema } from "@/types/auth"
 import { env } from "env.mjs"
+import { i18n, Locale } from "i18n-config"
 import { authRoutes, JWT_MAX_AGE } from "./constants"
 import { bcryptCompare } from "../bcrypt"
+import { getDictionary, TDictionary } from "../langs"
 import { logger } from "../logger"
 import { prisma } from "../prisma"
+import { ensureRelativeUrl } from "../utils"
 
-export const nextAuthOptions: NextAuthOptions = {
+export const nextAuthOptions: NextAuthOptions & {
+  loadedDictionary: Map<Locale, TDictionary>
+} = {
+  loadedDictionary: new Map(),
   secret: env.NEXTAUTH_SECRET,
   adapter: PrismaAdapter(prisma), //? Require to use database
   providers: [
@@ -26,7 +32,18 @@ export const nextAuthOptions: NextAuthOptions = {
         password: { label: "Password", type: "password" },
       },
       authorize: async (credentials, req) => {
-        const creds = await signInSchema.parseAsync(credentials)
+        const referer = (req.headers?.referer as string) ?? ""
+        const refererUrl = ensureRelativeUrl(referer) ?? ""
+        const lang = i18n.locales.find((locale) => refererUrl.startsWith(`/${locale}/`)) ?? i18n.defaultLocale
+        const dictionary =
+          nextAuthOptions.loadedDictionary.get(lang) ??
+          (await (async () => {
+            logger.debug("Loading dictionary in auth", lang)
+            const dictionary = await getDictionary(lang)
+            nextAuthOptions.loadedDictionary.set(lang, dictionary)
+            return dictionary
+          })())
+        const creds = await signInSchema(dictionary).parseAsync(credentials)
 
         if (!creds.email || !creds.password) {
           logger.debug("Missing credentials", creds)

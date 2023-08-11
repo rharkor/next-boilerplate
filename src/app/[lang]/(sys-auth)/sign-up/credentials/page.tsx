@@ -28,7 +28,7 @@ export default async function SignupByCredentials({
           <CardTitle>{dictionary.signUpPage.createAnAccount}</CardTitle>
         </CardHeader>
         <CardContent>
-          <RegisterUserAuthForm className="gap-3" searchParams={searchParams} />
+          <RegisterUserAuthForm className="gap-3" searchParams={searchParams} dictionary={dictionary} />
         </CardContent>
       </Card>
     </main>

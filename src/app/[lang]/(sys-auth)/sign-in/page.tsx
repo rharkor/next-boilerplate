@@ -39,7 +39,7 @@ export default async function SignInPage({
             <p className="text-sm text-muted-foreground">{dictionary.signInPage.enterDetails}</p>
           </div>
           <div className="grid gap-6">
-            <LoginUserAuthForm searchParams={searchParams} />
+            <LoginUserAuthForm searchParams={searchParams} dictionary={dictionary} />
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
                 <span className="w-full border-t" />

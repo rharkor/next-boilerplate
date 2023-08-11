@@ -7,6 +7,7 @@ import { useCallback, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
 import { useApiStore } from "@/contexts/api.store"
+import { TDictionary } from "@/lib/langs"
 import { logger } from "@/lib/logger"
 import { UpdateUserSchema } from "@/types/api"
 import NeedSavePopup from "../need-save-popup"
@@ -17,22 +18,9 @@ import { toast } from "../ui/use-toast"
 //? Put only the fields you can update withou password confirmation
 export const nonSensibleSchema = UpdateUserSchema
 
-export type INonSensibleForm = z.infer<typeof nonSensibleSchema>
+export type INonSensibleForm = z.infer<ReturnType<typeof nonSensibleSchema>>
 
-export default function UpdateAccount({
-  dictionary,
-}: {
-  dictionary: {
-    username: {
-      label: string
-      placeholder: string
-    }
-    error: string
-    needSavePopup: string
-    reset: string
-    saveChanges: string
-  }
-}) {
+export default function UpdateAccount({ dictionary }: { dictionary: TDictionary }) {
   const { data: curSession, update } = useSession()
   const router = useRouter()
   const apiFetch = useApiStore((state) => state.apiFetch(router))
@@ -40,7 +28,7 @@ export default function UpdateAccount({
   const [isNotSensibleInformationsUpdated, setIsNotSensibleInformationsUpdated] = useState<boolean>(false)
 
   const form = useForm<INonSensibleForm>({
-    resolver: zodResolver(nonSensibleSchema),
+    resolver: zodResolver(nonSensibleSchema(dictionary)),
     defaultValues: {
       username: curSession?.user?.name || "",
     },
@@ -90,8 +78,8 @@ export default function UpdateAccount({
         <form onSubmit={form.handleSubmit(onUpdateNonSensibleInforation)} className="grid gap-2">
           <div className="grid gap-1">
             <FormField
-              label={dictionary.username.label}
-              placeholder={dictionary.username.placeholder}
+              label={dictionary.profilePage.profileDetails.username.label}
+              placeholder={dictionary.profilePage.profileDetails.username.placeholder}
               type="text"
               disabled={form.formState.isSubmitting || !curSession}
               form={form}

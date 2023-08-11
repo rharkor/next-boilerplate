@@ -39,7 +39,7 @@ export async function PATCH(request: Request) {
   if (!success) return throttlerErrorResponse
 
   const body = await request.json()
-  const bodyParsedResult = UpdateUserSchema.safeParse(body)
+  const bodyParsedResult = UpdateUserSchema().safeParse(body)
   if (!bodyParsedResult.success) return ApiError(bodyParsedResult.error.message, { status: 400 })
   const bodyParsed = bodyParsedResult.data
 

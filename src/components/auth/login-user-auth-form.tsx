@@ -6,6 +6,7 @@ import * as React from "react"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
 import { handleSignError, handleSignIn } from "@/lib/auth/handle-sign"
+import { TDictionary } from "@/lib/langs"
 import { cn, ensureRelativeUrl } from "@/lib/utils"
 import { signInSchema } from "@/types/auth"
 import { Button } from "../ui/button"
@@ -14,14 +15,15 @@ import FormField from "../ui/form-field"
 import { Label } from "../ui/label"
 
 type UserAuthFormProps = React.HTMLAttributes<HTMLFormElement> & {
+  dictionary: TDictionary
   searchParams: { [key: string]: string | string[] | undefined }
 }
 
 export const formSchema = signInSchema
 
-export type IForm = z.infer<typeof formSchema>
+export type IForm = z.infer<ReturnType<typeof formSchema>>
 
-export function LoginUserAuthForm({ searchParams, ...props }: UserAuthFormProps) {
+export function LoginUserAuthForm({ dictionary, searchParams, ...props }: UserAuthFormProps) {
   const router = useRouter()
 
   const callbackUrl = ensureRelativeUrl(searchParams?.callbackUrl?.toString()) || "/profile"
@@ -36,7 +38,7 @@ export function LoginUserAuthForm({ searchParams, ...props }: UserAuthFormProps)
   }
 
   const form = useForm<IForm>({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(formSchema(dictionary)),
     defaultValues: {
       email: "",
       password: "",

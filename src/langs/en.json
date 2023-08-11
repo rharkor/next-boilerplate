@@ -54,5 +54,23 @@
   "delete": "delete",
   "needSavePopup": "Be careful, there are still unsaved changes!",
   "reset": "Reset",
-  "saveChanges": "Save changes"
+  "saveChanges": "Save changes",
+  "errors": {
+    "username": {
+      "required": "Username is required.",
+      "min3": "Username must be at least 3 characters long.",
+      "max30": "Username must be at most 30 characters long."
+    },
+    "password": {
+      "regex": "Password must contain at least one uppercase letter, one lowercase letter, and one number",
+      "required": "Password is required.",
+      "dontMatch": "Passwords don't match.",
+      "min4": "Password must be at least 4 characters long.",
+      "max25": "Password must be at most 25 characters long."
+    },
+    "email": {
+      "required": "Email is required.",
+      "invalid": "Email is invalid."
+    }
+  }
 }

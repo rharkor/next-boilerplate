@@ -54,5 +54,23 @@
   "delete": "supprimer",
   "needSavePopup": "Vous avez des modifications non enregistrées !",
   "reset": "Réinitialiser",
-  "saveChanges": "Sauvegarder"
+  "saveChanges": "Sauvegarder",
+  "errors": {
+    "username": {
+      "required": "Nom d'utilisateur requis",
+      "min3": "Le nom d'utilisateur doit être au moins 3 caractères long.",
+      "max30": "Le nom d'utilisateur doit être au maximum 30 caractères long."
+    },
+    "password": {
+      "regex": "Le mot de passe doit contenir au moins une lettre majuscule, une lettre minuscule et un chiffre.",
+      "required": "Mot de passe requis",
+      "dontMatch": "Les mots de passe ne correspondent pas",
+      "min4": "Le mot de passe doit être au moins 4 caractères long.",
+      "max25": "Le mot de passe doit être au maximum 25 caractères long."
+    },
+    "email": {
+      "required": "Email requis",
+      "invalid": "Email invalide"
+    }
+  }
 }

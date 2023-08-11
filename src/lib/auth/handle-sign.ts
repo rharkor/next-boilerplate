@@ -27,7 +27,7 @@ export const handleSignError = (error: string) => {
 }
 
 export const handleSignIn = async (
-  data: z.infer<typeof signInSchema>,
+  data: z.infer<ReturnType<typeof signInSchema>>,
   callbackUrl: string,
   router: AppRouterInstance
 ) => {
@@ -81,8 +81,8 @@ export const handleSignUp = async ({
   apiFetch,
   loginOnSignUp = true,
 }: {
-  data: z.infer<typeof signUpSchema>
-  form: UseFormReturn<z.infer<typeof registerFormSchema>>
+  data: z.infer<ReturnType<typeof signUpSchema>>
+  form: UseFormReturn<z.infer<ReturnType<typeof registerFormSchema>>>
   router: AppRouterInstance
   loginOnSignUp: boolean
   apiFetch: ReturnType<IApiState["apiFetch"]>

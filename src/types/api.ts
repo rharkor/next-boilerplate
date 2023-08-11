@@ -1,4 +1,5 @@
 import * as z from "zod"
+import { TDictionary } from "@/lib/langs"
 import { usernameSchema } from "./constants"
 
 export type IApiError = {
@@ -6,6 +7,7 @@ export type IApiError = {
   message: string
 }
 
-export const UpdateUserSchema = z.object({
-  username: usernameSchema,
-})
+export const UpdateUserSchema = (dictionary?: TDictionary) =>
+  z.object({
+    username: usernameSchema(dictionary),
+  })
