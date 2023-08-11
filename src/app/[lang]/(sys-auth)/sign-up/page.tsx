@@ -7,6 +7,7 @@ import { authRoutes } from "@/lib/auth/constants"
 import { getDictionary } from "@/lib/langs"
 import { cn } from "@/lib/utils"
 import { Locale } from "i18n-config"
+import PrivacyAcceptance from "../privacy-acceptance"
 
 export default async function SignUpPage({
   searchParams,
@@ -49,17 +50,7 @@ export default async function SignUpPage({
             </div>
             {providers?.github && <GithubSignIn provider={providers.github} />}
           </div>
-          <p className="px-8 text-center text-sm text-muted-foreground">
-            {dictionary.auth.clickingAggreement}{" "}
-            <Link href="/terms" className="underline underline-offset-4 hover:text-primary">
-              {dictionary.auth.termsOfService}
-            </Link>
-            {dictionary.and}
-            <Link href="/privacy" className="underline underline-offset-4 hover:text-primary">
-              {dictionary.auth.privacyPolicy}
-            </Link>
-            .
-          </p>
+          <PrivacyAcceptance dictionary={dictionary} />
         </div>
       </div>
     </main>
