@@ -28,6 +28,9 @@ export default function UpdateAccount({
       placeholder: string
     }
     error: string
+    needSavePopup: string
+    reset: string
+    saveChanges: string
   }
 }) {
   const { data: curSession, update } = useSession()
@@ -99,6 +102,8 @@ export default function UpdateAccount({
             show={isNotSensibleInformationsUpdated}
             onReset={resetForm}
             isSubmitting={form.formState.isSubmitting}
+            text={dictionary.needSavePopup}
+            dictionary={dictionary}
           />
         </form>
       </Form>

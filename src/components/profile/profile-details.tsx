@@ -11,6 +11,9 @@ export default function ProfileDetails({
       placeholder: string
     }
     error: string
+    needSavePopup: string
+    reset: string
+    saveChanges: string
   }
 }) {
   return (

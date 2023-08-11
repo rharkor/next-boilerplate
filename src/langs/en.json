@@ -51,5 +51,8 @@
   "fetch": "fetch",
   "create": "create",
   "update": "update",
-  "delete": "delete"
+  "delete": "delete",
+  "needSavePopup": "Be careful, there are still unsaved changes!",
+  "reset": "Reset",
+  "saveChanges": "Save changes"
 }

@@ -51,5 +51,8 @@
   "fetch": "récupérer",
   "create": "créer",
   "update": "mettre à jour",
-  "delete": "supprimer"
+  "delete": "supprimer",
+  "needSavePopup": "Vous avez des modifications non enregistrées !",
+  "reset": "Réinitialiser",
+  "saveChanges": "Sauvegarder"
 }

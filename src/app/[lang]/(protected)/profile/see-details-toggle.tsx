@@ -33,6 +33,9 @@ export default function SeeDetailsToggle({ dictionary }: { dictionary: TDictiona
               dictionary={{
                 ...dictionary.profilePage.profileDetails,
                 error: dictionary.error,
+                needSavePopup: dictionary.needSavePopup,
+                reset: dictionary.reset,
+                saveChanges: dictionary.saveChanges,
               }}
             />
           </AccordionContent>
