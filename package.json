@@ -1,6 +1,6 @@
 {
   "name": "next-boilerplate",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": true,
   "scripts": {
     "init": "node ./scripts/init.mjs",
@@ -133,7 +133,7 @@
     "postcss": "^8.4.27",
     "postinstall-postinstall": "^2.1.0",
     "prettier": "latest",
-    "prettier-plugin-tailwindcss": "^0.4.1",
+    "prettier-plugin-tailwindcss": "^0.5.0",
     "semantic-release": "^21.0.7",
     "storybook": "^7.2.1",
     "tailwindcss": "^3.3.3",
