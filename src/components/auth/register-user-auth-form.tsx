@@ -9,6 +9,7 @@ import * as z from "zod"
 import { useApiStore } from "@/contexts/api.store"
 import { authRoutes } from "@/lib/auth/constants"
 import { handleSignError, handleSignUp } from "@/lib/auth/handle-sign"
+import { TDictionary } from "@/lib/langs"
 import { cn } from "@/lib/utils"
 import { signUpSchema } from "@/types/auth"
 import { Button, buttonVariants } from "../ui/button"
@@ -17,35 +18,39 @@ import FormField from "../ui/form-field"
 import { Label } from "../ui/label"
 
 type UserAuthFormProps = React.HTMLAttributes<HTMLFormElement> & {
+  dictionary: TDictionary
   isMinimized?: boolean
   searchParams?: { [key: string]: string | string[] | undefined }
 }
 
-export const formSchema = signUpSchema
-  .extend({
-    confirmPassword: z.string(),
+export const formSchema = (dictionary: TDictionary) =>
+  signUpSchema(dictionary)
+    .extend({
+      confirmPassword: z.string(),
+    })
+    .superRefine((data, ctx) => {
+      if (data.password !== data.confirmPassword) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: dictionary.errors.password.dontMatch,
+          path: ["confirmPassword"],
+          fatal: true,
+        })
+      }
+    })
+
+export const formMinizedSchema = (dictionary: TDictionary) =>
+  signUpSchema(dictionary).pick({
+    email: true,
   })
-  .superRefine((data, ctx) => {
-    if (data.password !== data.confirmPassword) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: "Passwords don't match",
-        path: ["confirmPassword"],
-        fatal: true,
-      })
-    }
-  })
 
-export const formMinizedSchema = signUpSchema.pick({
-  email: true,
-})
+export const getFormSchema = ({ dictionary, isMinimized }: { dictionary: TDictionary; isMinimized?: boolean }) =>
+  isMinimized ? formMinizedSchema(dictionary) : formSchema(dictionary)
 
-export const getFormSchema = (isMinimized?: boolean) => (isMinimized ? formMinizedSchema : formSchema)
+export type IForm = z.infer<ReturnType<typeof formSchema>>
+export type IFormMinimized = z.infer<ReturnType<typeof formMinizedSchema>>
 
-export type IForm = z.infer<typeof formSchema>
-export type IFormMinimized = z.infer<typeof formMinizedSchema>
-
-export function RegisterUserAuthForm({ isMinimized, searchParams, ...props }: UserAuthFormProps) {
+export function RegisterUserAuthForm({ dictionary, isMinimized, searchParams, ...props }: UserAuthFormProps) {
   const router = useRouter()
   const apiFetch = useApiStore((state) => state.apiFetch(router))
 
@@ -60,7 +65,7 @@ export function RegisterUserAuthForm({ isMinimized, searchParams, ...props }: Us
   const [errorDisplayed, setErrorDisplayed] = React.useState<string | null>(null)
 
   const form = useForm<IForm>({
-    resolver: zodResolver(getFormSchema(isMinimized)),
+    resolver: zodResolver(getFormSchema({ isMinimized, dictionary })),
     defaultValues: {
       email: emailFromSearchParam || "",
       username: "",
@@ -81,7 +86,7 @@ export function RegisterUserAuthForm({ isMinimized, searchParams, ...props }: Us
 
   if (error && (!errorDisplayed || errorDisplayed !== error)) {
     setErrorDisplayed(error)
-    handleSignError(error)
+    handleSignError(error, dictionary)
   }
 
   async function onSubmitMinimized(data: IFormMinimized) {
@@ -95,7 +100,7 @@ export function RegisterUserAuthForm({ isMinimized, searchParams, ...props }: Us
 
   async function onSubmit(data: IForm) {
     setIsLoading(true)
-    const isPushingRoute = await handleSignUp({ data, form, router, loginOnSignUp: true, apiFetch })
+    const isPushingRoute = await handleSignUp({ data, form, router, loginOnSignUp: true, apiFetch, dictionary })
     //? If isPushingRoute is true, it means that the user is being redirected to the callbackUrl
     if (!isPushingRoute) setIsLoading(false)
   }

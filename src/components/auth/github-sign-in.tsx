@@ -2,12 +2,19 @@
 
 import { ClientSafeProvider, signIn } from "next-auth/react"
 import { useState } from "react"
+import { TDictionary } from "@/lib/langs"
 import { logger } from "@/lib/logger"
 import { Icons } from "../icons"
 import { Button } from "../ui/button"
 import { toast } from "../ui/use-toast"
 
-export default function GithubSignIn({ provider }: { provider: ClientSafeProvider }) {
+export default function GithubSignIn({
+  provider,
+  dictionary,
+}: {
+  provider: ClientSafeProvider
+  dictionary: TDictionary
+}) {
   const [isLoading, setIsLoading] = useState(false)
 
   async function handleSignIn() {
@@ -21,21 +28,21 @@ export default function GithubSignIn({ provider }: { provider: ClientSafeProvide
       if (res?.error) {
         if (res?.error === "OAuthAccountNotLinked") {
         } else {
-          throw new Error("Invalid credentials. Please try again.")
+          throw new Error(dictionary.errors.unknownError)
         }
       }
     } catch (error) {
       logger.error(error)
       if (error instanceof Error) {
         toast({
-          title: "Error",
+          title: dictionary.error,
           description: error.message,
           variant: "destructive",
         })
       } else {
         toast({
-          title: "Error",
-          description: "An unknown error occurred",
+          title: dictionary.error,
+          description: dictionary.errors.unknownError,
           variant: "destructive",
         })
       }

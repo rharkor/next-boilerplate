@@ -1,13 +1,31 @@
 import * as z from "zod"
+import { TDictionary } from "@/lib/langs"
 
-export const passwordSchema = z
-  .string()
-  .min(4, "Password must be at least 4 characters long")
-  .max(16, "Password must be at most 16 characters long")
+export const passwordSchema = (dictionary?: TDictionary) =>
+  z
+    .string({
+      required_error: dictionary && dictionary.errors.password.required,
+    })
+    .min(4, dictionary && dictionary.errors.password.min4)
+    .max(25, dictionary && dictionary.errors.password.max25)
 
-export const passwordSchemaWithRegex = passwordSchema.regex(
-  /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{8,}$/,
-  "Password must contain at least one uppercase letter, one lowercase letter, and one number"
-)
+export const passwordSchemaWithRegex = (dictionary?: TDictionary) =>
+  passwordSchema(dictionary).regex(
+    /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{8,}$/,
+    dictionary && dictionary.errors.password.regex
+  )
 
-export const usernameSchema = z.string().min(3).max(30)
+export const usernameSchema = (dictionary?: TDictionary) =>
+  z
+    .string({
+      required_error: dictionary && dictionary.errors.username.required,
+    })
+    .min(3, dictionary && dictionary.errors.username.min3)
+    .max(30, dictionary && dictionary.errors.username.max30)
+
+export const emailSchema = (dictionary?: TDictionary) =>
+  z
+    .string({
+      required_error: dictionary && dictionary.errors.email.required,
+    })
+    .email(dictionary && dictionary.errors.email.invalid)

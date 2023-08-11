@@ -8,29 +8,36 @@ import { formSchema as registerFormSchema } from "@/components/auth/register-use
 import { toast } from "@/components/ui/use-toast"
 import { IApiState } from "@/contexts/api.store"
 import { signInSchema, signUpSchema } from "@/types/auth"
+import { TDictionary } from "../langs"
 import { logger } from "../logger"
 
-export const handleSignError = (error: string) => {
+export const handleSignError = (error: string, dictionary: TDictionary) => {
   if (error == "OAuthAccountNotLinked") {
     toast({
-      title: "Error",
-      description: "You already have an account. Please sign in with your provider.",
+      title: dictionary.error,
+      description: dictionary.errors.wrongProvider,
       variant: "destructive",
     })
   } else {
     toast({
-      title: "Error",
+      title: dictionary.error,
       description: error,
       variant: "destructive",
     })
   }
 }
 
-export const handleSignIn = async (
-  data: z.infer<typeof signInSchema>,
-  callbackUrl: string,
+export const handleSignIn = async ({
+  data,
+  callbackUrl,
+  router,
+  dictionary,
+}: {
+  data: z.infer<ReturnType<typeof signInSchema>>
+  callbackUrl: string
   router: AppRouterInstance
-) => {
+  dictionary: TDictionary
+}) => {
   return new Promise<void | boolean>(async (resolve) => {
     logger.debug("Signing in with credentials", data)
     try {
@@ -49,22 +56,22 @@ export const handleSignIn = async (
       } else {
         console.error(res.error)
         if (typeof res.error === "string") {
-          if (res.error === "You signed up with a provider, please sign in with it") throw new Error(res.error)
+          if (res.error === dictionary.errors.wrongProvider) throw new Error(res.error)
         }
-        throw new Error("Invalid credentials. Please try again.")
+        throw new Error(dictionary.errors.invalidCredentials)
       }
     } catch (error) {
       logger.error(error)
       if (error instanceof Error) {
         toast({
-          title: "Error",
+          title: dictionary.error,
           description: error.message,
           variant: "destructive",
         })
       } else {
         toast({
-          title: "Error",
-          description: "An unknown error occurred",
+          title: dictionary.error,
+          description: dictionary.errors.unknownError,
           variant: "destructive",
         })
       }
@@ -79,13 +86,15 @@ export const handleSignUp = async ({
   form,
   router,
   apiFetch,
+  dictionary,
   loginOnSignUp = true,
 }: {
-  data: z.infer<typeof signUpSchema>
-  form: UseFormReturn<z.infer<typeof registerFormSchema>>
+  data: z.infer<ReturnType<typeof signUpSchema>>
+  form: UseFormReturn<z.infer<ReturnType<typeof registerFormSchema>>>
   router: AppRouterInstance
-  loginOnSignUp: boolean
   apiFetch: ReturnType<IApiState["apiFetch"]>
+  dictionary: TDictionary
+  loginOnSignUp: boolean
 }) => {
   return new Promise<void | boolean>(async (resolve) => {
     logger.debug("Signing up with credentials", data)
@@ -95,21 +104,22 @@ export const handleSignUp = async ({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       }),
+      dictionary,
       {
         onError: (error) => {
           if (error === "Email already exists") {
             return form.setError("email", {
               type: "manual",
-              message: "Email already exists",
+              message: dictionary.errors.email.exist,
             })
           } else if (error === "Username already exists") {
             return form.setError("username", {
               type: "manual",
-              message: "Username already exists",
+              message: dictionary.errors.username.exist,
             })
           }
           toast({
-            title: "Error",
+            title: dictionary.error,
             description: error,
             variant: "destructive",
           })
@@ -120,7 +130,12 @@ export const handleSignUp = async ({
       logger.debug("Sign up successful")
       if (loginOnSignUp) {
         logger.debug("Logging in after sign up")
-        return handleSignIn({ email: data.email, password: data.password }, "/profile", router)
+        return handleSignIn({
+          data: { email: data.email, password: data.password },
+          callbackUrl: "/profile",
+          router,
+          dictionary,
+        })
       } else {
         logger.debug("Pushing to profile page")
         router.push("/profile")

@@ -5,17 +5,15 @@ export type INeedSavePopupProps = {
   show: boolean
   onReset?: () => void
   onSave?: () => void
-  text?: string
+  text: string
   isSubmitting?: boolean
+  dictionary: {
+    reset: string
+    saveChanges: string
+  }
 }
 
-export default function NeedSavePopup({
-  show,
-  onReset,
-  onSave,
-  text = "Be careful, there are still unsaved changes!",
-  isSubmitting,
-}: INeedSavePopupProps) {
+export default function NeedSavePopup({ show, onReset, onSave, text, isSubmitting, dictionary }: INeedSavePopupProps) {
   return (
     <div className={"fixed bottom-0 z-50 mx-0 overflow-hidden pb-4"}>
       <div
@@ -29,10 +27,10 @@ export default function NeedSavePopup({
         <p className="text-sm text-gray-500">{text}</p>
         <div className="flex flex-row gap-2">
           <Button variant="link" onClick={onReset} className="px-2" type="button">
-            Reset
+            {dictionary.reset}
           </Button>
           <Button onClick={onSave} isLoading={isSubmitting}>
-            Save changes
+            {dictionary.saveChanges}
           </Button>
         </div>
       </div>

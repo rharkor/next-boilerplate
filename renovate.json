@@ -4,8 +4,9 @@
   "dependencyDashboard": true,
   "packageRules": [
     {
-      "updateTypes": ["minor", "patch"],
+      "matchDepTypes": ["devDependencies"],
       "automerge": true
     }
-  ]
+  ],
+  "baseBranches": ["dev"]
 }

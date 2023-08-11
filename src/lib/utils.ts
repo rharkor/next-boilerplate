@@ -3,6 +3,7 @@ import { AppRouterInstance } from "next/dist/shared/lib/app-router-context"
 import { NextResponse } from "next/server"
 import { twMerge } from "tailwind-merge"
 import { IApiError } from "@/types/api"
+import { TDictionary } from "./langs"
 import { logger } from "./logger"
 
 export function cn(...inputs: ClassValue[]) {
@@ -20,7 +21,8 @@ export async function handleFetch(
     onResponse?: (response: Response) => void
     router: AppRouterInstance
     redirectOnUnauthorized: boolean
-  }
+  },
+  dictionary: TDictionary
 ): Promise<unknown | void> {
   try {
     const response = await fetch
@@ -55,7 +57,7 @@ export async function handleFetch(
     if (error instanceof Error) {
       responseOptions.onError(error.message)
     } else {
-      responseOptions.onError("An unknown error occurred")
+      responseOptions.onError(dictionary.errors.unknownError)
     }
   }
 }
@@ -134,4 +136,25 @@ export const getTimeBetween = (
   }
   // Construct and return the time elapsed string
   return `${timeValue} ${timeUnit}${timeValue !== 1 ? "s" : ""}`
+}
+
+// Function to ensure an url is relative to the current domain
+export const ensureRelativeUrl = (url: string | undefined) => {
+  if (url && url.startsWith("http")) {
+    const urlObject = new URL(url)
+    return urlObject.pathname
+  }
+  return url
+}
+
+export const formatCouldNotMessage = async ({
+  couldNotMessage,
+  action,
+  subject,
+}: {
+  couldNotMessage: string
+  action: string
+  subject: string
+}) => {
+  return couldNotMessage.replace("{action}", action).replace("{subject}", subject)
 }

@@ -6,7 +6,8 @@ import * as React from "react"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
 import { handleSignError, handleSignIn } from "@/lib/auth/handle-sign"
-import { cn } from "@/lib/utils"
+import { TDictionary } from "@/lib/langs"
+import { cn, ensureRelativeUrl } from "@/lib/utils"
 import { signInSchema } from "@/types/auth"
 import { Button } from "../ui/button"
 import { Form } from "../ui/form"
@@ -14,17 +15,18 @@ import FormField from "../ui/form-field"
 import { Label } from "../ui/label"
 
 type UserAuthFormProps = React.HTMLAttributes<HTMLFormElement> & {
+  dictionary: TDictionary
   searchParams: { [key: string]: string | string[] | undefined }
 }
 
 export const formSchema = signInSchema
 
-export type IForm = z.infer<typeof formSchema>
+export type IForm = z.infer<ReturnType<typeof formSchema>>
 
-export function LoginUserAuthForm({ searchParams, ...props }: UserAuthFormProps) {
+export function LoginUserAuthForm({ dictionary, searchParams, ...props }: UserAuthFormProps) {
   const router = useRouter()
 
-  const callbackUrl = searchParams?.callbackUrl?.toString() || "/profile"
+  const callbackUrl = ensureRelativeUrl(searchParams?.callbackUrl?.toString()) || "/profile"
   const error = searchParams?.error?.toString()
 
   const [isLoading, setIsLoading] = React.useState<boolean>(false)
@@ -32,11 +34,11 @@ export function LoginUserAuthForm({ searchParams, ...props }: UserAuthFormProps)
 
   if (error && (!errorDisplayed || errorDisplayed !== error)) {
     setErrorDisplayed(error)
-    handleSignError(error)
+    handleSignError(error, dictionary)
   }
 
   const form = useForm<IForm>({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(formSchema(dictionary)),
     defaultValues: {
       email: "",
       password: "",
@@ -45,7 +47,7 @@ export function LoginUserAuthForm({ searchParams, ...props }: UserAuthFormProps)
 
   async function onSubmit(data: IForm) {
     setIsLoading(true)
-    const isPushingRoute = await handleSignIn(data, callbackUrl, router)
+    const isPushingRoute = await handleSignIn({ data, callbackUrl, router, dictionary })
     //? If isPushingRoute is true, it means that the user is being redirected to the callbackUrl
     if (!isPushingRoute) setIsLoading(false)
   }

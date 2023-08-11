@@ -9,8 +9,10 @@ import { signUpSchema } from "@/types/auth"
 
 export async function POST(req: Request) {
   try {
-    const data = (await req.json()) as z.infer<typeof signUpSchema>
-    const { username, email, password } = signUpSchema.parse(data)
+    const reqData = (await req.json()) as z.infer<ReturnType<typeof signUpSchema>>
+    const bodyParsedResult = signUpSchema().safeParse(reqData)
+    if (!bodyParsedResult.success) return ApiError(bodyParsedResult.error.message, { status: 400 })
+    const { email, password, username } = bodyParsedResult.data
     const hashedPassword = await hash(password, 12)
 
     const user = await prisma.user.create({

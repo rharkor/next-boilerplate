@@ -1,5 +1,6 @@
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context"
 import { create } from "zustand"
+import { TDictionary } from "@/lib/langs"
 import { logger } from "@/lib/logger"
 import { handleFetch } from "@/lib/utils"
 
@@ -13,11 +14,15 @@ export type IFullResponseOptions = {
 export interface IApiState {
   apiFetch: (
     router: AppRouterInstance
-  ) => (fetchRequest: Promise<Response>, responseOptions?: IOnError | IFullResponseOptions) => Promise<unknown>
+  ) => (
+    fetchRequest: Promise<Response>,
+    dictionary: TDictionary,
+    responseOptions?: IOnError | IFullResponseOptions
+  ) => Promise<unknown>
 }
 
 export const useApiStore = create<IApiState>(() => ({
-  apiFetch: (router) => async (fetchRequest, responseOptions) => {
+  apiFetch: (router) => async (fetchRequest, dictionary, responseOptions) => {
     let onError: IOnError
     if (typeof responseOptions === "function") {
       onError = responseOptions
@@ -39,12 +44,16 @@ export const useApiStore = create<IApiState>(() => ({
       redirectOnUnauthorized = true
     }
 
-    const res = await handleFetch(fetchRequest, {
-      onError,
-      onResponse,
-      redirectOnUnauthorized,
-      router,
-    })
+    const res = await handleFetch(
+      fetchRequest,
+      {
+        onError,
+        onResponse,
+        redirectOnUnauthorized,
+        router,
+      },
+      dictionary
+    )
     return res
   },
 }))
