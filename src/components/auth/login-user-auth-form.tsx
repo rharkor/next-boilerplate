@@ -6,10 +6,11 @@ import { useRouter } from "next/navigation"
 import * as React from "react"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
+import { authRoutes } from "@/lib/auth/constants"
 import { handleSignError, handleSignIn } from "@/lib/auth/handle-sign"
 import { TDictionary } from "@/lib/langs"
+import { signInSchema } from "@/lib/schemas/auth"
 import { cn, ensureRelativeUrl } from "@/lib/utils"
-import { signInSchema } from "@/types/auth"
 import { env } from "env.mjs"
 import { Alert, AlertDescription, AlertTitle } from "../ui/alert"
 import { Button } from "../ui/button"
@@ -30,7 +31,7 @@ export type IForm = z.infer<ReturnType<typeof formSchema>>
 export function LoginUserAuthForm({ dictionary, searchParams, ...props }: UserAuthFormProps) {
   const router = useRouter()
 
-  const callbackUrl = ensureRelativeUrl(searchParams?.callbackUrl?.toString()) || "/profile"
+  const callbackUrl = ensureRelativeUrl(searchParams?.callbackUrl?.toString()) || authRoutes.redirectAfterSignIn
   const error = searchParams?.error?.toString()
 
   const [isLoading, setIsLoading] = React.useState<boolean>(false)

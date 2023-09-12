@@ -72,7 +72,7 @@
     "email": {
       "required": "Email requis",
       "invalid": "Email invalide",
-      "exist": "L'email existe déjà."
+      "exist": "Cet email existe déjà."
     },
     "unknownError": "Une erreur inconnue s'est produite. Veuillez ressayer plus tard.",
     "wrongProvider": "Vous avez déjà un compte avec un autre provider. Veuillez vous connecter avec celui-ci.",

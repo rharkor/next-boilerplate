@@ -2,7 +2,7 @@ import requireAuth from "@/components/auth/require-auth"
 import { ThemeSwitch } from "@/components/theme/theme-switch"
 
 export default async function ProtectedLayout({ children }: { children: React.ReactNode }) {
-  await requireAuth("/profile")
+  await requireAuth()
 
   return (
     <>

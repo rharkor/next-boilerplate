@@ -1,8 +1,7 @@
+import { TRPCError } from "@trpc/server"
+import { TRPC_ERROR_CODE_KEY } from "@trpc/server/rpc"
 import { type ClassValue, clsx } from "clsx"
-import { AppRouterInstance } from "next/dist/shared/lib/app-router-context"
-import { NextResponse } from "next/server"
 import { twMerge } from "tailwind-merge"
-import { IApiError } from "@/types/api"
 import { TDictionary } from "./langs"
 import { logger } from "./logger"
 
@@ -10,64 +9,11 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-function isApiError(error: unknown): error is IApiError {
-  return typeof error === "object" && error !== null && "status" in error && "message" in error
-}
-
-export async function handleFetch(
-  fetch: Promise<Response>,
-  responseOptions: {
-    onError: (error: string) => void
-    onResponse?: (response: Response) => void
-    router: AppRouterInstance
-    redirectOnUnauthorized: boolean
-  },
-  dictionary: TDictionary
-): Promise<unknown | void> {
-  try {
-    const response = await fetch
-    if (responseOptions.onResponse) {
-      responseOptions.onResponse(response)
-    }
-    if (!response.ok) {
-      //? If response is unauthorized, redirect to login
-      if (response.status === 401 && responseOptions.redirectOnUnauthorized) {
-        responseOptions.router.push("/login")
-        return
-      }
-
-      let data: unknown
-      try {
-        data = await response.json()
-      } catch (error: unknown) {
-        throw new Error(response.statusText)
-      }
-      if (isApiError(data)) {
-        throw new Error(data.message)
-      } else if (typeof data === "string") {
-        throw new Error(data)
-      } else {
-        throw new Error(response.statusText)
-      }
-    }
-    const data = await response.json()
-    return data
-  } catch (error: unknown) {
-    logger.error(error)
-    if (error instanceof Error) {
-      responseOptions.onError(error.message)
-    } else {
-      responseOptions.onError(dictionary.errors.unknownError)
-    }
-  }
-}
-
-export function ApiError(message: string, init?: ResponseInit | undefined): NextResponse<unknown> {
-  const content: IApiError = {
-    status: "error",
+export function ApiError(message: string, code?: TRPC_ERROR_CODE_KEY): never {
+  throw new TRPCError({
+    code: code ?? "BAD_REQUEST",
     message: message,
-  }
-  return new NextResponse(JSON.stringify(content), init)
+  })
 }
 
 /**
@@ -157,4 +103,14 @@ export const formatCouldNotMessage = async ({
   subject: string
 }) => {
   return couldNotMessage.replace("{action}", action).replace("{subject}", subject)
+}
+
+export const translateError = (error: string, dictionary: TDictionary) => {
+  if (error === "Email already exists") {
+    return dictionary.errors.email.exist
+  } else if (error === "Username already exists") {
+    return dictionary.errors.username.exist
+  }
+  logger.error("Unknown translation for:", error)
+  return error
 }

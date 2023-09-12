@@ -2,6 +2,7 @@
 
 import { ClientSafeProvider, signIn } from "next-auth/react"
 import { useState } from "react"
+import { authRoutes } from "@/lib/auth/constants"
 import { TDictionary } from "@/lib/langs"
 import { logger } from "@/lib/logger"
 import { Icons } from "../icons"
@@ -21,7 +22,7 @@ export default function GithubSignIn({
     setIsLoading(true)
     try {
       const res = await signIn(provider.id, {
-        callbackUrl: `${window.location.origin}/profile`,
+        callbackUrl: `${window.location.origin}${authRoutes.redirectAfterSignIn}`,
       })
       logger.debug("SignIn result", res)
 

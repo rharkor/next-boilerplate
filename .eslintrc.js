@@ -64,6 +64,7 @@ module.exports = {
         },
       },
     ],
+    "max-params": ["error", 4],
   },
 }
 

@@ -30,6 +30,8 @@ export const env = createEnv({
       .optional()
       .transform((value) => value === "true"),
     ENV: z.enum(["development", "recette", "production"]).optional(),
+    BASE_URL: z.string().url(),
+    VERCEL_URL: z.string().optional(),
   },
   client: {
     NEXT_PUBLIC_IS_DEMO: z
@@ -62,6 +64,8 @@ export const env = createEnv({
     NEXT_PUBLIC_DEMO_EMAIL: process.env.NEXT_PUBLIC_DEMO_EMAIL,
     NEXT_PUBLIC_DEMO_PASSWORD: process.env.NEXT_PUBLIC_DEMO_PASSWORD,
     ENV: process.env.ENV,
+    BASE_URL: process.env.BASE_URL,
+    VERCEL_URL: process.env.VERCEL_URL,
   },
   onValidationError: (error) => {
     console.error(error)

@@ -4,6 +4,7 @@ import { getServerSession } from "next-auth"
 import { nextAuthOptions } from "@/lib/auth"
 import { authRoutes } from "@/lib/auth/constants"
 import { logger } from "@/lib/logger"
+import { validateSession } from "@/lib/server-utils"
 
 export default async function requireAuth(callbackUrl?: string) {
   const session = await getServerSession(nextAuthOptions)
@@ -19,10 +20,17 @@ export default async function requireAuth(callbackUrl?: string) {
   return session
 }
 
-export async function requireAuthApi() {
+export async function getAuthApi() {
   const session = await getServerSession(nextAuthOptions)
   if (!session || !session.user || !session.user.id) {
     return { session: null, error: NextResponse.json({ error: "Unauthorized" }, { status: 401 }) }
+  }
+
+  if (session) {
+    const sessionValidationError = await validateSession(session)
+    if (sessionValidationError) {
+      return { session: null, error: NextResponse.json({ error: sessionValidationError }, { status: 403 }) }
+    }
   }
 
   return { session, error: null }

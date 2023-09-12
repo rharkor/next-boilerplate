@@ -1,17 +1,17 @@
 import { PrismaAdapter } from "@next-auth/prisma-adapter"
-import { i18n, Locale } from "i18n-config"
 import { NextAuthOptions, Session } from "next-auth"
 import Credentials from "next-auth/providers/credentials"
 import GithubProvider from "next-auth/providers/github"
 import requestIp from "request-ip"
 import { randomUUID } from "crypto"
-import { signInSchema } from "@/types/auth"
 import { env } from "env.mjs"
+import { i18n, Locale } from "i18n-config"
 import { authRoutes, JWT_MAX_AGE } from "./constants"
 import { bcryptCompare } from "../bcrypt"
 import { getDictionary, TDictionary } from "../langs"
 import { logger } from "../logger"
 import { prisma } from "../prisma"
+import { signInSchema } from "../schemas/auth"
 import { ensureRelativeUrl } from "../utils"
 
 export const nextAuthOptions: NextAuthOptions & {
@@ -44,7 +44,7 @@ export const nextAuthOptions: NextAuthOptions & {
             return dictionary
           })())
 
-        const creds = await signInSchema(dictionary).parseAsync(credentials)
+        const creds = signInSchema(dictionary).parse(credentials)
 
         if (!creds.email || !creds.password) {
           logger.debug("Missing credentials", creds)
@@ -53,6 +53,7 @@ export const nextAuthOptions: NextAuthOptions & {
 
         const user = await prisma.user.findUnique({
           where: { email: creds.email },
+          select: { id: true, email: true, username: true, role: true, password: true },
         })
 
         if (!user) {

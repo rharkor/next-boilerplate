@@ -1,39 +1,39 @@
 import { NextResponse } from "next/server"
 import requestIp from "request-ip"
+import { logger } from "./logger"
 import { redis as client } from "./redis"
 
 type Result = {
   limit: number
   remaining: number
-  expire: number
   success: boolean
 }
 
-export const RATE_LIMIT_PER_INTERVAL = 3
-export const RATE_LIMIT_DURATION = 60
+export const RATE_LIMIT_PER_INTERVAL = 120
+export const RATE_LIMIT_DURATION = 30
 
-const rateLimiter = async (ip: string, limit: number, duration: number): Promise<Result> => {
-  const key = `rate_limit:${ip}`
+const rateLimiter = async (identifier: string, limit: number, duration: number): Promise<Result> => {
+  const key = `rate_limit:${identifier}`
   const currentCount = await client.get(key)
-  let expire = await client.ttl(key)
-  if (expire < 0) expire = 0
   const count = parseInt(currentCount as string, 10) || 0
   if (count >= limit) {
-    return { limit, remaining: limit - count, expire, success: false }
+    return { limit, remaining: limit - count, success: false }
   }
   client.incr(key)
   client.expire(key, duration)
-  return { limit, remaining: limit - (count + 1), expire, success: true }
+  return { limit, remaining: limit - (count + 1), success: true }
 }
 
 export default rateLimiter
+
+export type IRateLimiterErrorResponse = NextResponse
 
 export const apiRateLimiter = async (
   req: Request,
   options: {
     limitPerInterval: number
     duration: number
-    preprendIdentifier?: string
+    prependIdentifier?: string
   } = {
     limitPerInterval: RATE_LIMIT_PER_INTERVAL,
     duration: RATE_LIMIT_DURATION,
@@ -47,7 +47,7 @@ export const apiRateLimiter = async (
   | {
       success: false
       headers?: undefined
-      errorResponse: NextResponse
+      errorResponse: IRateLimiterErrorResponse
     }
 > => {
   const headers: Record<string, string> = {}
@@ -60,20 +60,22 @@ export const apiRateLimiter = async (
   })
 
   if (!identifier) {
-    if (process.env.NODE_ENV === "development") identifier = "localhost"
-    else
+    if (process.env.NODE_ENV !== "development" && process.env.ENV !== "development") {
+      logger.error("Could not identify IP address.")
       return {
         success: false,
         errorResponse: NextResponse.json("Could not identify your IP address.", { status: 500 }),
       }
+    } else {
+      identifier = "unknown_ip"
+    }
   }
 
-  if (options.preprendIdentifier && options.preprendIdentifier.at(-1) !== ":") {
-    options.preprendIdentifier += ":"
-  }
-  identifier = `${options.preprendIdentifier || ""}${identifier}`
-
-  const result = await rateLimiter(identifier, options.limitPerInterval, options.duration)
+  const result = await rateLimiter(
+    identifier + (options.prependIdentifier || ""),
+    options.limitPerInterval,
+    options.duration
+  )
 
   if (!result.success) {
     return {
@@ -83,7 +85,7 @@ export const apiRateLimiter = async (
         headers: {
           "X-RateLimit-Limit": `${result.limit}`,
           "X-RateLimit-Remaining": `${result.remaining}`,
-          "X-RateLimit-Reset": `${result.expire}`,
+          "X-RateLimit-Reset": `${options.duration}`,
         },
       }),
     }
@@ -94,21 +96,7 @@ export const apiRateLimiter = async (
     headers: new Headers({
       "X-RateLimit-Limit": `${result.limit}`,
       "X-RateLimit-Remaining": `${result.remaining}`,
-      "X-RateLimit-Reset": `${result.expire}`,
+      "X-RateLimit-Reset": `${options.duration}`,
     }),
   }
-}
-
-export const mergeRateLimitHeaders = (headers: Headers, newHeaders: Headers) => {
-  const minRateLimitActual = headers.get("X-RateLimit-Limit")
-  const minRateLimitNewHeaders = headers.get("X-RateLimit-Remaining")
-  if (
-    minRateLimitNewHeaders &&
-    parseInt(minRateLimitActual as string, 10) > parseInt(minRateLimitNewHeaders as string, 10)
-  ) {
-    headers.set("X-RateLimit-Limit", minRateLimitNewHeaders)
-    headers.set("X-RateLimit-Remaining", newHeaders.get("X-RateLimit-Remaining") as string)
-    headers.set("X-RateLimit-Reset", newHeaders.get("X-RateLimit-Reset") as string)
-  }
-  return newHeaders
 }

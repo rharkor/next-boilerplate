@@ -1,4 +1,3 @@
-import { i18n } from "i18n-config"
 import { Metadata } from "next"
 import React from "react"
 import "../globals.css"
@@ -6,6 +5,8 @@ import { NextAuthProvider } from "@/components/auth/provider"
 import { ThemeProvider } from "@/components/theme/theme-provider"
 import { Toaster } from "@/components/ui/toaster"
 import QueryClientProvider from "@/contexts/query-provider"
+import TrpcProvider from "@/lib/trpc/provider"
+import { i18n } from "i18n-config"
 
 export const metadata: Metadata = {
   title: "Home",
@@ -21,12 +22,14 @@ export default function RootLayout({ children, params }: { children: React.React
     <html lang={params.lang}>
       <body className="flex min-h-screen flex-col">
         <NextAuthProvider>
-          <QueryClientProvider>
-            <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-              {children}
-              <Toaster />
-            </ThemeProvider>
-          </QueryClientProvider>
+          <TrpcProvider>
+            <QueryClientProvider>
+              <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+                {children}
+                <Toaster />
+              </ThemeProvider>
+            </QueryClientProvider>
+          </TrpcProvider>
         </NextAuthProvider>
       </body>
     </html>

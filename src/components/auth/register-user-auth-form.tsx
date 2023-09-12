@@ -6,16 +6,18 @@ import { useRouter } from "next/navigation"
 import * as React from "react"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
-import { useApiStore } from "@/contexts/api.store"
 import { authRoutes } from "@/lib/auth/constants"
-import { handleSignError, handleSignUp } from "@/lib/auth/handle-sign"
+import { handleSignError, handleSignIn } from "@/lib/auth/handle-sign"
 import { TDictionary } from "@/lib/langs"
-import { cn } from "@/lib/utils"
-import { signUpSchema } from "@/types/auth"
+import { logger } from "@/lib/logger"
+import { signUpSchema } from "@/lib/schemas/auth"
+import { trpc } from "@/lib/trpc/client"
+import { cn, translateError } from "@/lib/utils"
 import { Button, buttonVariants } from "../ui/button"
 import { Form } from "../ui/form"
 import FormField from "../ui/form-field"
 import { Label } from "../ui/label"
+import { toast } from "../ui/use-toast"
 
 type UserAuthFormProps = React.HTMLAttributes<HTMLFormElement> & {
   dictionary: TDictionary
@@ -52,7 +54,41 @@ export type IFormMinimized = z.infer<ReturnType<typeof formMinizedSchema>>
 
 export function RegisterUserAuthForm({ dictionary, isMinimized, searchParams, ...props }: UserAuthFormProps) {
   const router = useRouter()
-  const apiFetch = useApiStore((state) => state.apiFetch(router))
+
+  const registerMutation = trpc.auth.register.useMutation({
+    onError: (error) => {
+      const translatedError = translateError(error.message, dictionary)
+      if (error.message.includes("email")) {
+        return form.setError("email", {
+          type: "manual",
+          message: translatedError,
+        })
+      } else if (error.message.includes("username")) {
+        return form.setError("username", {
+          type: "manual",
+          message: translatedError,
+        })
+      }
+      toast({
+        title: dictionary.error,
+        description: translatedError,
+        variant: "destructive",
+      })
+      setIsLoading(false)
+    },
+    onSuccess: (_, vars) => {
+      logger.debug("Sign up successful")
+      handleSignIn({
+        data: { email: vars.email, password: vars.password },
+        callbackUrl: authRoutes.redirectAfterSignIn,
+        router,
+        dictionary,
+      }).catch((error) => {
+        logger.error("Error while signing in after sign up", error)
+        setIsLoading(false)
+      })
+    },
+  })
 
   const emailFromSearchParam = searchParams?.email?.toString()
   const error = searchParams?.error?.toString()
@@ -100,9 +136,8 @@ export function RegisterUserAuthForm({ dictionary, isMinimized, searchParams, ..
 
   async function onSubmit(data: IForm) {
     setIsLoading(true)
-    const isPushingRoute = await handleSignUp({ data, form, router, loginOnSignUp: true, apiFetch, dictionary })
-    //? If isPushingRoute is true, it means that the user is being redirected to the callbackUrl
-    if (!isPushingRoute) setIsLoading(false)
+    logger.debug("Signing up with credentials", data)
+    registerMutation.mutate(data)
   }
 
   return (

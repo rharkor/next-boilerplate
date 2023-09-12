@@ -18,3 +18,5 @@ declare module "next-auth/jwt/types" {
     role: string
   }
 }
+
+declare module "server-only"
