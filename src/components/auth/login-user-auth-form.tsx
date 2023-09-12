@@ -16,6 +16,7 @@ import { Button } from "../ui/button"
 import { Form } from "../ui/form"
 import FormField from "../ui/form-field"
 import { Label } from "../ui/label"
+import { toast } from "../ui/use-toast"
 
 type UserAuthFormProps = React.HTMLAttributes<HTMLFormElement> & {
   dictionary: TDictionary
@@ -55,6 +56,14 @@ export function LoginUserAuthForm({ dictionary, searchParams, ...props }: UserAu
     if (!isPushingRoute) setIsLoading(false)
   }
 
+  const copyToClipboard = (value?: string) => {
+    if (!value) return
+    navigator.clipboard.writeText(value)
+    toast({
+      description: "Copied to clipboard",
+    })
+  }
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} {...props} className={cn("grid gap-2", props.className)}>
@@ -64,11 +73,27 @@ export function LoginUserAuthForm({ dictionary, searchParams, ...props }: UserAu
               <BadgeInfo className="h-4 w-4" />
               <AlertTitle>Demo environment</AlertTitle>
               <AlertDescription className="flex flex-col">
-                <p>
-                  email: <code>{env.NEXT_PUBLIC_DEMO_EMAIL}</code>
+                <p className="m-1">
+                  email:{" "}
+                  <code
+                    className="cursor-pointer rounded p-1 transition-all hover:bg-primary/20"
+                    onClick={() => {
+                      copyToClipboard(env.NEXT_PUBLIC_DEMO_EMAIL)
+                    }}
+                  >
+                    {env.NEXT_PUBLIC_DEMO_EMAIL}
+                  </code>
                 </p>
-                <p>
-                  password: <code>{env.NEXT_PUBLIC_DEMO_PASSWORD}</code>
+                <p className="m-1">
+                  password:{" "}
+                  <code
+                    className="cursor-pointer rounded p-1 transition-all hover:bg-primary/20"
+                    onClick={() => {
+                      copyToClipboard(env.NEXT_PUBLIC_DEMO_PASSWORD)
+                    }}
+                  >
+                    {env.NEXT_PUBLIC_DEMO_PASSWORD}
+                  </code>
                 </p>
               </AlertDescription>
             </Alert>
