@@ -1,5 +1,7 @@
 # Next.js Enterprise Boilerplate
 
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/rharkor/next-boilerplate/blob/main/LICENSE)
+
 Welcome to the _Next.js Enterprise Boilerplate_, an open-source template for enterprise projects! It's loaded with features that'll help you build a high-performance, maintainable, and enjoyable app. We've done all the heavy lifting for you, so sit back, relax, and get ready to conquer the world with your incredible app! 🌍
 _Inspired by [Next enterprise](https://github.com/Blazity/next-enterprise/)_
 <br />
@@ -8,8 +10,6 @@ You can test the demo [here](https://next-boilerplate-rharkor.vercel.app/).
 
 > email: `test@mail.com`  
 > password: `Azerty123!`
-
-[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/rharkor/next-boilerplate/blob/main/LICENSE)
 
 ## 📚 Features
 
