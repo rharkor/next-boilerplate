@@ -5,7 +5,7 @@ import crypto from "crypto-js"
 import * as dotenv from "dotenv"
 
 dotenv.config({
-  path: ".env.local",
+  path: ".env",
 })
 
 const env = {

@@ -3,6 +3,7 @@
  * This script is intended to run only once at the beginning of the project
  */
 
+import chalk from "chalk"
 import * as fs from "fs"
 import { stdin as input, stdout as output } from "node:process"
 import * as readline from "node:readline/promises"
@@ -16,7 +17,7 @@ const filesToCheck = ["docker/docker-compose.yml"]
 
 //? Find all tokens of all the files in the root directory
 const findTokens = () => {
-  const tokens = []
+  const tokens: string[] = []
   filesToCheck.forEach((file) => {
     const filePath = path.join(__dirname, "..", file)
     const fileContent = fs.readFileSync(filePath, "utf8")
@@ -30,11 +31,11 @@ const findTokens = () => {
 }
 
 //? Function replace in file
-const replace = async (options) => {
+const replace = async (options: { files: string[]; from: RegExp; to: string }) => {
   const { files, from, to } = options
-  const promises = []
+  const promises: Promise<void>[] = []
   files.forEach((file) => {
-    const promise = new Promise((resolve, reject) => {
+    const promise = new Promise<void>((resolve, reject) => {
       try {
         const filePath = path.join(__dirname, "..", file)
         const fileContent = fs.readFileSync(filePath, "utf8")
@@ -53,7 +54,7 @@ const replace = async (options) => {
 }
 
 //? Replace a token in files
-const replaceToken = async (token, value) => {
+const replaceToken = async (token: string, value: string) => {
   const options = {
     files: filesToCheck,
     from: new RegExp(`#{${token}}#`, "g"),
@@ -68,25 +69,31 @@ const replaceToken = async (token, value) => {
 
 const main = async () => {
   const tokens = findTokens()
-  console.log("Tokens found:", tokens.join(", "))
+  console.log(chalk.blue(`Tokens found: ${tokens.join(", ")}`))
   for (let i = 0; i < tokens.length; i++) {
     const token = tokens[i]
     //? Ask for the value of the token
     const rl = readline.createInterface({ input, output })
-    const value = await rl.question(`\x1b[34mValue for the token ${token}: \x1b[0m`)
+    const value = await rl.question(chalk.blue(`Value for the token ${token}: `))
     if (!value) throw new Error(`No value provided for the token ${token}`)
     //? Replace the token with the value
     await replaceToken(token, value)
-    console.log(`\x1b[32mToken ${token} replaced with ${value}\x1b[0m`)
+    console.log(chalk.green(`Token ${token} replaced with ${value}`))
     rl.close()
   }
 
-  console.log("*".repeat(50))
-  console.log("\x1b[32mAll tokens replaced successfully\x1b[0m")
-  console.log("\x1b[31mDon't forget to change the license & logo for production\x1b[0m")
-  console.log("*".repeat(50))
+  console.log(chalk.yellow("*".repeat(50)))
+  console.log(chalk.green("All tokens replaced successfully"))
+  console.log(chalk.red("Don't forget to change the license for production"))
+  console.log(chalk.yellow("*".repeat(50)))
 
   exit(0)
 }
+
+process.on("SIGINT", function () {
+  console.log("\n")
+  console.log("Bye!")
+  process.exit()
+})
 
 main()

@@ -35,7 +35,6 @@ With this template, you get all the awesomeness you need:
 - 💎 **[CVA](http://cva.style/)** - Create a consistent, reusable, and atomic design system
 - 🤖 **[Renovate BOT](https://www.whitesourcesoftware.com/free-developer-tools/renovate)** - Auto-updating dependencies, so you can focus on coding
 - 🩹 **[Patch-package](https://www.npmjs.com/package/patch-package)** - Fix external dependencies without losing your mind
-- 📈 **Components coupling and cohesion graph** - A tool for managing component relationships
 - 🚀 **[GitHub Actions](https://github.com/features/actions)** - Pre-configured actions for smooth workflows, including Bundle Size and performance stats
 - 💯 **Perfect Lighthouse score** - Because performance matters
 - 🚢 **[Semantic Release](https://github.com/semantic-release/semantic-release)** - for automatic changelog
@@ -50,7 +49,6 @@ With this template, you get all the awesomeness you need:
   - [🚀 Deployment](#-deployment)
   - [📃 Scripts Overview](#-scripts-overview)
   - [🐳 Container Stack](#-container-stack)
-  - [🔗 Coupling Graph](#-coupling-graph)
   - [🧪 Testing](#-testing)
     - [Running Tests](#running-tests)
   - [🎨 Styling and Design System](#-styling-and-design-system)
@@ -76,10 +74,10 @@ To get started with this boilerplate, follow these steps:
 git clone https://github.com/rharkor/next-boilerplate
 ```
 
-2. Create a `.env.local` file and add the following environment variables:
+2. Create a `.env` file and add the following environment variables:
 
 ```bash
-cp .env.example .env.local
+cp .env.example .env
 ```
 
 3. Initialize the project:
@@ -134,7 +132,6 @@ The following scripts are available in the `package.json`:
 - `format`: Formats the code with Prettier
 - `postinstall`: Applies patches to external dependencies
 - `preinstall`: Ensures the project is installed with Npm
-- `coupling-graph`: **Generates a coupling and cohesion graph for the components**
 - `seed`: Seeds the database with test data
 
 ## 🐳 Container Stack
@@ -156,18 +153,6 @@ Ports:
 - PostgreSQL: 5432
 - Redis: 6379
 - Desktop (password: vscode): 6080
-
-## 🔗 Coupling Graph
-
-The `coupling-graph` script is a useful tool that helps visualize the coupling and connections between your project's internal modules. It's built using the [Madge](https://github.com/pahen/madge) library. To generate the graph, simply run the following command:
-
-```bash
-npm run coupling-graph
-```
-
-This will create a `graph.svg` file, which contains a graphical representation of the connections between your components. You can open the file with any SVG-compatible viewer.
-
-![graph](https://user-images.githubusercontent.com/28964599/233662744-3ba89713-8466-49cd-9be7-e6fb38191f58.png)
 
 ## 🧪 Testing
 

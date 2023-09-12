@@ -30,9 +30,4 @@ RUN npm run build
 #Informs container runtime that the container listens on the specified network ports at runtime
 EXPOSE 3000
 
-RUN addgroup -g 1001 -S nodejs
-RUN adduser -S nextjs -u 1001
-
-USER nextjs
-
 CMD [ "npm", "start" ]
