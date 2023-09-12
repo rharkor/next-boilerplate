@@ -10,6 +10,5 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
 
 # [Optional] Uncomment if you want to install more global node modules
 RUN su node -c "npm install -g prisma"
-RUN su node -c "npx playwright install && npx playwright install-deps"
 
 RUN /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"

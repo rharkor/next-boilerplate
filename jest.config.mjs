@@ -6,7 +6,7 @@ const createJestConfig = nextJest({
 
 /** @type {import('jest').Config} */
 const config = {
-  setupFilesAfterEnv: ["@testing-library/jest-dom/extend-expect"],
+  setupFilesAfterEnv: ["<rootDir>/jest-setup.ts"],
   testEnvironment: "jest-environment-jsdom",
   modulePathIgnorePatterns: ["<rootDir>/dist/"],
   testPathIgnorePatterns: ["<rootDir>/e2e"],
