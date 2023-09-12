@@ -27,8 +27,6 @@ With this template, you get all the awesomeness you need:
 - 🛠️ **[Extremely strict TypeScript](https://www.typescriptlang.org/)** - With [`ts-reset`](https://github.com/total-typescript/ts-reset) library for ultimate type safety
 - 📊 **[Bundle analyzer plugin](https://www.npmjs.com/package/@next/bundle-analyzer)** - Keep an eye on your bundle size
 - 🧪 **[Jest](https://jestjs.io/)** and **[React Testing Library](https://testing-library.com/react)** - For rock-solid unit and integration tests
-- 📕 **[Storybook](https://storybook.js.org/)** - Create, test, and showcase your components
-- 🌬️ **Smoke Testing** and **Acceptance Tests** - For confidence in your deployments
 - 📝 **[Conventional commits git hook](https://www.conventionalcommits.org/)** - Keep your commit history neat and tidy
 - 🔍 **[Observability](https://opentelemetry.io/)** - Open Telemetry integration for seamless monitoring
 - 🎯 **[Absolute imports](https://nextjs.org/docs/advanced-features/module-path-aliases)** - No more spaghetti imports
@@ -39,7 +37,6 @@ With this template, you get all the awesomeness you need:
 - 🩹 **[Patch-package](https://www.npmjs.com/package/patch-package)** - Fix external dependencies without losing your mind
 - 📈 **Components coupling and cohesion graph** - A tool for managing component relationships
 - 🚀 **[GitHub Actions](https://github.com/features/actions)** - Pre-configured actions for smooth workflows, including Bundle Size and performance stats
-- 🤖🧠 **[Automated ChatGPT Code Reviews](https://openai.com/chatgpt)** - **Stay on the cutting edge with AI-powered code reviews!**
 - 💯 **Perfect Lighthouse score** - Because performance matters
 - 🚢 **[Semantic Release](https://github.com/semantic-release/semantic-release)** - for automatic changelog
 - 💻 **[T3 Env](https://env.t3.gg/)** - Manage your environment variables with ease
@@ -56,8 +53,6 @@ With this template, you get all the awesomeness you need:
   - [🔗 Coupling Graph](#-coupling-graph)
   - [🧪 Testing](#-testing)
     - [Running Tests](#running-tests)
-    - [Acceptance Tests](#acceptance-tests)
-    - [Smoke Testing](#smoke-testing)
   - [🎨 Styling and Design System](#-styling-and-design-system)
     - [CVA - A New Approach to Variants](#cva---a-new-approach-to-variants)
   - [💾 State Management](#-state-management)
@@ -133,8 +128,6 @@ The following scripts are available in the `package.json`:
 - `prettier`: Checks the code for proper formatting
 - `prettier:fix`: Automatically fixes formatting issues
 - `analyze`: Analyzes the bundle sizes for Client, Server and Edge environments
-- `storybook`: Starts the Storybook server
-- `build-storybook`: Builds the Storybook for deployment
 - `test`: Runs unit and integration tests
 - `e2e:headless`: Runs end-to-end tests in headless mode
 - `e2e:ui`: Runs end-to-end tests with UI
@@ -185,46 +178,6 @@ This boilerplate comes with various testing setups to ensure your application's 
 - **Unit and integration tests**: Run Jest tests using `npm test`
 
 <img width="1392" alt="image" src="https://user-images.githubusercontent.com/28964599/233666655-93b7d08b-2fd8-406a-b43c-44d4d96cf387.png">
-
-### Acceptance Tests
-
-To write acceptance tests, we leverage Storybook's [`play` function](https://storybook.js.org/docs/react/writing-stories/play-function#writing-stories-with-the-play-function). This allows you to interact with your components and test various user flows within Storybook.
-
-```ts
-/*
- * See https://storybook.js.org/docs/react/writing-stories/play-function#working-with-the-canvas
- * to learn more about using the canvasElement to query the DOM
- */
-export const FilledForm: Story = {
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement)
-
-    const emailInput = canvas.getByLabelText("email", {
-      selector: "input",
-    })
-
-    await userEvent.type(emailInput, "example-email@email.com", {
-      delay: 100,
-    })
-
-    const passwordInput = canvas.getByLabelText("password", {
-      selector: "input",
-    })
-
-    await userEvent.type(passwordInput, "ExamplePassword", {
-      delay: 100,
-    })
-    // See https://storybook.js.org/docs/react/essentials/actions#automatically-matching-args to learn how to setup logging in the Actions panel
-    const submitButton = canvas.getByRole("button")
-
-    await userEvent.click(submitButton)
-  },
-}
-```
-
-### Smoke Testing
-
-In this boilerplate, we use Storybook's out-of-the-box support for smoke testing to verify that components render correctly without any errors. Just run `npm run test-storybook` to perform smoke testing. Remember to write stories in JSX or TSX format only. Smoke testing and a lot of other functionalities dont work well with MDX stories.
 
 ## 🎨 Styling and Design System
 
