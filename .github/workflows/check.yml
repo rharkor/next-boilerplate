@@ -22,6 +22,14 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: "${{ env.node_version }}"
+      - name: Restore dependencies cache
+        uses: actions/cache@v3
+        id: restore-deps-cache
+        env:
+          cache-name: cache-deps
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-build-${{ env.cache-name }}
       - name: Install dependencies
         run: npm ci
       - name: Set example env
