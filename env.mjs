@@ -30,7 +30,14 @@ export const env = createEnv({
       .optional()
       .transform((value) => value === "true"),
   },
-  client: {},
+  client: {
+    NEXT_PUBLIC_IS_DEMO: z
+      .enum(["true", "false"])
+      .optional()
+      .transform((value) => value === "true"),
+    NEXT_PUBLIC_DEMO_EMAIL: z.string().optional(),
+    NEXT_PUBLIC_DEMO_PASSWORD: z.string().optional(),
+  },
   runtimeEnv: {
     ANALYZE: process.env.ANALYZE,
     PASSWORD_HASHER_SECRET: process.env.PASSWORD_HASHER_SECRET,
@@ -50,6 +57,9 @@ export const env = createEnv({
     REDIS_TLS: process.env.REDIS_TLS,
     REDIS_URL: process.env.REDIS_URL,
     REDIS_USE_TLS: process.env.REDIS_USE_TLS,
+    NEXT_PUBLIC_IS_DEMO: process.env.NEXT_PUBLIC_IS_DEMO,
+    NEXT_PUBLIC_DEMO_EMAIL: process.env.NEXT_PUBLIC_DEMO_EMAIL,
+    NEXT_PUBLIC_DEMO_PASSWORD: process.env.NEXT_PUBLIC_DEMO_PASSWORD,
   },
   onValidationError: (error) => {
     console.error(error)

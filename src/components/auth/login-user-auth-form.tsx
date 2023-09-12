@@ -1,6 +1,7 @@
 "use client"
 
 import { zodResolver } from "@hookform/resolvers/zod"
+import { BadgeInfo } from "lucide-react"
 import { useRouter } from "next/navigation"
 import * as React from "react"
 import { useForm } from "react-hook-form"
@@ -9,6 +10,8 @@ import { handleSignError, handleSignIn } from "@/lib/auth/handle-sign"
 import { TDictionary } from "@/lib/langs"
 import { cn, ensureRelativeUrl } from "@/lib/utils"
 import { signInSchema } from "@/types/auth"
+import { env } from "env.mjs"
+import { Alert, AlertDescription, AlertTitle } from "../ui/alert"
 import { Button } from "../ui/button"
 import { Form } from "../ui/form"
 import FormField from "../ui/form-field"
@@ -55,6 +58,22 @@ export function LoginUserAuthForm({ dictionary, searchParams, ...props }: UserAu
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} {...props} className={cn("grid gap-2", props.className)}>
+        {env.NEXT_PUBLIC_IS_DEMO && (
+          <div>
+            <Alert>
+              <BadgeInfo className="h-4 w-4" />
+              <AlertTitle>Demo environment</AlertTitle>
+              <AlertDescription className="flex flex-col">
+                <p>
+                  email: <code>{env.NEXT_PUBLIC_DEMO_EMAIL}</code>
+                </p>
+                <p>
+                  password: <code>{env.NEXT_PUBLIC_DEMO_PASSWORD}</code>
+                </p>
+              </AlertDescription>
+            </Alert>
+          </div>
+        )}
         <div className="grid gap-1">
           <Label className="sr-only" htmlFor="email">
             Email
