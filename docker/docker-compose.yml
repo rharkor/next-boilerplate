@@ -2,13 +2,16 @@ version: "3.8"
 
 services:
   app:
-    build: .
     image: #{DOCKER_DEPLOY_APP_IMAGE}#
     restart: unless-stopped
     logging:
       driver: "json-file"
       options:
         max-size: "50m"
+    volumes:
+      - ./uploads:/app/uploads
+    ports:
+      - "3000:3000"
 
   db:
     image: postgres:latest
@@ -24,18 +27,21 @@ services:
       driver: "json-file"
       options:
         max-size: "50m"
+    ports:
+      - "5432:5432"
 
   redis:
     restart: unless-stopped
     image: redis:latest
+    command: /bin/sh -c "redis-server --requirepass ${REDIS_PASSWORD}"
     logging:
       driver: "json-file"
       options:
         max-size: "50m"
-    environment:
-      REDIS_PASSWORD: ${REDIS_PASS}
     volumes:
       - redis-data:/data
+    ports:
+      - "6379:6379"
 
 volumes:
   postgres-data:

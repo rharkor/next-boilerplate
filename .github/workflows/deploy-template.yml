@@ -1,4 +1,4 @@
-name: rec workflow
+name: deployment workflow
 
 on:
   push:
@@ -44,7 +44,7 @@ jobs:
           password: ${{ secrets.REGISTRY_KEY }}
           registry: rg.fr-par.scw.cloud/namespace-main
 
-      - name: Build the rec docker image
+      - name: Build the docker image
         run: |
           docker build -t rg.fr-par.scw.cloud/namespace-main/main-application-image:latest .
           docker push rg.fr-par.scw.cloud/namespace-main/main-application-image:latest
