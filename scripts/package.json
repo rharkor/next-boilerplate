@@ -7,7 +7,7 @@
     "depcheck": "npx ts-node --esm depcheck.ts"
   },
   "type": "module",
-  "devDependencies": {
+  "dependencies": {
     "chalk": "^5.3.0",
     "depcheck": "^1.4.6"
   }

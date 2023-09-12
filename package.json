@@ -5,7 +5,7 @@
   "scripts": {
     "init": "npm run sub-package:scripts && npm run init",
     "dev": "cross-env FORCE_COLOR=1 next dev",
-    "build": "next build",
+    "build": "npm run full-sub-package-setup && next build",
     "start": "next start",
     "lint": "next lint",
     "lint:fix": "next lint --fix",
@@ -21,7 +21,9 @@
     "coupling-graph": "npx --yes madge --extensions js,jsx,ts,tsx,css,md,mdx ./ --exclude '.next|tailwind.config.js|reset.d.ts|prettier.config.js|postcss.config.js|playwright.config.ts|next.config.js|next-env.d.ts|instrumentation.ts|e2e/|README.md|.storybook/|.eslintrc.js' --image graph.svg",
     "seed": "NODE_ENV=development prisma db seed",
     "depcheck": "npm run sub-package:scripts && npm run depcheck",
-    "sub-package:scripts": "cd scripts && npm i"
+    "full-sub-package-setup": "npm run sub-package:scripts:cb",
+    "sub-package:scripts": "cd scripts && npm i",
+    "sub-package:scripts:cb": "npm run sub-package:scripts && cd .."
   },
   "dependencies": {
     "@formatjs/intl-localematcher": "^0.4.0",
