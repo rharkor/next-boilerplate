@@ -17,10 +17,9 @@
     "postinstall": "npx -y patch-package && prisma generate",
     "preinstall": "npx -y only-allow npm",
     "seed": "NODE_ENV=development prisma db seed",
-    "depcheck": "npm run sub-package:scripts && npm run depcheck",
+    "depcheck": "cd scripts && npm i && npm run depcheck",
     "full-sub-package-setup": "npm run sub-package:scripts:cb",
-    "sub-package:scripts": "cd scripts && npm i",
-    "sub-package:scripts:cb": "npm run sub-package:scripts && cd .."
+    "sub-package:scripts:cb": "cd scripts && npm i && cd .."
   },
   "dependencies": {
     "@formatjs/intl-localematcher": "^0.4.0",
@@ -50,7 +49,6 @@
     "clsx": "^2.0.0",
     "crypto-js": "^4.1.1",
     "dotenv": "^16.3.1",
-    "i18n-config": "^1.1.0",
     "ioredis": "^5.3.2",
     "lucide-react": "^0.263.0",
     "negotiator": "^0.6.3",
