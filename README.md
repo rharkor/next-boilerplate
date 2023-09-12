@@ -18,7 +18,7 @@ With this template, you get all the awesomeness you need:
 - 🏎️ **[Next.js](https://nextjs.org/)** - Fast by default, with config optimized for performance
 - 💅 **[Tailwind CSS](https://tailwindcss.com/)** - A utility-first CSS framework for rapid UI development
 - ✨ **[ESlint](https://eslint.org/)** and **[Prettier](https://prettier.io/)** - For clean, consistent, and error-free code
-- 📦 **[Dev Container](https://code.visualstudio.com/docs/remote/containers)** - For a consistent development environment
+- 🫙 **[Dev Container](https://code.visualstudio.com/docs/remote/containers)** - For a consistent development environment
 - 🐳 **[Docker](https://www.docker.com/)** - For easy deployment
 - 🐘 **[PostgreSQL](https://www.postgresql.org/)** - A powerful, open-source relational database system
 - 🗃️ **[Prisma](https://www.prisma.io/)** - Next-generation ORM for Node.js and TypeScript
@@ -39,6 +39,7 @@ With this template, you get all the awesomeness you need:
 - 💯 **Perfect Lighthouse score** - Because performance matters
 - 🚢 **[Semantic Release](https://github.com/semantic-release/semantic-release)** - for automatic changelog
 - 💻 **[T3 Env](https://env.t3.gg/)** - Manage your environment variables with ease
+- 📦 **[Unused dependencies checker](https://www.npmjs.com/package/depcheck)** - Keep your dependencies clean
 
 ## Table of Contents
 
@@ -133,6 +134,7 @@ The following scripts are available in the `package.json`:
 - `postinstall`: Applies patches to external dependencies
 - `preinstall`: Ensures the project is installed with Npm
 - `seed`: Seeds the database with test data
+- `depcheck`: Checks for unused dependencies
 
 ## 🐳 Container Stack
 
