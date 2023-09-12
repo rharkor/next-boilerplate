@@ -1,9 +1,9 @@
+import { Locale } from "i18n-config"
 import Link from "next/link"
 import { ThemeSwitch } from "@/components/theme/theme-switch"
 import { buttonVariants } from "@/components/ui/button"
 import { authRoutes } from "@/lib/auth/constants"
 import { getDictionary } from "@/lib/langs"
-import { Locale } from "i18n-config"
 
 export default async function Home({
   params: { lang },

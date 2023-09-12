@@ -1,3 +1,4 @@
+import { i18n } from "i18n-config"
 import { Metadata } from "next"
 import React from "react"
 import "../globals.css"
@@ -5,7 +6,6 @@ import { NextAuthProvider } from "@/components/auth/provider"
 import { ThemeProvider } from "@/components/theme/theme-provider"
 import { Toaster } from "@/components/ui/toaster"
 import QueryClientProvider from "@/contexts/query-provider"
-import { i18n } from "i18n-config"
 
 export const metadata: Metadata = {
   title: "Home",

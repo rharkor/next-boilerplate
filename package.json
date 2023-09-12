@@ -46,7 +46,6 @@
     "@t3-oss/env-nextjs": "^0.6.0",
     "@tanstack/react-query": "^4.32.6",
     "@testing-library/user-event": "^14.4.3",
-    "@vercel/otel": "^0.3.0",
     "bcryptjs": "^2.4.3",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",

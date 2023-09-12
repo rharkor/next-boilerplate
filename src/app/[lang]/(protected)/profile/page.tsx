@@ -1,9 +1,9 @@
+import { Locale } from "i18n-config"
 import { getServerSession } from "next-auth"
 import SignoutButton from "@/components/auth/sign-out-button"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { nextAuthOptions } from "@/lib/auth"
 import { getDictionary } from "@/lib/langs"
-import { Locale } from "i18n-config"
 import SeeDetailsToggle from "./see-details-toggle"
 
 export default async function Profile({
