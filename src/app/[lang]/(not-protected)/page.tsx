@@ -1,4 +1,5 @@
 import Link from "next/link"
+import LocaleSwitcher from "@/components/locale-switcher"
 import { ThemeSwitch } from "@/components/theme/theme-switch"
 import { buttonVariants } from "@/components/ui/button"
 import { authRoutes } from "@/lib/auth/constants"
@@ -38,7 +39,8 @@ export default async function Home({
           </ul>
         </nav>
       </main>
-      <div className="fixed right-2 top-2 z-10">
+      <div className="fixed right-2 top-2 z-10 flex flex-row space-x-2">
+        <LocaleSwitcher lang={lang} />
         <ThemeSwitch />
       </div>
     </>

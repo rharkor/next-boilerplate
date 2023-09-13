@@ -1,3 +1,4 @@
+import { Prisma } from "@prisma/client"
 import { logger } from "@/lib/logger"
 import { prisma } from "@/lib/prisma"
 import { updateUserSchema } from "@/lib/schemas/user"
@@ -18,6 +19,14 @@ export const updateUser = async ({ input, ctx: { session } }: apiInputFromSchema
 
     return { user }
   } catch (error: unknown) {
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      if (error.code === "P2002") {
+        const meta = error.meta
+        if ((meta?.target as Array<string>).includes("username")) {
+          return ApiError("Username already exists")
+        }
+      }
+    }
     logger.error(error)
     if (error instanceof Error) {
       return ApiError(error.message, "INTERNAL_SERVER_ERROR")
