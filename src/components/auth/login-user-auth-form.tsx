@@ -31,8 +31,8 @@ export type IForm = z.infer<ReturnType<typeof formSchema>>
 export function LoginUserAuthForm({ dictionary, searchParams, ...props }: UserAuthFormProps) {
   const router = useRouter()
 
-  const callbackUrl = ensureRelativeUrl(searchParams?.callbackUrl?.toString()) || authRoutes.redirectAfterSignIn
-  const error = searchParams?.error?.toString()
+  const callbackUrl = ensureRelativeUrl(searchParams.callbackUrl?.toString()) || authRoutes.redirectAfterSignIn
+  const error = searchParams.error?.toString()
 
   const [isLoading, setIsLoading] = React.useState<boolean>(false)
   const [errorDisplayed, setErrorDisplayed] = React.useState<string | null>(null)

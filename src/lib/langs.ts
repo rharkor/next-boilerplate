@@ -1,3 +1,4 @@
+import { ValueOf } from "@/types"
 import { Locale } from "i18n-config"
 import "server-only"
 
@@ -8,6 +9,7 @@ const dictionaries = {
   fr: () => import("../langs/fr.json").then((module) => module.default),
 }
 
-export const getDictionary = async (locale: Locale) => dictionaries[locale]?.() ?? dictionaries.en()
+export const getDictionary = async (locale: Locale) =>
+  (dictionaries[locale] as ValueOf<typeof dictionaries> | undefined)?.() ?? dictionaries.en()
 
 export type TDictionary = Awaited<ReturnType<typeof getDictionary>>

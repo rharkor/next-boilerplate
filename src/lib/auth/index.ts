@@ -32,7 +32,7 @@ export const nextAuthOptions: NextAuthOptions & {
         password: { label: "Password", type: "password" },
       },
       authorize: async (credentials, req) => {
-        const referer = (req.headers?.referer as string) ?? ""
+        const referer = (req.headers?.referer as string | undefined) ?? ""
         const refererUrl = ensureRelativeUrl(referer) ?? ""
         const lang = i18n.locales.find((locale) => refererUrl.startsWith(`/${locale}/`)) ?? i18n.defaultLocale
         const dictionary =
@@ -123,13 +123,11 @@ export const nextAuthOptions: NextAuthOptions & {
     jwt: async ({ token, user }) => {
       // logger.debug("JWT token", token)
 
-      if (user) {
-        token.id = user.id
-        token.email = user.email
-        if ("username" in user) token.username = user.username
-        if ("role" in user) token.role = user.role as string
-        if ("uuid" in user) token.uuid = user.uuid as string
-      }
+      token.id = user.id
+      token.email = user.email
+      if ("username" in user) token.username = user.username
+      if ("role" in user) token.role = user.role as string
+      if ("uuid" in user) token.uuid = user.uuid as string
 
       return token
     },
@@ -183,7 +181,7 @@ export const nextAuthOptions: NextAuthOptions & {
       const role = dbUser.role
 
       //* Fill session with token data
-      const uuid = token && "uuid" in token ? token.uuid : undefined
+      const uuid = "uuid" in token ? token.uuid : undefined
 
       const sessionFilled = {
         ...session,
@@ -191,7 +189,7 @@ export const nextAuthOptions: NextAuthOptions & {
           ...session.user,
           id: token.id,
           username: username ?? undefined,
-          role: role ?? undefined,
+          role,
           uuid,
         },
       }

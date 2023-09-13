@@ -27,7 +27,7 @@ export default function GithubSignIn({
       logger.debug("SignIn result", res)
 
       if (res?.error) {
-        if (res?.error === "OAuthAccountNotLinked") {
+        if (res.error === "OAuthAccountNotLinked") {
         } else {
           throw new Error(dictionary.errors.unknownError)
         }

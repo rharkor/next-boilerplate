@@ -11,3 +11,5 @@ export type apiInputFromSchema<T extends (() => z.Schema) | undefined> = {
   input: T extends () => z.Schema ? z.infer<ReturnType<T>> : unknown
   ctx: ITrpcContext
 }
+
+export type ValueOf<T> = T[keyof T]

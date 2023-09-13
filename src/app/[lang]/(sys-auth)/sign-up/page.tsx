@@ -1,10 +1,10 @@
-import { Locale } from "i18n-config"
 import Link from "next/link"
 import { RegisterUserAuthForm } from "@/components/auth/register-user-auth-form"
 import { buttonVariants } from "@/components/ui/button"
 import { authRoutes } from "@/lib/auth/constants"
 import { getDictionary } from "@/lib/langs"
 import { cn } from "@/lib/utils"
+import { Locale } from "i18n-config"
 import PrivacyAcceptance from "../privacy-acceptance"
 import Providers from "../providers"
 

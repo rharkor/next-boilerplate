@@ -51,7 +51,7 @@ export default function SessionsTable({ dictionary }: { dictionary: TDictionary 
       (prev) =>
         prev && {
           ...prev,
-          data: prev?.data?.filter((session) => session.id !== selectedSession),
+          data: prev.data?.filter((session) => session.id !== selectedSession),
         }
     )
 
@@ -59,7 +59,7 @@ export default function SessionsTable({ dictionary }: { dictionary: TDictionary 
     deleteSessionMutation.mutate({ id: selectedSession })
   }
 
-  const rows = activeSessions?.data?.data?.map((session) => (
+  const rows = activeSessions.data?.data?.map((session) => (
     <SessionRow session={session} setSelectedSession={setSelectedSession} key={session.id} />
   ))
 
@@ -72,7 +72,7 @@ export default function SessionsTable({ dictionary }: { dictionary: TDictionary 
   )
 
   const showPagination = Boolean(
-    activeSessions?.data && (activeSessions?.data.meta.totalPages > 1 || itemsPerPageInitial !== itemsPerPage)
+    activeSessions.data && (activeSessions.data.meta.totalPages > 1 || itemsPerPageInitial !== itemsPerPage)
   )
 
   return (
@@ -81,11 +81,11 @@ export default function SessionsTable({ dictionary }: { dictionary: TDictionary 
         {activeSessions.isFetched ? rows : skelRows}
         <Pagination
           show={showPagination}
-          currentNumberOfItems={activeSessions?.data?.data?.length ?? 0}
-          currentPage={activeSessions?.data?.meta.page}
-          totalPages={activeSessions?.data?.meta.totalPages}
+          currentNumberOfItems={activeSessions.data?.data?.length ?? 0}
+          currentPage={activeSessions.data?.meta.page}
+          totalPages={activeSessions.data?.meta.totalPages}
           setCurrentPage={setCurrentPage}
-          itemsPerPage={activeSessions?.data?.meta.perPage}
+          itemsPerPage={activeSessions.data?.meta.perPage}
           setItemsPerPage={setItemsPerPage}
         />
         <AlertDialogContent>

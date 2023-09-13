@@ -1,8 +1,8 @@
-import { Locale } from "i18n-config"
 import Link from "next/link"
 import React from "react"
 import { buttonVariants } from "@/components/ui/button"
 import { getDictionary } from "@/lib/langs"
+import { Locale } from "i18n-config"
 
 export default async function Page404({
   params: { lang },

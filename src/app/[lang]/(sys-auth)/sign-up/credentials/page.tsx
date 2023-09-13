@@ -1,9 +1,9 @@
-import { Locale } from "i18n-config"
 import { redirect } from "next/navigation"
 import { RegisterUserAuthForm } from "@/components/auth/register-user-auth-form"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { authRoutes } from "@/lib/auth/constants"
 import { getDictionary } from "@/lib/langs"
+import { Locale } from "i18n-config"
 
 export default async function SignupByCredentials({
   searchParams,
@@ -17,7 +17,7 @@ export default async function SignupByCredentials({
   const dictionary = await getDictionary(lang)
 
   //? If there is no email in the search params, redirect to the sign-up page
-  if (!searchParams?.email) {
+  if (!searchParams.email) {
     redirect(authRoutes.signUp[0])
   }
 

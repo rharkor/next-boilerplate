@@ -42,16 +42,16 @@ export default function UpdateAccount({ dictionary }: { dictionary: TDictionary 
   const form = useForm<INonSensibleForm>({
     resolver: zodResolver(nonSensibleSchema(dictionary)),
     defaultValues: {
-      username: account?.data?.user?.name || "",
+      username: account.data?.user.name || "",
     },
   })
 
   const resetForm = useCallback(() => {
-    logger.debug("Resetting form with", account?.data?.user)
+    logger.debug("Resetting form with", account.data?.user)
     form.reset({
-      username: account?.data?.user.username ?? "",
+      username: account.data?.user.username ?? "",
     })
-  }, [account?.data?.user, form])
+  }, [account.data?.user, form])
 
   useEffect(() => {
     resetForm()
@@ -76,7 +76,7 @@ export default function UpdateAccount({ dictionary }: { dictionary: TDictionary 
               label={dictionary.profilePage.profileDetails.username.label}
               placeholder={dictionary.profilePage.profileDetails.username.placeholder}
               type="text"
-              disabled={updateUserMutation.isLoading || !account?.isFetched}
+              disabled={updateUserMutation.isLoading || !account.isFetched}
               form={form}
               name="username"
             />

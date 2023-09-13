@@ -42,8 +42,8 @@ export const redisGetSert = async <T>(
     return callbackValue
   }
   if (value) {
-    if (options?.logWhenCached) logger.log("Redis value retrieved. key:", keyInfo.key, " value:", value)
-    if (!options?.disableSWR) executeCallback()
+    if (options.logWhenCached) logger.log("Redis value retrieved. key:", keyInfo.key, " value:", value)
+    if (!options.disableSWR) executeCallback()
     return JSON.parse(value) as T
   }
   return executeCallback()
