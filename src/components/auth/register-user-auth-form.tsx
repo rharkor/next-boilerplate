@@ -8,16 +8,16 @@ import { useForm } from "react-hook-form"
 import * as z from "zod"
 import { authRoutes } from "@/lib/auth/constants"
 import { handleSignError, handleSignIn } from "@/lib/auth/handle-sign"
+import { handleMutationError } from "@/lib/client-utils"
 import { TDictionary } from "@/lib/langs"
 import { logger } from "@/lib/logger"
 import { signUpSchema } from "@/lib/schemas/auth"
 import { trpc } from "@/lib/trpc/client"
-import { cn, handleMutationError } from "@/lib/utils"
+import { cn } from "@/lib/utils"
 import { Button, buttonVariants } from "../ui/button"
 import { Form } from "../ui/form"
 import FormField from "../ui/form-field"
 import { Label } from "../ui/label"
-import { toast } from "../ui/use-toast"
 
 type UserAuthFormProps = React.HTMLAttributes<HTMLFormElement> & {
   dictionary: TDictionary
@@ -69,11 +69,6 @@ export function RegisterUserAuthForm({ dictionary, isMinimized, searchParams, ..
           message: translatedError.message,
         })
       }
-      toast({
-        title: dictionary.error,
-        description: translatedError.message,
-        variant: "destructive",
-      })
       setIsLoading(false)
     },
     onSuccess: (_, vars) => {

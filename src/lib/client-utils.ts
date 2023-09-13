@@ -30,7 +30,7 @@ export const handleMutationError = <T extends TRPCClientErrorLike<AppRouter>>(
   const resp = handleApiError(error, dictionary, router)
   logger.error("Mutation error:", resp)
   toast({
-    title: "Error",
+    title: dictionary.error,
     description: resp.message,
     variant: "destructive",
   })

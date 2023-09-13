@@ -54,7 +54,7 @@ With this template, you get all the awesomeness you need:
   - [🎨 Styling and Design System](#-styling-and-design-system)
     - [CVA - A New Approach to Variants](#cva---a-new-approach-to-variants)
   - [💾 State Management](#-state-management)
-    - [Zustand](#zustand)
+    - [Tanstack query](#tanstack-query)
   - [💻 Environment Variables handling](#-environment-variables-handling)
   - [🤝 Contribution](#-contribution)
   - [Support](#support)
@@ -179,9 +179,9 @@ Creating variants using traditional CSS can be a tedious task, requiring you to 
 
 While this boilerplate doesn't include a specific state management library, we believe it's essential for you to choose the one that best suits your project's needs. Here are some libraries we recommend for state management:
 
-### Zustand
+### Tanstack query
 
-[Zustand](https://github.com/pmndrs/zustand) is a small, fast, and scalable state management library. It's designed to be simple and intuitive, making it a great choice for small to medium-sized projects. It's also optimized for bundle size, ensuring minimal impact on your app's performance.
+[Tanstack query](https://tanstack.com/query/latest) is a powerful, fast, and lightweight data fetching and caching library. It provides a concise, declarative API for fetching data that integrates seamlessly with React.
 
 ## 💻 Environment Variables handling
 
