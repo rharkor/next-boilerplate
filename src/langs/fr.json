@@ -27,19 +27,26 @@
         "description": "Cette action va déconnecter l'appareil de votre compte"
       },
       "session": "la session",
-      "sessions": "les sessions"
+      "sessions": "les sessions",
+      "lastUsed": "Dernière utilisation",
+      "created": "Créé",
+      "expires": "Expire",
+      "in": "dans"
     }
   },
   "auth": {
     "orContinueWith": "Ou continuez avec",
     "clickingAggreement": "En cliquant sur Inscription, vous acceptez nos",
     "termsOfService": "Conditions d'utilisation",
-    "privacyPolicy": "Politique de confidentialité"
+    "privacyPolicy": "Politique de confidentialité",
+    "demoMode": "Mode démo"
   },
   "and": "et",
   "profile": "Profil",
   "signUp": "Inscription",
   "signIn": "Connexion",
+  "toSignUp": "S'inscrire",
+  "toSignIn": "Se connecter",
   "signOut": "Déconnexion",
   "notFound": "Page non trouvée",
   "login": "Connexion",
@@ -88,5 +95,41 @@
     "wrongProvider": "Vous avez déjà un compte avec un autre provider. Veuillez vous connecter avec celui-ci.",
     "invalidCredentials": "Les informations d'identification sont invalides.",
     "unauthorized": "Vous avez été déconnecté. Veuillez vous reconnecter."
+  },
+  "email": "Email",
+  "emailPlaceholder": "nom@exemple.com",
+  "password": "Mot de passe",
+  "passwordPlaceholder": "Mot de passe",
+  "edit": "Modifier",
+  "username": "Nom d'utilisateur",
+  "usernamePlaceholder": "Nom d'utilisateur",
+  "confirmPassword": "Confirmer le mot de passe",
+  "confirmPasswordPlaceholder": "Confirmer le mot de passe",
+  "withEmail": "avec email",
+  "timeUnit": {
+    "now": "maintenant",
+    "second": "seconde",
+    "seconds": "secondes",
+    "minute": "minute",
+    "minutes": "minutes",
+    "hour": "heure",
+    "hours": "heures",
+    "day": "jour",
+    "days": "jours",
+    "week": "semaine",
+    "weeks": "semaines",
+    "month": "mois",
+    "months": "mois",
+    "year": "année",
+    "years": "années"
+  },
+  "pagination": {
+    "rowsPerPage": "Lignes par page",
+    "page": "Page",
+    "of": "sur",
+    "goToFirstPage": "Aller à la première page",
+    "goToPreviousPage": "Aller à la page précédente",
+    "goToNextPage": "Aller à la page suivante",
+    "goToLastPage": "Aller à la dernière page"
   }
 }

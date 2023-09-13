@@ -31,17 +31,18 @@ export function ApiError(message: string, code?: TRPC_ERROR_CODE_KEY): never {
 export const getTimeBetween = (
   firstDate: Date,
   secondDate: Date,
-  options?: {
+  options: {
     markAsNowSince?: number
+    dictionary: TDictionary
   }
 ) => {
   // Time difference in milliseconds
   const timeDiff = Math.abs(firstDate.getTime() - secondDate.getTime()) // in milliseconds
 
   // Check for the markAsNowSince
-  const markAsNowSince = options?.markAsNowSince || 1000 * 60
+  const markAsNowSince = options.markAsNowSince || 1000 * 60
   if (timeDiff < markAsNowSince) {
-    return "now"
+    return options.dictionary.timeUnit.now
   }
 
   // Define time intervals in milliseconds
@@ -66,26 +67,26 @@ export const getTimeBetween = (
   let timeUnit
   let timeValue
   if (elapsed.year > 0) {
-    timeUnit = "year"
+    timeUnit = elapsed.year > 1 ? options.dictionary.timeUnit.years : options.dictionary.timeUnit.year
     timeValue = elapsed.year
   } else if (elapsed.month > 0) {
-    timeUnit = "month"
+    timeUnit = elapsed.month > 1 ? options.dictionary.timeUnit.months : options.dictionary.timeUnit.month
     timeValue = elapsed.month
   } else if (elapsed.day > 0) {
-    timeUnit = "day"
+    timeUnit = elapsed.day > 1 ? options.dictionary.timeUnit.days : options.dictionary.timeUnit.day
     timeValue = elapsed.day
   } else if (elapsed.hour > 0) {
-    timeUnit = "hour"
+    timeUnit = elapsed.hour > 1 ? options.dictionary.timeUnit.hours : options.dictionary.timeUnit.hour
     timeValue = elapsed.hour
   } else if (elapsed.minute > 0) {
-    timeUnit = "minute"
+    timeUnit = elapsed.minute > 1 ? options.dictionary.timeUnit.minutes : options.dictionary.timeUnit.minute
     timeValue = elapsed.minute
   } else {
-    timeUnit = "second"
+    timeUnit = elapsed.second > 1 ? options.dictionary.timeUnit.seconds : options.dictionary.timeUnit.second
     timeValue = elapsed.second
   }
   // Construct and return the time elapsed string
-  return `${timeValue} ${timeUnit}${timeValue !== 1 ? "s" : ""}`
+  return `${timeValue} ${timeUnit}`
 }
 
 // Function to ensure an url is relative to the current domain

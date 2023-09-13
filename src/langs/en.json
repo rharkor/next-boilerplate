@@ -27,19 +27,26 @@
         "description": "This action will disconnect the device connected to this session."
       },
       "session": "session",
-      "sessions": "sessions"
+      "sessions": "sessions",
+      "lastUsed": "Last used",
+      "created": "Created",
+      "expires": "Expires",
+      "in": "in"
     }
   },
   "auth": {
     "orContinueWith": "Or continue with",
     "clickingAggreement": "By clicking continue, you agree to our",
     "termsOfService": "Terms of Service",
-    "privacyPolicy": "Privacy Policy"
+    "privacyPolicy": "Privacy Policy",
+    "demoMode": "Demo mode"
   },
   "and": "and",
   "profile": "Profile",
   "signUp": "Sign Up",
   "signIn": "Sign In",
+  "toSignUp": "Sign Up",
+  "toSignIn": "Sign In",
   "signOut": "Sign Out",
   "notFound": "Not Found",
   "login": "Login",
@@ -88,5 +95,41 @@
     "wrongProvider": "You already have an account with a different provider. Please sign in with it.",
     "invalidCredentials": "Invalid credentials. Please try again.",
     "unauthorized": "You have been logged out. Please sign in again."
+  },
+  "email": "Email",
+  "emailPlaceholder": "name@example.com",
+  "password": "Password",
+  "passwordPlaceholder": "Password",
+  "edit": "Edit",
+  "username": "Username",
+  "usernamePlaceholder": "Username",
+  "confirmPassword": "Confirm Password",
+  "confirmPasswordPlaceholder": "Confirm Password",
+  "withEmail": "with email",
+  "timeUnit": {
+    "now": "now",
+    "second": "second",
+    "seconds": "seconds",
+    "minute": "minute",
+    "minutes": "minutes",
+    "hour": "hour",
+    "hours": "hours",
+    "day": "day",
+    "days": "days",
+    "week": "week",
+    "weeks": "weeks",
+    "month": "month",
+    "months": "months",
+    "year": "year",
+    "years": "years"
+  },
+  "pagination": {
+    "rowsPerPage": "Rows per page",
+    "page": "Page",
+    "of": "of",
+    "goToFirstPage": "Aller à la première page",
+    "goToPreviousPage": "Aller à la page précédente",
+    "goToNextPage": "Aller à la page suivante",
+    "goToLastPage": "Aller à la dernière page"
   }
 }

@@ -1,7 +1,7 @@
 "use client"
 
 import { useRouter } from "next/navigation"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 import {
   AlertDialog,
@@ -16,6 +16,7 @@ import {
 import Pagination from "@/components/ui/pagination"
 import { useActiveSessions } from "@/contexts/active-sessions"
 import { handleMutationError } from "@/lib/client-utils"
+import { IMeta } from "@/lib/json-api"
 import { TDictionary } from "@/lib/langs"
 import { trpc } from "@/lib/trpc/client"
 import SessionRow from "./session-row"
@@ -35,6 +36,12 @@ export default function SessionsTable({ dictionary }: { dictionary: TDictionary 
     perPage: itemsPerPage,
   }
   const activeSessions = useActiveSessions(dictionary, callParams)
+  const [meta, setMeta] = useState<IMeta | undefined>(activeSessions.data?.meta)
+
+  useEffect(() => {
+    if (activeSessions.isLoading) return
+    setMeta(activeSessions.data?.meta)
+  }, [activeSessions])
 
   const deleteSessionMutation = trpc.me.deleteSession.useMutation({
     onError: (error) => handleMutationError(error, dictionary, router),
@@ -60,19 +67,20 @@ export default function SessionsTable({ dictionary }: { dictionary: TDictionary 
   }
 
   const rows = activeSessions.data?.data?.map((session) => (
-    <SessionRow session={session} setSelectedSession={setSelectedSession} key={session.id} />
+    <SessionRow session={session} setSelectedSession={setSelectedSession} key={session.id} dictionary={dictionary} />
   ))
 
   const skelRows = (
     <>
       {Array.from({ length: itemsPerPageInitial }).map((_, i) => (
-        <SessionRow skeleton key={i} />
+        <SessionRow skeleton key={i} dictionary={dictionary} />
       ))}
     </>
   )
 
   const showPagination = Boolean(
-    activeSessions.data && (activeSessions.data.meta.totalPages > 1 || itemsPerPageInitial !== itemsPerPage)
+    (activeSessions.data && (activeSessions.data.meta.totalPages > 1 || itemsPerPageInitial !== itemsPerPage)) ||
+      activeSessions.isInitialLoading
   )
 
   return (
@@ -81,12 +89,14 @@ export default function SessionsTable({ dictionary }: { dictionary: TDictionary 
         {activeSessions.isFetched ? rows : skelRows}
         <Pagination
           show={showPagination}
+          isLoading={activeSessions.isLoading}
           currentNumberOfItems={activeSessions.data?.data?.length ?? 0}
-          currentPage={activeSessions.data?.meta.page}
-          totalPages={activeSessions.data?.meta.totalPages}
+          currentPage={meta?.page}
+          totalPages={meta?.totalPages}
           setCurrentPage={setCurrentPage}
-          itemsPerPage={activeSessions.data?.meta.perPage}
+          itemsPerPage={meta?.perPage}
           setItemsPerPage={setItemsPerPage}
+          dictionary={dictionary}
         />
         <AlertDialogContent>
           <AlertDialogHeader>

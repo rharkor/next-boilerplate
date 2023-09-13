@@ -72,10 +72,10 @@ export function LoginUserAuthForm({ dictionary, searchParams, ...props }: UserAu
           <div>
             <Alert>
               <BadgeInfo className="h-4 w-4" />
-              <AlertTitle>Demo environment</AlertTitle>
+              <AlertTitle>{dictionary.auth.demoMode}</AlertTitle>
               <AlertDescription className="flex flex-col">
                 <p className="m-1">
-                  email:{" "}
+                  {dictionary.email}:{" "}
                   <code
                     className="cursor-pointer rounded p-1 transition-all hover:bg-primary/20"
                     onClick={() => {
@@ -86,7 +86,7 @@ export function LoginUserAuthForm({ dictionary, searchParams, ...props }: UserAu
                   </code>
                 </p>
                 <p className="m-1">
-                  password:{" "}
+                  {dictionary.password}:{" "}
                   <code
                     className="cursor-pointer rounded p-1 transition-all hover:bg-primary/20"
                     onClick={() => {
@@ -102,10 +102,10 @@ export function LoginUserAuthForm({ dictionary, searchParams, ...props }: UserAu
         )}
         <div className="grid gap-1">
           <Label className="sr-only" htmlFor="email">
-            Email
+            {dictionary.email}
           </Label>
           <FormField
-            placeholder="name@example.com"
+            placeholder={dictionary.emailPlaceholder}
             type="email"
             autoCapitalize="none"
             autoComplete="email"
@@ -117,10 +117,10 @@ export function LoginUserAuthForm({ dictionary, searchParams, ...props }: UserAu
         </div>
         <div className="grid gap-1">
           <Label className="sr-only" htmlFor="password">
-            Password
+            {dictionary.password}
           </Label>
           <FormField
-            placeholder="Password"
+            placeholder={dictionary.passwordPlaceholder}
             type="password-eye-slash"
             autoComplete="new-password"
             autoCorrect="off"
@@ -130,7 +130,7 @@ export function LoginUserAuthForm({ dictionary, searchParams, ...props }: UserAu
           />
         </div>
         <Button type="submit" isLoading={isLoading}>
-          Sign In
+          {dictionary.signIn}
         </Button>
       </form>
     </Form>
