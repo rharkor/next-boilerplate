@@ -1,12 +1,11 @@
 import { PrismaClient } from "@prisma/client"
-import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library"
 import { hash as bhash } from "bcryptjs"
+import { Spinner } from "cli-spinner"
 import crypto from "crypto-js"
-import * as dotenv from "dotenv"
-
-dotenv.config({
-  path: ".env",
-})
+import { config } from "dotenv"
+import { logger as oLogger } from "../src/lib/logger"
+import { rolesAsObject } from "../src/types/constants"
+config()
 
 const env = {
   AUTH_ADMIN_EMAIL: process.env.AUTH_ADMIN_EMAIL,
@@ -24,25 +23,42 @@ if (!env.AUTH_ADMIN_EMAIL || !env.AUTH_ADMIN_PASSWORD || !env.PASSWORD_HASHER_SE
   process.exit(1)
 }
 
+let spinner: Spinner | null = null
+
+const chalk = {
+  blue: (text: string) => `\x1b[34m${text}\x1b[0m`,
+  green: (text: string) => `\x1b[32m${text}\x1b[0m`,
+}
+
+const logger = {
+  ...oLogger,
+  log: (text: string) => {
+    console.log(chalk.green(text + " ✔"))
+  },
+}
+
 const prisma = new PrismaClient()
 
 async function main() {
   try {
-    await prisma.user.create({
-      data: {
+    spinner = new Spinner(chalk.blue(" Creating admin.. %s"))
+    spinner.setSpinnerString(18)
+    spinner.start()
+    await prisma.user.upsert({
+      where: {
         email: env.AUTH_ADMIN_EMAIL,
+      },
+      update: {},
+      create: {
+        email: env.AUTH_ADMIN_EMAIL as string,
         password: await hash(env.AUTH_ADMIN_PASSWORD ?? "", 12),
-        role: "admin",
+        role: rolesAsObject.admin,
+        emailVerified: new Date(),
       },
     })
-    console.log("Admin created")
+    spinner.stop(true)
+    logger.log("Admin created")
   } catch (e) {
-    if (e instanceof PrismaClientKnownRequestError) {
-      if (e.code === "P2002") {
-        console.error("Admin already exists")
-        process.exit(0)
-      }
-    }
     console.error(e)
     process.exit(1)
   } finally {

@@ -4,6 +4,7 @@ import Credentials from "next-auth/providers/credentials"
 import GithubProvider from "next-auth/providers/github"
 import requestIp from "request-ip"
 import { randomUUID } from "crypto"
+import { isPossiblyUndefined } from "@/types"
 import { env } from "env.mjs"
 import { i18n, Locale } from "i18n-config"
 import { authRoutes, JWT_MAX_AGE } from "./constants"
@@ -123,11 +124,13 @@ export const nextAuthOptions: NextAuthOptions & {
     jwt: async ({ token, user }) => {
       // logger.debug("JWT token", token)
 
-      token.id = user.id
-      token.email = user.email
-      if ("username" in user) token.username = user.username
-      if ("role" in user) token.role = user.role as string
-      if ("uuid" in user) token.uuid = user.uuid as string
+      if (isPossiblyUndefined(user)) {
+        token.id = user.id
+        token.email = user.email
+        if ("username" in user) token.username = user.username
+        if ("role" in user) token.role = user.role as string
+        if ("uuid" in user) token.uuid = user.uuid as string
+      }
 
       return token
     },
