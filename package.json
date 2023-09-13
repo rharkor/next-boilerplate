@@ -3,7 +3,7 @@
   "version": "1.0.1",
   "private": true,
   "scripts": {
-    "init": "npm run sub-package:scripts && npm run init",
+    "init": "cd scripts && npm i && npm run init",
     "dev": "cross-env FORCE_COLOR=1 next dev",
     "build": "npm run full-sub-package-setup && next build",
     "start": "next start",
