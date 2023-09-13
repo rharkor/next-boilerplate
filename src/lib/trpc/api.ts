@@ -28,6 +28,7 @@ export const api = createTRPCNextAppDirServer<typeof appRouter>({
                 cookie: cookies().toString(),
                 "x-trpc-source": "rsc-invoke",
               },
+              req: null,
             }
           },
         }),

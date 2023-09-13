@@ -56,6 +56,16 @@
   "reset": "Réinitialiser",
   "saveChanges": "Sauvegarder",
   "errors": {
+    "typeError": {
+      "number": {
+        "invalid": "Veuillez entrer un nombre valide.",
+        "required": "Veuillez entrer un nombre."
+      },
+      "string": {
+        "invalid": "Veuillez entrer une chaîne de caractères valide.",
+        "required": "Veuillez entrer une chaîne de caractères."
+      }
+    },
     "username": {
       "required": "Nom d'utilisateur requis",
       "min3": "Le nom d'utilisateur doit être au moins 3 caractères long.",
@@ -76,6 +86,7 @@
     },
     "unknownError": "Une erreur inconnue s'est produite. Veuillez ressayer plus tard.",
     "wrongProvider": "Vous avez déjà un compte avec un autre provider. Veuillez vous connecter avec celui-ci.",
-    "invalidCredentials": "Les informations d'identification sont invalides."
+    "invalidCredentials": "Les informations d'identification sont invalides.",
+    "unauthorized": "Vous avez été déconnecté. Veuillez vous reconnecter."
   }
 }

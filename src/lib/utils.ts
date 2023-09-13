@@ -1,9 +1,13 @@
+import { TRPCClientErrorLike } from "@trpc/client"
 import { TRPCError } from "@trpc/server"
 import { TRPC_ERROR_CODE_KEY } from "@trpc/server/rpc"
 import { type ClassValue, clsx } from "clsx"
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context"
 import { twMerge } from "tailwind-merge"
+import { authRoutes } from "./auth/constants"
 import { TDictionary } from "./langs"
 import { logger } from "./logger"
+import { AppRouter } from "./server/routers/_app"
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -113,4 +117,25 @@ export const translateError = (error: string, dictionary: TDictionary) => {
   }
   logger.error("Unknown translation for:", error)
   return error
+}
+
+export const handleApiError = <T extends TRPCClientErrorLike<AppRouter>>(
+  error: T,
+  dictionary: TDictionary,
+  router: AppRouterInstance
+): T => {
+  if (error.data?.code === "UNAUTHORIZED") {
+    router.push(authRoutes.redirectOnUnhauthorized)
+    const errorMessage = dictionary.errors.unauthorized
+    return {
+      ...error,
+      message: errorMessage,
+    }
+  }
+
+  const translatedError = translateError(error.message, dictionary)
+  return {
+    ...error,
+    message: translatedError,
+  }
 }

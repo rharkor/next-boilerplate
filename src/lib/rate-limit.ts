@@ -1,3 +1,4 @@
+import { TRPCError } from "@trpc/server"
 import { NextResponse } from "next/server"
 import requestIp from "request-ip"
 import { logger } from "./logger"
@@ -40,15 +41,9 @@ export const apiRateLimiter = async (
   }
 ): Promise<
   | {
-      success: true
       headers: Headers
-      errorResponse?: undefined
     }
-  | {
-      success: false
-      headers?: undefined
-      errorResponse: IRateLimiterErrorResponse
-    }
+  | never
 > => {
   const headers: Record<string, string> = {}
   req.headers.forEach((value, key) => {
@@ -62,10 +57,10 @@ export const apiRateLimiter = async (
   if (!identifier) {
     if (process.env.NODE_ENV !== "development" && process.env.ENV !== "development") {
       logger.error("Could not identify IP address.")
-      return {
-        success: false,
-        errorResponse: NextResponse.json("Could not identify your IP address.", { status: 500 }),
-      }
+      throw new TRPCError({
+        message: "Could not identify your IP address.",
+        code: "INTERNAL_SERVER_ERROR",
+      })
     } else {
       identifier = "unknown_ip"
     }
@@ -78,21 +73,13 @@ export const apiRateLimiter = async (
   )
 
   if (!result.success) {
-    return {
-      success: false,
-      errorResponse: NextResponse.json("Too many requests. Please try again in a few minutes.", {
-        status: 429,
-        headers: {
-          "X-RateLimit-Limit": `${result.limit}`,
-          "X-RateLimit-Remaining": `${result.remaining}`,
-          "X-RateLimit-Reset": `${options.duration}`,
-        },
-      }),
-    }
+    throw new TRPCError({
+      message: "Too many requests. Please try again in a few minutes.",
+      code: "TOO_MANY_REQUESTS",
+    })
   }
 
   return {
-    success: true,
     headers: new Headers({
       "X-RateLimit-Limit": `${result.limit}`,
       "X-RateLimit-Remaining": `${result.remaining}`,

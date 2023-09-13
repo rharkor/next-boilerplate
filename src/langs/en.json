@@ -56,6 +56,16 @@
   "reset": "Reset",
   "saveChanges": "Save changes",
   "errors": {
+    "typeError": {
+      "number": {
+        "invalid": "Please enter a valid number.",
+        "required": "Please enter a number."
+      },
+      "string": {
+        "invalid": "Please enter a valid string.",
+        "required": "Please enter a string."
+      }
+    },
     "username": {
       "required": "Username is required.",
       "min3": "Username must be at least 3 characters long.",
@@ -76,6 +86,7 @@
     },
     "unknownError": "An unknown error has occurred. Please try again later.",
     "wrongProvider": "You already have an account with a different provider. Please sign in with it.",
-    "invalidCredentials": "Invalid credentials. Please try again."
+    "invalidCredentials": "Invalid credentials. Please try again.",
+    "unauthorized": "You have been logged out. Please sign in again."
   }
 }

@@ -12,7 +12,7 @@ import { TDictionary } from "@/lib/langs"
 import { logger } from "@/lib/logger"
 import { signUpSchema } from "@/lib/schemas/auth"
 import { trpc } from "@/lib/trpc/client"
-import { cn, translateError } from "@/lib/utils"
+import { cn, handleMutationError } from "@/lib/utils"
 import { Button, buttonVariants } from "../ui/button"
 import { Form } from "../ui/form"
 import FormField from "../ui/form-field"
@@ -57,21 +57,21 @@ export function RegisterUserAuthForm({ dictionary, isMinimized, searchParams, ..
 
   const registerMutation = trpc.auth.register.useMutation({
     onError: (error) => {
-      const translatedError = translateError(error.message, dictionary)
+      const translatedError = handleMutationError(error, dictionary, router)
       if (error.message.includes("email")) {
         return form.setError("email", {
           type: "manual",
-          message: translatedError,
+          message: translatedError.message,
         })
       } else if (error.message.includes("username")) {
         return form.setError("username", {
           type: "manual",
-          message: translatedError,
+          message: translatedError.message,
         })
       }
       toast({
         title: dictionary.error,
-        description: translatedError,
+        description: translatedError.message,
         variant: "destructive",
       })
       setIsLoading(false)

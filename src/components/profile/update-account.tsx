@@ -6,45 +6,56 @@ import { useSession } from "next-auth/react"
 import { useCallback, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
-import { useApiStore } from "@/contexts/api.store"
+import { useAccount } from "@/contexts/account"
+import { handleMutationError } from "@/lib/client-utils"
 import { TDictionary } from "@/lib/langs"
 import { logger } from "@/lib/logger"
-import { UpdateUserSchema } from "@/types/api"
+import { updateUserSchema } from "@/lib/schemas/user"
+import { trpc } from "@/lib/trpc/client"
 import NeedSavePopup from "../need-save-popup"
 import { Form } from "../ui/form"
 import FormField from "../ui/form-field"
-import { toast } from "../ui/use-toast"
 
 //? Put only the fields you can update withou password confirmation
-export const nonSensibleSchema = UpdateUserSchema
+const nonSensibleSchema = updateUserSchema
 
-export type INonSensibleForm = z.infer<ReturnType<typeof nonSensibleSchema>>
+type INonSensibleForm = z.infer<ReturnType<typeof nonSensibleSchema>>
 
 export default function UpdateAccount({ dictionary }: { dictionary: TDictionary }) {
-  const { data: curSession, update } = useSession()
   const router = useRouter()
-  const apiFetch = useApiStore((state) => state.apiFetch(router))
+  const utils = trpc.useContext()
+
+  const { update } = useSession()
+  const account = useAccount(dictionary)
+
+  const updateUserMutation = trpc.me.updateUser.useMutation({
+    onError: (error) => handleMutationError(error, dictionary, router),
+    onSuccess: async () => {
+      logger.debug("User updated")
+      await update()
+      utils.me.getAccount.invalidate()
+    },
+  })
 
   const [isNotSensibleInformationsUpdated, setIsNotSensibleInformationsUpdated] = useState<boolean>(false)
 
   const form = useForm<INonSensibleForm>({
     resolver: zodResolver(nonSensibleSchema(dictionary)),
     defaultValues: {
-      username: curSession?.user?.name || "",
+      username: account?.data?.user?.name || "",
     },
   })
 
   const resetForm = useCallback(() => {
-    logger.debug("Resetting form with", curSession?.user)
+    logger.debug("Resetting form with", account?.data?.user)
     form.reset({
-      username: curSession?.user.username ?? "",
+      username: account?.data?.user.username ?? "",
     })
-  }, [curSession?.user, form])
+  }, [account?.data?.user, form])
 
   useEffect(() => {
-    if (!curSession) return
     resetForm()
-  }, [curSession, resetForm])
+  }, [resetForm])
 
   if (form.formState.isDirty && !isNotSensibleInformationsUpdated) {
     setIsNotSensibleInformationsUpdated(true)
@@ -53,24 +64,7 @@ export default function UpdateAccount({ dictionary }: { dictionary: TDictionary 
   }
 
   async function onUpdateNonSensibleInforation(data: INonSensibleForm) {
-    const res = await apiFetch(
-      fetch("/api/me", {
-        method: "PATCH",
-        body: JSON.stringify(data),
-      }),
-      dictionary,
-      (err) => {
-        toast({
-          title: dictionary.error,
-          description: err,
-          variant: "destructive",
-        })
-      }
-    )
-    if (res) {
-      //? Update the session
-      await update()
-    }
+    updateUserMutation.mutate(data)
   }
 
   return (
@@ -82,7 +76,7 @@ export default function UpdateAccount({ dictionary }: { dictionary: TDictionary 
               label={dictionary.profilePage.profileDetails.username.label}
               placeholder={dictionary.profilePage.profileDetails.username.placeholder}
               type="text"
-              disabled={form.formState.isSubmitting || !curSession}
+              disabled={updateUserMutation.isLoading || !account?.isFetched}
               form={form}
               name="username"
             />
@@ -90,7 +84,7 @@ export default function UpdateAccount({ dictionary }: { dictionary: TDictionary 
           <NeedSavePopup
             show={isNotSensibleInformationsUpdated}
             onReset={resetForm}
-            isSubmitting={form.formState.isSubmitting}
+            isSubmitting={updateUserMutation.isLoading}
             text={dictionary.needSavePopup}
             dictionary={dictionary}
           />

@@ -1,6 +1,7 @@
 import { initTRPC, TRPCError } from "@trpc/server"
 import superjson from "superjson"
 import { ZodError } from "zod"
+import { apiRateLimiter } from "../rate-limit"
 import { Context } from "../trpc/context"
 
 /**
@@ -25,9 +26,19 @@ const t = initTRPC.context<Context>().create({
  * that can be used throughout the router
  */
 export const router = t.router
-export const publicProcedure = t.procedure
 export const middleware = t.middleware
-
+const hasRateLimit = middleware(async (opts) => {
+  if (opts.ctx.req) {
+    const { headers } = await apiRateLimiter(opts.ctx.req)
+    return opts.next({
+      ctx: {
+        Headers: headers,
+      },
+    })
+  }
+  return opts.next()
+})
+export const publicProcedure = t.procedure.use(hasRateLimit)
 const isAuthenticated = middleware(async (opts) => {
   const { ctx } = opts
   if (!ctx.session) {
