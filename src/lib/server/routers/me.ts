@@ -1,8 +1,9 @@
-import { updateUser } from "@/lib/api/me/mutation"
+import { deleteAccount, updateUser } from "@/lib/api/me/mutation"
 import { getAccount } from "@/lib/api/me/queries"
 import { deleteSession } from "@/lib/api/me/sessions/mutation"
 import { getActiveSessions } from "@/lib/api/me/sessions/queries"
 import {
+  deleteAccountResponseSchema,
   deleteSessionResponseSchema,
   deleteSessionSchema,
   getAccountResponseSchema,
@@ -24,4 +25,5 @@ export const meRouter = router({
     .output(deleteSessionResponseSchema())
     .mutation(deleteSession),
   getAccount: authenticatedProcedure.output(getAccountResponseSchema()).query(getAccount),
+  deleteAccount: authenticatedProcedure.output(deleteAccountResponseSchema()).mutation(deleteAccount),
 })

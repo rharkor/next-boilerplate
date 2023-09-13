@@ -63,3 +63,10 @@ export const getAccountResponseSchema = (dictionary?: TDictionary) =>
   z.object({
     user: userSchema(dictionary),
   })
+
+export const deleteAccountResponseSchema = () =>
+  z.object({
+    user: z.object({
+      id: z.string(),
+    }),
+  })

@@ -1,9 +1,9 @@
 import { Prisma } from "@prisma/client"
 import { hash } from "@/lib/bcrypt"
-import { logger } from "@/lib/logger"
 import { prisma } from "@/lib/prisma"
 import { signUpSchema } from "@/lib/schemas/auth"
-import { ApiError } from "@/lib/utils"
+import { handleApiError } from "@/lib/server-utils"
+import { ApiError, throwableErrorsMessages } from "@/lib/utils"
 import { apiInputFromSchema } from "@/types"
 
 export const register = async ({ input }: apiInputFromSchema<typeof signUpSchema>) => {
@@ -24,19 +24,14 @@ export const register = async ({ input }: apiInputFromSchema<typeof signUpSchema
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
       if (error.code === "P2002") {
         const meta = error.meta
-        if (!meta) ApiError("Account already exists")
+        if (!meta) ApiError(throwableErrorsMessages.accountAlreadyExists)
         if ((meta.target as Array<string>).includes("email")) {
-          return ApiError("Email already exists")
+          return ApiError(throwableErrorsMessages.emailAlreadyExists)
         } else if ((meta.target as Array<string>).includes("username")) {
-          return ApiError("Username already exists")
+          return ApiError(throwableErrorsMessages.usernameAlreadyExists)
         }
       }
     }
-    logger.error(error)
-    if (error instanceof Error) {
-      return ApiError(error.message, "INTERNAL_SERVER_ERROR")
-    } else {
-      return ApiError("An unknown error occurred", "INTERNAL_SERVER_ERROR")
-    }
+    return handleApiError(error)
   }
 }

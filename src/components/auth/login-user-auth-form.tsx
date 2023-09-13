@@ -24,9 +24,9 @@ type UserAuthFormProps = React.HTMLAttributes<HTMLFormElement> & {
   searchParams: { [key: string]: string | string[] | undefined }
 }
 
-export const formSchema = signInSchema
+const formSchema = signInSchema
 
-export type IForm = z.infer<ReturnType<typeof formSchema>>
+type IForm = z.infer<ReturnType<typeof formSchema>>
 
 export function LoginUserAuthForm({ dictionary, searchParams, ...props }: UserAuthFormProps) {
   const router = useRouter()
@@ -52,9 +52,13 @@ export function LoginUserAuthForm({ dictionary, searchParams, ...props }: UserAu
 
   async function onSubmit(data: IForm) {
     setIsLoading(true)
-    const isPushingRoute = await handleSignIn({ data, callbackUrl, router, dictionary })
-    //? If isPushingRoute is true, it means that the user is being redirected to the callbackUrl
-    if (!isPushingRoute) setIsLoading(false)
+    try {
+      const isPushingRoute = await handleSignIn({ data, callbackUrl, router, dictionary })
+      //? If isPushingRoute is true, it means that the user is being redirected to the callbackUrl
+      if (!isPushingRoute) setIsLoading(false)
+    } catch (e) {
+      setIsLoading(false)
+    }
   }
 
   const copyToClipboard = (value?: string) => {

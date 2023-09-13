@@ -48,6 +48,7 @@
   "toSignUp": "S'inscrire",
   "toSignIn": "Se connecter",
   "signOut": "Déconnexion",
+  "deleteAccount": "Supprimer le compte",
   "notFound": "Page non trouvée",
   "login": "Connexion",
   "cancel": "Annuler",
@@ -94,7 +95,10 @@
     "unknownError": "Une erreur inconnue s'est produite. Veuillez ressayer plus tard.",
     "wrongProvider": "Vous avez déjà un compte avec un autre provider. Veuillez vous connecter avec celui-ci.",
     "invalidCredentials": "Les informations d'identification sont invalides.",
-    "unauthorized": "Vous avez été déconnecté. Veuillez vous reconnecter."
+    "unauthorized": "Vous avez été déconnecté. Veuillez vous reconnecter.",
+    "userNotFound": "Utilisateur introuvable.",
+    "cannotDeleteAdmin": "Vous ne pouvez pas supprimer le compte administrateur.",
+    "accountAlreadyExists": "Un compte existe déjà avec cet email."
   },
   "email": "Email",
   "emailPlaceholder": "nom@exemple.com",
@@ -131,5 +135,10 @@
     "goToPreviousPage": "Aller à la page précédente",
     "goToNextPage": "Aller à la page suivante",
     "goToLastPage": "Aller à la dernière page"
-  }
+  },
+  "deleteAccountConfirmationTitle": "Supprimer le compte",
+  "deleteAccountConfirmationDescription": "Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible.",
+  "deleteAccountConfirm": "Confirmer la suppression",
+  "deleteAccountSuccessTitle": "Compte supprimé",
+  "deleteAccountSuccessDescription": "Votre compte a été supprimé avec succès."
 }

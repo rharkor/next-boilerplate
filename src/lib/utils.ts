@@ -110,14 +110,41 @@ export const formatCouldNotMessage = async ({
   return couldNotMessage.replace("{action}", action).replace("{subject}", subject)
 }
 
-export const translateError = (error: string, dictionary: TDictionary) => {
-  if (error === "Email already exists") {
-    return dictionary.errors.email.exist
-  } else if (error === "Username already exists") {
-    return dictionary.errors.username.exist
+export const throwableErrorsMessages = {
+  emailAlreadyExists: "Email already exists",
+  usernameAlreadyExists: "Username already exists",
+  cannotDeleteAdmin: "You cannot delete the admin account",
+  accountAlreadyExists: "Account already exists",
+  youAreNotLoggedIn: "You are not logged in",
+  unknownError: "Unknown error",
+  userNotFound: "User not found",
+} as const
+
+//? Verify no duplicate values
+if (Object.values(throwableErrorsMessages).length !== new Set(Object.values(throwableErrorsMessages)).size) {
+  throw new Error("Duplicate values in throwableErrorsMessages")
+}
+
+export const translateError = (error: string, dictionary: TDictionary): string => {
+  switch (error) {
+    case throwableErrorsMessages.emailAlreadyExists:
+      return dictionary.errors.email.exist
+    case throwableErrorsMessages.usernameAlreadyExists:
+      return dictionary.errors.username.exist
+    case throwableErrorsMessages.cannotDeleteAdmin:
+      return dictionary.errors.cannotDeleteAdmin
+    case throwableErrorsMessages.accountAlreadyExists:
+      return dictionary.errors.accountAlreadyExists
+    case throwableErrorsMessages.youAreNotLoggedIn:
+      return dictionary.errors.unauthorized
+    case throwableErrorsMessages.unknownError:
+      return dictionary.errors.unknownError
+    case throwableErrorsMessages.userNotFound:
+      return dictionary.errors.userNotFound
+    default:
+      logger.error("Unknown translation for:", error)
+      return error
   }
-  logger.error("Unknown translation for:", error)
-  return error
 }
 
 export const handleApiError = <T extends TRPCClientErrorLike<AppRouter>>(

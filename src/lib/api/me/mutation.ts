@@ -1,12 +1,13 @@
 import { Prisma } from "@prisma/client"
-import { logger } from "@/lib/logger"
 import { prisma } from "@/lib/prisma"
 import { updateUserSchema } from "@/lib/schemas/user"
+import { ensureLoggedIn, handleApiError } from "@/lib/server-utils"
 import { ApiError } from "@/lib/utils"
 import { apiInputFromSchema } from "@/types"
+import { rolesAsObject } from "@/types/constants"
 
 export const updateUser = async ({ input, ctx: { session } }: apiInputFromSchema<typeof updateUserSchema>) => {
-  if (!session) return ApiError("You are not logged in", "UNAUTHORIZED")
+  ensureLoggedIn(session)
   const { username } = updateUserSchema().parse(input)
   try {
     //* Update the user
@@ -27,11 +28,27 @@ export const updateUser = async ({ input, ctx: { session } }: apiInputFromSchema
         }
       }
     }
-    logger.error(error)
-    if (error instanceof Error) {
-      return ApiError(error.message, "INTERNAL_SERVER_ERROR")
-    } else {
-      return ApiError("An unknown error occurred", "INTERNAL_SERVER_ERROR")
+    return handleApiError(error)
+  }
+}
+
+export const deleteAccount = async ({ ctx: { session } }: apiInputFromSchema<undefined>) => {
+  try {
+    ensureLoggedIn(session)
+    //* Ensure not admin
+    if (session.user.role === rolesAsObject.admin) {
+      return ApiError("You cannot delete the admin account", "FORBIDDEN")
     }
+
+    //* Delete the user
+    const user = await prisma.user.delete({
+      where: {
+        id: session.user.id,
+      },
+    })
+
+    return { user }
+  } catch (error: unknown) {
+    return handleApiError(error)
   }
 }

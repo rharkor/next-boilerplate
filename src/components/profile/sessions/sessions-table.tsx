@@ -78,10 +78,7 @@ export default function SessionsTable({ dictionary }: { dictionary: TDictionary 
     </>
   )
 
-  const showPagination = Boolean(
-    (activeSessions.data && (activeSessions.data.meta.totalPages > 1 || itemsPerPageInitial !== itemsPerPage)) ||
-      activeSessions.isInitialLoading
-  )
+  const showPagination = Boolean((meta && meta.totalPages > 1) || itemsPerPageInitial !== itemsPerPage)
 
   return (
     <div className="mt-4 flex flex-col space-y-4">

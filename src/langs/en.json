@@ -48,6 +48,7 @@
   "toSignUp": "Sign Up",
   "toSignIn": "Sign In",
   "signOut": "Sign Out",
+  "deleteAccount": "Delete Account",
   "notFound": "Not Found",
   "login": "Login",
   "cancel": "Cancel",
@@ -94,7 +95,10 @@
     "unknownError": "An unknown error has occurred. Please try again later.",
     "wrongProvider": "You already have an account with a different provider. Please sign in with it.",
     "invalidCredentials": "Invalid credentials. Please try again.",
-    "unauthorized": "You have been logged out. Please sign in again."
+    "unauthorized": "You have been logged out. Please sign in again.",
+    "userNotFound": "User not found.",
+    "cannotDeleteAdmin": "You cannot delete the admin account.",
+    "accountAlreadyExists": "An account with this email already exists."
   },
   "email": "Email",
   "emailPlaceholder": "name@example.com",
@@ -131,5 +135,10 @@
     "goToPreviousPage": "Aller à la page précédente",
     "goToNextPage": "Aller à la page suivante",
     "goToLastPage": "Aller à la dernière page"
-  }
+  },
+  "deleteAccountConfirmationTitle": "Delete account",
+  "deleteAccountConfirmationDescription": "Are you sure you want to delete your account? This action is irreversible.",
+  "deleteAccountConfirm": "Delete account",
+  "deleteAccountSuccessTitle": "Account deleted",
+  "deleteAccountSuccessDescription": "Your account has been deleted."
 }

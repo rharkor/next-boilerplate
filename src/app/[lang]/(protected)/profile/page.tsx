@@ -1,4 +1,5 @@
 import { getServerSession } from "next-auth"
+import DeleteAccountButton from "@/components/auth/delete-account-button"
 import SignoutButton from "@/components/auth/sign-out-button"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { nextAuthOptions } from "@/lib/auth"
@@ -28,7 +29,8 @@ export default async function Profile({
             <pre className="mt-2 overflow-auto rounded bg-muted p-2">{JSON.stringify(session, null, 2)}</pre>
           </CardContent>
           <CardFooter>
-            <div className="ml-auto">
+            <div className="ml-auto flex flex-row space-x-2">
+              <DeleteAccountButton dictionary={dictionary}>{dictionary.deleteAccount}</DeleteAccountButton>
               <SignoutButton>{dictionary.signOut}</SignoutButton>
             </div>
           </CardFooter>
