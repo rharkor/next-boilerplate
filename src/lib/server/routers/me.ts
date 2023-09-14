@@ -1,3 +1,4 @@
+import { sendVerificationEmail, verifyEmail } from "@/lib/api/me/email/mutation"
 import { deleteAccount, updateUser } from "@/lib/api/me/mutation"
 import { forgotPassword, resetPassword } from "@/lib/api/me/password/mutation"
 import { getAccount } from "@/lib/api/me/queries"
@@ -14,10 +15,14 @@ import {
   getActiveSessionsSchema,
   resetPasswordResponseSchema,
   resetPasswordSchema,
+  sendVerificationEmailResponseSchema,
+  sendVerificationEmailSchema,
   updateUserResponseSchema,
   updateUserSchema,
+  verifyEmailResponseSchema,
+  verifyEmailSchema,
 } from "@/lib/schemas/user"
-import { authenticatedProcedure, publicProcedure, router } from "../trpc"
+import { authenticatedNoEmailVerificationProcedure, authenticatedProcedure, publicProcedure, router } from "../trpc"
 
 export const meRouter = router({
   updateUser: authenticatedProcedure.input(updateUserSchema()).output(updateUserResponseSchema()).mutation(updateUser),
@@ -29,8 +34,10 @@ export const meRouter = router({
     .input(deleteSessionSchema())
     .output(deleteSessionResponseSchema())
     .mutation(deleteSession),
-  getAccount: authenticatedProcedure.output(getAccountResponseSchema()).query(getAccount),
-  deleteAccount: authenticatedProcedure.output(deleteAccountResponseSchema()).mutation(deleteAccount),
+  getAccount: authenticatedNoEmailVerificationProcedure.output(getAccountResponseSchema()).query(getAccount),
+  deleteAccount: authenticatedNoEmailVerificationProcedure
+    .output(deleteAccountResponseSchema())
+    .mutation(deleteAccount),
   forgotPassword: publicProcedure
     .input(forgotPasswordSchema())
     .output(forgotPasswordResponseSchema())
@@ -39,4 +46,12 @@ export const meRouter = router({
     .input(resetPasswordSchema())
     .output(resetPasswordResponseSchema())
     .mutation(resetPassword),
+  sendVerificationEmail: authenticatedNoEmailVerificationProcedure
+    .input(sendVerificationEmailSchema())
+    .output(sendVerificationEmailResponseSchema())
+    .mutation(sendVerificationEmail),
+  verifyEmail: authenticatedNoEmailVerificationProcedure
+    .input(verifyEmailSchema())
+    .output(verifyEmailResponseSchema())
+    .mutation(verifyEmail),
 })

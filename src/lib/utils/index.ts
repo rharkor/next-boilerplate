@@ -127,6 +127,7 @@ export const throwableErrorsMessages = {
   cannotResetAdminPasswordInDemoMode: "You cannot reset the admin password in demo mode",
   unauthorized: "Unauthorized",
   emailNotVerified: "Email not verified",
+  emailAlreadyVerified: "Email already verified",
 } as const
 
 //? Verify no duplicate values
@@ -166,6 +167,8 @@ export const translateError = (error: string, dictionary: TDictionary): string =
       return dictionary.errors.unauthorized
     case throwableErrorsMessages.emailNotVerified:
       return dictionary.errors.emailNotVerified
+    case throwableErrorsMessages.emailAlreadyVerified:
+      return dictionary.emailAlreadyVerified
     default:
       logger.error("Unknown translation for:", error)
       return error

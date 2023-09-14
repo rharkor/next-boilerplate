@@ -162,5 +162,14 @@
   "resetPasswordSuccessTitle": "Password reset",
   "resetPasswordSuccessDescription": "Your password has been reset.",
   "send": "Send",
-  "goToSignInPage": "Go to sign in page"
+  "goToSignInPage": "Go to sign in page",
+  "emailVerificationSentTitle": "Email verification sent",
+  "emailVerificationSentDescription": "An email has been sent to you. Please follow the instructions in the email to verify your email address.",
+  "emailAlreadyVerified": "Email verified",
+  "resendVerificationEmail": "Resend verification email",
+  "verifyEmailSuccessTitle": "Email verified",
+  "verifyEmailSuccessDescription": "Your email has been verified.",
+  "verifyEmail": "Verify email",
+  "emailVerificationTitle": "Email verification",
+  "emailVerificationDescription": "Please verify your email address."
 }

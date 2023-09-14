@@ -45,10 +45,14 @@ const isAuthenticated = middleware(async (opts) => {
   if (!ctx.session) {
     throw new TRPCError({ code: "UNAUTHORIZED", message: throwableErrorsMessages.unauthorized })
   }
-
-  if (!ctx.session.user.emailVerified) {
+  return opts.next()
+})
+const hasVerifiedEmail = middleware(async (opts) => {
+  const { ctx } = opts
+  if (!ctx.session || !ctx.session.user.emailVerified) {
     throw new TRPCError({ code: "UNAUTHORIZED", message: throwableErrorsMessages.emailNotVerified })
   }
   return opts.next()
 })
-export const authenticatedProcedure = publicProcedure.use(isAuthenticated)
+export const authenticatedProcedure = publicProcedure.use(isAuthenticated).use(hasVerifiedEmail)
+export const authenticatedNoEmailVerificationProcedure = publicProcedure.use(isAuthenticated)

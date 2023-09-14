@@ -97,3 +97,24 @@ export const resetPasswordResponseSchema = () =>
   z.object({
     user: userSchema(),
   })
+
+export const sendVerificationEmailSchema = (dictionary?: TDictionary) =>
+  z.object({
+    email: emailSchema(dictionary),
+    silent: z.boolean().optional(),
+  })
+
+export const sendVerificationEmailResponseSchema = () =>
+  z.object({
+    email: z.string(),
+  })
+
+export const verifyEmailSchema = () =>
+  z.object({
+    token: z.string(),
+  })
+
+export const verifyEmailResponseSchema = () =>
+  z.object({
+    user: userSchema(),
+  })

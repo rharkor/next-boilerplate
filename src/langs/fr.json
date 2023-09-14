@@ -162,5 +162,14 @@
   "resetPasswordSuccessTitle": "Mot de passe réinitialisé",
   "resetPasswordSuccessDescription": "Votre mot de passe a été réinitialisé avec succès.",
   "send": "Envoyer",
-  "goToSignInPage": "Aller à la page de connexion"
+  "goToSignInPage": "Aller à la page de connexion",
+  "emailVerificationSentTitle": "Email envoyé",
+  "emailVerificationSentDescription": "Un email dé vérification vous a été envoyé. Veuillez suivre les instructions pour valider votre email.",
+  "emailAlreadyVerified": "Email vérifié",
+  "resendVerificationEmail": "Renvoyer l'email de vérification",
+  "verifyEmailSuccessTitle": "Email vérifié",
+  "verifyEmailSuccessDescription": "Votre email a été vérifié avec succès.",
+  "verifyEmail": "Vérifier l'email",
+  "emailVerificationTitle": "Vérification de l'email",
+  "emailVerificationDescription": "Veuillez vérifier votre email pour continuer."
 }

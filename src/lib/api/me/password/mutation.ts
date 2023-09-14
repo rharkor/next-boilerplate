@@ -12,8 +12,8 @@ import { resendResetPasswordExpiration, resetPasswordExpiration, rolesAsObject }
 import { env } from "env.mjs"
 
 export const forgotPassword = async ({ input }: apiInputFromSchema<typeof forgotPasswordSchema>) => {
-  const { email } = forgotPasswordSchema().parse(input)
   try {
+    const { email } = forgotPasswordSchema().parse(input)
     //? Check if user exists
     const user = await prisma.user.findUnique({
       where: {
@@ -74,8 +74,8 @@ export const forgotPassword = async ({ input }: apiInputFromSchema<typeof forgot
 }
 
 export const resetPassword = async ({ input }: apiInputFromSchema<typeof resetPasswordSchema>) => {
-  const { token, password } = resetPasswordSchema().parse(input)
   try {
+    const { token, password } = resetPasswordSchema().parse(input)
     const resetPassordToken = await prisma.resetPassordToken.findUnique({
       where: {
         token,

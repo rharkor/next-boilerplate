@@ -8,4 +8,14 @@ export const logger = {
       console.debug(yellowBright("[DEBUG]"), ...args)
     }
   },
+  time: (label: string) => {
+    if (allowDebug) {
+      console.time(label)
+    }
+  },
+  timeEnd: (label: string) => {
+    if (allowDebug) {
+      console.timeEnd(label)
+    }
+  },
 }
