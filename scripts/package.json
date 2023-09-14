@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "init": "npx ts-node --esm init.ts",
-    "depcheck": "npx ts-node --esm depcheck.ts"
+    "init": "npx -y tsx init.ts",
+    "depcheck": "npx -y tsx depcheck.ts"
   },
   "type": "module",
   "dependencies": {
