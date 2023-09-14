@@ -3,6 +3,7 @@ import superjson from "superjson"
 import { ZodError } from "zod"
 import { apiRateLimiter } from "../rate-limit"
 import { Context } from "../trpc/context"
+import { throwableErrorsMessages } from "../utils"
 
 /**
  * Initialization of tRPC backend
@@ -42,7 +43,11 @@ export const publicProcedure = t.procedure.use(hasRateLimit)
 const isAuthenticated = middleware(async (opts) => {
   const { ctx } = opts
   if (!ctx.session) {
-    throw new TRPCError({ code: "UNAUTHORIZED" })
+    throw new TRPCError({ code: "UNAUTHORIZED", message: throwableErrorsMessages.unauthorized })
+  }
+
+  if (!ctx.session.user.emailVerified) {
+    throw new TRPCError({ code: "UNAUTHORIZED", message: throwableErrorsMessages.emailNotVerified })
   }
   return opts.next()
 })

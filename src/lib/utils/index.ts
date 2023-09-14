@@ -125,6 +125,8 @@ export const throwableErrorsMessages = {
   tokenNotFound: "Token not found",
   tokenExpired: "Token expired",
   cannotResetAdminPasswordInDemoMode: "You cannot reset the admin password in demo mode",
+  unauthorized: "Unauthorized",
+  emailNotVerified: "Email not verified",
 } as const
 
 //? Verify no duplicate values
@@ -160,6 +162,10 @@ export const translateError = (error: string, dictionary: TDictionary): string =
       return dictionary.errors.tokenExpired
     case throwableErrorsMessages.cannotResetAdminPasswordInDemoMode:
       return dictionary.errors.cannotResetAdminPasswordInDemoMode
+    case throwableErrorsMessages.unauthorized:
+      return dictionary.errors.unauthorized
+    case throwableErrorsMessages.emailNotVerified:
+      return dictionary.errors.emailNotVerified
     default:
       logger.error("Unknown translation for:", error)
       return error
@@ -171,16 +177,13 @@ export const handleApiError = <T extends TRPCClientErrorLike<AppRouter>>(
   dictionary: TDictionary,
   router: AppRouterInstance
 ): T => {
+  const translatedError = translateError(error.message, dictionary)
   if (error.data?.code === "UNAUTHORIZED") {
-    router.push(authRoutes.redirectOnUnhauthorized)
-    const errorMessage = dictionary.errors.unauthorized
-    return {
-      ...error,
-      message: errorMessage,
+    if (error.message !== throwableErrorsMessages.emailNotVerified) {
+      router.push(authRoutes.redirectOnUnhauthorized)
     }
   }
 
-  const translatedError = translateError(error.message, dictionary)
   return {
     ...error,
     message: translatedError,

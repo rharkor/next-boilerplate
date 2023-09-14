@@ -106,7 +106,8 @@
     "tokenNotFound": "Token invalid or already used.",
     "tokenExpired": "Token has expired.",
     "passwordsDoNotMatch": "Passwords do not match.",
-    "cannotResetAdminPasswordInDemoMode": "You cannot reset the admin password in demo mode."
+    "cannotResetAdminPasswordInDemoMode": "You cannot reset the admin password in demo mode.",
+    "emailNotVerified": "Please, verify your email."
   },
   "email": "Email",
   "emailPlaceholder": "name@example.com",

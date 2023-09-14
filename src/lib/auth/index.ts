@@ -54,7 +54,15 @@ export const nextAuthOptions: NextAuthOptions & {
 
         const user = await prisma.user.findUnique({
           where: { email: creds.email },
-          select: { id: true, email: true, username: true, role: true, password: true },
+          select: {
+            id: true,
+            email: true,
+            username: true,
+            role: true,
+            password: true,
+            emailVerified: true,
+            hasPassword: true,
+          },
         })
 
         if (!user) {
@@ -112,6 +120,8 @@ export const nextAuthOptions: NextAuthOptions & {
           username: user.username,
           role: user.role,
           uuid,
+          emailVerified: user.emailVerified,
+          hasPassword: user.hasPassword,
         }
       },
     }),
@@ -131,6 +141,7 @@ export const nextAuthOptions: NextAuthOptions & {
         if ("username" in user) token.username = user.username
         if ("role" in user) token.role = user.role as string
         if ("uuid" in user) token.uuid = user.uuid as string
+        if ("emailVerified" in user) token.emailVerified = user.emailVerified as Date
       }
 
       return token
@@ -186,6 +197,7 @@ export const nextAuthOptions: NextAuthOptions & {
       const username = dbUser.username
       const role = dbUser.role
       const hasPassword = dbUser.hasPassword
+      const emailVerified = dbUser.emailVerified
 
       //* Fill session with token data
       const uuid = "uuid" in token ? token.uuid : undefined
@@ -199,6 +211,7 @@ export const nextAuthOptions: NextAuthOptions & {
           role,
           uuid,
           hasPassword,
+          emailVerified,
         },
       }
       return sessionFilled
