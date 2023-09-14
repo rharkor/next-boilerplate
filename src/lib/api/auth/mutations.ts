@@ -33,7 +33,7 @@ export const register = async ({ input }: apiInputFromSchema<typeof signUpSchema
         expires: new Date(Date.now() + emailVerificationExpiration),
       },
     })
-    const url = `${env.BASE_URL}/verify-email/${token}`
+    const url = `${env.VERCEL_URL ?? env.BASE_URL}/verify-email/${token}`
     await sendMail({
       from: `"${env.SMTP_FROM_NAME}" <${env.SMTP_FROM_EMAIL}>`,
       to: email.toLowerCase(),

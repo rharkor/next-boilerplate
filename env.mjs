@@ -30,18 +30,22 @@ export const env = createEnv({
       .optional()
       .transform((value) => value === "true"),
     ENV: z.enum(["development", "recette", "production"]).optional(),
-    BASE_URL: z.string().url(),
+    BASE_URL: z.string().url().optional(),
     VERCEL_URL: z.string().optional(),
-    SMTP_HOST: z.string().nonempty(),
+    SMTP_HOST: z.string().optional(),
     SMTP_PORT: z
       .string()
-      .nonempty()
-      .transform((value) => parseInt(value)),
-    SMTP_USERNAME: z.string().nonempty(),
-    SMTP_PASSWORD: z.string().nonempty(),
-    SMTP_FROM_NAME: z.string().nonempty(),
-    SMTP_FROM_EMAIL: z.string().nonempty(),
+      .transform((value) => parseInt(value))
+      .optional(),
+    SMTP_USERNAME: z.string().optional(),
+    SMTP_PASSWORD: z.string().optional(),
+    SMTP_FROM_NAME: z.string().optional(),
+    SMTP_FROM_EMAIL: z.string().optional(),
     SUPPORT_EMAIL: z.string().optional(),
+    ENABLE_MAILING_SERVICE: z
+      .enum(["true", "false"])
+      .optional()
+      .transform((value) => value === "true"),
   },
   client: {
     NEXT_PUBLIC_IS_DEMO: z
@@ -83,6 +87,7 @@ export const env = createEnv({
     SMTP_FROM_NAME: process.env.SMTP_FROM_NAME,
     SMTP_FROM_EMAIL: process.env.SMTP_FROM_EMAIL,
     SUPPORT_EMAIL: process.env.SUPPORT_EMAIL,
+    ENABLE_MAILING_SERVICE: process.env.ENABLE_MAILING_SERVICE,
   },
   onValidationError: (error) => {
     console.error(error)

@@ -63,8 +63,8 @@ export const forgotPassword = async ({ input }: apiInputFromSchema<typeof forgot
       from: `"${env.SMTP_FROM_NAME}" <${env.SMTP_FROM_EMAIL}>`,
       to: email,
       subject: subject,
-      text: plainText(user.username ?? email, `${env.BASE_URL}/reset-password/${resetPasswordToken}`),
-      html: html(user.username ?? email, `${env.BASE_URL}/reset-password/${resetPasswordToken}`),
+      text: plainText(user.username ?? email, `${env.VERCEL_URL ?? env.BASE_URL}/reset-password/${resetPasswordToken}`),
+      html: html(user.username ?? email, `${env.VERCEL_URL ?? env.BASE_URL}/reset-password/${resetPasswordToken}`),
     })
 
     return { email }

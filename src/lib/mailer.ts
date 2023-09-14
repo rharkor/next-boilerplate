@@ -20,6 +20,7 @@ const transporter = createTransport({
 })
 
 export const sendMail = async (...params: Parameters<typeof transporter.sendMail>) => {
+  if (!env.ENABLE_MAILING_SERVICE) return logger.info("Email service is disabled, sending email is skipped.", params)
   try {
     const res = await transporter.sendMail(...params)
     logger.info(`Email sent to ${res.envelope.to}`)
