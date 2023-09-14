@@ -19,14 +19,16 @@ export default async function Profile({
 
   return (
     <main className="container flex flex-1 flex-col items-center justify-center p-6">
-      <div>
+      <div className="flex w-full max-w-max flex-col">
         <Card className="relative z-10 m-auto max-w-full">
           <CardHeader>
             <CardTitle>{dictionary.profile}</CardTitle>
           </CardHeader>
           <CardContent>
             <p className="text-muted-foreground">{dictionary.profilePage.serverSideData}</p>
-            <pre className="mt-2 overflow-auto rounded bg-muted p-2">{JSON.stringify(session, null, 2)}</pre>
+            <pre className="mt-2 max-w-[40rem] overflow-auto rounded bg-muted p-2">
+              {JSON.stringify(session, null, 2)}
+            </pre>
           </CardContent>
           <CardFooter>
             <div className="ml-auto flex flex-row space-x-2">

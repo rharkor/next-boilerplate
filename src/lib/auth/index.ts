@@ -154,29 +154,26 @@ export const nextAuthOptions: NextAuthOptions & {
       }
 
       //* Verify that the session still exists
-      if (!token.uuid || typeof token.uuid !== "string") {
-        logger.debug("Missing token uuid")
-        return {} as Session
-      }
-
-      const loginSession = await prisma.session.findUnique({
-        where: {
-          sessionToken: token.uuid,
-        },
-      })
-      if (!loginSession) {
-        logger.debug("Session not found", token.uuid)
-        return {} as Session
-      } else {
-        //? Update session lastUsed
-        await prisma.session.update({
+      if (token.uuid) {
+        const loginSession = await prisma.session.findUnique({
           where: {
-            id: loginSession.id,
-          },
-          data: {
-            lastUsedAt: new Date(),
+            sessionToken: token.uuid,
           },
         })
+        if (!loginSession) {
+          logger.debug("Session not found", token.uuid)
+          return {} as Session
+        } else {
+          //? Update session lastUsed
+          await prisma.session.update({
+            where: {
+              id: loginSession.id,
+            },
+            data: {
+              lastUsedAt: new Date(),
+            },
+          })
+        }
       }
 
       //* Fill session with user data

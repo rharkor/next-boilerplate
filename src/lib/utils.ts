@@ -90,12 +90,12 @@ export const getTimeBetween = (
 }
 
 // Function to ensure an url is relative to the current domain
-export const ensureRelativeUrl = (url: string | undefined) => {
+export const ensureRelativeUrl = <T extends string | undefined>(url: T) => {
   if (url && url.startsWith("http")) {
     const urlObject = new URL(url)
     return urlObject.pathname
   }
-  return url
+  return url as T
 }
 
 export const formatCouldNotMessage = async ({
