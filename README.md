@@ -1,5 +1,7 @@
 # Next.js Enterprise Boilerplate
 
+<!-- ![Project intro image](./project-logo.png) -->
+
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/rharkor/next-boilerplate/blob/main/LICENSE)
 
 Welcome to the _Next.js Enterprise Boilerplate_, an open-source template for enterprise projects! It's loaded with features that'll help you build a high-performance, maintainable, and enjoyable app. We've done all the heavy lifting for you, so sit back, relax, and get ready to conquer the world with your incredible app! 🌍
@@ -39,6 +41,9 @@ With this template, you get all the awesomeness you need:
 - 🚢 **[Semantic Release](https://github.com/semantic-release/semantic-release)** - for automatic changelog
 - 💻 **[T3 Env](https://env.t3.gg/)** - Manage your environment variables with ease
 - 📦 **[Unused dependencies checker](https://www.npmjs.com/package/depcheck)** - Keep your dependencies clean
+- ✉️ **[Nodemailer](https://nodemailer.com/)** - Send emails with ease from any smtp server
+- 🔗 **[Trpc](https://trpc.io/)** - Move Fast and Break Nothing. End-to-end typesafe APIs made easy.
+- 🎨 **[Shadcn](https://ui.shadcn.com/)** - Beautifully designed components
 
 ## Table of Contents
 
