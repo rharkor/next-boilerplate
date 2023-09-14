@@ -31,7 +31,7 @@ export default function SessionRow({ session, setSelectedSession, skeleton, dict
   const userAgents = session ? new UAParser(session.ua).getResult() : undefined
 
   return (
-    <div className="grid items-center space-x-4 md:grid-cols-[1fr,1fr,1fr,1fr,auto]">
+    <div className="grid min-w-[475px] grid-cols-[1fr,1fr,1fr,1fr,auto] items-center space-x-4">
       <div className="flex flex-col space-y-1">
         <div className="flex flex-row space-x-2">
           <div className="flex flex-col space-y-1">

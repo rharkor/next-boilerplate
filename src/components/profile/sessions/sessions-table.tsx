@@ -83,7 +83,7 @@ export default function SessionsTable({ dictionary, isDisabled }: { dictionary: 
   const showPagination = Boolean((meta && meta.totalPages > 1) || itemsPerPageInitial !== itemsPerPage)
 
   return (
-    <div className="relative mt-4 flex flex-col space-y-4">
+    <div className="relative mt-4 flex flex-col space-y-4 overflow-hidden overflow-x-auto">
       <AlertDialog>
         {activeSessions.isFetched ? rows : skelRows}
         <Pagination
