@@ -34,7 +34,7 @@ export const nextAuthOptions: NextAuthOptions & {
       },
       authorize: async (credentials, req) => {
         const referer = (req.headers?.referer as string | undefined) ?? ""
-        const refererUrl = ensureRelativeUrl(referer) ?? ""
+        const refererUrl = ensureRelativeUrl(referer)
         const lang = i18n.locales.find((locale) => refererUrl.startsWith(`/${locale}/`)) ?? i18n.defaultLocale
         const dictionary =
           nextAuthOptions.loadedDictionary.get(lang) ??
@@ -127,6 +127,7 @@ export const nextAuthOptions: NextAuthOptions & {
       if (isPossiblyUndefined(user)) {
         token.id = user.id
         token.email = user.email
+        if ("hasPassword" in user) token.hasPassword = user.hasPassword as boolean
         if ("username" in user) token.username = user.username
         if ("role" in user) token.role = user.role as string
         if ("uuid" in user) token.uuid = user.uuid as string
@@ -154,6 +155,11 @@ export const nextAuthOptions: NextAuthOptions & {
       }
 
       //* Verify that the session still exists
+      if (dbUser.hasPassword && (!token.uuid || typeof token.uuid !== "string")) {
+        logger.debug("Missing token uuid")
+        return {} as Session
+      }
+
       if (token.uuid) {
         const loginSession = await prisma.session.findUnique({
           where: {
@@ -179,6 +185,7 @@ export const nextAuthOptions: NextAuthOptions & {
       //* Fill session with user data
       const username = dbUser.username
       const role = dbUser.role
+      const hasPassword = dbUser.hasPassword
 
       //* Fill session with token data
       const uuid = "uuid" in token ? token.uuid : undefined
@@ -191,6 +198,7 @@ export const nextAuthOptions: NextAuthOptions & {
           username: username ?? undefined,
           role,
           uuid,
+          hasPassword,
         },
       }
       return sessionFilled

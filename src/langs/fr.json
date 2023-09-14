@@ -32,7 +32,8 @@
       "created": "Créé",
       "expires": "Expire",
       "in": "dans"
-    }
+    },
+    "unavailableWithOAuth": "Cette fonctionnalité n'est pas disponible avec ce type de connexion."
   },
   "auth": {
     "orContinueWith": "Ou continuez avec",

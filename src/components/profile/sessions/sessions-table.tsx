@@ -23,7 +23,7 @@ import SessionRow from "./session-row"
 
 const itemsPerPageInitial = 5
 
-export default function SessionsTable({ dictionary }: { dictionary: TDictionary }) {
+export default function SessionsTable({ dictionary, isDisabled }: { dictionary: TDictionary; isDisabled?: boolean }) {
   const router = useRouter()
   const utils = trpc.useContext()
 
@@ -35,7 +35,9 @@ export default function SessionsTable({ dictionary }: { dictionary: TDictionary 
     page: currentPage,
     perPage: itemsPerPage,
   }
-  const activeSessions = useActiveSessions(dictionary, callParams)
+  const activeSessions = useActiveSessions(dictionary, callParams, {
+    disabled: isDisabled,
+  })
   const [meta, setMeta] = useState<IMeta | undefined>(activeSessions.data?.meta)
 
   useEffect(() => {
@@ -81,7 +83,7 @@ export default function SessionsTable({ dictionary }: { dictionary: TDictionary 
   const showPagination = Boolean((meta && meta.totalPages > 1) || itemsPerPageInitial !== itemsPerPage)
 
   return (
-    <div className="mt-4 flex flex-col space-y-4">
+    <div className="relative mt-4 flex flex-col space-y-4">
       <AlertDialog>
         {activeSessions.isFetched ? rows : skelRows}
         <Pagination
@@ -108,6 +110,11 @@ export default function SessionsTable({ dictionary }: { dictionary: TDictionary 
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+      {isDisabled && (
+        <div className="absolute inset-0 !mt-0 flex flex-col items-center justify-center backdrop-blur-sm">
+          <p className="text-sm text-muted-foreground">{dictionary.profilePage.unavailableWithOAuth}</p>
+        </div>
+      )}
     </div>
   )
 }

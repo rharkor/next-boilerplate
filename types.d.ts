@@ -8,6 +8,7 @@ declare module "next-auth" {
       uuid: string
       username?: string
       role: string
+      hasPassword: boolean
     }
   }
 }
@@ -16,6 +17,7 @@ declare module "next-auth/jwt/types" {
   interface JWT {
     uuid: string
     role: string
+    hasPassword: boolean
   }
 }
 

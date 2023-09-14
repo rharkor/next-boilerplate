@@ -32,7 +32,8 @@
       "created": "Created",
       "expires": "Expires",
       "in": "in"
-    }
+    },
+    "unavailableWithOAuth": "This feature is not available with OAuth providers."
   },
   "auth": {
     "orContinueWith": "Or continue with",

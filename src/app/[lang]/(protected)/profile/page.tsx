@@ -37,7 +37,7 @@ export default async function Profile({
             </div>
           </CardFooter>
         </Card>
-        <SeeDetailsToggle dictionary={dictionary} />
+        <SeeDetailsToggle dictionary={dictionary} session={session} />
       </div>
     </main>
   )
