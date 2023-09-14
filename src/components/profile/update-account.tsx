@@ -47,7 +47,6 @@ export default function UpdateAccount({ dictionary }: { dictionary: TDictionary 
   })
 
   const resetForm = useCallback(() => {
-    logger.debug("Resetting form with", account.data?.user)
     form.reset({
       username: account.data?.user.username ?? "",
     })
