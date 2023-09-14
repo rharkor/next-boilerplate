@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/prisma"
-import { ensureLoggedIn, handleApiError } from "@/lib/server-utils"
 import { ApiError, throwableErrorsMessages } from "@/lib/utils"
+import { ensureLoggedIn, handleApiError } from "@/lib/utils/server-utils"
 import { apiInputFromSchema } from "@/types"
 
 export const getAccount = async ({ ctx: { session } }: apiInputFromSchema<undefined>) => {

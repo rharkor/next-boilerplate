@@ -15,10 +15,10 @@ import {
 } from "@/components/ui/alert-dialog"
 import Pagination from "@/components/ui/pagination"
 import { useActiveSessions } from "@/contexts/active-sessions"
-import { handleMutationError } from "@/lib/client-utils"
 import { IMeta } from "@/lib/json-api"
 import { TDictionary } from "@/lib/langs"
 import { trpc } from "@/lib/trpc/client"
+import { handleMutationError } from "@/lib/utils/client-utils"
 import SessionRow from "./session-row"
 
 const itemsPerPageInitial = 5

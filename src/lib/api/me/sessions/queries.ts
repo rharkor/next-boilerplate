@@ -2,7 +2,7 @@ import { z } from "zod"
 import { getJsonApiSkip, getJsonApiSort, getJsonApiTake, parseJsonApiQuery } from "@/lib/json-api"
 import { prisma } from "@/lib/prisma"
 import { getActiveSessionsResponseSchema, getActiveSessionsSchema } from "@/lib/schemas/user"
-import { ensureLoggedIn, handleApiError } from "@/lib/server-utils"
+import { ensureLoggedIn, handleApiError } from "@/lib/utils/server-utils"
 import { apiInputFromSchema } from "@/types"
 
 export const getActiveSessions = async ({

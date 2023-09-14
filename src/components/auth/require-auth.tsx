@@ -4,7 +4,7 @@ import { getServerSession } from "next-auth"
 import { nextAuthOptions } from "@/lib/auth"
 import { authRoutes } from "@/lib/auth/constants"
 import { logger } from "@/lib/logger"
-import { validateSession } from "@/lib/server-utils"
+import { validateSession } from "@/lib/utils/server-utils"
 
 export default async function requireAuth(callbackUrl?: string) {
   const session = await getServerSession(nextAuthOptions)

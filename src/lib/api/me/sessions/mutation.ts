@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/prisma"
 import { deleteSessionSchema } from "@/lib/schemas/user"
-import { ensureLoggedIn, handleApiError } from "@/lib/server-utils"
+import { ensureLoggedIn, handleApiError } from "@/lib/utils/server-utils"
 import { apiInputFromSchema } from "@/types"
 
 export const deleteSession = async ({ input, ctx: { session } }: apiInputFromSchema<typeof deleteSessionSchema>) => {

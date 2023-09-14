@@ -6,6 +6,18 @@ import type { NextRequest } from "next/server"
 import { logger } from "./lib/logger"
 import { i18n } from "../i18n-config"
 
+const blackListedPaths = [
+  "healthz",
+  "api/healthz",
+  "health",
+  "ping",
+  "api/ping",
+  "login",
+  "signin",
+  "register",
+  "signup",
+]
+
 function getLocale(request: NextRequest): string | undefined {
   // Negotiator expects plain object so we need to transform headers
   const negotiatorHeaders: Record<string, string> = {}
@@ -39,8 +51,10 @@ export function middleware(request: NextRequest) {
     (locale) => !pathname.startsWith(`/${locale}/`) && pathname !== `/${locale}`
   )
 
+  const pathnameIsNotBlacklisted = !blackListedPaths.some((path) => pathname.startsWith(`/${path}`))
+
   // Redirect if there is no locale
-  if (pathnameIsMissingLocale) {
+  if (pathnameIsMissingLocale && pathnameIsNotBlacklisted) {
     const locale = getLocale(request)
 
     // e.g. incoming request is /products

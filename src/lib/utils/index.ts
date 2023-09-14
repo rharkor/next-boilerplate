@@ -4,16 +4,17 @@ import { TRPC_ERROR_CODE_KEY } from "@trpc/server/rpc"
 import { type ClassValue, clsx } from "clsx"
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context"
 import { twMerge } from "tailwind-merge"
-import { authRoutes } from "./auth/constants"
-import { TDictionary } from "./langs"
-import { logger } from "./logger"
-import { AppRouter } from "./server/routers/_app"
+import { ValueOf } from "@/types"
+import { authRoutes } from "../auth/constants"
+import { TDictionary } from "../langs"
+import { logger } from "../logger"
+import { AppRouter } from "../server/routers/_app"
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export function ApiError(message: string, code?: TRPC_ERROR_CODE_KEY): never {
+export function ApiError(message: ValueOf<typeof throwableErrorsMessages>, code?: TRPC_ERROR_CODE_KEY): never {
   throw new TRPCError({
     code: code ?? "BAD_REQUEST",
     message: message,
@@ -118,6 +119,12 @@ export const throwableErrorsMessages = {
   youAreNotLoggedIn: "You are not logged in",
   unknownError: "Unknown error",
   userNotFound: "User not found",
+  userDoesNotHaveAPassword: "User does not have a password",
+  pleaseTryAgainInFewMinutes: "Please try again in a few minutes",
+  emailAlreadySentPleaseTryAgainInFewMinutes: "Email already sent, please try again in a few minutes",
+  tokenNotFound: "Token not found",
+  tokenExpired: "Token expired",
+  cannotResetAdminPasswordInDemoMode: "You cannot reset the admin password in demo mode",
 } as const
 
 //? Verify no duplicate values
@@ -141,6 +148,18 @@ export const translateError = (error: string, dictionary: TDictionary): string =
       return dictionary.errors.unknownError
     case throwableErrorsMessages.userNotFound:
       return dictionary.errors.userNotFound
+    case throwableErrorsMessages.userDoesNotHaveAPassword:
+      return dictionary.errors.userDoesNotHaveAPassword
+    case throwableErrorsMessages.pleaseTryAgainInFewMinutes:
+      return dictionary.errors.pleaseTryAgainInFewMinutes
+    case throwableErrorsMessages.emailAlreadySentPleaseTryAgainInFewMinutes:
+      return dictionary.errors.emailAlreadySentPleaseTryAgainInFewMinutes
+    case throwableErrorsMessages.tokenNotFound:
+      return dictionary.errors.tokenNotFound
+    case throwableErrorsMessages.tokenExpired:
+      return dictionary.errors.tokenExpired
+    case throwableErrorsMessages.cannotResetAdminPasswordInDemoMode:
+      return dictionary.errors.cannotResetAdminPasswordInDemoMode
     default:
       logger.error("Unknown translation for:", error)
       return error

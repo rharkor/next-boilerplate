@@ -2,10 +2,10 @@ import { TRPCClientErrorLike } from "@trpc/client"
 import "client-only"
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context"
 import { toast } from "@/components/ui/use-toast"
-import { TDictionary } from "./langs"
-import { logger } from "./logger"
-import { AppRouter } from "./server/routers/_app"
-import { handleApiError } from "./utils"
+import { TDictionary } from "../langs"
+import { logger } from "../logger"
+import { AppRouter } from "../server/routers/_app"
+import { handleApiError } from "."
 
 export const handleQueryError = <T extends TRPCClientErrorLike<AppRouter>>(
   error: T,

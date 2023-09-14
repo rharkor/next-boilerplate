@@ -6,9 +6,9 @@ generator client {
 }
 
 datasource db {
-  provider          = "postgresql"
-  url               = env("DATABASE_PRISMA_URL") // uses connection pooling
-  directUrl         = env("DATABASE_URL_NON_POOLING") // uses a direct connection
+  provider  = "postgresql"
+  url       = env("DATABASE_PRISMA_URL") // uses connection pooling
+  directUrl = env("DATABASE_URL_NON_POOLING") // uses a direct connection
 }
 
 model Account {
@@ -52,16 +52,26 @@ model User {
   sessions      Session[]
 
   // Custom fields
-  username    String? @unique
-  role        String  @default("user")
-  password    String?
-  hasPassword Boolean @default(false)
+  username           String?            @unique
+  role               String             @default("user")
+  password           String?
+  hasPassword        Boolean            @default(false)
+  resetPasswordToken ResetPassordToken?
 }
 
+//? For one time login links
 model VerificationToken {
   identifier String
   token      String   @unique
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+model ResetPassordToken {
+  identifier String   @unique
+  token      String   @unique
+  expires    DateTime
+  user       User     @relation(fields: [identifier], references: [id], onDelete: Cascade)
+  createdAt  DateTime @default(now())
 }

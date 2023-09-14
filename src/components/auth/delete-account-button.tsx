@@ -13,9 +13,9 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import { authRoutes } from "@/lib/auth/constants"
-import { handleMutationError } from "@/lib/client-utils"
 import { TDictionary } from "@/lib/langs"
 import { trpc } from "@/lib/trpc/client"
+import { handleMutationError } from "@/lib/utils/client-utils"
 import { Button } from "../ui/button"
 import { toast } from "../ui/use-toast"
 

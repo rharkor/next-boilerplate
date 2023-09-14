@@ -1,5 +1,5 @@
 import { z } from "zod"
-import { usernameSchema } from "./auth"
+import { emailSchema, usernameSchema } from "./auth"
 import { jsonApiQuerySchema, jsonApiResponseSchema } from "../json-api"
 import { TDictionary } from "../langs"
 
@@ -69,4 +69,31 @@ export const deleteAccountResponseSchema = () =>
     user: z.object({
       id: z.string(),
     }),
+  })
+
+export const forgotPasswordSchema = (dictionary?: TDictionary) =>
+  z.object({
+    email: emailSchema(dictionary),
+  })
+
+export const forgotPasswordResponseSchema = () =>
+  z.object({
+    email: z.string(),
+  })
+
+export const resetPasswordSchema = (dictionary?: TDictionary) =>
+  z
+    .object({
+      token: z.string(),
+      password: z.string(),
+      passwordConfirmation: z.string(),
+    })
+    .refine((data) => data.password === data.passwordConfirmation, {
+      message: dictionary?.errors.passwordsDoNotMatch ?? "Passwords do not match",
+      path: ["passwordConfirmation"],
+    })
+
+export const resetPasswordResponseSchema = () =>
+  z.object({
+    user: userSchema(),
   })

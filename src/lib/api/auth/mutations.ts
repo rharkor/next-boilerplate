@@ -2,8 +2,8 @@ import { Prisma } from "@prisma/client"
 import { hash } from "@/lib/bcrypt"
 import { prisma } from "@/lib/prisma"
 import { signUpSchema } from "@/lib/schemas/auth"
-import { handleApiError } from "@/lib/server-utils"
 import { ApiError, throwableErrorsMessages } from "@/lib/utils"
+import { handleApiError } from "@/lib/utils/server-utils"
 import { apiInputFromSchema } from "@/types"
 
 export const register = async ({ input }: apiInputFromSchema<typeof signUpSchema>) => {

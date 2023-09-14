@@ -2,6 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod"
 import { BadgeInfo } from "lucide-react"
+import Link from "next/link"
 import { useRouter } from "next/navigation"
 import * as React from "react"
 import { useForm } from "react-hook-form"
@@ -71,7 +72,7 @@ export function LoginUserAuthForm({ dictionary, searchParams, ...props }: UserAu
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} {...props} className={cn("grid gap-2", props.className)}>
+      <form onSubmit={form.handleSubmit(onSubmit)} {...props} className={cn("grid space-y-2", props.className)}>
         {env.NEXT_PUBLIC_IS_DEMO && (
           <div>
             <Alert>
@@ -133,6 +134,9 @@ export function LoginUserAuthForm({ dictionary, searchParams, ...props }: UserAu
             name="password"
           />
         </div>
+        <Link className="ml-auto text-sm text-muted-foreground hover:text-white" href={"/forgot-password"}>
+          {dictionary.forgotPassword}
+        </Link>
         <Button type="submit" isLoading={isLoading}>
           {dictionary.signIn}
         </Button>

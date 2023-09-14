@@ -1,8 +1,8 @@
 import { Prisma } from "@prisma/client"
 import { prisma } from "@/lib/prisma"
 import { updateUserSchema } from "@/lib/schemas/user"
-import { ensureLoggedIn, handleApiError } from "@/lib/server-utils"
 import { ApiError } from "@/lib/utils"
+import { ensureLoggedIn, handleApiError } from "@/lib/utils/server-utils"
 import { apiInputFromSchema } from "@/types"
 import { rolesAsObject } from "@/types/constants"
 

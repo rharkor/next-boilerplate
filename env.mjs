@@ -32,6 +32,16 @@ export const env = createEnv({
     ENV: z.enum(["development", "recette", "production"]).optional(),
     BASE_URL: z.string().url(),
     VERCEL_URL: z.string().optional(),
+    SMTP_HOST: z.string().nonempty(),
+    SMTP_PORT: z
+      .string()
+      .nonempty()
+      .transform((value) => parseInt(value)),
+    SMTP_USERNAME: z.string().nonempty(),
+    SMTP_PASSWORD: z.string().nonempty(),
+    SMTP_FROM_NAME: z.string().nonempty(),
+    SMTP_FROM_EMAIL: z.string().nonempty(),
+    SUPPORT_EMAIL: z.string().optional(),
   },
   client: {
     NEXT_PUBLIC_IS_DEMO: z
@@ -66,6 +76,13 @@ export const env = createEnv({
     ENV: process.env.ENV,
     BASE_URL: process.env.BASE_URL,
     VERCEL_URL: process.env.VERCEL_URL,
+    SMTP_HOST: process.env.SMTP_HOST,
+    SMTP_PORT: process.env.SMTP_PORT,
+    SMTP_USERNAME: process.env.SMTP_USERNAME,
+    SMTP_PASSWORD: process.env.SMTP_PASSWORD,
+    SMTP_FROM_NAME: process.env.SMTP_FROM_NAME,
+    SMTP_FROM_EMAIL: process.env.SMTP_FROM_EMAIL,
+    SUPPORT_EMAIL: process.env.SUPPORT_EMAIL,
   },
   onValidationError: (error) => {
     console.error(error)
