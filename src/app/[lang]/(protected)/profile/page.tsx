@@ -1,5 +1,7 @@
 import { getServerSession } from "next-auth"
+import DeleteAccountButton from "@/components/auth/delete-account-button"
 import SignoutButton from "@/components/auth/sign-out-button"
+import VerifyEmailButton from "@/components/auth/verify-email-button"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { nextAuthOptions } from "@/lib/auth"
 import { getDictionary } from "@/lib/langs"
@@ -18,22 +20,26 @@ export default async function Profile({
 
   return (
     <main className="container flex flex-1 flex-col items-center justify-center p-6">
-      <div>
+      <div className="flex w-full max-w-max flex-col">
         <Card className="relative z-10 m-auto max-w-full">
           <CardHeader>
             <CardTitle>{dictionary.profile}</CardTitle>
           </CardHeader>
           <CardContent>
             <p className="text-muted-foreground">{dictionary.profilePage.serverSideData}</p>
-            <pre className="mt-2 overflow-auto rounded bg-muted p-2">{JSON.stringify(session, null, 2)}</pre>
+            <pre className="mt-2 w-[40rem] max-w-full overflow-auto rounded bg-muted p-2">
+              {JSON.stringify(session, null, 2)}
+            </pre>
           </CardContent>
           <CardFooter>
-            <div className="ml-auto">
+            <div className="m-auto flex flex-col items-center space-y-2 md:mr-0 md:w-full md:flex-row md:justify-end md:space-x-2 md:space-y-0">
+              {session && <VerifyEmailButton session={session} dictionary={dictionary} />}
+              <DeleteAccountButton dictionary={dictionary}>{dictionary.deleteAccount}</DeleteAccountButton>
               <SignoutButton>{dictionary.signOut}</SignoutButton>
             </div>
           </CardFooter>
         </Card>
-        <SeeDetailsToggle dictionary={dictionary} />
+        <SeeDetailsToggle dictionary={dictionary} session={session} />
       </div>
     </main>
   )

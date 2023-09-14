@@ -1,3 +1,6 @@
+import { z } from "zod"
+import { TDictionary } from "./langs"
+
 export type IMeta = {
   total: number
   page: number
@@ -26,6 +29,35 @@ export type IJsonApiResponse<T> = {
   links?: ILinks
 }
 
+export const jsonApiResponseSchema = () =>
+  z.object({
+    errors: z
+      .array(
+        z.object({
+          status: z.string(),
+          title: z.string(),
+          detail: z.string(),
+        })
+      )
+      .optional(),
+    data: z.array(z.unknown()).optional(),
+    meta: z.object({
+      total: z.number(),
+      page: z.number(),
+      perPage: z.number(),
+      totalPages: z.number(),
+    }),
+    links: z
+      .object({
+        first: z.string(),
+        last: z.string(),
+        prev: z.string(),
+        next: z.string(),
+        self: z.string(),
+      })
+      .optional(),
+  })
+
 export type IJsonApiQuery = {
   page?: number
   perPage?: number
@@ -38,6 +70,46 @@ export type IJsonApiQuery = {
   include?: string[]
   fields?: string[]
 }
+
+export const jsonApiQuerySchema = (dictionary?: TDictionary) =>
+  z.object({
+    page: z
+      .number({
+        invalid_type_error: dictionary?.errors.typeError.number.invalid,
+        required_error: dictionary?.errors.typeError.number.required,
+      })
+      .optional(),
+    perPage: z
+      .number({
+        invalid_type_error: dictionary?.errors.typeError.number.invalid,
+        required_error: dictionary?.errors.typeError.number.required,
+      })
+      .optional(),
+    sort: z
+      .string({
+        invalid_type_error: dictionary?.errors.typeError.string.invalid,
+        required_error: dictionary?.errors.typeError.string.required,
+      })
+      .optional(),
+    filter: z
+      .string({
+        invalid_type_error: dictionary?.errors.typeError.string.invalid,
+        required_error: dictionary?.errors.typeError.string.required,
+      })
+      .optional(),
+    include: z
+      .string({
+        invalid_type_error: dictionary?.errors.typeError.string.invalid,
+        required_error: dictionary?.errors.typeError.string.required,
+      })
+      .optional(),
+    fields: z
+      .string({
+        invalid_type_error: dictionary?.errors.typeError.string.invalid,
+        required_error: dictionary?.errors.typeError.string.required,
+      })
+      .optional(),
+  })
 
 export const jsonApiQuery = (query: IJsonApiQuery) => {
   const searchParams = new URLSearchParams()
@@ -81,24 +153,27 @@ export const jsonApiDefaults = {
   perPage: 10,
 }
 
+export const jsonApiSchema = (defaults = jsonApiDefaults) =>
+  z.object({
+    page: z.number().default(defaults.page).optional(),
+    perPage: z.number().default(defaults.perPage).optional(),
+    sort: z.string().optional(),
+    filter: z.string().optional(),
+    include: z.string().optional(),
+    fields: z.string().optional(),
+  })
+
 export type IJsonApiQueryWithDefaults = IJsonApiQuery & typeof jsonApiDefaults
 
 export const parseJsonApiQuery = (
-  query: URLSearchParams | string,
+  query?: z.infer<ReturnType<typeof jsonApiSchema>>,
   defaults = jsonApiDefaults
 ): IJsonApiQueryWithDefaults => {
-  const searchParams = new URLSearchParams(query)
-
-  const page = searchParams.get("page")
-  const perPage = searchParams.get("perPage")
-  const sort = searchParams.get("sort")
-  const filter = searchParams.get("filter")
-  const include = searchParams.get("include")
-  const fields = searchParams.get("fields")
+  const { page, perPage, fields, filter, include, sort } = jsonApiSchema(defaults).parse(query ?? {})
 
   return {
-    page: page ? parseInt(page) : defaults.page,
-    perPage: perPage ? parseInt(perPage) : defaults.perPage,
+    page: page ? page : defaults.page,
+    perPage: perPage ? perPage : defaults.perPage,
     sort: sort ? sort.split(",") : undefined,
     filter: filter
       ? filter.split(",").map((filter) => {

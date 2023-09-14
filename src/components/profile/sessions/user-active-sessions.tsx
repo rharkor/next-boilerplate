@@ -1,24 +1,14 @@
+import { Session } from "next-auth"
 import { TDictionary } from "@/lib/langs"
 import SessionsTable from "./sessions-table"
 
-/*
-...dictionary.profilePage.profileDetails,
-                sessionTable: {
-                  areYouAbsolutelySure: dictionary.areYouAbsolutelySure,
-                  cancel: dictionary.cancel,
-                  continue: dictionary.continue,
-                  deleteLoggedDevice: dictionary.profilePage.profileDetails.deleteLoggedDevice,
-                  session: dictionary.profilePage.profileDetails.session,
-                  sessions: dictionary.profilePage.profileDetails.sessions,
-                  error: dictionary.error,
-                  delete: dictionary.delete,
-                  fetch: dictionary.fetch,
-                  couldNotMessage: dictionary.couldNotMessage,
-                },
-              }}
-*/
-
-export default function UserActiveSessions({ dictionary }: { dictionary: TDictionary }) {
+export default async function UserActiveSessions({
+  dictionary,
+  session,
+}: {
+  dictionary: TDictionary
+  session: Session | null
+}) {
   return (
     <section className="p-2 text-foreground">
       <header>
@@ -27,7 +17,7 @@ export default function UserActiveSessions({ dictionary }: { dictionary: TDictio
           {dictionary.profilePage.profileDetails.loggedDevicesDescription}
         </p>
       </header>
-      <SessionsTable dictionary={dictionary} />
+      <SessionsTable dictionary={dictionary} isDisabled={session?.user.hasPassword === false} />
     </section>
   )
 }

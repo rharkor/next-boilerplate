@@ -15,7 +15,11 @@ export type INeedSavePopupProps = {
 
 export default function NeedSavePopup({ show, onReset, onSave, text, isSubmitting, dictionary }: INeedSavePopupProps) {
   return (
-    <div className={"fixed bottom-0 z-50 mx-0 overflow-hidden pb-4"}>
+    <div
+      className={cn("fixed bottom-0 z-50 mx-0 overflow-hidden pb-4", {
+        "pointer-events-none": !show,
+      })}
+    >
       <div
         className={cn(
           "flex w-max translate-y-full flex-row items-center justify-center space-x-4 rounded border border-card-foreground/40 bg-card px-4 py-2 opacity-0 transition-all duration-300",

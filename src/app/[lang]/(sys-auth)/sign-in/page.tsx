@@ -25,7 +25,7 @@ export default async function SignInPage({
         href={authRoutes.signUp[0]}
         className={cn(buttonVariants({ variant: "ghost" }), "absolute right-4 top-4 md:right-8 md:top-8")}
       >
-        Sign up
+        {dictionary.toSignUp}
       </Link>
       <div className="relative hidden h-full flex-col bg-muted p-10 text-white dark:border-r lg:flex ">
         <div className="absolute inset-0 bg-muted" />
@@ -46,7 +46,7 @@ export default async function SignInPage({
                 <span className="bg-background px-2 text-muted-foreground">{dictionary.auth.orContinueWith}</span>
               </div>
             </div>
-            <Providers dictionary={dictionary} />
+            <Providers dictionary={dictionary} searchParams={searchParams} />
           </div>
           <PrivacyAcceptance dictionary={dictionary} />
         </div>

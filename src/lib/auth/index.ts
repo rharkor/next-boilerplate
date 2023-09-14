@@ -4,14 +4,16 @@ import Credentials from "next-auth/providers/credentials"
 import GithubProvider from "next-auth/providers/github"
 import requestIp from "request-ip"
 import { randomUUID } from "crypto"
-import { signInSchema } from "@/types/auth"
+import { isPossiblyUndefined, ITrpcContext } from "@/types"
 import { env } from "env.mjs"
 import { i18n, Locale } from "i18n-config"
 import { authRoutes, JWT_MAX_AGE } from "./constants"
+import { sendVerificationEmail } from "../api/me/email/mutation"
 import { bcryptCompare } from "../bcrypt"
 import { getDictionary, TDictionary } from "../langs"
 import { logger } from "../logger"
 import { prisma } from "../prisma"
+import { signInSchema } from "../schemas/auth"
 import { ensureRelativeUrl } from "../utils"
 
 export const nextAuthOptions: NextAuthOptions & {
@@ -32,8 +34,8 @@ export const nextAuthOptions: NextAuthOptions & {
         password: { label: "Password", type: "password" },
       },
       authorize: async (credentials, req) => {
-        const referer = (req.headers?.referer as string) ?? ""
-        const refererUrl = ensureRelativeUrl(referer) ?? ""
+        const referer = (req.headers?.referer as string | undefined) ?? ""
+        const refererUrl = ensureRelativeUrl(referer)
         const lang = i18n.locales.find((locale) => refererUrl.startsWith(`/${locale}/`)) ?? i18n.defaultLocale
         const dictionary =
           nextAuthOptions.loadedDictionary.get(lang) ??
@@ -44,7 +46,7 @@ export const nextAuthOptions: NextAuthOptions & {
             return dictionary
           })())
 
-        const creds = await signInSchema(dictionary).parseAsync(credentials)
+        const creds = signInSchema(dictionary).parse(credentials)
 
         if (!creds.email || !creds.password) {
           logger.debug("Missing credentials", creds)
@@ -53,6 +55,15 @@ export const nextAuthOptions: NextAuthOptions & {
 
         const user = await prisma.user.findUnique({
           where: { email: creds.email },
+          select: {
+            id: true,
+            email: true,
+            username: true,
+            role: true,
+            password: true,
+            emailVerified: true,
+            hasPassword: true,
+          },
         })
 
         if (!user) {
@@ -110,6 +121,8 @@ export const nextAuthOptions: NextAuthOptions & {
           username: user.username,
           role: user.role,
           uuid,
+          emailVerified: user.emailVerified,
+          hasPassword: user.hasPassword,
         }
       },
     }),
@@ -122,12 +135,14 @@ export const nextAuthOptions: NextAuthOptions & {
     jwt: async ({ token, user }) => {
       // logger.debug("JWT token", token)
 
-      if (user) {
+      if (isPossiblyUndefined(user)) {
         token.id = user.id
         token.email = user.email
+        if ("hasPassword" in user) token.hasPassword = user.hasPassword as boolean
         if ("username" in user) token.username = user.username
         if ("role" in user) token.role = user.role as string
         if ("uuid" in user) token.uuid = user.uuid as string
+        if ("emailVerified" in user) token.emailVerified = user.emailVerified as Date
       }
 
       return token
@@ -152,37 +167,41 @@ export const nextAuthOptions: NextAuthOptions & {
       }
 
       //* Verify that the session still exists
-      if (!token.uuid || typeof token.uuid !== "string") {
+      if (dbUser.hasPassword && (!token.uuid || typeof token.uuid !== "string")) {
         logger.debug("Missing token uuid")
         return {} as Session
       }
 
-      const loginSession = await prisma.session.findUnique({
-        where: {
-          sessionToken: token.uuid,
-        },
-      })
-      if (!loginSession) {
-        logger.debug("Session not found", token.uuid)
-        return {} as Session
-      } else {
-        //? Update session lastUsed
-        await prisma.session.update({
+      if (token.uuid) {
+        const loginSession = await prisma.session.findUnique({
           where: {
-            id: loginSession.id,
-          },
-          data: {
-            lastUsedAt: new Date(),
+            sessionToken: token.uuid,
           },
         })
+        if (!loginSession) {
+          logger.debug("Session not found", token.uuid)
+          return {} as Session
+        } else {
+          //? Update session lastUsed
+          await prisma.session.update({
+            where: {
+              id: loginSession.id,
+            },
+            data: {
+              lastUsedAt: new Date(),
+            },
+          })
+        }
       }
 
       //* Fill session with user data
       const username = dbUser.username
       const role = dbUser.role
+      const hasPassword = dbUser.hasPassword
+      const emailVerified = dbUser.emailVerified
 
       //* Fill session with token data
-      const uuid = token && "uuid" in token ? token.uuid : undefined
+      const uuid = "uuid" in token ? token.uuid : undefined
 
       const sessionFilled = {
         ...session,
@@ -190,11 +209,22 @@ export const nextAuthOptions: NextAuthOptions & {
           ...session.user,
           id: token.id,
           username: username ?? undefined,
-          role: role ?? undefined,
+          role,
           uuid,
+          hasPassword,
+          emailVerified,
         },
       }
       return sessionFilled
+    },
+    async signIn({ user }) {
+      //* Send verification email if needed
+      if (user.email) {
+        logger.time("sendVerificationEmail")
+        await sendVerificationEmail({ input: { email: user.email, silent: true }, ctx: {} as ITrpcContext })
+        logger.timeEnd("sendVerificationEmail")
+      }
+      return true
     },
   },
   jwt: {

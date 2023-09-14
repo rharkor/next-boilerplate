@@ -27,20 +27,29 @@
         "description": "This action will disconnect the device connected to this session."
       },
       "session": "session",
-      "sessions": "sessions"
-    }
+      "sessions": "sessions",
+      "lastUsed": "Last used",
+      "created": "Created",
+      "expires": "Expires",
+      "in": "in"
+    },
+    "unavailableWithOAuth": "This feature is not available with OAuth providers."
   },
   "auth": {
     "orContinueWith": "Or continue with",
     "clickingAggreement": "By clicking continue, you agree to our",
     "termsOfService": "Terms of Service",
-    "privacyPolicy": "Privacy Policy"
+    "privacyPolicy": "Privacy Policy",
+    "demoMode": "Demo mode"
   },
   "and": "and",
   "profile": "Profile",
   "signUp": "Sign Up",
   "signIn": "Sign In",
+  "toSignUp": "Sign Up",
+  "toSignIn": "Sign In",
   "signOut": "Sign Out",
+  "deleteAccount": "Delete Account",
   "notFound": "Not Found",
   "login": "Login",
   "cancel": "Cancel",
@@ -56,6 +65,16 @@
   "reset": "Reset",
   "saveChanges": "Save changes",
   "errors": {
+    "typeError": {
+      "number": {
+        "invalid": "Please enter a valid number.",
+        "required": "Please enter a number."
+      },
+      "string": {
+        "invalid": "Please enter a valid string.",
+        "required": "Please enter a string."
+      }
+    },
     "username": {
       "required": "Username is required.",
       "min3": "Username must be at least 3 characters long.",
@@ -76,6 +95,81 @@
     },
     "unknownError": "An unknown error has occurred. Please try again later.",
     "wrongProvider": "You already have an account with a different provider. Please sign in with it.",
-    "invalidCredentials": "Invalid credentials. Please try again."
-  }
+    "invalidCredentials": "Invalid credentials. Please try again.",
+    "unauthorized": "You have been logged out. Please sign in again.",
+    "userNotFound": "This user does not exist.",
+    "cannotDeleteAdmin": "You cannot delete the admin account.",
+    "accountAlreadyExists": "An account with this email already exists.",
+    "userDoesNotHaveAPassword": "This user does not have a password.",
+    "pleaseTryAgainInFewMinutes": "Please try again in a few minutes.",
+    "emailAlreadySentPleaseTryAgainInFewMinutes": "An email has already been sent. Please try again in a few minutes.",
+    "tokenNotFound": "Token invalid or already used.",
+    "tokenExpired": "Token has expired.",
+    "passwordsDoNotMatch": "Passwords do not match.",
+    "cannotResetAdminPasswordInDemoMode": "You cannot reset the admin password in demo mode.",
+    "emailNotVerified": "Please, verify your email."
+  },
+  "email": "Email",
+  "emailPlaceholder": "name@example.com",
+  "password": "Password",
+  "passwordPlaceholder": "Password",
+  "passwordConfirmation": "Confirm Password",
+  "edit": "Edit",
+  "username": "Username",
+  "usernamePlaceholder": "Username",
+  "confirmPassword": "Confirm Password",
+  "confirmPasswordPlaceholder": "Confirm Password",
+  "withEmail": "with email",
+  "timeUnit": {
+    "now": "now",
+    "second": "second",
+    "seconds": "seconds",
+    "minute": "minute",
+    "minutes": "minutes",
+    "hour": "hour",
+    "hours": "hours",
+    "day": "day",
+    "days": "days",
+    "week": "week",
+    "weeks": "weeks",
+    "month": "month",
+    "months": "months",
+    "year": "year",
+    "years": "years"
+  },
+  "pagination": {
+    "rowsPerPage": "Rows per page",
+    "page": "Page",
+    "of": "of",
+    "goToFirstPage": "Aller à la première page",
+    "goToPreviousPage": "Aller à la page précédente",
+    "goToNextPage": "Aller à la page suivante",
+    "goToLastPage": "Aller à la dernière page"
+  },
+  "deleteAccountConfirmationTitle": "Delete account",
+  "deleteAccountConfirmationDescription": "Are you sure you want to delete your account? This action is irreversible.",
+  "deleteAccountConfirm": "Delete account",
+  "deleteAccountSuccessTitle": "Account deleted",
+  "deleteAccountSuccessDescription": "Your account has been deleted.",
+  "forgotPassword": "Forgot password?",
+  "forgotPasswordTitle": "Forgot password",
+  "forgotPasswordDescription": "Enter your email below to reset your password.",
+  "forgotPasswordSuccessTitle": "Email sent",
+  "forgotPasswordSuccessDescription": "An email has been sent to you. Please follow the instructions in the email to reset your password.",
+  "timeUntilYouCanRequestAnotherEmail": "Time until you can request another email",
+  "resetPasswordTitle": "Reset password",
+  "resetPasswordDescription": "Enter your new password below.",
+  "resetPasswordSuccessTitle": "Password reset",
+  "resetPasswordSuccessDescription": "Your password has been reset.",
+  "send": "Send",
+  "goToSignInPage": "Go to sign in page",
+  "emailVerificationSentTitle": "Email verification sent",
+  "emailVerificationSentDescription": "An email has been sent to you. Please follow the instructions in the email to verify your email address.",
+  "emailAlreadyVerified": "Email verified",
+  "resendVerificationEmail": "Resend verification email",
+  "verifyEmailSuccessTitle": "Email verified",
+  "verifyEmailSuccessDescription": "Your email has been verified.",
+  "verifyEmail": "Verify email",
+  "emailVerificationTitle": "Email verification",
+  "emailVerificationDescription": "Please verify your email address."
 }

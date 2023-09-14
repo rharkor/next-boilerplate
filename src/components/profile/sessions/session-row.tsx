@@ -5,62 +5,68 @@ import { Icons } from "@/components/icons"
 import { AlertDialogTrigger } from "@/components/ui/alert-dialog"
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
+import { TDictionary } from "@/lib/langs"
 import { getTimeBetween } from "@/lib/utils"
 import GetDeviceIcon from "../get-device-icon"
 
-export type RowProps =
-  | {
-      session: Prisma.SessionGetPayload<undefined>
-      setSelectedSession: Dispatch<SetStateAction<string | null>>
-      skeleton?: never
-    }
-  | {
-      session?: never
-      setSelectedSession?: never
-      skeleton: true
-    }
+export type InitialRowProps = {
+  dictionary: TDictionary
+}
 
-export default function SessionRow({ session, setSelectedSession, skeleton }: RowProps) {
+export type RowProps = InitialRowProps &
+  (
+    | {
+        session: Prisma.SessionGetPayload<undefined>
+        setSelectedSession: Dispatch<SetStateAction<string | null>>
+        skeleton?: never
+      }
+    | {
+        session?: never
+        setSelectedSession?: never
+        skeleton: true
+      }
+  )
+
+export default function SessionRow({ session, setSelectedSession, skeleton, dictionary }: RowProps) {
   const userAgents = session ? new UAParser(session.ua).getResult() : undefined
 
   return (
-    <div className="grid items-center space-x-4 md:grid-cols-[1fr,1fr,1fr,1fr,auto]">
+    <div className="grid min-w-[475px] grid-cols-[1fr,1fr,1fr,1fr,auto] items-center space-x-4">
       <div className="flex flex-col space-y-1">
         <div className="flex flex-row space-x-2">
           <div className="flex flex-col space-y-1">
             <div className="flex flex-row items-center space-x-2">
-              {skeleton ? <Skeleton className="h-4 w-4" /> : <GetDeviceIcon name={userAgents?.os.name} />}
+              {skeleton ? <Skeleton className="h-5 w-5" /> : <GetDeviceIcon name={userAgents?.os.name} />}
               {skeleton ? (
                 <Skeleton className="h-4 w-9" />
               ) : (
                 <p className="text-sm font-medium">{userAgents?.os.name}</p>
               )}
             </div>
-            {skeleton ? (
-              <Skeleton className="h-3 w-16" />
-            ) : (
-              <p className="text-xs text-muted-foreground">{session.ip}</p>
-            )}
           </div>
         </div>
         {skeleton ? (
-          <Skeleton className="h-3 w-5" />
+          <Skeleton className="h-4 w-9" />
         ) : (
           <p className="text-xs text-muted-foreground">{userAgents?.browser.name}</p>
         )}
       </div>
       <div className="flex flex-col space-y-1">
-        <p className="text-xs text-muted-foreground">Last used</p>
+        <p className="text-xs text-muted-foreground">{dictionary.profilePage.profileDetails.lastUsed}</p>
         {skeleton ? (
           <Skeleton className="h-4 w-8" />
         ) : (
           <p className="text-xs text-muted-foreground">
-            {session.lastUsedAt ? getTimeBetween(new Date(session.lastUsedAt), new Date()) : "never"}
+            {session.lastUsedAt
+              ? getTimeBetween(new Date(session.lastUsedAt), new Date(), {
+                  dictionary,
+                })
+              : "never"}
           </p>
         )}
       </div>
       <div className="flex flex-col space-y-1">
-        <p className="text-xs text-muted-foreground">Created</p>
+        <p className="text-xs text-muted-foreground">{dictionary.profilePage.profileDetails.created}</p>
         {skeleton ? (
           <Skeleton className="h-4 w-10" />
         ) : (
@@ -68,11 +74,16 @@ export default function SessionRow({ session, setSelectedSession, skeleton }: Ro
         )}
       </div>
       <div className="flex flex-col space-y-1">
-        <p className="text-xs text-muted-foreground">Expires</p>
+        <p className="text-xs text-muted-foreground">{dictionary.profilePage.profileDetails.expires}</p>
         {skeleton ? (
           <Skeleton className="h-4 w-10" />
         ) : (
-          <p className="text-xs text-muted-foreground">in {getTimeBetween(new Date(session.expires), new Date())}</p>
+          <p className="text-xs text-muted-foreground">
+            {dictionary.profilePage.profileDetails.in}{" "}
+            {getTimeBetween(new Date(session.expires), new Date(), {
+              dictionary,
+            })}
+          </p>
         )}
       </div>
       <div className="flex flex-row space-x-2">

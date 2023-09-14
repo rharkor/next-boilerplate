@@ -1,9 +1,16 @@
+import { Session } from "next-auth"
 import ProfileDetails from "@/components/profile/profile-details"
 import UserActiveSessions from "@/components/profile/sessions/user-active-sessions"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { TDictionary } from "@/lib/langs"
 
-export default function SeeDetailsToggle({ dictionary }: { dictionary: TDictionary }) {
+export default function SeeDetailsToggle({
+  dictionary,
+  session,
+}: {
+  dictionary: TDictionary
+  session: Session | null
+}) {
   return (
     <div className="-mt-4 rounded-b-lg border bg-card p-2 pt-6 text-muted-foreground shadow-sm">
       <Accordion type="single" collapsible>
@@ -12,7 +19,7 @@ export default function SeeDetailsToggle({ dictionary }: { dictionary: TDictiona
             {dictionary.profilePage.profileDetails.toggle}
           </AccordionTrigger>
           <AccordionContent>
-            <UserActiveSessions dictionary={dictionary} />
+            <UserActiveSessions dictionary={dictionary} session={session} />
             <ProfileDetails dictionary={dictionary} />
           </AccordionContent>
         </AccordionItem>

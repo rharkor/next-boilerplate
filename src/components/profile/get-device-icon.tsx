@@ -28,7 +28,7 @@ export default function GetDeviceIcon({ name }: { name?: string }) {
     return <Icons.mobile />
   }
 
-  if (["Windows"]) {
+  if (["Windows"].includes(name)) {
     // return 'windows-logo';
     return <Icons.desktop />
   }

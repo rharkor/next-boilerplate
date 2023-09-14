@@ -7,13 +7,14 @@ module.exports = {
     "prettier",
     "react-app/jest",
     "plugin:@typescript-eslint/recommended",
-    "plugin:storybook/recommended",
     "plugin:tailwindcss/recommended",
   ],
+  parser: "@typescript-eslint/parser",
   parserOptions: {
     babelOptions: {
       presets: [require.resolve("next/babel")],
     },
+    project: "./tsconfig.json",
   },
   plugins: ["@typescript-eslint", "unused-imports"],
   rules: {
@@ -65,6 +66,8 @@ module.exports = {
         },
       },
     ],
+    "max-params": ["error", 4],
+    "@typescript-eslint/no-unnecessary-condition": "error",
   },
 }
 

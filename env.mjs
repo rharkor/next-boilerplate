@@ -29,8 +29,32 @@ export const env = createEnv({
       .enum(["true", "false"])
       .optional()
       .transform((value) => value === "true"),
+    ENV: z.enum(["development", "recette", "production"]).optional(),
+    BASE_URL: z.string().url().optional(),
+    VERCEL_URL: z.string().optional(),
+    SMTP_HOST: z.string().optional(),
+    SMTP_PORT: z
+      .string()
+      .transform((value) => parseInt(value))
+      .optional(),
+    SMTP_USERNAME: z.string().optional(),
+    SMTP_PASSWORD: z.string().optional(),
+    SMTP_FROM_NAME: z.string().optional(),
+    SMTP_FROM_EMAIL: z.string().optional(),
+    SUPPORT_EMAIL: z.string().optional(),
+    ENABLE_MAILING_SERVICE: z
+      .enum(["true", "false"])
+      .optional()
+      .transform((value) => value === "true"),
   },
-  client: {},
+  client: {
+    NEXT_PUBLIC_IS_DEMO: z
+      .enum(["true", "false"])
+      .optional()
+      .transform((value) => value === "true"),
+    NEXT_PUBLIC_DEMO_EMAIL: z.string().optional(),
+    NEXT_PUBLIC_DEMO_PASSWORD: z.string().optional(),
+  },
   runtimeEnv: {
     ANALYZE: process.env.ANALYZE,
     PASSWORD_HASHER_SECRET: process.env.PASSWORD_HASHER_SECRET,
@@ -50,6 +74,20 @@ export const env = createEnv({
     REDIS_TLS: process.env.REDIS_TLS,
     REDIS_URL: process.env.REDIS_URL,
     REDIS_USE_TLS: process.env.REDIS_USE_TLS,
+    NEXT_PUBLIC_IS_DEMO: process.env.NEXT_PUBLIC_IS_DEMO,
+    NEXT_PUBLIC_DEMO_EMAIL: process.env.NEXT_PUBLIC_DEMO_EMAIL,
+    NEXT_PUBLIC_DEMO_PASSWORD: process.env.NEXT_PUBLIC_DEMO_PASSWORD,
+    ENV: process.env.ENV,
+    BASE_URL: process.env.BASE_URL,
+    VERCEL_URL: process.env.VERCEL_URL,
+    SMTP_HOST: process.env.SMTP_HOST,
+    SMTP_PORT: process.env.SMTP_PORT,
+    SMTP_USERNAME: process.env.SMTP_USERNAME,
+    SMTP_PASSWORD: process.env.SMTP_PASSWORD,
+    SMTP_FROM_NAME: process.env.SMTP_FROM_NAME,
+    SMTP_FROM_EMAIL: process.env.SMTP_FROM_EMAIL,
+    SUPPORT_EMAIL: process.env.SUPPORT_EMAIL,
+    ENABLE_MAILING_SERVICE: process.env.ENABLE_MAILING_SERVICE,
   },
   onValidationError: (error) => {
     console.error(error)
