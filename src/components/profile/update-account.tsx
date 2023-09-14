@@ -9,7 +9,7 @@ import * as z from "zod"
 import { useAccount } from "@/contexts/account"
 import { TDictionary } from "@/lib/langs"
 import { logger } from "@/lib/logger"
-import { updateUserSchema } from "@/lib/schemas/user"
+import { getAccountResponseSchema, updateUserSchema } from "@/lib/schemas/user"
 import { trpc } from "@/lib/trpc/client"
 import { handleMutationError } from "@/lib/utils/client-utils"
 import NeedSavePopup from "../need-save-popup"
@@ -21,12 +21,20 @@ const nonSensibleSchema = updateUserSchema
 
 type INonSensibleForm = z.infer<ReturnType<typeof nonSensibleSchema>>
 
-export default function UpdateAccount({ dictionary }: { dictionary: TDictionary }) {
+export default function UpdateAccount({
+  dictionary,
+  serverAccount,
+}: {
+  dictionary: TDictionary
+  serverAccount: z.infer<ReturnType<typeof getAccountResponseSchema>>
+}) {
   const router = useRouter()
   const utils = trpc.useContext()
 
   const { update } = useSession()
-  const account = useAccount(dictionary)
+  const account = useAccount(dictionary, {
+    initialData: serverAccount,
+  })
 
   const updateUserMutation = trpc.me.updateUser.useMutation({
     onError: (error) => handleMutationError(error, dictionary, router),
@@ -75,7 +83,7 @@ export default function UpdateAccount({ dictionary }: { dictionary: TDictionary 
               label={dictionary.profilePage.profileDetails.username.label}
               placeholder={dictionary.profilePage.profileDetails.username.placeholder}
               type="text"
-              disabled={updateUserMutation.isLoading || !account.isFetched}
+              disabled={updateUserMutation.isLoading || account.isInitialLoading}
               form={form}
               name="username"
             />

@@ -1,6 +1,7 @@
 import { initTRPC, TRPCError } from "@trpc/server"
 import superjson from "superjson"
 import { ZodError } from "zod"
+import { getAuthApi } from "@/components/auth/require-auth"
 import { apiRateLimiter } from "../rate-limit"
 import { Context } from "../trpc/context"
 import { throwableErrorsMessages } from "../utils"
@@ -41,11 +42,18 @@ const hasRateLimit = middleware(async (opts) => {
 })
 export const publicProcedure = t.procedure.use(hasRateLimit)
 const isAuthenticated = middleware(async (opts) => {
-  const { ctx } = opts
-  if (!ctx.session) {
+  const { session } = await getAuthApi()
+
+  if (!session) {
     throw new TRPCError({ code: "UNAUTHORIZED", message: throwableErrorsMessages.unauthorized })
   }
-  return opts.next()
+
+  return opts.next({
+    ctx: {
+      ...opts.ctx,
+      session,
+    },
+  })
 })
 const hasVerifiedEmail = middleware(async (opts) => {
   const { ctx } = opts
