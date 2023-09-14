@@ -1,6 +1,6 @@
 # Next.js Enterprise Boilerplate
 
-<!-- ![Project intro image](./project-logo.png) -->
+![Project intro image](./project-logo.png)
 
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/rharkor/next-boilerplate/blob/main/LICENSE)
 
