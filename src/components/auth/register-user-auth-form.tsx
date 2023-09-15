@@ -6,12 +6,14 @@ import { useRouter } from "next/navigation"
 import * as React from "react"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
-import { useApiStore } from "@/contexts/api.store"
 import { authRoutes } from "@/lib/auth/constants"
-import { handleSignError, handleSignUp } from "@/lib/auth/handle-sign"
+import { handleSignError, handleSignIn } from "@/lib/auth/handle-sign"
 import { TDictionary } from "@/lib/langs"
+import { logger } from "@/lib/logger"
+import { signUpSchema } from "@/lib/schemas/auth"
+import { trpc } from "@/lib/trpc/client"
 import { cn } from "@/lib/utils"
-import { signUpSchema } from "@/types/auth"
+import { handleMutationError } from "@/lib/utils/client-utils"
 import { Button, buttonVariants } from "../ui/button"
 import { Form } from "../ui/form"
 import FormField from "../ui/form-field"
@@ -52,7 +54,36 @@ export type IFormMinimized = z.infer<ReturnType<typeof formMinizedSchema>>
 
 export function RegisterUserAuthForm({ dictionary, isMinimized, searchParams, ...props }: UserAuthFormProps) {
   const router = useRouter()
-  const apiFetch = useApiStore((state) => state.apiFetch(router))
+
+  const registerMutation = trpc.auth.register.useMutation({
+    onError: (error) => {
+      const translatedError = handleMutationError(error, dictionary, router)
+      if (error.message.includes("email")) {
+        return form.setError("email", {
+          type: "manual",
+          message: translatedError.message,
+        })
+      } else if (error.message.includes("username")) {
+        return form.setError("username", {
+          type: "manual",
+          message: translatedError.message,
+        })
+      }
+      setIsLoading(false)
+    },
+    onSuccess: (_, vars) => {
+      logger.debug("Sign up successful")
+      handleSignIn({
+        data: { email: vars.email, password: vars.password },
+        callbackUrl: authRoutes.redirectAfterSignIn,
+        router,
+        dictionary,
+      }).catch((error) => {
+        logger.error("Error while signing in after sign up", error)
+        setIsLoading(false)
+      })
+    },
+  })
 
   const emailFromSearchParam = searchParams?.email?.toString()
   const error = searchParams?.error?.toString()
@@ -100,9 +131,8 @@ export function RegisterUserAuthForm({ dictionary, isMinimized, searchParams, ..
 
   async function onSubmit(data: IForm) {
     setIsLoading(true)
-    const isPushingRoute = await handleSignUp({ data, form, router, loginOnSignUp: true, apiFetch, dictionary })
-    //? If isPushingRoute is true, it means that the user is being redirected to the callbackUrl
-    if (!isPushingRoute) setIsLoading(false)
+    logger.debug("Signing up with credentials", data)
+    registerMutation.mutate(data)
   }
 
   return (
@@ -114,11 +144,11 @@ export function RegisterUserAuthForm({ dictionary, isMinimized, searchParams, ..
       >
         <div className="grid gap-1">
           <Label className="sr-only" htmlFor="email">
-            Email
+            {dictionary.email}
           </Label>
           <div className="relative">
             <FormField
-              placeholder="name@example.com"
+              placeholder={dictionary.emailPlaceholder}
               type="email"
               autoCapitalize="none"
               autoComplete="email"
@@ -141,7 +171,7 @@ export function RegisterUserAuthForm({ dictionary, isMinimized, searchParams, ..
                 href={{ pathname: authRoutes.signUp[0], query: { email: form.getValues("email") } }}
                 passHref
               >
-                Edit
+                {dictionary.edit}
               </Link>
             )}
           </div>
@@ -150,10 +180,10 @@ export function RegisterUserAuthForm({ dictionary, isMinimized, searchParams, ..
           <>
             <div className="grid gap-1">
               <Label className="sr-only" htmlFor="username">
-                Username
+                {dictionary.username}
               </Label>
               <FormField
-                placeholder="Username"
+                placeholder={dictionary.usernamePlaceholder}
                 type="text"
                 autoCapitalize="none"
                 autoComplete="username"
@@ -165,10 +195,10 @@ export function RegisterUserAuthForm({ dictionary, isMinimized, searchParams, ..
             </div>
             <div className="grid gap-1">
               <Label className="sr-only" htmlFor="password">
-                Password
+                {dictionary.password}
               </Label>
               <FormField
-                placeholder="Password"
+                placeholder={dictionary.passwordPlaceholder}
                 type="password-eye-slash"
                 autoComplete="new-password"
                 autoCorrect="off"
@@ -179,10 +209,10 @@ export function RegisterUserAuthForm({ dictionary, isMinimized, searchParams, ..
             </div>
             <div className="grid gap-1">
               <Label className="sr-only" htmlFor="confirmPassword">
-                Confirm Password
+                {dictionary.confirmPassword}
               </Label>
               <FormField
-                placeholder="Confirm Password"
+                placeholder={dictionary.confirmPasswordPlaceholder}
                 type="password"
                 autoComplete="new-password"
                 autoCorrect="off"
@@ -194,7 +224,7 @@ export function RegisterUserAuthForm({ dictionary, isMinimized, searchParams, ..
           </>
         )}
         <Button type="submit" isLoading={isLoading}>
-          Sign Up {isMinimized && "With Email"}
+          {dictionary.signUp} {isMinimized && dictionary.withEmail}
         </Button>
       </form>
     </Form>

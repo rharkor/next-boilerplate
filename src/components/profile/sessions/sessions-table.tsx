@@ -1,10 +1,8 @@
 "use client"
 
-import { Prisma } from "@prisma/client"
-import { useQuery } from "@tanstack/react-query"
 import { useRouter } from "next/navigation"
-import { useSession } from "next-auth/react"
 import { useEffect, useState } from "react"
+
 import {
   AlertDialog,
   AlertDialogAction,
@@ -16,117 +14,88 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
 import Pagination from "@/components/ui/pagination"
-import { toast } from "@/components/ui/use-toast"
-import { useApiStore } from "@/contexts/api.store"
-import { IJsonApiResponse, jsonApiQuery } from "@/lib/json-api"
+import { useActiveSessions } from "@/contexts/active-sessions"
+import { IMeta } from "@/lib/json-api"
 import { TDictionary } from "@/lib/langs"
-import { formatCouldNotMessage } from "@/lib/utils"
+import { trpc } from "@/lib/trpc/client"
+import { handleMutationError } from "@/lib/utils/client-utils"
 import SessionRow from "./session-row"
 
 const itemsPerPageInitial = 5
 
-export default function SessionsTable({ dictionary }: { dictionary: TDictionary }) {
-  const { data: curSession } = useSession()
+export default function SessionsTable({ dictionary, isDisabled }: { dictionary: TDictionary; isDisabled?: boolean }) {
   const router = useRouter()
-  const apiFetch = useApiStore((state) => state.apiFetch(router))
+  const utils = trpc.useContext()
 
   const [selectedSession, setSelectedSession] = useState<string | null>(null)
   const [currentPage, setCurrentPage] = useState(1)
   const [itemsPerPage, setItemsPerPage] = useState(itemsPerPageInitial)
 
-  const {
-    data: sessionsFromFetch,
-    refetch,
-    isFetched: isSessionFetched,
-  } = useQuery({
-    queryKey: ["session", curSession, currentPage, itemsPerPage],
-    queryFn: async () => {
-      const res = (await apiFetch(
-        fetch(
-          `/api/sessions/active?${jsonApiQuery({
-            page: currentPage,
-            perPage: itemsPerPage,
-            sort: ["-lastUsedAt"],
-          })}`
-        ),
-        dictionary,
-        () => {
-          toast({
-            title: dictionary.error,
-            description: formatCouldNotMessage({
-              couldNotMessage: dictionary.couldNotMessage,
-              action: dictionary.fetch,
-              subject: dictionary.profilePage.profileDetails.sessions,
-            }),
-            variant: "destructive",
-          })
-        }
-      )) as IJsonApiResponse<Prisma.SessionGetPayload<undefined>> | void
-      return res
-    },
-    enabled: !!curSession?.user?.id,
+  const callParams = {
+    page: currentPage,
+    perPage: itemsPerPage,
+  }
+  const activeSessions = useActiveSessions(dictionary, callParams, {
+    disabled: isDisabled,
   })
-  const [sessions, setSessions] = useState(sessionsFromFetch)
+  const [meta, setMeta] = useState<IMeta | undefined>(activeSessions.data?.meta)
 
   useEffect(() => {
-    if (!sessionsFromFetch) return
-    setSessions(sessionsFromFetch)
-  }, [sessionsFromFetch])
+    if (activeSessions.isLoading) return
+    setMeta(activeSessions.data?.meta)
+  }, [activeSessions])
+
+  const deleteSessionMutation = trpc.me.deleteSession.useMutation({
+    onError: (error) => handleMutationError(error, dictionary, router),
+    onSettled: () => {
+      setSelectedSession(null)
+      utils.me.getActiveSessions.invalidate(callParams)
+    },
+  })
 
   const deleteSession = async () => {
     if (!selectedSession) return
-    //? Delete from UI
-    setSessions((prev) => {
-      if (!prev) return prev
-      return {
-        ...prev,
-        data: prev.data?.filter((session) => session.id !== selectedSession),
-      }
-    })
+    utils.me.getActiveSessions.setData(
+      callParams,
+      (prev) =>
+        prev && {
+          ...prev,
+          data: prev.data?.filter((session) => session.id !== selectedSession),
+        }
+    )
+
     //? Delete from DB
-    const res = await apiFetch(fetch(`/api/sessions/${selectedSession}`, { method: "DELETE" }), dictionary, () => {
-      toast({
-        title: dictionary.error,
-        description: formatCouldNotMessage({
-          couldNotMessage: dictionary.couldNotMessage,
-          action: dictionary.delete,
-          subject: dictionary.profilePage.profileDetails.session,
-        }),
-        variant: "destructive",
-      })
-    })
-    if (res) {
-      setSelectedSession(null)
-      await refetch()
-    }
+    deleteSessionMutation.mutate({ id: selectedSession })
   }
 
-  const rows = sessions?.data?.map((session) => (
-    <SessionRow session={session} setSelectedSession={setSelectedSession} key={session.id} />
+  const rows = activeSessions.data?.data?.map((session) => (
+    <SessionRow session={session} setSelectedSession={setSelectedSession} key={session.id} dictionary={dictionary} />
   ))
 
   const skelRows = (
     <>
       {Array.from({ length: itemsPerPageInitial }).map((_, i) => (
-        <SessionRow skeleton key={i} />
+        <SessionRow skeleton key={i} dictionary={dictionary} />
       ))}
     </>
   )
 
-  const showPagination = Boolean(sessions && (sessions.meta.totalPages > 1 || itemsPerPageInitial !== itemsPerPage))
+  const showPagination = Boolean((meta && meta.totalPages > 1) || itemsPerPageInitial !== itemsPerPage)
 
   return (
-    <div className="mt-4 flex flex-col space-y-4">
+    <div className="relative mt-4 flex flex-col space-y-4 overflow-hidden overflow-x-auto">
       <AlertDialog>
-        {isSessionFetched || sessions ? rows : skelRows}
+        {activeSessions.isFetched ? rows : skelRows}
         <Pagination
           show={showPagination}
-          currentNumberOfItems={sessions?.data?.length ?? 0}
-          currentPage={sessions?.meta.page}
-          totalPages={sessions?.meta.totalPages}
+          isLoading={activeSessions.isLoading}
+          currentNumberOfItems={activeSessions.data?.data?.length ?? 0}
+          currentPage={meta?.page}
+          totalPages={meta?.totalPages}
           setCurrentPage={setCurrentPage}
-          itemsPerPage={sessions?.meta.perPage}
+          itemsPerPage={meta?.perPage}
           setItemsPerPage={setItemsPerPage}
+          dictionary={dictionary}
         />
         <AlertDialogContent>
           <AlertDialogHeader>
@@ -141,6 +110,11 @@ export default function SessionsTable({ dictionary }: { dictionary: TDictionary 
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+      {isDisabled && (
+        <div className="absolute inset-0 !mt-0 flex flex-col items-center justify-center backdrop-blur-sm">
+          <p className="text-sm text-muted-foreground">{dictionary.profilePage.unavailableWithOAuth}</p>
+        </div>
+      )}
     </div>
   )
 }

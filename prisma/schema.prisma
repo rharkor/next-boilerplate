@@ -6,25 +6,24 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url = env("DATABASE_PRISMA_URL") // uses connection pooling
+  provider  = "postgresql"
+  url       = env("DATABASE_PRISMA_URL") // uses connection pooling
   directUrl = env("DATABASE_URL_NON_POOLING") // uses a direct connection
-  shadowDatabaseUrl = env("DATABASE_URL_NON_POOLING") // used for migrations
 }
 
 model Account {
-  id                 String  @id @default(cuid())
-  userId             String
-  type               String
-  provider           String
-  providerAccountId  String
-  refresh_token      String?  @db.Text
-  access_token       String?  @db.Text
-  expires_at         Int?
-  token_type         String?
-  scope              String?
-  id_token           String?  @db.Text
-  session_state      String?
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -32,15 +31,15 @@ model Account {
 }
 
 model Session {
-  id           String   @id @default(cuid())
-  sessionToken String   @unique // for credentials, it's a uuid
+  id           String    @id @default(cuid())
+  sessionToken String    @unique // for credentials, it's a uuid
   userId       String
   expires      DateTime
   ua           String // User Agent
   ip           String
   lastUsedAt   DateTime?
-  createdAt    DateTime @default(now())
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt    DateTime  @default(now())
+  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model User {
@@ -53,15 +52,35 @@ model User {
   sessions      Session[]
 
   // Custom fields
-  username String? @unique
-  role     String @default("user")
-  password String?
+  username                   String?                     @unique
+  role                       String                      @default("user")
+  password                   String?
+  hasPassword                Boolean                     @default(false)
+  resetPasswordToken         ResetPassordToken?
+  userEmailVerificationToken UserEmailVerificationToken?
 }
 
+//? For one time login links
 model VerificationToken {
   identifier String
   token      String   @unique
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+model ResetPassordToken {
+  identifier String   @unique
+  token      String   @unique
+  expires    DateTime
+  user       User     @relation(fields: [identifier], references: [id], onDelete: Cascade)
+  createdAt  DateTime @default(now())
+}
+
+model UserEmailVerificationToken {
+  identifier String   @unique
+  token      String   @unique
+  expires    DateTime
+  user       User     @relation(fields: [identifier], references: [id], onDelete: Cascade)
+  createdAt  DateTime @default(now())
 }

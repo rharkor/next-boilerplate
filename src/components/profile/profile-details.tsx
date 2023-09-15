@@ -1,7 +1,10 @@
 import { TDictionary } from "@/lib/langs"
+import { serverTrpc } from "@/lib/trpc/server"
 import UpdateAccount from "./update-account"
 
-export default function ProfileDetails({ dictionary }: { dictionary: TDictionary }) {
+export default async function ProfileDetails({ dictionary }: { dictionary: TDictionary }) {
+  const serverAccount = await serverTrpc.me.getAccount()
+
   return (
     <section className="mt-4 p-2 text-foreground">
       <header>
@@ -10,7 +13,7 @@ export default function ProfileDetails({ dictionary }: { dictionary: TDictionary
           {dictionary.profilePage.profileDetails.updateAccountDescription}
         </p>
       </header>
-      <UpdateAccount dictionary={dictionary} />
+      <UpdateAccount dictionary={dictionary} serverAccount={serverAccount} />
     </section>
   )
 }

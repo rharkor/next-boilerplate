@@ -46,7 +46,7 @@ export default async function SignUpPage({
                 <span className="bg-background px-2 text-muted-foreground">{dictionary.auth.orContinueWith}</span>
               </div>
             </div>
-            <Providers dictionary={dictionary} />
+            <Providers dictionary={dictionary} searchParams={searchParams} />
           </div>
           <PrivacyAcceptance dictionary={dictionary} />
         </div>

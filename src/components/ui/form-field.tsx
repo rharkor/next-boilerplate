@@ -45,9 +45,9 @@ function getInner<
   props: InputWithOmittedProps
 ) {
   if (type === "password-eye-slash") {
-    return <PasswordEyeSlash placeholder={placeholder} autoComplete={autoComplete} {...props} {...field} />
+    return <PasswordEyeSlash placeholder={placeholder} autoComplete={autoComplete} {...field} {...props} />
   } else {
-    return <Input placeholder={placeholder} type={type} autoComplete={autoComplete} {...props} {...field} />
+    return <Input placeholder={placeholder} type={type} autoComplete={autoComplete} {...field} {...props} />
   }
 }
 

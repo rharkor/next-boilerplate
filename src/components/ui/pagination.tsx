@@ -1,6 +1,7 @@
 "use client"
 
 import { Dispatch, SetStateAction } from "react"
+import { TDictionary } from "@/lib/langs"
 import { logger } from "@/lib/logger"
 import { cn } from "@/lib/utils"
 import { Button } from "./button"
@@ -8,6 +9,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from ".
 import { Icons } from "../icons"
 
 interface PaginationProps {
+  dictionary: TDictionary
+  isLoading: boolean
   currentNumberOfItems?: number
   currentPage?: number
   setCurrentPage?: Dispatch<SetStateAction<number>>
@@ -18,6 +21,8 @@ interface PaginationProps {
 }
 
 export default function Pagination({
+  dictionary,
+  isLoading,
   currentNumberOfItems,
   currentPage,
   setCurrentPage,
@@ -27,7 +32,7 @@ export default function Pagination({
   show = true,
 }: PaginationProps) {
   //? If there are no items, and we're not on the first page, go to the first page
-  if (currentNumberOfItems === 0 && (currentPage ?? 1) > 1) {
+  if (!isLoading && currentNumberOfItems === 0 && (currentPage ?? 1) > 1) {
     logger.debug("Pagination: No items, going to first page")
     setCurrentPage?.(1)
   }
@@ -38,7 +43,7 @@ export default function Pagination({
         <div className="flex items-center space-x-6 lg:space-x-8">
           {itemsPerPage && setItemsPerPage && (
             <div className="flex items-center space-x-2">
-              <p className="text-sm font-medium">Rows per page</p>
+              <p className="text-sm font-medium">{dictionary.pagination.rowsPerPage}</p>
               <Select
                 value={itemsPerPage.toString()}
                 onValueChange={(value) => {
@@ -60,7 +65,7 @@ export default function Pagination({
             </div>
           )}
           <div className="flex w-[100px] items-center justify-center text-sm font-medium">
-            Page {currentPage} of {totalPages}
+            {dictionary.pagination.page} {currentPage} {dictionary.pagination.of} {totalPages}
           </div>
           <div className="flex items-center space-x-2">
             <Button
@@ -69,7 +74,7 @@ export default function Pagination({
               onClick={() => setCurrentPage?.(1)}
               disabled={currentPage === 1}
             >
-              <span className="sr-only">Go to first page</span>
+              <span className="sr-only">{dictionary.pagination.goToFirstPage}</span>
               <Icons.doubleArrowRight className="h-4 w-4 rotate-180" />
             </Button>
             <Button
@@ -78,7 +83,7 @@ export default function Pagination({
               onClick={() => setCurrentPage?.((prev) => prev - 1)}
               disabled={currentPage === 1}
             >
-              <span className="sr-only">Go to previous page</span>
+              <span className="sr-only">{dictionary.pagination.goToPreviousPage}</span>
               <Icons.chevronRight className="h-4 w-4 rotate-180" />
             </Button>
             <Button
@@ -87,7 +92,7 @@ export default function Pagination({
               onClick={() => setCurrentPage?.((prev) => prev + 1)}
               disabled={currentPage === totalPages}
             >
-              <span className="sr-only">Go to next page</span>
+              <span className="sr-only">{dictionary.pagination.goToNextPage}</span>
               <Icons.chevronRight className="h-4 w-4" />
             </Button>
             <Button
@@ -96,7 +101,7 @@ export default function Pagination({
               onClick={() => setCurrentPage?.(totalPages ?? 1)}
               disabled={currentPage === totalPages}
             >
-              <span className="sr-only">Go to last page</span>
+              <span className="sr-only">{dictionary.pagination.goToLastPage}</span>
               <Icons.doubleArrowRight className="h-4 w-4" />
             </Button>
           </div>
