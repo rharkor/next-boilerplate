@@ -57,6 +57,7 @@ export function RegisterUserAuthForm({ dictionary, isMinimized, searchParams, ..
 
   const registerMutation = trpc.auth.register.useMutation({
     onError: (error) => {
+      setIsLoading(false)
       const translatedError = handleMutationError(error, dictionary, router)
       if (error.message.includes("email")) {
         return form.setError("email", {
@@ -69,7 +70,6 @@ export function RegisterUserAuthForm({ dictionary, isMinimized, searchParams, ..
           message: translatedError.message,
         })
       }
-      setIsLoading(false)
     },
     onSuccess: (_, vars) => {
       logger.debug("Sign up successful")

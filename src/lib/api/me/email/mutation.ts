@@ -51,21 +51,27 @@ export const sendVerificationEmail = async ({ input }: apiInputFromSchema<typeof
       })
     }
 
-    await prisma.userEmailVerificationToken.create({
-      data: {
-        identifier: user.id,
-        token: token,
-        expires: new Date(Date.now() + emailVerificationExpiration),
-      },
-    })
-    const url = `${env.VERCEL_URL ?? env.BASE_URL}/verify-email/${token}`
-    await sendMail({
-      from: `"${env.SMTP_FROM_NAME}" <${env.SMTP_FROM_EMAIL}>`,
-      to: email.toLowerCase(),
-      subject: subject,
-      text: plainText(url),
-      html: html(url),
-    })
+    if (env.ENABLE_MAILING_SERVICE === true) {
+      await prisma.userEmailVerificationToken.create({
+        data: {
+          identifier: user.id,
+          token: token,
+          expires: new Date(Date.now() + emailVerificationExpiration),
+        },
+      })
+      const url = `${env.VERCEL_URL ?? env.BASE_URL}/verify-email/${token}`
+      await sendMail({
+        from: `"${env.SMTP_FROM_NAME}" <${env.SMTP_FROM_EMAIL}>`,
+        to: email.toLowerCase(),
+        subject: subject,
+        text: plainText(url),
+        html: html(url),
+      })
+    } else {
+      logger.debug("Email verification disabled")
+      if (silent) return { email }
+      return ApiError(throwableErrorsMessages.emailServiceDisabled, "PRECONDITION_FAILED")
+    }
 
     return { email }
   } catch (error: unknown) {

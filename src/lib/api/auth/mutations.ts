@@ -1,6 +1,7 @@
 import { Prisma } from "@prisma/client"
 import { randomUUID } from "crypto"
 import { hash } from "@/lib/bcrypt"
+import { logger } from "@/lib/logger"
 import { sendMail } from "@/lib/mailer"
 import { prisma } from "@/lib/prisma"
 import { signUpSchema } from "@/lib/schemas/auth"
@@ -24,22 +25,26 @@ export const register = async ({ input }: apiInputFromSchema<typeof signUpSchema
     })
 
     //* Send verification email
-    const token = randomUUID()
-    await prisma.userEmailVerificationToken.create({
-      data: {
-        identifier: user.id,
-        token: token,
-        expires: new Date(Date.now() + emailVerificationExpiration),
-      },
-    })
-    const url = `${env.VERCEL_URL ?? env.BASE_URL}/verify-email/${token}`
-    await sendMail({
-      from: `"${env.SMTP_FROM_NAME}" <${env.SMTP_FROM_EMAIL}>`,
-      to: email.toLowerCase(),
-      subject: subject,
-      text: plainText(url),
-      html: html(url),
-    })
+    if (env.ENABLE_MAILING_SERVICE === true) {
+      const token = randomUUID()
+      await prisma.userEmailVerificationToken.create({
+        data: {
+          identifier: user.id,
+          token: token,
+          expires: new Date(Date.now() + emailVerificationExpiration),
+        },
+      })
+      const url = `${env.VERCEL_URL ?? env.BASE_URL}/verify-email/${token}`
+      await sendMail({
+        from: `"${env.SMTP_FROM_NAME}" <${env.SMTP_FROM_EMAIL}>`,
+        to: email.toLowerCase(),
+        subject: subject,
+        text: plainText(url),
+        html: html(url),
+      })
+    } else {
+      logger.debug("Email verification disabled, skipping email sending on registration")
+    }
 
     return { user }
   } catch (error: unknown) {

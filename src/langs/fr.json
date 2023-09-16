@@ -108,7 +108,8 @@
     "passwordsDoNotMatch": "Les mots de passe ne correspondent pas.",
     "cannotResetAdminPasswordInDemoMode": "Vous ne pouvez pas réinitialiser le mot de passe de l'administrateur en mode démo.",
     "emailNotVerified": "Veuillez vérifier votre email.",
-    "emailAlreadyVerified": "Email vérifié"
+    "emailAlreadyVerified": "Email vérifié",
+    "emailServiceDisabled": "Le service d'email est désactivé."
   },
   "email": "Email",
   "emailPlaceholder": "nom@exemple.com",

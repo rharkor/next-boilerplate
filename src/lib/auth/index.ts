@@ -220,9 +220,7 @@ export const nextAuthOptions: NextAuthOptions & {
     async signIn({ user }) {
       //* Send verification email if needed
       if (user.email) {
-        logger.time("sendVerificationEmail")
         await sendVerificationEmail({ input: { email: user.email, silent: true }, ctx: {} as ITrpcContext })
-        logger.timeEnd("sendVerificationEmail")
       }
       return true
     },
