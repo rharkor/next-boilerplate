@@ -59,7 +59,6 @@ export default function ResetPasswordForm({ dictionary, token }: { dictionary: T
             type="password-eye-slash"
             placeholder={dictionary.password}
             autoComplete="new-password"
-            form={form}
           />
         </div>
         <div className="grid gap-1">
@@ -71,7 +70,6 @@ export default function ResetPasswordForm({ dictionary, token }: { dictionary: T
             type="password"
             placeholder={dictionary.passwordConfirmation}
             autoComplete="new-password"
-            form={form}
           />
         </div>
         <Button type="submit" isLoading={isLoading}>

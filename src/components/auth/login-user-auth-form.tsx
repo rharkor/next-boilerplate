@@ -116,7 +116,6 @@ export function LoginUserAuthForm({ dictionary, searchParams, ...props }: UserAu
             autoComplete="email"
             autoCorrect="off"
             disabled={isLoading}
-            form={form}
             name="email"
           />
         </div>
@@ -130,7 +129,6 @@ export function LoginUserAuthForm({ dictionary, searchParams, ...props }: UserAu
             autoComplete="new-password"
             autoCorrect="off"
             disabled={isLoading}
-            form={form}
             name="password"
           />
         </div>

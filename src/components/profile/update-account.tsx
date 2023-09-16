@@ -84,7 +84,6 @@ export default function UpdateAccount({
               placeholder={dictionary.profilePage.profileDetails.username.placeholder}
               type="text"
               disabled={updateUserMutation.isLoading || account.isInitialLoading}
-              form={form}
               name="username"
             />
           </div>

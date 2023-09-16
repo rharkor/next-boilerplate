@@ -69,7 +69,6 @@ export default function ForgotPasswordForm({ dictionary }: { dictionary: TDictio
             autoComplete="email"
             autoCorrect="off"
             disabled={isDisabled}
-            form={form}
             name="email"
           />
         </div>

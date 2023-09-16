@@ -154,7 +154,6 @@ export function RegisterUserAuthForm({ dictionary, isMinimized, searchParams, ..
               autoComplete="email"
               autoCorrect="off"
               disabled={isLoading || !isMinimized}
-              form={form}
               name="email"
               className={cn({
                 "pointer-events-none": !isMinimized,
@@ -189,7 +188,6 @@ export function RegisterUserAuthForm({ dictionary, isMinimized, searchParams, ..
                 autoComplete="username"
                 autoCorrect="off"
                 disabled={isLoading}
-                form={form}
                 name="username"
               />
             </div>
@@ -203,7 +201,6 @@ export function RegisterUserAuthForm({ dictionary, isMinimized, searchParams, ..
                 autoComplete="new-password"
                 autoCorrect="off"
                 disabled={isLoading}
-                form={form}
                 name="password"
               />
             </div>
@@ -217,7 +214,6 @@ export function RegisterUserAuthForm({ dictionary, isMinimized, searchParams, ..
                 autoComplete="new-password"
                 autoCorrect="off"
                 disabled={isLoading}
-                form={form}
                 name="confirmPassword"
               />
             </div>
