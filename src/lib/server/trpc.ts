@@ -4,7 +4,7 @@ import { ZodError } from "zod"
 import { getAuthApi } from "@/components/auth/require-auth"
 import { apiRateLimiter } from "../rate-limit"
 import { Context } from "../trpc/context"
-import { throwableErrorsMessages } from "../utils"
+import { throwableErrorsMessages } from "../utils/server-utils"
 
 /**
  * Initialization of tRPC backend

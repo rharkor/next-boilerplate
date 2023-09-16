@@ -1,10 +1,7 @@
 import { TRPCClientErrorLike } from "@trpc/client"
-import { TRPCError } from "@trpc/server"
-import { TRPC_ERROR_CODE_KEY } from "@trpc/server/rpc"
 import { type ClassValue, clsx } from "clsx"
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context"
 import { twMerge } from "tailwind-merge"
-import { ValueOf } from "@/types"
 import { authRoutes } from "../auth/constants"
 import { TDictionary } from "../langs"
 import { logger } from "../logger"
@@ -12,13 +9,6 @@ import { AppRouter } from "../server/routers/_app"
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
-}
-
-export function ApiError(message: ValueOf<typeof throwableErrorsMessages>, code?: TRPC_ERROR_CODE_KEY): never {
-  throw new TRPCError({
-    code: code ?? "BAD_REQUEST",
-    message: message,
-  })
 }
 
 /**
@@ -111,68 +101,13 @@ export const formatCouldNotMessage = async ({
   return couldNotMessage.replace("{action}", action).replace("{subject}", subject)
 }
 
-export const throwableErrorsMessages = {
-  emailAlreadyExists: "Email already exists",
-  usernameAlreadyExists: "Username already exists",
-  cannotDeleteAdmin: "You cannot delete the admin account",
-  accountAlreadyExists: "Account already exists",
-  youAreNotLoggedIn: "You are not logged in",
-  unknownError: "Unknown error",
-  userNotFound: "User not found",
-  userDoesNotHaveAPassword: "User does not have a password",
-  pleaseTryAgainInFewMinutes: "Please try again in a few minutes",
-  emailAlreadySentPleaseTryAgainInFewMinutes: "Email already sent, please try again in a few minutes",
-  tokenNotFound: "Token not found",
-  tokenExpired: "Token expired",
-  cannotResetAdminPasswordInDemoMode: "You cannot reset the admin password in demo mode",
-  unauthorized: "Unauthorized",
-  emailNotVerified: "Email not verified",
-  emailAlreadyVerified: "Email already verified",
-} as const
-
-//? Verify no duplicate values
-if (Object.values(throwableErrorsMessages).length !== new Set(Object.values(throwableErrorsMessages)).size) {
-  throw new Error("Duplicate values in throwableErrorsMessages")
-}
-
 export const translateError = (error: string, dictionary: TDictionary): string => {
-  switch (error) {
-    case throwableErrorsMessages.emailAlreadyExists:
-      return dictionary.errors.email.exist
-    case throwableErrorsMessages.usernameAlreadyExists:
-      return dictionary.errors.username.exist
-    case throwableErrorsMessages.cannotDeleteAdmin:
-      return dictionary.errors.cannotDeleteAdmin
-    case throwableErrorsMessages.accountAlreadyExists:
-      return dictionary.errors.accountAlreadyExists
-    case throwableErrorsMessages.youAreNotLoggedIn:
-      return dictionary.errors.unauthorized
-    case throwableErrorsMessages.unknownError:
-      return dictionary.errors.unknownError
-    case throwableErrorsMessages.userNotFound:
-      return dictionary.errors.userNotFound
-    case throwableErrorsMessages.userDoesNotHaveAPassword:
-      return dictionary.errors.userDoesNotHaveAPassword
-    case throwableErrorsMessages.pleaseTryAgainInFewMinutes:
-      return dictionary.errors.pleaseTryAgainInFewMinutes
-    case throwableErrorsMessages.emailAlreadySentPleaseTryAgainInFewMinutes:
-      return dictionary.errors.emailAlreadySentPleaseTryAgainInFewMinutes
-    case throwableErrorsMessages.tokenNotFound:
-      return dictionary.errors.tokenNotFound
-    case throwableErrorsMessages.tokenExpired:
-      return dictionary.errors.tokenExpired
-    case throwableErrorsMessages.cannotResetAdminPasswordInDemoMode:
-      return dictionary.errors.cannotResetAdminPasswordInDemoMode
-    case throwableErrorsMessages.unauthorized:
-      return dictionary.errors.unauthorized
-    case throwableErrorsMessages.emailNotVerified:
-      return dictionary.errors.emailNotVerified
-    case throwableErrorsMessages.emailAlreadyVerified:
-      return dictionary.emailAlreadyVerified
-    default:
-      logger.error("Unknown translation for:", error)
-      return error
+  if (!(error in dictionary.errors)) {
+    logger.error(new Error(`Error not found in dictionary: ${error}`))
+    return dictionary.errors.unknownError
   }
+  const errorTranslated = dictionary.errors[error as keyof typeof dictionary.errors]
+  return errorTranslated.toString()
 }
 
 export const handleApiError = <T extends TRPCClientErrorLike<AppRouter>>(
@@ -182,7 +117,7 @@ export const handleApiError = <T extends TRPCClientErrorLike<AppRouter>>(
 ): T => {
   const translatedError = translateError(error.message, dictionary)
   if (error.data?.code === "UNAUTHORIZED") {
-    if (error.message !== throwableErrorsMessages.emailNotVerified) {
+    if (error.message !== dictionary.errors.emailNotVerified) {
       router.push(authRoutes.redirectOnUnhauthorized)
     }
   }

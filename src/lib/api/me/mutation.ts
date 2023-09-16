@@ -1,7 +1,7 @@
 import { Prisma } from "@prisma/client"
 import { prisma } from "@/lib/prisma"
 import { updateUserSchema } from "@/lib/schemas/user"
-import { ApiError } from "@/lib/utils"
+import { ApiError, throwableErrorsMessages } from "@/lib/utils/server-utils"
 import { ensureLoggedIn, handleApiError } from "@/lib/utils/server-utils"
 import { apiInputFromSchema } from "@/types"
 import { rolesAsObject } from "@/types/constants"
@@ -24,7 +24,7 @@ export const updateUser = async ({ input, ctx: { session } }: apiInputFromSchema
       if (error.code === "P2002") {
         const meta = error.meta
         if ((meta?.target as Array<string>).includes("username")) {
-          return ApiError("Username already exists")
+          return ApiError(throwableErrorsMessages.username.exist)
         }
       }
     }
@@ -37,7 +37,7 @@ export const deleteAccount = async ({ ctx: { session } }: apiInputFromSchema<und
     ensureLoggedIn(session)
     //* Ensure not admin
     if (session.user.role === rolesAsObject.admin) {
-      return ApiError("You cannot delete the admin account", "FORBIDDEN")
+      return ApiError(throwableErrorsMessages.cannotDeleteAdmin, "FORBIDDEN")
     }
 
     //* Delete the user

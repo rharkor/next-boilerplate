@@ -5,8 +5,7 @@ import { sendMail } from "@/lib/mailer"
 import { prisma } from "@/lib/prisma"
 import { signUpSchema } from "@/lib/schemas/auth"
 import { html, plainText, subject } from "@/lib/templates/mail/verify-email"
-import { ApiError, throwableErrorsMessages } from "@/lib/utils"
-import { handleApiError } from "@/lib/utils/server-utils"
+import { ApiError, handleApiError, throwableErrorsMessages } from "@/lib/utils/server-utils"
 import { apiInputFromSchema } from "@/types"
 import { emailVerificationExpiration } from "@/types/constants"
 import { env } from "env.mjs"
@@ -49,9 +48,9 @@ export const register = async ({ input }: apiInputFromSchema<typeof signUpSchema
         const meta = error.meta
         if (!meta) ApiError(throwableErrorsMessages.accountAlreadyExists)
         if ((meta.target as Array<string>).includes("email")) {
-          return ApiError(throwableErrorsMessages.emailAlreadyExists)
+          return ApiError(throwableErrorsMessages.email.exist)
         } else if ((meta.target as Array<string>).includes("username")) {
-          return ApiError(throwableErrorsMessages.usernameAlreadyExists)
+          return ApiError(throwableErrorsMessages.username.exist)
         }
       }
     }

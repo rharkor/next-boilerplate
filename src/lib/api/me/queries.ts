@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma"
-import { ApiError, throwableErrorsMessages } from "@/lib/utils"
+import { ApiError, throwableErrorsMessages } from "@/lib/utils/server-utils"
 import { ensureLoggedIn, handleApiError } from "@/lib/utils/server-utils"
 import { apiInputFromSchema } from "@/types"
 
