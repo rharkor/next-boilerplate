@@ -134,7 +134,7 @@ export function LoginUserAuthForm({ dictionary, searchParams, ...props }: UserAu
             name="password"
           />
         </div>
-        <Link className="ml-auto text-sm text-muted-foreground hover:text-white" href={"/forgot-password"}>
+        <Link className="ml-auto text-sm text-muted-foreground hover:text-primary" href={"/forgot-password"}>
           {dictionary.forgotPassword}
         </Link>
         <Button type="submit" isLoading={isLoading}>
