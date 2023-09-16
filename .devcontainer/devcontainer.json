@@ -64,7 +64,8 @@
         "ftonato.password-generator",
         "adamhartford.vscode-base64",
         "ChakrounAnas.turbo-console-log",
-        "yoavbls.pretty-ts-errors"
+        "yoavbls.pretty-ts-errors",
+        "humao.rest-client"
       ]
     }
   },
