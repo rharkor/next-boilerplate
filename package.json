@@ -3,7 +3,7 @@
   "version": "1.0.1",
   "private": true,
   "scripts": {
-    "init": "cd scripts && npm i && npm run init",
+    "init": "cd scripts && npm i && npm run init && cd .. && npm run deploy-db:prod",
     "dev": "cross-env FORCE_COLOR=1 next dev",
     "build": "npm run full-sub-package-setup && next build",
     "start": "npm run deploy-db:prod && npm run seed && concurrently \"next start\" \"npm run cron\"",
