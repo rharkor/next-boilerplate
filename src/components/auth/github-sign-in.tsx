@@ -2,12 +2,12 @@
 
 import { ClientSafeProvider, signIn } from "next-auth/react"
 import { useState } from "react"
+import { toast } from "react-toastify"
 import { authRoutes } from "@/lib/auth/constants"
 import { TDictionary } from "@/lib/langs"
 import { logger } from "@/lib/logger"
 import { Icons } from "../icons"
 import { Button } from "../ui/button"
-import { toast } from "../ui/use-toast"
 
 export default function GithubSignIn({
   provider,
@@ -44,17 +44,9 @@ export default function GithubSignIn({
       setIsLoading(false)
       logger.error(error)
       if (error instanceof Error) {
-        toast({
-          title: dictionary.error,
-          description: error.message,
-          variant: "destructive",
-        })
+        toast.error(error.message)
       } else {
-        toast({
-          title: dictionary.error,
-          description: dictionary.errors.unknownError,
-          variant: "destructive",
-        })
+        toast(dictionary.errors.unknownError)
       }
     }
   }

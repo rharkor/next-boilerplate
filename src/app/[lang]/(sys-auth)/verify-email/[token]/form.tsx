@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
-import { toast } from "@/components/ui/use-toast"
+
 import { authRoutes } from "@/lib/auth/constants"
 import { TDictionary } from "@/lib/langs"
 import { trpc } from "@/lib/trpc/client"

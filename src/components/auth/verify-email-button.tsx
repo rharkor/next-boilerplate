@@ -3,12 +3,12 @@
 import { Check } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { Session } from "next-auth"
+import { toast } from "react-toastify"
 import { TDictionary } from "@/lib/langs"
 import { logger } from "@/lib/logger"
 import { trpc } from "@/lib/trpc/client"
 import { handleMutationError } from "@/lib/utils/client-utils"
 import { Button } from "../ui/button"
-import { toast } from "../ui/use-toast"
 
 export default function VerifyEmailButton({ session, dictionary }: { session: Session; dictionary: TDictionary }) {
   const router = useRouter()
@@ -16,10 +16,7 @@ export default function VerifyEmailButton({ session, dictionary }: { session: Se
   const resendVerificationEmailMutation = trpc.me.sendVerificationEmail.useMutation({
     onError: (error) => handleMutationError(error, dictionary, router),
     onSuccess: () => {
-      toast({
-        title: dictionary.emailVerificationSentTitle,
-        description: dictionary.emailVerificationSentDescription,
-      })
+      toast(dictionary.emailVerificationSentDescription)
     },
   })
 

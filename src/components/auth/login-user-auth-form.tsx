@@ -6,6 +6,7 @@ import Link from "next/link"
 import { useRouter } from "next/navigation"
 import * as React from "react"
 import { useForm } from "react-hook-form"
+import { toast } from "react-toastify"
 import * as z from "zod"
 import { authRoutes } from "@/lib/auth/constants"
 import { handleSignError, handleSignIn } from "@/lib/auth/handle-sign"
@@ -18,7 +19,6 @@ import { Button } from "../ui/button"
 import { Form } from "../ui/form"
 import FormField from "../ui/form-field"
 import { Label } from "../ui/label"
-import { toast } from "../ui/use-toast"
 
 type UserAuthFormProps = React.HTMLAttributes<HTMLFormElement> & {
   dictionary: TDictionary
@@ -65,9 +65,7 @@ export function LoginUserAuthForm({ dictionary, searchParams, ...props }: UserAu
   const copyToClipboard = (value?: string) => {
     if (!value) return
     navigator.clipboard.writeText(value)
-    toast({
-      description: "Copied to clipboard",
-    })
+    toast(dictionary.copiedToClipboard)
   }
 
   return (
@@ -132,7 +130,7 @@ export function LoginUserAuthForm({ dictionary, searchParams, ...props }: UserAu
             name="password"
           />
         </div>
-        <Link className="ml-auto text-sm text-muted-foreground hover:text-primary" href={"/forgot-password"}>
+        <Link className="text-muted-foreground ml-auto text-sm hover:text-primary" href={"/forgot-password"}>
           {dictionary.forgotPassword}
         </Link>
         <Button type="submit" isLoading={isLoading}>

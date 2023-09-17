@@ -2,25 +2,18 @@
 
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context"
 import { signIn } from "next-auth/react"
+import { toast } from "react-toastify"
 import * as z from "zod"
-import { toast } from "@/components/ui/use-toast"
+
 import { TDictionary } from "../langs"
 import { logger } from "../logger"
 import { signInSchema } from "../schemas/auth"
 
 export const handleSignError = (error: string, dictionary: TDictionary) => {
   if (error == "OAuthAccountNotLinked") {
-    toast({
-      title: dictionary.error,
-      description: dictionary.errors.wrongProvider,
-      variant: "destructive",
-    })
+    toast.error(dictionary.errors.wrongProvider)
   } else {
-    toast({
-      title: dictionary.error,
-      description: error,
-      variant: "destructive",
-    })
+    toast(error)
   }
 }
 
@@ -60,17 +53,9 @@ export const handleSignIn = async ({
     } catch (error) {
       logger.error(error)
       if (error instanceof Error) {
-        toast({
-          title: dictionary.error,
-          description: error.message,
-          variant: "destructive",
-        })
+        toast.error(error.message)
       } else {
-        toast({
-          title: dictionary.error,
-          description: dictionary.errors.unknownError,
-          variant: "destructive",
-        })
+        toast.error(dictionary.errors.unknownError)
       }
       reject(error)
     } finally {

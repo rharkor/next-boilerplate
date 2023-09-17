@@ -3,12 +3,12 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
+import { toast } from "react-toastify"
 import { z } from "zod"
 import { Button } from "@/components/ui/button"
 import { Form } from "@/components/ui/form"
 import FormField from "@/components/ui/form-field"
 import { Label } from "@/components/ui/label"
-import { toast } from "@/components/ui/use-toast"
 import { authRoutes } from "@/lib/auth/constants"
 import { TDictionary } from "@/lib/langs"
 import { resetPasswordSchema } from "@/lib/schemas/user"
@@ -24,10 +24,7 @@ export default function ResetPasswordForm({ dictionary, token }: { dictionary: T
   const resetPasswordMutation = trpc.me.resetPassword.useMutation({
     onError: (error) => handleMutationError(error, dictionary, router),
     onSuccess: () => {
-      toast({
-        title: dictionary.resetPasswordSuccessTitle,
-        description: dictionary.resetPasswordSuccessDescription,
-      })
+      toast.success(dictionary.resetPasswordSuccessDescription)
       router.push(authRoutes.signIn[0])
     },
   })

@@ -173,5 +173,6 @@
   "verifyEmailSuccessDescription": "Your email has been verified.",
   "verifyEmail": "Verify email",
   "emailVerificationTitle": "Email verification",
-  "emailVerificationDescription": "Please verify your email address."
+  "emailVerificationDescription": "Please verify your email address.",
+  "copiedToClipboard": "Copied to clipboard"
 }
