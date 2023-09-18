@@ -4,7 +4,8 @@
   "main": "index.js",
   "scripts": {
     "init": "npx -y tsx init.ts",
-    "depcheck": "npx -y tsx depcheck.ts"
+    "depcheck": "npx -y tsx depcheck.ts",
+    "is-initialized": "npx -y tsx is-initialized.ts"
   },
   "type": "module",
   "dependencies": {

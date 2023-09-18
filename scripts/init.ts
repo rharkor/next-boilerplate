@@ -1,5 +1,6 @@
 import chalk from "chalk"
 import { exit } from "node:process"
+import { completeInitialisation } from "./complete-initialisation"
 import { replaceTokens } from "./replace-tokens"
 
 async function main() {
@@ -8,11 +9,7 @@ async function main() {
   await replaceTokens()
   console.log(chalk.green("Done!"))
 
-  console.log("\n")
-  console.log(chalk.yellow("*".repeat(50)))
-  console.log(chalk.green("Project initialized!"))
-  console.log(chalk.red("Don't forget to change the license for production"))
-  console.log(chalk.yellow("*".repeat(50)))
+  await completeInitialisation()
   exit(0)
 }
 
