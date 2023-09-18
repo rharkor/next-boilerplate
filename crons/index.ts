@@ -9,7 +9,11 @@ config()
 new CronJob(
   "0 0 * * *",
   () => {
+    // const now = new Date()
+    // logger.info(`[${now.toLocaleString()}] Doing something every day`)
     //? Do something
+    // const took = new Date().getTime() - now.getTime()
+    // logger.info(`[${now.toLocaleString()}] Doing something every day took ${took}ms`)
   },
   null,
   true,
