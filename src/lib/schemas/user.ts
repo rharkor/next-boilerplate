@@ -41,6 +41,7 @@ export const getActiveSessionsSchema = (dictionary?: TDictionary) =>
     .pick({
       page: true,
       perPage: true,
+      sort: true,
     })
     .optional()
 

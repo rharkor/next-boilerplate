@@ -1,5 +1,5 @@
 import { z } from "zod"
-import { getJsonApiSkip, getJsonApiSort, getJsonApiTake, parseJsonApiQuery } from "@/lib/json-api"
+import { getJsonApiSkip, getJsonApiSort, getJsonApiTake } from "@/lib/json-api"
 import { prisma } from "@/lib/prisma"
 import { getActiveSessionsResponseSchema, getActiveSessionsSchema } from "@/lib/schemas/user"
 import { ensureLoggedIn, handleApiError } from "@/lib/utils/server-utils"
@@ -12,14 +12,15 @@ export const getActiveSessions = async ({
   try {
     ensureLoggedIn(session)
 
-    const query = parseJsonApiQuery(input)
+    const skip = getJsonApiSkip(input)
+    const take = getJsonApiTake(input)
     const activeSessions = await prisma.session.findMany({
       where: {
         userId: session.user.id,
       },
-      skip: getJsonApiSkip(query),
-      take: getJsonApiTake(query),
-      orderBy: getJsonApiSort(query),
+      skip,
+      take,
+      orderBy: getJsonApiSort(input),
     })
 
     const total = await prisma.session.count({
@@ -32,9 +33,9 @@ export const getActiveSessions = async ({
       data: activeSessions,
       meta: {
         total: activeSessions.length,
-        page: query.page,
-        perPage: query.perPage,
-        totalPages: Math.ceil(total / query.perPage),
+        page: input?.page || 1,
+        perPage: take,
+        totalPages: Math.ceil(total / take),
       },
     }
     return response
