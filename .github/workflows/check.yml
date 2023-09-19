@@ -17,19 +17,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: echo "node_version=$(cat .github/nodejs.version)" >> $GITHUB_ENV
-      - name: "use node ${{ env.node_version }}"
+      - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: "${{ env.node_version }}"
-      - name: Restore dependencies cache
-        uses: actions/cache@v3
-        id: restore-deps-cache
-        env:
-          cache-name: cache-deps
-        with:
-          path: node_modules
-          key: ${{ runner.os }}-build-${{ env.cache-name }}
+          node-version: "18.x"
+          cache: "npm"
       - name: Install dependencies
         run: npm ci
       - name: Set example env
