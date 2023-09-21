@@ -166,7 +166,7 @@
   "send": "Envoyer",
   "goToSignInPage": "Aller à la page de connexion",
   "emailVerificationSentTitle": "Email envoyé",
-  "emailVerificationSentDescription": "Un email dé vérification vous a été envoyé. Veuillez suivre les instructions pour valider votre email.",
+  "emailVerificationSentDescription": "Un email de vérification vous a été envoyé. Veuillez suivre les instructions pour valider votre email.",
   "emailAlreadyVerified": "Email vérifié",
   "resendVerificationEmail": "Renvoyer l'email de vérification",
   "verifyEmailSuccessTitle": "Email vérifié",

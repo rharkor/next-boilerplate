@@ -39,9 +39,14 @@ export const sendVerificationEmail = async ({ input }: apiInputFromSchema<typeof
       //? If silent, return early
       if (silent) return { email }
 
-      const isToRecent = userEmailVerificationToken.expires.getTime() > Date.now() + resendEmailVerificationExpiration
+      const isToRecent = userEmailVerificationToken.expires.getTime() + resendEmailVerificationExpiration > Date.now()
       if (isToRecent) {
-        logger.debug("Verification email already sent")
+        if (logger.allowDebug) {
+          const availableIn = Math.round(
+            (userEmailVerificationToken.createdAt.getTime() + resendEmailVerificationExpiration - Date.now()) / 1000
+          )
+          logger.debug("Verification email already sent: ", availableIn, "seconds left")
+        }
         return ApiError(throwableErrorsMessages.emailAlreadySentPleaseTryAgainInFewMinutes, "BAD_REQUEST")
       }
       await prisma.userEmailVerificationToken.delete({
