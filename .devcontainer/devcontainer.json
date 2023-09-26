@@ -33,11 +33,11 @@
   },
 
   // Use 'postCreateCommand' to run commands after the container is created.
-  "postCreateCommand": "npm install && ./scripts/install-brew.sh && ./scripts/install-zsh10k.sh",
+  "postCreateCommand": "./scripts/install-zsh10k.sh && ./scripts/install-bun.sh && ./scripts/install-brew.sh && bun install",
 
   // Configure tool-specific properties.
   "customizations": {
-    "postCreateCommand": "npm install && ./scripts/install-brew.sh && ./scripts/install-zsh10k.sh",
+    "postCreateCommand": "./scripts/install-zsh10k.sh && ./scripts/install-bun.sh && ./scripts/install-brew.sh && bun install",
     "vscode": {
       "extensions": [
         "formulahendry.auto-rename-tag",
@@ -64,7 +64,9 @@
         "ftonato.password-generator",
         "adamhartford.vscode-base64",
         "ChakrounAnas.turbo-console-log",
-        "yoavbls.pretty-ts-errors"
+        "yoavbls.pretty-ts-errors",
+        "humao.rest-client",
+        "ambar.bundle-size"
       ]
     }
   },

@@ -1,25 +1,25 @@
 "use client"
 
-import { Check } from "lucide-react"
+import { BadgeCheck } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { Session } from "next-auth"
+import { toast } from "react-toastify"
+import { useAccount } from "@/contexts/account"
 import { TDictionary } from "@/lib/langs"
 import { logger } from "@/lib/logger"
 import { trpc } from "@/lib/trpc/client"
 import { handleMutationError } from "@/lib/utils/client-utils"
 import { Button } from "../ui/button"
-import { toast } from "../ui/use-toast"
 
 export default function VerifyEmailButton({ session, dictionary }: { session: Session; dictionary: TDictionary }) {
   const router = useRouter()
+  const account = useAccount(dictionary)
+  const hasVerifiedEmail = session.user.emailVerified || !!account.data?.user.emailVerified
 
   const resendVerificationEmailMutation = trpc.me.sendVerificationEmail.useMutation({
     onError: (error) => handleMutationError(error, dictionary, router),
     onSuccess: () => {
-      toast({
-        title: dictionary.emailVerificationSentTitle,
-        description: dictionary.emailVerificationSentDescription,
-      })
+      toast(dictionary.emailVerificationSentDescription)
     },
   })
 
@@ -33,11 +33,11 @@ export default function VerifyEmailButton({ session, dictionary }: { session: Se
     })
   }
 
-  if (session.user.emailVerified) {
+  if (hasVerifiedEmail) {
     return (
-      <p className="w-max flex-1 text-primary">
-        <Check className="mr-1 inline-block h-4 w-4" />
-        {dictionary.emailAlreadyVerified}
+      <p className="flex w-max flex-1 items-center space-x-2 font-medium text-primary">
+        <BadgeCheck className="inline-block h-5 w-5" />
+        <span>{dictionary.emailAlreadyVerified}</span>
       </p>
     )
   }

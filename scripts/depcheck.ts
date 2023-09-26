@@ -8,7 +8,7 @@ const rootPath = path.join(__dirname, "..")
 
 const options = {
   skipMissing: false,
-  ignoreMatches: ["@semantic-release/*", "env.mjs", "i18n-config"],
+  ignoreMatches: ["@semantic-release/*", "env.mjs", "i18n-config", "sharp"],
 }
 
 depcheck(rootPath, options).then(async (unused) => {

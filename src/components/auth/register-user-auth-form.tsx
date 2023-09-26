@@ -57,6 +57,7 @@ export function RegisterUserAuthForm({ dictionary, isMinimized, searchParams, ..
 
   const registerMutation = trpc.auth.register.useMutation({
     onError: (error) => {
+      setIsLoading(false)
       const translatedError = handleMutationError(error, dictionary, router)
       if (error.message.includes("email")) {
         return form.setError("email", {
@@ -69,7 +70,6 @@ export function RegisterUserAuthForm({ dictionary, isMinimized, searchParams, ..
           message: translatedError.message,
         })
       }
-      setIsLoading(false)
     },
     onSuccess: (_, vars) => {
       logger.debug("Sign up successful")
@@ -154,7 +154,6 @@ export function RegisterUserAuthForm({ dictionary, isMinimized, searchParams, ..
               autoComplete="email"
               autoCorrect="off"
               disabled={isLoading || !isMinimized}
-              form={form}
               name="email"
               className={cn({
                 "pointer-events-none": !isMinimized,
@@ -189,7 +188,6 @@ export function RegisterUserAuthForm({ dictionary, isMinimized, searchParams, ..
                 autoComplete="username"
                 autoCorrect="off"
                 disabled={isLoading}
-                form={form}
                 name="username"
               />
             </div>
@@ -203,7 +201,6 @@ export function RegisterUserAuthForm({ dictionary, isMinimized, searchParams, ..
                 autoComplete="new-password"
                 autoCorrect="off"
                 disabled={isLoading}
-                form={form}
                 name="password"
               />
             </div>
@@ -217,7 +214,6 @@ export function RegisterUserAuthForm({ dictionary, isMinimized, searchParams, ..
                 autoComplete="new-password"
                 autoCorrect="off"
                 disabled={isLoading}
-                form={form}
                 name="confirmPassword"
               />
             </div>

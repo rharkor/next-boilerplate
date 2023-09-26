@@ -2,6 +2,7 @@ import "server-only"
 import { createTransport } from "nodemailer"
 import { env } from "env.mjs"
 import { logger } from "./logger"
+import { ApiError, throwableErrorsMessages } from "./utils/server-utils"
 
 export const configOptions = {
   port: env.SMTP_PORT,
@@ -20,7 +21,10 @@ const transporter = createTransport({
 })
 
 export const sendMail = async (...params: Parameters<typeof transporter.sendMail>) => {
-  if (!env.ENABLE_MAILING_SERVICE) return logger.info("Email service is disabled, sending email is skipped.", params)
+  if (!env.ENABLE_MAILING_SERVICE) {
+    logger.error("Email service is disabled, sending email is skipped.")
+    return ApiError(throwableErrorsMessages.emailServiceDisabled, "PRECONDITION_FAILED")
+  }
   try {
     const res = await transporter.sendMail(...params)
     logger.info(`Email sent to ${res.envelope.to}`)

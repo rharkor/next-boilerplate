@@ -2,9 +2,10 @@ import { initTRPC, TRPCError } from "@trpc/server"
 import superjson from "superjson"
 import { ZodError } from "zod"
 import { getAuthApi } from "@/components/auth/require-auth"
+import { env } from "env.mjs"
 import { apiRateLimiter } from "../rate-limit"
 import { Context } from "../trpc/context"
-import { throwableErrorsMessages } from "../utils"
+import { throwableErrorsMessages } from "../utils/server-utils"
 
 /**
  * Initialization of tRPC backend
@@ -57,7 +58,7 @@ const isAuthenticated = middleware(async (opts) => {
 })
 const hasVerifiedEmail = middleware(async (opts) => {
   const { ctx } = opts
-  if (!ctx.session || !ctx.session.user.emailVerified) {
+  if (!ctx.session || (!ctx.session.user.emailVerified && env.ENABLE_MAILING_SERVICE === true)) {
     throw new TRPCError({ code: "UNAUTHORIZED", message: throwableErrorsMessages.emailNotVerified })
   }
   return opts.next()

@@ -19,7 +19,7 @@ export default async function ForgotPassword({
       <h1 className="text-2xl font-semibold tracking-tight">{dictionary.resetPasswordTitle}</h1>
       <p className="text-sm text-muted-foreground">{dictionary.resetPasswordDescription}</p>
       <ResetPasswordForm dictionary={dictionary} token={token} />
-      <Link href={authRoutes.signIn[0]} className="text-sm text-muted-foreground hover:text-white">
+      <Link href={authRoutes.signIn[0]} className="text-sm text-muted-foreground hover:text-primary">
         {dictionary.goToSignInPage}
       </Link>
     </main>

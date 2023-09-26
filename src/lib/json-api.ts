@@ -1,5 +1,7 @@
 import { z } from "zod"
+import { defaultMaxPerPage } from "@/types/constants"
 import { TDictionary } from "./langs"
+import { logger } from "./logger"
 
 export type IMeta = {
   total: number
@@ -61,7 +63,10 @@ export const jsonApiResponseSchema = () =>
 export type IJsonApiQuery = {
   page?: number
   perPage?: number
-  sort?: string[]
+  sort?: {
+    field: string
+    direction: "asc" | "desc"
+  }[]
   filter?: {
     field: string
     operator: string
@@ -71,135 +76,99 @@ export type IJsonApiQuery = {
   fields?: string[]
 }
 
-export const jsonApiQuerySchema = (dictionary?: TDictionary) =>
+export const jsonApiQuerySchema = (
+  dictionary?: TDictionary,
+  {
+    maxPerPage = defaultMaxPerPage,
+  }: {
+    maxPerPage?: number
+  } = {}
+) =>
   z.object({
     page: z
       .number({
         invalid_type_error: dictionary?.errors.typeError.number.invalid,
         required_error: dictionary?.errors.typeError.number.required,
       })
+      .positive()
+      .int()
       .optional(),
     perPage: z
       .number({
         invalid_type_error: dictionary?.errors.typeError.number.invalid,
         required_error: dictionary?.errors.typeError.number.required,
       })
-      .optional(),
-    sort: z
-      .string({
-        invalid_type_error: dictionary?.errors.typeError.string.invalid,
-        required_error: dictionary?.errors.typeError.string.required,
+      .positive()
+      .int()
+      .transform((value) => {
+        if (value > maxPerPage) {
+          logger.warn(`perPage value ${value} is greater than maxPerPage ${maxPerPage}.`)
+          return maxPerPage
+        }
+        return value
       })
       .optional(),
+    sort: z
+      .array(
+        z.object({
+          field: z.string({
+            invalid_type_error: dictionary?.errors.typeError.string.invalid,
+            required_error: dictionary?.errors.typeError.string.required,
+          }),
+          direction: z.enum(["asc", "desc"]),
+        })
+      )
+      .optional(),
     filter: z
-      .string({
-        invalid_type_error: dictionary?.errors.typeError.string.invalid,
-        required_error: dictionary?.errors.typeError.string.required,
+      .object({
+        field: z.string({
+          invalid_type_error: dictionary?.errors.typeError.string.invalid,
+          required_error: dictionary?.errors.typeError.string.required,
+        }),
+        operator: z.string({
+          invalid_type_error: dictionary?.errors.typeError.string.invalid,
+          required_error: dictionary?.errors.typeError.string.required,
+        }),
+        value: z
+          .string({
+            invalid_type_error: dictionary?.errors.typeError.string.invalid,
+            required_error: dictionary?.errors.typeError.string.required,
+          })
+          .optional(),
       })
       .optional(),
     include: z
-      .string({
-        invalid_type_error: dictionary?.errors.typeError.string.invalid,
-        required_error: dictionary?.errors.typeError.string.required,
-      })
+      .array(
+        z.string({
+          invalid_type_error: dictionary?.errors.typeError.string.invalid,
+          required_error: dictionary?.errors.typeError.string.required,
+        })
+      )
       .optional(),
     fields: z
-      .string({
-        invalid_type_error: dictionary?.errors.typeError.string.invalid,
-        required_error: dictionary?.errors.typeError.string.required,
-      })
+      .array(
+        z.string({
+          invalid_type_error: dictionary?.errors.typeError.string.invalid,
+          required_error: dictionary?.errors.typeError.string.required,
+        })
+      )
       .optional(),
   })
 
-export const jsonApiQuery = (query: IJsonApiQuery) => {
-  const searchParams = new URLSearchParams()
-
-  if (query.page) {
-    searchParams.set("page", query.page.toString())
-  }
-
-  if (query.perPage) {
-    searchParams.set("perPage", query.perPage.toString())
-  }
-
-  if (query.sort) {
-    searchParams.set("sort", query.sort.join(","))
-  }
-
-  if (query.filter) {
-    searchParams.set(
-      "filter",
-      query.filter
-        .map((filter) => {
-          return `${filter.field}${filter.operator}${filter.value}`
-        })
-        .join(",")
-    )
-  }
-
-  if (query.include) {
-    searchParams.set("include", query.include.join(","))
-  }
-
-  if (query.fields) {
-    searchParams.set("fields", query.fields.join(","))
-  }
-
-  return searchParams
+export const getJsonApiSkip = (opts?: Pick<IJsonApiQuery, "page" | "perPage">) => {
+  return (opts?.perPage ?? 10) * ((opts?.page ?? 1) - 1)
 }
 
-export const jsonApiDefaults = {
-  page: 1,
-  perPage: 10,
+export const getJsonApiTake = (opts?: Pick<IJsonApiQuery, "perPage">) => {
+  return opts?.perPage ?? 10
 }
 
-export const jsonApiSchema = (defaults = jsonApiDefaults) =>
-  z.object({
-    page: z.number().default(defaults.page).optional(),
-    perPage: z.number().default(defaults.perPage).optional(),
-    sort: z.string().optional(),
-    filter: z.string().optional(),
-    include: z.string().optional(),
-    fields: z.string().optional(),
-  })
+export const getJsonApiSort = (opts?: Pick<IJsonApiQuery, "sort">) => {
+  if (!opts?.sort) return undefined
 
-export type IJsonApiQueryWithDefaults = IJsonApiQuery & typeof jsonApiDefaults
-
-export const parseJsonApiQuery = (
-  query?: z.infer<ReturnType<typeof jsonApiSchema>>,
-  defaults = jsonApiDefaults
-): IJsonApiQueryWithDefaults => {
-  const { page, perPage, fields, filter, include, sort } = jsonApiSchema(defaults).parse(query ?? {})
-
-  return {
-    page: page ? page : defaults.page,
-    perPage: perPage ? perPage : defaults.perPage,
-    sort: sort ? sort.split(",") : undefined,
-    filter: filter
-      ? filter.split(",").map((filter) => {
-          const [field, operator, value] = filter.split("")
-          return { field, operator, value }
-        })
-      : undefined,
-    include: include ? include.split(",") : undefined,
-    fields: fields ? fields.split(",") : undefined,
-  }
-}
-
-export const getJsonApiSkip = ({ page, perPage }: { page: number; perPage: number }) => {
-  return perPage * (page - 1)
-}
-
-export const getJsonApiTake = ({ perPage }: { perPage: number }) => {
-  return perPage
-}
-
-export const getJsonApiSort = ({ sort }: { sort?: string[] }) => {
-  if (!sort) return undefined
-
-  return sort.map((sort) => {
-    const direction = sort[0] === "-" ? "desc" : "asc"
-    const field = sort.replace(/^-/, "")
+  return opts.sort.map((sort) => {
+    const direction = sort.direction
+    const field = sort.field
     return { [field]: direction }
   })
 }

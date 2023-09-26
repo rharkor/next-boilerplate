@@ -1,5 +1,5 @@
 import { HTMLInputTypeAttribute } from "react"
-import { ControllerRenderProps, FieldPath, FieldValues, UseFormReturn } from "react-hook-form"
+import { ControllerRenderProps, FieldPath, FieldValues, useFormContext, UseFormReturn } from "react-hook-form"
 import {
   FormControl,
   FormDescription,
@@ -21,7 +21,7 @@ export interface FormFieldProps<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > extends InputWithOmittedProps {
-  form: UseFormReturn<TFieldValues>
+  form?: UseFormReturn<TFieldValues>
   name: TName
   label?: string
   placeholder?: string
@@ -65,6 +65,8 @@ export default function FormField<
   className,
   ...props
 }: FormFieldProps<TFieldValues, TName>) {
+  const formContext = useFormContext<TFieldValues>()
+  form ??= formContext
   return (
     <FormFieldComponent
       control={form.control}

@@ -3,9 +3,9 @@ import React from "react"
 import "../globals.css"
 import { NextAuthProvider } from "@/components/auth/provider"
 import { ThemeProvider } from "@/components/theme/theme-provider"
-import { Toaster } from "@/components/ui/toaster"
 import TrpcProvider from "@/lib/trpc/provider"
 import { i18n } from "i18n-config"
+import Toaster from "./toaster"
 
 export const metadata: Metadata = {
   title: "Home",
