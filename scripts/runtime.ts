@@ -111,7 +111,11 @@ const basicFiles = [
   {
     path: ".github/workflows/release.yml",
     replace: (oldRuntime: IRuntime, newRuntime: IRuntime, content: string) => {
-      content = content.replaceAll(`${oldRuntime.npm} ci`, `${newRuntime.npm} install --production`)
+      if (oldRuntime.npm === "npm" && newRuntime.npm === "bun") {
+        content = content.replaceAll(`${oldRuntime.npm} ci`, `${newRuntime.npm} install --production`)
+      } else if (oldRuntime.npm === "bun" && newRuntime.npm === "npm") {
+        content = content.replaceAll(`${oldRuntime.npm} install --production`, `${newRuntime.npm} ci`)
+      }
       return content.replaceAll(`${oldRuntime.npx} `, `${newRuntime.npx} `)
     },
   },
