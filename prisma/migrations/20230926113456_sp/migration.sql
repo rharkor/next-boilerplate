@@ -1,7 +1,3 @@
--- AlterTable
-ALTER TABLE "User" ADD COLUMN     "hasPassword" BOOLEAN NOT NULL DEFAULT false;
-
-
 create function user_has_password_auto_update() returns trigger
 language plpgsql as $$
 begin
