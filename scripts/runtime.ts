@@ -88,23 +88,33 @@ const basicFiles = [
       content = content.replaceAll(`${oldRuntime.npx} `, `${newRuntime.npx} `)
       if (oldRuntime.npm === "npm" && newRuntime.npm === "bun") {
         content = content.replaceAll(
-          `      - name: Setup Node.js
+          `      - name: Install Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: "18.x"
-          cache: "npm"`,
+          node-version: 18`,
           `      - name: Install bun
         uses: oven-sh/setup-bun@v1`
+        )
+        content = content.replaceAll(
+          `      - name: Install dependencies
+        uses: bahmutov/npm-install@v1`,
+          `      - name: Install dependencies
+        run: bun install`
         )
       } else if (oldRuntime.npm === "bun" && newRuntime.npm === "npm") {
         content = content.replaceAll(
           `      - name: Install bun
         uses: oven-sh/setup-bun@v1`,
-          `      - name: Setup Node.js
+          `      - name: Install Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: "18.x"
-          cache: "npm"`
+          node-version: 18`
+        )
+        content = content.replaceAll(
+          `      - name: Install dependencies
+        run: bun install`,
+          `      - name: Install dependencies
+        uses: bahmutov/npm-install@v1`
         )
       }
       return content
