@@ -55,6 +55,7 @@
     "cli-spinner": "^0.2.10",
     "client-only": "^0.0.1",
     "clsx": "^2.0.0",
+    "concurrently": "^8.2.1",
     "cron": "^2.4.3",
     "crypto-js": "^4.1.1",
     "dotenv": "^16.3.1",
