@@ -26,13 +26,15 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Install bun
-        uses: oven-sh/setup-bun@v1
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
 
       - name: Install dependencies
-        run: bun install
+        run: npm install
 
-      # If pbun is used, you need to switch the previous step with the following one. pbun does not create a package-lock.json
+      # If pnpm is used, you need to switch the previous step with the following one. pnpm does not create a package-lock.json
       # so the step above will fail to pull dependencies
       # - uses: pnpm/action-setup@v2
       #   name: Install pnpm
@@ -60,7 +62,7 @@ jobs:
 
       - name: Build next.js app
         # change this if your site requires a custom build command
-        run: bun run build
+        run: npm run build
 
       # Here's the first place where next-bundle-analysis' own script is used
       # This step pulls the raw bundle stats for the current bundle

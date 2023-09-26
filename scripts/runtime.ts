@@ -47,9 +47,9 @@ const basicFiles = [
     path: ".github/workflows/check.yml",
     replace: (oldRuntime: IRuntime, newRuntime: IRuntime, content: string) => {
       if (oldRuntime.npm === "npm" && newRuntime.npm === "bun") {
-        content = content.replaceAll(`${oldRuntime.npm} ci`, `${newRuntime.npm} install --frozen-lockfile`)
+        content = content.replaceAll(`${oldRuntime.npm} install`, `${newRuntime.npm} install`)
       } else if (oldRuntime.npm === "bun" && newRuntime.npm === "npm") {
-        content = content.replaceAll(`${oldRuntime.npm} install --frozen-lockfile`, `${newRuntime.npm} ci`)
+        content = content.replaceAll(`${oldRuntime.npm} install`, `${newRuntime.npm} install`)
       }
       content = content.replaceAll(`${oldRuntime.npm} `, `${newRuntime.npm} `)
       if (oldRuntime.npm === "npm" && newRuntime.npm === "bun") {
@@ -80,9 +80,9 @@ const basicFiles = [
     path: ".github/workflows/nextjs_bundle_analysis.yml",
     replace: (oldRuntime: IRuntime, newRuntime: IRuntime, content: string) => {
       if (oldRuntime.npm === "npm" && newRuntime.npm === "bun") {
-        content = content.replaceAll(`${oldRuntime.npm} ci`, `${newRuntime.npm} install --frozen-lockfile`)
+        content = content.replaceAll(`${oldRuntime.npm} install`, `${newRuntime.npm} install`)
       } else if (oldRuntime.npm === "bun" && newRuntime.npm === "npm") {
-        content = content.replaceAll(`${oldRuntime.npm} install --frozen-lockfile`, `${newRuntime.npm} ci`)
+        content = content.replaceAll(`${oldRuntime.npm} install`, `${newRuntime.npm} install`)
       }
       content = content.replaceAll(`${oldRuntime.npm} `, `${newRuntime.npm} `)
       if (oldRuntime.npm === "npm" && newRuntime.npm === "bun") {
@@ -123,7 +123,7 @@ const basicFiles = [
     path: ".github/workflows/release.yml",
     replace: (oldRuntime: IRuntime, newRuntime: IRuntime, content: string) => {
       if (oldRuntime.npm === "npm" && newRuntime.npm === "bun") {
-        content = content.replaceAll(`${oldRuntime.npm} ci`, `${newRuntime.npm} install --frozen-lockfile`)
+        content = content.replaceAll(`${oldRuntime.npm} install`, `${newRuntime.npm} install`)
         content = content.replaceAll(
           `      - name: Setup Node.js
         uses: actions/setup-node@v3
@@ -133,7 +133,7 @@ const basicFiles = [
         uses: oven-sh/setup-bun@v1`
         )
       } else if (oldRuntime.npm === "bun" && newRuntime.npm === "npm") {
-        content = content.replaceAll(`${oldRuntime.npm} install --frozen-lockfile`, `${newRuntime.npm} ci`)
+        content = content.replaceAll(`${oldRuntime.npm} install`, `${newRuntime.npm} install`)
         content = content.replaceAll(
           `      - name: Install bun
         uses: oven-sh/setup-bun@v1`,
