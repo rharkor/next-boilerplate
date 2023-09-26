@@ -1,5 +1,7 @@
 import { z } from "zod"
+import { defaultMaxPerPage } from "@/types/constants"
 import { TDictionary } from "./langs"
+import { logger } from "./logger"
 
 export type IMeta = {
   total: number
@@ -74,7 +76,14 @@ export type IJsonApiQuery = {
   fields?: string[]
 }
 
-export const jsonApiQuerySchema = (dictionary?: TDictionary) =>
+export const jsonApiQuerySchema = (
+  dictionary?: TDictionary,
+  {
+    maxPerPage = defaultMaxPerPage,
+  }: {
+    maxPerPage?: number
+  } = {}
+) =>
   z.object({
     page: z
       .number({
@@ -91,6 +100,13 @@ export const jsonApiQuerySchema = (dictionary?: TDictionary) =>
       })
       .positive()
       .int()
+      .transform((value) => {
+        if (value > maxPerPage) {
+          logger.warn(`perPage value ${value} is greater than maxPerPage ${maxPerPage}.`)
+          return maxPerPage
+        }
+        return value
+      })
       .optional(),
     sort: z
       .array(
