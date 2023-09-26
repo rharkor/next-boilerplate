@@ -6,11 +6,12 @@ import { apiInputFromSchema } from "@/types"
 export const deleteSession = async ({ input, ctx: { session } }: apiInputFromSchema<typeof deleteSessionSchema>) => {
   try {
     ensureLoggedIn(session)
-    const { id } = deleteSessionSchema().parse(input)
+    const { id, sessionToken } = deleteSessionSchema().parse(input)
     //* Delete session
     const deletedSession = await prisma.session.delete({
       where: {
         id: id,
+        sessionToken: sessionToken,
         userId: session.user.id,
       },
     })

@@ -51,9 +51,17 @@ export const getActiveSessionsResponseSchema = () =>
   })
 
 export const deleteSessionSchema = () =>
-  z.object({
-    id: z.string(),
-  })
+  z
+    .object({
+      id: z.string(),
+      sessionToken: z.never().optional(),
+    })
+    .or(
+      z.object({
+        id: z.never().optional(),
+        sessionToken: z.string(),
+      })
+    )
 
 export const deleteSessionResponseSchema = () =>
   z.object({
