@@ -124,8 +124,24 @@ const basicFiles = [
     replace: (oldRuntime: IRuntime, newRuntime: IRuntime, content: string) => {
       if (oldRuntime.npm === "npm" && newRuntime.npm === "bun") {
         content = content.replaceAll(`${oldRuntime.npm} ci`, `${newRuntime.npm} install --frozen-lockfile`)
+        content = content.replaceAll(
+          `      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "lts/*"`,
+          `      - name: Install bun
+          uses: oven-sh/setup-bun@v1`
+        )
       } else if (oldRuntime.npm === "bun" && newRuntime.npm === "npm") {
         content = content.replaceAll(`${oldRuntime.npm} install --frozen-lockfile`, `${newRuntime.npm} ci`)
+        content = content.replaceAll(
+          `      - name: Install bun
+          uses: oven-sh/setup-bun@v1`,
+          `      - name: Setup Node.js
+          uses: actions/setup-node@v3
+          with:
+            node-version: "lts/*"`
+        )
       }
       return content.replaceAll(`${oldRuntime.npx} `, `${newRuntime.npx} `)
     },
