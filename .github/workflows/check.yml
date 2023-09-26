@@ -25,6 +25,8 @@ jobs:
         run: cp .env.example .env
       - name: Lint check
         run: bun run lint
+      - name: TestTTT
+        run: ls -la && pwd
       - name: Format check
         run: bun run prettier
       - name: Unit & Integration tests
