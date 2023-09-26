@@ -25,7 +25,7 @@ jobs:
       - name: Install bun
         uses: oven-sh/setup-bun@v1
       - name: Install dependencies
-        run: bun install --frozen-lockfile
+        run: bun install
       - name: Verify the integrity of provenance attestations and registry signatures for installed dependencies
         run: npm audit signatures
       - name: Release
