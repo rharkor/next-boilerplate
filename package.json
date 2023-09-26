@@ -3,27 +3,27 @@
   "version": "1.0.1",
   "private": true,
   "scripts": {
-    "init": "cd scripts && npm i && npm run init && cd .. && npx prisma migrate dev && npm run seed",
-    "dev": "npm run is-initialized && npx prisma migrate dev && cross-env FORCE_COLOR=1 next dev",
-    "build": "npm run is-initialized && npm run full-sub-package-setup && next build",
-    "start": "npm run is-initialized && npm run deploy-db:prod && npm run seed && next start",
-    "start:with-cron": "npm run is-initialized && npm run deploy-db:prod && npm run seed && concurrently \"next start\" \"npm run cron\"",
-    "deploy-db:prod": "npx prisma migrate deploy",
-    "cron": "npx tsx ./crons/index.ts",
+    "init": "cd scripts && bun i && bun run init && cd .. && bunx prisma migrate dev && bun run seed",
+    "dev": "bun run is-initialized && bunx prisma migrate dev && cross-env FORCE_COLOR=1 next dev",
+    "build": "bun run is-initialized && bun run full-sub-package-setup && next build",
+    "start": "bun run is-initialized && bun run deploy-db:prod && bun run seed && next start",
+    "start:with-cron": "bun run is-initialized && bun run deploy-db:prod && bun run seed && concurrently \"next start\" \"bun run cron\"",
+    "deploy-db:prod": "bunx prisma migrate deploy",
+    "cron": "bunx tsx ./crons/index.ts",
     "lint": "next lint",
     "lint:fix": "next lint --fix",
     "prettier": "prettier --check \"**/*.{js,jsx,ts,tsx}\"",
     "prettier:fix": "prettier --write \"**/*.{js,jsx,ts,tsx}\"",
-    "analyze": "cross-env ANALYZE=true npm run build",
+    "analyze": "cross-env ANALYZE=true bun run build",
     "test": "cross-env FORCE_COLOR=1 jest --passWithNoTests",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "postinstall": "npx patch-package && prisma generate",
-    "preinstall": "npx only-allow npm",
+    "postinstall": "bunx patch-package && prisma generate",
+    "preinstall": "bunx only-allow npm",
     "seed": "NODE_ENV=development prisma db seed",
-    "depcheck": "cd scripts && npm i && npm run depcheck",
-    "full-sub-package-setup": "npm run sub-package:scripts",
-    "sub-package:scripts": "cd scripts && npm i && cd ..",
-    "is-initialized": "cd scripts && npm i && npm run is-initialized"
+    "depcheck": "cd scripts && bun i && bun run depcheck",
+    "full-sub-package-setup": "bun run sub-package:scripts",
+    "sub-package:scripts": "cd scripts && bun i && cd ..",
+    "is-initialized": "cd scripts && bun i && bun run is-initialized"
   },
   "dependencies": {
     "@formatjs/intl-localematcher": "^0.4.0",
@@ -137,7 +137,7 @@
   },
   "prisma": {
     "schema": "prisma/schema.prisma",
-    "seed": "npx ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
+    "seed": "bunx ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
   },
   "nextBundleAnalysis": {
     "budget": 358400,

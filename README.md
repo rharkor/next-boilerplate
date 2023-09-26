@@ -88,19 +88,19 @@ cp .env.example .env
 3. Initialize the project:
 
 ```bash
-npm run init
+bun run init
 ```
 
 4. Install the dependencies:
 
 ```bash
-npm install
+bun install
 ```
 
 5. Run the development server:
 
 ```bash
-npm run dev
+bun run dev
 ```
 
 6. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
@@ -166,7 +166,7 @@ This boilerplate comes with various testing setups to ensure your application's 
 
 ### Running Tests
 
-- **Unit and integration tests**: Run Jest tests using `npm run test`
+- **Unit and integration tests**: Run Jest tests using `bun run test`
 
 <img width="1392" alt="image" src="https://user-images.githubusercontent.com/28964599/233666655-93b7d08b-2fd8-406a-b43c-44d4d96cf387.png">
 

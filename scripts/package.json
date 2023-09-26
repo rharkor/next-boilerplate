@@ -3,11 +3,11 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "init": "npx tsx init.ts",
-    "depcheck": "npx tsx depcheck.ts",
-    "is-initialized": "npx tsx is-initialized.ts",
-    "postinstall": "npx patch-package",
-    "preinstall": "npx only-allow npm"
+    "init": "bunx tsx init.ts",
+    "depcheck": "bunx tsx depcheck.ts",
+    "is-initialized": "bunx tsx is-initialized.ts",
+    "postinstall": "bunx patch-package",
+    "preinstall": "bunx only-allow npm"
   },
   "type": "module",
   "dependencies": {
