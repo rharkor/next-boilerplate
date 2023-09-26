@@ -1,6 +1,6 @@
 {
   "runtime": {
-    "npm": "bun",
-    "npx": "bunx"
+    "npm": "npm",
+    "npx": "npx"
   }
 }
