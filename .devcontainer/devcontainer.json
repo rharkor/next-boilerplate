@@ -33,11 +33,11 @@
   },
 
   // Use 'postCreateCommand' to run commands after the container is created.
-  "postCreateCommand": "npm install && ./scripts/install-brew.sh && ./scripts/install-zsh10k.sh",
+  "postCreateCommand": "./scripts/install-zsh10k.sh && ./scripts/install-bun.sh && ./scripts/install-brew.sh && npm install",
 
   // Configure tool-specific properties.
   "customizations": {
-    "postCreateCommand": "npm install && ./scripts/install-brew.sh && ./scripts/install-zsh10k.sh",
+    "postCreateCommand": "./scripts/install-zsh10k.sh && ./scripts/install-bun.sh && ./scripts/install-brew.sh && npm install",
     "vscode": {
       "extensions": [
         "formulahendry.auto-rename-tag",

@@ -3,13 +3,19 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "init": "npx -y tsx init.ts",
-    "depcheck": "npx -y tsx depcheck.ts",
-    "is-initialized": "npx -y tsx is-initialized.ts"
+    "init": "npx tsx init.ts",
+    "depcheck": "npx tsx depcheck.ts",
+    "is-initialized": "npx tsx is-initialized.ts",
+    "postinstall": "npx patch-package",
+    "preinstall": "npx only-allow npm"
   },
   "type": "module",
   "dependencies": {
     "chalk": "^5.3.0",
-    "depcheck": "^1.4.6"
+    "depcheck": "^1.4.6",
+    "inquirer": "^9.2.11"
+  },
+  "devDependencies": {
+    "@types/inquirer": "^9.0.3"
   }
 }

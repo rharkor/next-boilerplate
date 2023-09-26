@@ -1,6 +1,6 @@
 import { TRPCClientErrorLike } from "@trpc/client"
 import "client-only"
-import { AppRouterInstance } from "next/dist/shared/lib/app-router-context"
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime"
 
 import { toast } from "react-toastify"
 import { AppRouter } from "../../api/_app"

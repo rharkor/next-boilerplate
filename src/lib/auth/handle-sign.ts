@@ -1,6 +1,6 @@
 //! Only client-side code
 
-import { AppRouterInstance } from "next/dist/shared/lib/app-router-context"
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime"
 import { signIn } from "next-auth/react"
 import { toast } from "react-toastify"
 import * as z from "zod"

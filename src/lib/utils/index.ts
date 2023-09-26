@@ -1,6 +1,6 @@
 import { TRPCClientErrorLike } from "@trpc/client"
 import { type ClassValue, clsx } from "clsx"
-import { AppRouterInstance } from "next/dist/shared/lib/app-router-context"
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime"
 import { twMerge } from "tailwind-merge"
 import { AppRouter } from "../../api/_app"
 import { authRoutes } from "../auth/constants"
