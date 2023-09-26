@@ -2,10 +2,10 @@ import { TRPCClientErrorLike } from "@trpc/client"
 import { type ClassValue, clsx } from "clsx"
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context"
 import { twMerge } from "tailwind-merge"
+import { AppRouter } from "../../api/_app"
 import { authRoutes } from "../auth/constants"
 import { TDictionary } from "../langs"
 import { logger } from "../logger"
-import { AppRouter } from "../server/routers/_app"
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))

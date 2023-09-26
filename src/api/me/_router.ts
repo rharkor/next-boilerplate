@@ -1,9 +1,3 @@
-import { sendVerificationEmail, verifyEmail } from "@/lib/api/me/email/mutation"
-import { deleteAccount, updateUser } from "@/lib/api/me/mutation"
-import { forgotPassword, resetPassword } from "@/lib/api/me/password/mutation"
-import { getAccount } from "@/lib/api/me/queries"
-import { deleteSession } from "@/lib/api/me/sessions/mutation"
-import { getActiveSessions } from "@/lib/api/me/sessions/queries"
 import {
   deleteAccountResponseSchema,
   deleteSessionResponseSchema,
@@ -22,7 +16,18 @@ import {
   verifyEmailResponseSchema,
   verifyEmailSchema,
 } from "@/lib/schemas/user"
-import { authenticatedNoEmailVerificationProcedure, authenticatedProcedure, publicProcedure, router } from "../trpc"
+import {
+  authenticatedNoEmailVerificationProcedure,
+  authenticatedProcedure,
+  publicProcedure,
+  router,
+} from "@/lib/server/trpc"
+import { sendVerificationEmail, verifyEmail } from "./email/mutation"
+import { deleteAccount, updateUser } from "./mutation"
+import { forgotPassword, resetPassword } from "./password/mutation"
+import { getAccount } from "./queries"
+import { deleteSession } from "./sessions/mutation"
+import { getActiveSessions } from "./sessions/queries"
 
 export const meRouter = router({
   updateUser: authenticatedProcedure.input(updateUserSchema()).output(updateUserResponseSchema()).mutation(updateUser),
