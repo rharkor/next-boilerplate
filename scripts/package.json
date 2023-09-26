@@ -7,7 +7,7 @@
     "depcheck": "bunx tsx depcheck.ts",
     "is-initialized": "bunx tsx is-initialized.ts",
     "postinstall": "bunx patch-package",
-    "preinstall": "bunx only-allow npm"
+    "preinstall": "bunx only-allow bun"
   },
   "type": "module",
   "dependencies": {

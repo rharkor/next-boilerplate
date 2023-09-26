@@ -19,6 +19,7 @@ const basicFiles = [
     path: "package.json",
     replace: (oldRuntime: IRuntime, newRuntime: IRuntime, content: string) => {
       content = content.replaceAll(`${oldRuntime.npx} `, `${newRuntime.npx} `)
+      content = content.replaceAll(`only-allow ${oldRuntime.npm}`, `only-allow ${newRuntime.npm}`)
       return content.replaceAll(`${oldRuntime.npm} `, `${newRuntime.npm} `)
     },
   },
@@ -26,6 +27,7 @@ const basicFiles = [
     path: "scripts/package.json",
     replace: (oldRuntime: IRuntime, newRuntime: IRuntime, content: string) => {
       content = content.replaceAll(`${oldRuntime.npx} `, `${newRuntime.npx} `)
+      content = content.replaceAll(`only-allow ${oldRuntime.npm}`, `only-allow ${newRuntime.npm}`)
       return content.replaceAll(`${oldRuntime.npm} `, `${newRuntime.npm} `)
     },
   },
