@@ -1,5 +1,5 @@
 {
-  branches: ["main"],
+  branches: ["rec", "main"],
   "plugins":
     [
       ["@semantic-release/npm", { "npmPublish": false }],

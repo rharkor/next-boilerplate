@@ -41,6 +41,46 @@ const basicFiles = [
       return content.replaceAll(`${oldRuntime.npm} `, `${newRuntime.npm} `)
     },
   },
+  {
+    path: ".github/workflows/check.yml",
+    replace: (oldRuntime: IRuntime, newRuntime: IRuntime, content: string) => {
+      content = content.replaceAll(`${oldRuntime.npm} ci`, `${newRuntime.npm} install --production`)
+      content = content.replaceAll(`${oldRuntime.npm} `, `${newRuntime.npm} `)
+      return content.replaceAll(
+        `      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18.x"
+          cache: "npm"`,
+        `      - name: Install bun
+        uses: oven-sh/setup-bun@v1`
+      )
+    },
+  },
+  {
+    path: ".github/workflows/nextjs_bundle_analysis.yml",
+    replace: (oldRuntime: IRuntime, newRuntime: IRuntime, content: string) => {
+      content = content.replaceAll(`${oldRuntime.npm} ci`, `${newRuntime.npm} install --production`)
+      content = content.replaceAll(`${oldRuntime.npm} `, `${newRuntime.npm} `)
+      content = content.replaceAll(`${oldRuntime.npx} `, `${newRuntime.npx} `)
+      return content.replaceAll(
+        `      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18.x"
+          cache: "npm"`,
+        `      - name: Install bun
+        uses: oven-sh/setup-bun@v1`
+      )
+    },
+  },
+  {
+    path: ".github/workflows/release.yml",
+    replace: (oldRuntime: IRuntime, newRuntime: IRuntime, content: string) => {
+      content = content.replaceAll(`${oldRuntime.npm} ci`, `${newRuntime.npm} install --production`)
+      return content.replaceAll(`${oldRuntime.npx} `, `${newRuntime.npx} `)
+    },
+  },
 ]
 
 const processBasicFiles = async (currentRuntime: IRuntime, newRuntime: IRuntime) => {
