@@ -3,12 +3,19 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "init": "npx -y tsx init.ts",
-    "depcheck": "npx -y tsx depcheck.ts"
+    "init": "bunx tsx init.ts",
+    "depcheck": "bunx tsx depcheck.ts",
+    "is-initialized": "bunx tsx is-initialized.ts",
+    "postinstall": "bunx patch-package",
+    "preinstall": "bunx only-allow bun"
   },
   "type": "module",
   "dependencies": {
     "chalk": "^5.3.0",
-    "depcheck": "^1.4.6"
+    "depcheck": "^1.4.6",
+    "inquirer": "^9.2.11"
+  },
+  "devDependencies": {
+    "@types/inquirer": "^9.0.3"
   }
 }

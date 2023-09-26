@@ -17,28 +17,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: echo "node_version=$(cat .github/nodejs.version)" >> $GITHUB_ENV
-      - name: "use node ${{ env.node_version }}"
-        uses: actions/setup-node@v3
-        with:
-          node-version: "${{ env.node_version }}"
-      - name: Restore dependencies cache
-        uses: actions/cache@v3
-        id: restore-deps-cache
-        env:
-          cache-name: cache-deps
-        with:
-          path: node_modules
-          key: ${{ runner.os }}-build-${{ env.cache-name }}
+      - name: Install bun
+        uses: oven-sh/setup-bun@v1
       - name: Install dependencies
-        run: npm ci
+        run: bun install --frozen-lockfile
       - name: Set example env
         run: cp .env.example .env
       - name: Lint check
-        run: npm run lint
+        run: bun run lint
       - name: Format check
-        run: npm run prettier
+        run: bun run prettier
       - name: Unit & Integration tests
-        run: npm test
+        run: bun run test
       - name: Check dependencies usage
-        run: npm run depcheck
+        run: bun run depcheck

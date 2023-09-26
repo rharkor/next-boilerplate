@@ -18,6 +18,8 @@ export default function LocaleSwitcher({ lang }: { lang: Locale }) {
 
   const handleLocaleChange = (locale: Locale) => {
     router.push(redirectedPathName(locale))
+    //? refresh the page due to prefetch <Link/>
+    router.refresh()
   }
 
   const [dynamicLocale, setDynamicLocale] = useState<Locale>(lang)

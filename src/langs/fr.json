@@ -107,7 +107,9 @@
     "tokenExpired": "Token a expiré.",
     "passwordsDoNotMatch": "Les mots de passe ne correspondent pas.",
     "cannotResetAdminPasswordInDemoMode": "Vous ne pouvez pas réinitialiser le mot de passe de l'administrateur en mode démo.",
-    "emailNotVerified": "Veuillez vérifier votre email."
+    "emailNotVerified": "Veuillez vérifier votre email.",
+    "emailAlreadyVerified": "Email vérifié",
+    "emailServiceDisabled": "Le service d'email est désactivé."
   },
   "email": "Email",
   "emailPlaceholder": "nom@exemple.com",
@@ -164,12 +166,13 @@
   "send": "Envoyer",
   "goToSignInPage": "Aller à la page de connexion",
   "emailVerificationSentTitle": "Email envoyé",
-  "emailVerificationSentDescription": "Un email dé vérification vous a été envoyé. Veuillez suivre les instructions pour valider votre email.",
+  "emailVerificationSentDescription": "Un email de vérification vous a été envoyé. Veuillez suivre les instructions pour valider votre email.",
   "emailAlreadyVerified": "Email vérifié",
   "resendVerificationEmail": "Renvoyer l'email de vérification",
   "verifyEmailSuccessTitle": "Email vérifié",
   "verifyEmailSuccessDescription": "Votre email a été vérifié avec succès.",
   "verifyEmail": "Vérifier l'email",
   "emailVerificationTitle": "Vérification de l'email",
-  "emailVerificationDescription": "Veuillez vérifier votre email pour continuer."
+  "emailVerificationDescription": "Veuillez vérifier votre email pour continuer.",
+  "copiedToClipboard": "Copié dans le presse-papier"
 }

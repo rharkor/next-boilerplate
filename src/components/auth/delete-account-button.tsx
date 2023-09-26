@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation"
 import { useState } from "react"
+import { toast } from "react-toastify"
 import {
   AlertDialog,
   AlertDialogCancel,
@@ -17,7 +18,6 @@ import { TDictionary } from "@/lib/langs"
 import { trpc } from "@/lib/trpc/client"
 import { handleMutationError } from "@/lib/utils/client-utils"
 import { Button } from "../ui/button"
-import { toast } from "../ui/use-toast"
 
 export default function DeleteAccountButton({
   children,
@@ -33,10 +33,7 @@ export default function DeleteAccountButton({
       setIsDeletingAccount(false)
     },
     onSuccess: () => {
-      toast({
-        title: dictionary.deleteAccountSuccessTitle,
-        description: dictionary.deleteAccountSuccessDescription,
-      })
+      toast.success(dictionary.deleteAccountSuccessDescription)
       router.push(authRoutes.signIn[0])
     },
   })

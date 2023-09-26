@@ -1,8 +1,9 @@
 "use client"
 
 import { useRouter } from "next/navigation"
+import { toast } from "react-toastify"
 import { Button } from "@/components/ui/button"
-import { toast } from "@/components/ui/use-toast"
+
 import { authRoutes } from "@/lib/auth/constants"
 import { TDictionary } from "@/lib/langs"
 import { trpc } from "@/lib/trpc/client"
@@ -14,10 +15,7 @@ export default function VerifyEmailButton({ dictionary, token }: { dictionary: T
   const verifyEmail = trpc.me.verifyEmail.useMutation({
     onError: (error) => handleMutationError(error, dictionary, router),
     onSuccess: () => {
-      toast({
-        title: dictionary.verifyEmailSuccessTitle,
-        description: dictionary.verifyEmailSuccessDescription,
-      })
+      toast.success(dictionary.verifyEmailSuccessDescription)
       router.push(authRoutes.redirectAfterSignIn)
     },
   })

@@ -4,7 +4,7 @@
 
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/rharkor/next-boilerplate/blob/main/LICENSE)
 
-Welcome to the _Next.js Enterprise Boilerplate_, an open-source template for enterprise projects! It's loaded with features that'll help you build a high-performance, maintainable, and enjoyable app. We've done all the heavy lifting for you, so sit back, relax, and get ready to conquer the world with your incredible app! 🌍
+Welcome to the _Next.js Boilerplate_, an open-source template for all your nextjs projects! It's loaded with features that'll help you build a high-performance, maintainable, and enjoyable app. We've done all the heavy lifting for you, so sit back, relax, and get ready to conquer the world with your incredible app! 🌍
 _Inspired by [Next enterprise](https://github.com/Blazity/next-enterprise/)_
 <br />
 <br />
@@ -88,19 +88,19 @@ cp .env.example .env
 3. Initialize the project:
 
 ```bash
-npm run init
+bun run init
 ```
 
 4. Install the dependencies:
 
 ```bash
-npm ci
+bun install
 ```
 
 5. Run the development server:
 
 ```bash
-npm dev
+bun run dev
 ```
 
 6. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
@@ -166,7 +166,7 @@ This boilerplate comes with various testing setups to ensure your application's 
 
 ### Running Tests
 
-- **Unit and integration tests**: Run Jest tests using `npm test`
+- **Unit and integration tests**: Run Jest tests using `bun run test`
 
 <img width="1392" alt="image" src="https://user-images.githubusercontent.com/28964599/233666655-93b7d08b-2fd8-406a-b43c-44d4d96cf387.png">
 
@@ -249,15 +249,6 @@ This project is licensed under the MIT License. For more information, see the [L
       <td align="center" valign="top" width="14.28%"><a href="https://louis.huort.com/"><img src="https://avatars.githubusercontent.com/u/70844594?v=4?s=100" width="100px;" alt="Louis Huort"/><br /><sub><b>Louis Huort</b></sub></a><br /><a href="https://github.com/rharkor/next-boilerplate/commits?author=rharkor" title="Code">💻</a></td>
     </tr>
   </tbody>
-  <tfoot>
-    <tr>
-      <td align="center" size="13px" colspan="7">
-        <img src="https://raw.githubusercontent.com/all-contributors/all-contributors-cli/1b8533af435da9854653492b1327a23a4dbd0a10/assets/logo-small.svg">
-          <a href="https://all-contributors.js.org/docs/en/bot/usage">Add your contributions</a>
-        </img>
-      </td>
-    </tr>
-  </tfoot>
 </table>
 
 <!-- markdownlint-restore -->

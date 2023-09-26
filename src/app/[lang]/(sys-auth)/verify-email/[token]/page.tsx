@@ -19,7 +19,7 @@ export default async function VerifyEmail({
       <h1 className="text-2xl font-semibold tracking-tight">{dictionary.emailVerificationTitle}</h1>
       <p className="text-sm text-muted-foreground">{dictionary.emailVerificationDescription}</p>
       <VerifyEmailButton dictionary={dictionary} token={token} />
-      <Link href={authRoutes.signIn[0]} className="text-sm text-muted-foreground hover:text-white">
+      <Link href={authRoutes.signIn[0]} className="text-sm text-muted-foreground hover:text-primary">
         {dictionary.goToSignInPage}
       </Link>
     </main>

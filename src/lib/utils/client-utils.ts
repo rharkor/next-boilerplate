@@ -1,10 +1,11 @@
 import { TRPCClientErrorLike } from "@trpc/client"
 import "client-only"
-import { AppRouterInstance } from "next/dist/shared/lib/app-router-context"
-import { toast } from "@/components/ui/use-toast"
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime"
+
+import { toast } from "react-toastify"
+import { AppRouter } from "../../api/_app"
 import { TDictionary } from "../langs"
 import { logger } from "../logger"
-import { AppRouter } from "../server/routers/_app"
 import { handleApiError } from "."
 
 export const handleQueryError = <T extends TRPCClientErrorLike<AppRouter>>(
@@ -14,11 +15,7 @@ export const handleQueryError = <T extends TRPCClientErrorLike<AppRouter>>(
 ): T => {
   const resp = handleApiError(error, dictionary, router)
   logger.error("Query error:", resp)
-  toast({
-    title: "Error",
-    description: resp.message,
-    variant: "destructive",
-  })
+  toast.error(resp.message)
   return resp
 }
 
@@ -29,10 +26,6 @@ export const handleMutationError = <T extends TRPCClientErrorLike<AppRouter>>(
 ): T => {
   const resp = handleApiError(error, dictionary, router)
   logger.error("Mutation error:", resp)
-  toast({
-    title: dictionary.error,
-    description: resp.message,
-    variant: "destructive",
-  })
+  toast.error(resp.message)
   return resp
 }

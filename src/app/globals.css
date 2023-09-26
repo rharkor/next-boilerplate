@@ -25,6 +25,14 @@
     --input: 214.3 31.8% 91.4%;
     --ring: 221.2 83.2% 53.3%;
     --radius: 0.5rem;
+
+    --toastify-color-info: hsl(var(--primary));
+    --toastify-color-light: hsl(var(--background));
+    --toastify-color-dark: hsl(var(--background));
+    --toastify-text-color-light: hsl(var(--foreground));
+    --toastify-text-color-dark: hsl(var(--foreground));
+    --toastify-color-progress-light: var(--toastify-color-info);
+    --toastify-color-progress-dark: var(--toastify-color-info);
   }
  
   .dark {

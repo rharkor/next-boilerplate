@@ -5,6 +5,7 @@ import { Clock } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
+import { toast } from "react-toastify"
 import { z } from "zod"
 import AutoRefresh from "@/components/auto-refresh"
 import { Button } from "@/components/ui/button"
@@ -12,7 +13,6 @@ import { Form } from "@/components/ui/form"
 import FormField from "@/components/ui/form-field"
 import { Label } from "@/components/ui/label"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
-import { toast } from "@/components/ui/use-toast"
 import { TDictionary } from "@/lib/langs"
 import { forgotPasswordSchema } from "@/lib/schemas/user"
 import { trpc } from "@/lib/trpc/client"
@@ -31,10 +31,7 @@ export default function ForgotPasswordForm({ dictionary }: { dictionary: TDictio
     onError: (error) => handleMutationError(error, dictionary, router),
     onSuccess: () => {
       setLatestEmailSentAt(Date.now())
-      toast({
-        title: dictionary.forgotPasswordSuccessTitle,
-        description: dictionary.forgotPasswordSuccessDescription,
-      })
+      toast.success(dictionary.forgotPasswordSuccessDescription)
     },
   })
 
@@ -69,7 +66,6 @@ export default function ForgotPasswordForm({ dictionary }: { dictionary: TDictio
             autoComplete="email"
             autoCorrect="off"
             disabled={isDisabled}
-            form={form}
             name="email"
           />
         </div>

@@ -1,5 +1,5 @@
 import { createContext } from "./context"
-import { appRouter } from "../server/routers/_app"
+import { appRouter } from "../../api/_app"
 
 /**
  * This client invokes procedures directly on the server without fetching over HTTP.

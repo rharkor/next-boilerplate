@@ -6,19 +6,13 @@ import type { NextRequest } from "next/server"
 import { logger } from "./lib/logger"
 import { i18n } from "../i18n-config"
 
-const blackListedPaths = [
-  "healthz",
-  "api/healthz",
-  "health",
-  "ping",
-  "api/ping",
-  "login",
-  "signin",
-  "register",
-  "signup",
-]
+const blackListedPaths = ["healthz", "api/healthz", "health", "ping", "api/ping"]
 
 function getLocale(request: NextRequest): string | undefined {
+  const cookies = request.cookies
+  const savedLocale = cookies.get("saved-locale")
+  if (savedLocale?.value) return savedLocale.value
+
   // Negotiator expects plain object so we need to transform headers
   const negotiatorHeaders: Record<string, string> = {}
   request.headers.forEach((value, key) => (negotiatorHeaders[key] = value))
@@ -50,18 +44,33 @@ export function middleware(request: NextRequest) {
   const pathnameIsMissingLocale = i18n.locales.every(
     (locale) => !pathname.startsWith(`/${locale}/`) && pathname !== `/${locale}`
   )
+  if (!pathnameIsMissingLocale) {
+    const localeInPathname =
+      i18n.locales.find((locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`) || ""
+    const presentLocale = getLocale(request) || i18n.defaultLocale
+    const response = NextResponse.next()
+    if (localeInPathname !== presentLocale) {
+      logger.debug(`setting locale cookie: ${localeInPathname}`)
+      response.cookies.set("saved-locale", localeInPathname, {
+        path: "/",
+        sameSite: "lax",
+        secure: process.env.NODE_ENV === "production",
+      })
+    }
+    return response
+  }
 
   const pathnameIsNotBlacklisted = !blackListedPaths.some((path) => pathname.startsWith(`/${path}`))
 
   // Redirect if there is no locale
-  if (pathnameIsMissingLocale && pathnameIsNotBlacklisted) {
+  if (pathnameIsNotBlacklisted) {
     const locale = getLocale(request)
 
     // e.g. incoming request is /products
     // The new URL is now /en-US/products
     const params = new URLSearchParams(request.nextUrl.search)
     const redirectUrl = new URL(`/${locale}${pathname.startsWith("/") ? "" : "/"}${pathname}?${params}`, request.url)
-    logger.debug("Redirecting to locale", { from: request.url, to: redirectUrl.href })
+    logger.debug(`redirecting to ${redirectUrl}`)
     return NextResponse.redirect(redirectUrl)
   }
 }
