@@ -1,6 +1,6 @@
 {
   "name": "next-boilerplate",
-  "version": "1.3.0-rec.1",
+  "version": "1.3.0",
   "private": true,
   "scripts": {
     "init": "cd scripts && bun i && bun run init && cd .. && bunx prisma migrate dev && bun run seed",
