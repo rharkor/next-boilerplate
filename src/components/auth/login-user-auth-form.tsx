@@ -1,7 +1,7 @@
 "use client"
 
 import { zodResolver } from "@hookform/resolvers/zod"
-import { BadgeInfo } from "lucide-react"
+import { ArrowBigDown, BadgeInfo } from "lucide-react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import * as React from "react"
@@ -72,36 +72,43 @@ export function LoginUserAuthForm({ dictionary, searchParams, ...props }: UserAu
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} {...props} className={cn("grid space-y-2", props.className)}>
         {env.NEXT_PUBLIC_IS_DEMO && (
-          <div>
-            <Alert>
-              <BadgeInfo className="h-4 w-4" />
-              <AlertTitle>{dictionary.auth.demoMode}</AlertTitle>
-              <AlertDescription className="flex flex-col">
-                <p className="m-1">
-                  {dictionary.email}:{" "}
-                  <code
-                    className="cursor-pointer rounded p-1 transition-all hover:bg-primary/20"
-                    onClick={() => {
-                      copyToClipboard(env.NEXT_PUBLIC_DEMO_EMAIL)
-                    }}
-                  >
-                    {env.NEXT_PUBLIC_DEMO_EMAIL}
-                  </code>
-                </p>
-                <p className="m-1">
-                  {dictionary.password}:{" "}
-                  <code
-                    className="cursor-pointer rounded p-1 transition-all hover:bg-primary/20"
-                    onClick={() => {
-                      copyToClipboard(env.NEXT_PUBLIC_DEMO_PASSWORD)
-                    }}
-                  >
-                    {env.NEXT_PUBLIC_DEMO_PASSWORD}
-                  </code>
-                </p>
-              </AlertDescription>
-            </Alert>
-          </div>
+          <Alert className="relative">
+            <BadgeInfo className="h-4 w-4" />
+            <AlertTitle>{dictionary.auth.demoMode}</AlertTitle>
+            <AlertDescription className="flex flex-col">
+              <p className="m-1">
+                {dictionary.email}:{" "}
+                <code
+                  className="cursor-pointer rounded p-1 transition-all hover:bg-primary/20"
+                  onClick={() => {
+                    copyToClipboard(env.NEXT_PUBLIC_DEMO_EMAIL)
+                  }}
+                >
+                  {env.NEXT_PUBLIC_DEMO_EMAIL}
+                </code>
+              </p>
+              <p className="m-1">
+                {dictionary.password}:{" "}
+                <code
+                  className="cursor-pointer rounded p-1 transition-all hover:bg-primary/20"
+                  onClick={() => {
+                    copyToClipboard(env.NEXT_PUBLIC_DEMO_PASSWORD)
+                  }}
+                >
+                  {env.NEXT_PUBLIC_DEMO_PASSWORD}
+                </code>
+              </p>
+              <div
+                className="absolute bottom-2 right-2 cursor-pointer"
+                onClick={() => {
+                  form.setValue("email", env.NEXT_PUBLIC_DEMO_EMAIL ?? "")
+                  form.setValue("password", env.NEXT_PUBLIC_DEMO_PASSWORD ?? "")
+                }}
+              >
+                <ArrowBigDown className="h-5 w-5" />
+              </div>
+            </AlertDescription>
+          </Alert>
         )}
         <div className="grid gap-1">
           <Label className="sr-only" htmlFor="email">
