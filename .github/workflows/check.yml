@@ -31,6 +31,6 @@ jobs:
       - name: Format check
         run: npm run prettier
       - name: Unit & Integration tests
-        run: npm test
+        run: npm run test
       - name: Check dependencies usage
         run: npm run depcheck

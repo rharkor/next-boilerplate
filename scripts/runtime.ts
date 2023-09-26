@@ -42,7 +42,7 @@ const processPackageFile = async (currentRuntime: IRuntime, newRuntime: IRuntime
     }
     //? Save the package.json
     await fs.writeFile(file, JSON.stringify(packageJson, null, 2) + "\n", "utf8")
-    chalk.blue(`Done for ${file}`)
+    console.log(chalk.blue(`Done for ${file}`))
   }
 }
 
@@ -52,7 +52,7 @@ const processBasicFiles = async (currentRuntime: IRuntime, newRuntime: IRuntime)
     const fileContent = await fs.readFile(filePath, "utf8")
     const newFileContent = file.replace(currentRuntime, newRuntime, fileContent)
     await fs.writeFile(filePath, newFileContent, "utf8")
-    chalk.blue(`Done for ${filePath}`)
+    console.log(chalk.blue(`Done for ${filePath}`))
   }
 }
 
@@ -65,7 +65,7 @@ export const runtime = async () => {
     {
       type: "list",
       name: "runtime",
-      message: "What runtime do you want to use?",
+      message: `What runtime do you want to use? (current: ${currentRuntime.npm})`,
       choices: ["node (npm)", "bun"],
     },
   ])
@@ -74,4 +74,9 @@ export const runtime = async () => {
   const newRuntime = res.runtime === "node (npm)" ? { npm: "npm", npx: "npx" } : { npm: "bun", npx: "bunx" }
   await processPackageFile(currentRuntime, newRuntime)
   await processBasicFiles(currentRuntime, newRuntime)
+
+  //? Save the new runtime
+  projectInfoJson.runtime = newRuntime
+  await fs.writeFile(path.join(root, "scripts", ".pinfo.json"), JSON.stringify(projectInfoJson, null, 2) + "\n", "utf8")
+  console.log(chalk.blue(`Done for .pinfo.json`))
 }
