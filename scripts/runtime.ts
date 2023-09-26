@@ -14,8 +14,21 @@ type IRuntime = {
   npx: string
 }
 
-const packageFilesToCheck = [path.join(root, "package.json"), path.join(root, "scripts", "package.json")]
 const basicFiles = [
+  {
+    path: "package.json",
+    replace: (oldRuntime: IRuntime, newRuntime: IRuntime, content: string) => {
+      content = content.replaceAll(`${oldRuntime.npx} `, `${newRuntime.npx} `)
+      return content.replaceAll(`${oldRuntime.npm} `, `${newRuntime.npm} `)
+    },
+  },
+  {
+    path: "scripts/package.json",
+    replace: (oldRuntime: IRuntime, newRuntime: IRuntime, content: string) => {
+      content = content.replaceAll(`${oldRuntime.npx} `, `${newRuntime.npx} `)
+      return content.replaceAll(`${oldRuntime.npm} `, `${newRuntime.npm} `)
+    },
+  },
   {
     path: "README.md",
     replace: (oldRuntime: IRuntime, newRuntime: IRuntime, content: string) => {
@@ -29,22 +42,6 @@ const basicFiles = [
     },
   },
 ]
-
-const processPackageFile = async (currentRuntime: IRuntime, newRuntime: IRuntime) => {
-  for (const file of packageFilesToCheck) {
-    const fileContent = await fs.readFile(file, "utf8")
-    const packageJson = JSON.parse(fileContent) as { scripts: Record<string, string> }
-    //? Replace all npm by bun in scripts
-    const scripts = packageJson.scripts
-    for (const script in scripts) {
-      scripts[script] = scripts[script].replaceAll(currentRuntime.npm, newRuntime.npm)
-      scripts[script] = scripts[script].replaceAll(currentRuntime.npx, newRuntime.npx)
-    }
-    //? Save the package.json
-    await fs.writeFile(file, JSON.stringify(packageJson, null, 2) + "\n", "utf8")
-    console.log(chalk.blue(`Done for ${file}`))
-  }
-}
 
 const processBasicFiles = async (currentRuntime: IRuntime, newRuntime: IRuntime) => {
   for (const file of basicFiles) {
@@ -72,7 +69,6 @@ export const runtime = async () => {
 
   //? Replace the runtime
   const newRuntime = res.runtime === "node (npm)" ? { npm: "npm", npx: "npx" } : { npm: "bun", npx: "bunx" }
-  await processPackageFile(currentRuntime, newRuntime)
   await processBasicFiles(currentRuntime, newRuntime)
 
   //? Save the new runtime
