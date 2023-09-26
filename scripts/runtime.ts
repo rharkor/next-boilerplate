@@ -41,7 +41,7 @@ const processPackageFile = async (currentRuntime: IRuntime, newRuntime: IRuntime
       scripts[script] = scripts[script].replaceAll(currentRuntime.npx, newRuntime.npx)
     }
     //? Save the package.json
-    await fs.writeFile(file, JSON.stringify(packageJson, null, 2), "utf8")
+    await fs.writeFile(file, JSON.stringify(packageJson, null, 2) + "\n", "utf8")
     chalk.blue(`Done for ${file}`)
   }
 }
