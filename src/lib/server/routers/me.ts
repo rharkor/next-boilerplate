@@ -26,11 +26,11 @@ import { authenticatedNoEmailVerificationProcedure, authenticatedProcedure, publ
 
 export const meRouter = router({
   updateUser: authenticatedProcedure.input(updateUserSchema()).output(updateUserResponseSchema()).mutation(updateUser),
-  getActiveSessions: authenticatedProcedure
+  getActiveSessions: authenticatedNoEmailVerificationProcedure
     .input(getActiveSessionsSchema())
     .output(getActiveSessionsResponseSchema())
     .query(getActiveSessions),
-  deleteSession: authenticatedProcedure
+  deleteSession: authenticatedNoEmailVerificationProcedure
     .input(deleteSessionSchema())
     .output(deleteSessionResponseSchema())
     .mutation(deleteSession),

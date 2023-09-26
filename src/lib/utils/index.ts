@@ -117,7 +117,7 @@ export const handleApiError = <T extends TRPCClientErrorLike<AppRouter>>(
 ): T => {
   const translatedError = translateError(error.message, dictionary)
   if (error.data?.code === "UNAUTHORIZED") {
-    if (error.message !== dictionary.errors.emailNotVerified) {
+    if (error.message !== "emailNotVerified") {
       router.push(authRoutes.redirectOnUnhauthorized)
     }
   }

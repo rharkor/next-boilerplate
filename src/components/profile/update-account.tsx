@@ -35,6 +35,7 @@ export default function UpdateAccount({
   const account = useAccount(dictionary, {
     initialData: serverAccount,
   })
+  const hasVerifiedEmail = !!account.data?.user.emailVerified
 
   const updateUserMutation = trpc.me.updateUser.useMutation({
     onError: (error) => handleMutationError(error, dictionary, router),
@@ -71,11 +72,12 @@ export default function UpdateAccount({
   }
 
   async function onUpdateNonSensibleInforation(data: INonSensibleForm) {
+    if (!hasVerifiedEmail) return
     updateUserMutation.mutate(data)
   }
 
   return (
-    <div className="mt-3 flex flex-col space-y-2">
+    <div className="relative mt-3 flex flex-col space-y-2">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onUpdateNonSensibleInforation)} className="grid gap-2">
           <div className="grid gap-1">
@@ -83,7 +85,7 @@ export default function UpdateAccount({
               label={dictionary.profilePage.profileDetails.username.label}
               placeholder={dictionary.profilePage.profileDetails.username.placeholder}
               type="text"
-              disabled={updateUserMutation.isLoading || account.isInitialLoading}
+              disabled={updateUserMutation.isLoading || account.isInitialLoading || !hasVerifiedEmail}
               name="username"
             />
           </div>
@@ -96,6 +98,13 @@ export default function UpdateAccount({
           />
         </form>
       </Form>
+      {!hasVerifiedEmail && (
+        <div className="absolute inset-0 !m-0 flex items-center justify-center backdrop-blur-sm">
+          <p className="text-center text-sm font-semibold text-muted-foreground">
+            {dictionary.errors.emailNotVerified}
+          </p>
+        </div>
+      )}
     </div>
   )
 }

@@ -27,7 +27,7 @@
     --radius: 0.5rem;
 
     --toastify-color-info: hsl(var(--primary));
-    --toastify-color-light: hsl(var(var(--background)));
+    --toastify-color-light: hsl(var(--background));
     --toastify-color-dark: hsl(var(--background));
     --toastify-text-color-light: hsl(var(--foreground));
     --toastify-text-color-dark: hsl(var(--foreground));
