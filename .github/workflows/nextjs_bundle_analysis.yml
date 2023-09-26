@@ -41,6 +41,10 @@ jobs:
       #     version: 7
       #     run_install: true
 
+      - name: Default env file
+        run: cp .env.example .env
+          echo SKIP_INIT_CHECK=true >> .env
+
       - name: Restore next build
         uses: actions/cache@v3
         id: restore-build-cache
