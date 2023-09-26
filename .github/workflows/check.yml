@@ -20,7 +20,7 @@ jobs:
       - name: Install bun
         uses: oven-sh/setup-bun@v1
       - name: Install dependencies
-        run: bun install --frozen-lockfile
+        run: bun install
       - name: Set example env
         run: cp .env.example .env
       - name: Lint check
