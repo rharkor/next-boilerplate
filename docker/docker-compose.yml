@@ -13,6 +13,16 @@ services:
     ports:
       - "3000:3000"
 
+  crons:
+    image: #{DOCKER_DEPLOY_CRONS_IMAGE}#
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+    volumes:
+      - ./uploads:/app/uploads
+
   db:
     image: postgres:latest
     restart: unless-stopped

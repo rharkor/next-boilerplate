@@ -46,8 +46,13 @@ jobs:
 
       - name: Build the docker image
         run: |
+          # Main application
           docker build -t rg.fr-par.scw.cloud/namespace-main/main-application-image:latest .
           docker push rg.fr-par.scw.cloud/namespace-main/main-application-image:latest
+
+          # Cron
+          docker build -t rg.fr-par.scw.cloud/namespace-main/cron-image:latest -f cron/Dockerfile .
+          docker push rg.fr-par.scw.cloud/namespace-main/cron-image:latest
 
       - name: Push docker compose
         run: |
