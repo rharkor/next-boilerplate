@@ -44,34 +44,68 @@ const basicFiles = [
   {
     path: ".github/workflows/check.yml",
     replace: (oldRuntime: IRuntime, newRuntime: IRuntime, content: string) => {
-      content = content.replaceAll(`${oldRuntime.npm} ci`, `${newRuntime.npm} install --production`)
+      if (oldRuntime.npm === "npm" && newRuntime.npm === "bun") {
+        content = content.replaceAll(`${oldRuntime.npm} ci`, `${newRuntime.npm} install --production`)
+      } else if (oldRuntime.npm === "bun" && newRuntime.npm === "npm") {
+        content = content.replaceAll(`${oldRuntime.npm} install --production`, `${newRuntime.npm} ci`)
+      }
       content = content.replaceAll(`${oldRuntime.npm} `, `${newRuntime.npm} `)
-      return content.replaceAll(
-        `      - name: Setup Node.js
+      if (oldRuntime.npm === "npm" && newRuntime.npm === "bun") {
+        content = content.replaceAll(
+          `      - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: "18.x"
           cache: "npm"`,
-        `      - name: Install bun
+          `      - name: Install bun
         uses: oven-sh/setup-bun@v1`
-      )
+        )
+      } else if (oldRuntime.npm === "bun" && newRuntime.npm === "npm") {
+        content = content.replaceAll(
+          `      - name: Install bun
+        uses: oven-sh/setup-bun@v1`,
+          `      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18.x"
+          cache: "npm"`
+        )
+      }
+      return content
     },
   },
   {
     path: ".github/workflows/nextjs_bundle_analysis.yml",
     replace: (oldRuntime: IRuntime, newRuntime: IRuntime, content: string) => {
-      content = content.replaceAll(`${oldRuntime.npm} ci`, `${newRuntime.npm} install --production`)
+      if (oldRuntime.npm === "npm" && newRuntime.npm === "bun") {
+        content = content.replaceAll(`${oldRuntime.npm} ci`, `${newRuntime.npm} install --production`)
+      } else if (oldRuntime.npm === "bun" && newRuntime.npm === "npm") {
+        content = content.replaceAll(`${oldRuntime.npm} install --production`, `${newRuntime.npm} ci`)
+      }
       content = content.replaceAll(`${oldRuntime.npm} `, `${newRuntime.npm} `)
       content = content.replaceAll(`${oldRuntime.npx} `, `${newRuntime.npx} `)
-      return content.replaceAll(
-        `      - name: Setup Node.js
+      if (oldRuntime.npm === "npm" && newRuntime.npm === "bun") {
+        content = content.replaceAll(
+          `      - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: "18.x"
           cache: "npm"`,
-        `      - name: Install bun
+          `      - name: Install bun
         uses: oven-sh/setup-bun@v1`
-      )
+        )
+      } else if (oldRuntime.npm === "bun" && newRuntime.npm === "npm") {
+        content = content.replaceAll(
+          `      - name: Install bun
+        uses: oven-sh/setup-bun@v1`,
+          `      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18.x"
+          cache: "npm"`
+        )
+      }
+      return content
     },
   },
   {
