@@ -85,7 +85,6 @@ const basicFiles = [
         content = content.replaceAll(`${oldRuntime.npm} install --frozen-lockfile`, `${newRuntime.npm} ci`)
       }
       content = content.replaceAll(`${oldRuntime.npm} `, `${newRuntime.npm} `)
-      content = content.replaceAll(`${oldRuntime.npx} `, `${newRuntime.npx} `)
       if (oldRuntime.npm === "npm" && newRuntime.npm === "bun") {
         content = content.replaceAll(
           `      - name: Install Node.js
