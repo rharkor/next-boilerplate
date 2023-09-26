@@ -6,17 +6,7 @@ import type { NextRequest } from "next/server"
 import { logger } from "./lib/logger"
 import { i18n } from "../i18n-config"
 
-const blackListedPaths = [
-  "healthz",
-  "api/healthz",
-  "health",
-  "ping",
-  "api/ping",
-  "login",
-  "signin",
-  "register",
-  "signup",
-]
+const blackListedPaths = ["healthz", "api/healthz", "health", "ping", "api/ping"]
 
 function getLocale(request: NextRequest): string | undefined {
   const cookies = request.cookies
