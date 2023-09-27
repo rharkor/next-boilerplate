@@ -11,11 +11,9 @@
   },
   "type": "module",
   "dependencies": {
+    "@types/inquirer": "^9.0.3",
     "chalk": "^5.3.0",
     "depcheck": "^1.4.6",
     "inquirer": "^9.2.11"
-  },
-  "devDependencies": {
-    "@types/inquirer": "^9.0.3"
   }
 }
