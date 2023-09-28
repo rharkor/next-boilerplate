@@ -176,6 +176,10 @@ export const runtime = async () => {
   const newRuntime = res.runtime === "node (npm)" ? { npm: "npm", npx: "npx" } : { npm: "bun", npx: "bunx" }
   await processBasicFiles(currentRuntime, newRuntime)
 
+  //? Delete old node_modules
+  console.log(chalk.blue(`Deleting old node_modules`))
+  await fs.rm(path.join(root, "node_modules"), { recursive: true, force: true })
+
   //? Save the new runtime
   projectInfoJson.runtime = newRuntime
   await fs.writeFile(path.join(root, "scripts", ".pinfo.json"), JSON.stringify(projectInfoJson, null, 2) + "\n", "utf8")
