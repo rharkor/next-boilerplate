@@ -7,7 +7,7 @@ import * as url from "url"
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url))
 const root = path.join(__dirname, "..")
 
-type IRuntime = {
+export type IRuntime = {
   npm: string
   npx: string
 }
