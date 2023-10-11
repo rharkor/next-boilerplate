@@ -16,17 +16,29 @@ const basicFiles = [
   {
     path: "package.json",
     replace: (oldRuntime: IRuntime, newRuntime: IRuntime, content: string) => {
-      content = content.replaceAll(`${oldRuntime.npx} `, `${newRuntime.npx} `)
-      content = content.replaceAll(`only-allow ${oldRuntime.npm}`, `only-allow ${newRuntime.npm}`)
-      return content.replaceAll(`${oldRuntime.npm} `, `${newRuntime.npm} `)
+      if (oldRuntime.npm === "npm" && newRuntime.npm !== "npm") {
+        content = content.replaceAll(
+          `only-allow-many ${oldRuntime.npm}`,
+          `only-allow-many ${newRuntime.npm} ${oldRuntime.npm}`
+        )
+      } else {
+        content = content.replaceAll(`only-allow-many ${oldRuntime.npm} npm`, `only-allow-many ${newRuntime.npm}`)
+      }
+      return content
     },
   },
   {
     path: "scripts/package.json",
     replace: (oldRuntime: IRuntime, newRuntime: IRuntime, content: string) => {
-      content = content.replaceAll(`${oldRuntime.npx} `, `${newRuntime.npx} `)
-      content = content.replaceAll(`only-allow ${oldRuntime.npm}`, `only-allow ${newRuntime.npm}`)
-      return content.replaceAll(`${oldRuntime.npm} `, `${newRuntime.npm} `)
+      if (oldRuntime.npm === "npm" && newRuntime.npm !== "npm") {
+        content = content.replaceAll(
+          `only-allow-many ${oldRuntime.npm}`,
+          `only-allow-many ${newRuntime.npm} ${oldRuntime.npm}`
+        )
+      } else {
+        content = content.replaceAll(`only-allow-many ${oldRuntime.npm} npm`, `only-allow-many ${newRuntime.npm}`)
+      }
+      return content
     },
   },
   {

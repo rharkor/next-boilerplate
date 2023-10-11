@@ -18,7 +18,7 @@
     "test": "cross-env FORCE_COLOR=1 jest --passWithNoTests",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "postinstall": "npx patch-package && prisma generate",
-    "preinstall": "npx only-allow npm",
+    "preinstall": "npx only-allow-many npm",
     "seed": "NODE_ENV=development prisma db seed",
     "depcheck": "cd scripts && npm i && npm run depcheck",
     "full-sub-package-setup": "npm run sub-package:scripts",
