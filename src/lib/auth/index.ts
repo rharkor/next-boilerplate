@@ -143,6 +143,11 @@ export const nextAuthOptions: NextAuthOptions & {
         if ("role" in user) token.role = user.role as string
         if ("uuid" in user) token.uuid = user.uuid as string
         if ("emailVerified" in user) token.emailVerified = user.emailVerified as Date
+
+        //* Send verification email if needed
+        if (user.email && "emailVerified" in user && !user.emailVerified) {
+          await sendVerificationEmail({ input: { email: user.email, silent: true }, ctx: {} as ITrpcContext })
+        }
       }
 
       return token
