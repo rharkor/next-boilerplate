@@ -60,7 +60,9 @@ export const replaceTokens = async () => {
     const fileContent = fs.readFileSync(filePath, "utf8")
     let newFileContent = fileContent
     for (const token of fileTokens) {
+      if (!allTokensValues[token]) continue
       newFileContent = newFileContent.replaceAll(`#{${token}}#`, allTokensValues[token])
+      console.log(`Done for ${filePath}`)
       if (token === "PROJECT_NAME") {
         //? Replace the project name in the devcontainer.json & package.json
         const nameToReplace = "next-boilerplate"
@@ -72,7 +74,9 @@ export const replaceTokens = async () => {
         const newDevContainerFileContent = devContainerFileContent.replaceAll(nameToReplace, newProjectName)
         const newPJsonFileContent = pJsonFileContent.replaceAll(nameToReplace, newProjectName)
         fs.writeFileSync(devContainerFile, newDevContainerFileContent, "utf8")
+        console.log(`Done for ${devContainerFile}`)
         fs.writeFileSync(pJsonFile, newPJsonFileContent, "utf8")
+        console.log(`Done for ${pJsonFile}`)
       }
     }
     fs.writeFileSync(filePath, newFileContent, "utf8")
