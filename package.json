@@ -113,6 +113,7 @@
     "eslint-plugin-tailwindcss": "^3.13.0",
     "eslint-plugin-unused-imports": "^3.0.0",
     "fetch-mock": "^9.11.0",
+    "git-conventional-commits": "^2.6.5",
     "isomorphic-fetch": "^3.0.0",
     "jest": "^29.6.2",
     "jest-environment-jsdom": "^29.7.0",

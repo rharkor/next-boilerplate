@@ -105,13 +105,6 @@ npm run dev
 
 6. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-7. This project uses a git hook to enforce [conventional commits](https://github.com/qoomon/git-conventional-commits). To install the git hook, run the following command in the root directory of the project:
-
-```sh
-brew install pre-commit
-pre-commit install -t commit-msg
-```
-
 ## 🚀 Deployment
 
 Easily deploy your Next.js app with [Vercel](https://vercel.com/new) by clicking the button below:
