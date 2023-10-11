@@ -2,8 +2,8 @@ version: "3.8"
 
 services:
   app:
-    image: #{DOCKER_DEPLOY_APP_IMAGE}#
-    container_name: #{APP_NAME}#_app
+    image: DOCKER_DEPLOY_APP_IMAGE
+    container_name: #{PROJECT_NAME}#_app
     restart: unless-stopped
     logging:
       driver: "json-file"
@@ -15,8 +15,8 @@ services:
       - "3000:3000"
 
   crons:
-    image: #{DOCKER_DEPLOY_CRONS_IMAGE}#
-    container_name: #{APP_NAME}#_crons
+    image: DOCKER_DEPLOY_CRONS_IMAGE
+    container_name: #{PROJECT_NAME}#_crons
     restart: unless-stopped
     logging:
       driver: "json-file"
@@ -27,7 +27,7 @@ services:
 
   db:
     image: postgres:latest
-    container_name: #{APP_NAME}#_db
+    container_name: #{PROJECT_NAME}#_db
     restart: unless-stopped
     volumes:
       - postgres-data:/var/lib/postgresql/data
@@ -45,7 +45,7 @@ services:
 
   redis:
     restart: unless-stopped
-    container_name: #{APP_NAME}#_redis
+    container_name: #{PROJECT_NAME}#_redis
     image: redis:latest
     command: /bin/sh -c "redis-server --requirepass ${REDIS_PASSWORD}"
     logging:

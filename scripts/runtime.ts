@@ -1,8 +1,6 @@
 import chalk from "chalk"
 import inquirer from "inquirer"
 import * as fs from "fs/promises"
-// import { stdin as input, stdout as output } from "node:process"
-// import * as readline from "node:readline/promises"
 import * as path from "path"
 import * as url from "url"
 
