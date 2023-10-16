@@ -17,17 +17,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Install bun
-        uses: oven-sh/setup-bun@v1
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18.x"
+          cache: "npm"
       - name: Install dependencies
-        run: bun install --frozen-lockfile
+        run: npm install
       - name: Set example env
         run: cp .env.example .env
       - name: Lint check
-        run: bun run lint
+        run: npm run lint
       - name: Format check
-        run: bun run prettier
+        run: npm run prettier
       - name: Unit & Integration tests
-        run: bun run test
+        run: npm run test
       - name: Check dependencies usage
-        run: bun run depcheck
+        run: npm run depcheck

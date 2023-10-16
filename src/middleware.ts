@@ -70,7 +70,6 @@ export function middleware(request: NextRequest) {
     // The new URL is now /en-US/products
     const params = new URLSearchParams(request.nextUrl.search)
     const redirectUrl = new URL(`/${locale}${pathname.startsWith("/") ? "" : "/"}${pathname}?${params}`, request.url)
-    logger.debug(`redirecting to ${redirectUrl}`)
     return NextResponse.redirect(redirectUrl)
   }
 }

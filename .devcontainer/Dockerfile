@@ -12,7 +12,5 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
 RUN su node -c "npm install -g npm@latest"
 RUN su node -c "npm install -g prisma"
 
-RUN /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-
 # Install bun
 RUN /bin/bash -c "curl -fsSL https://bun.sh/install | bash"

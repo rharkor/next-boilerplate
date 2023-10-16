@@ -33,11 +33,11 @@
   },
 
   // Use 'postCreateCommand' to run commands after the container is created.
-  "postCreateCommand": "./scripts/install-zsh10k.sh && ./scripts/install-bun.sh && ./scripts/install-brew.sh && bun install",
+  "postCreateCommand": "bash ./scripts/install/install.sh",
 
   // Configure tool-specific properties.
   "customizations": {
-    "postCreateCommand": "./scripts/install-zsh10k.sh && ./scripts/install-bun.sh && ./scripts/install-brew.sh && bun install",
+    "postCreateCommand": "bash ./scripts/install/install.sh",
     "vscode": {
       "extensions": [
         "formulahendry.auto-rename-tag",

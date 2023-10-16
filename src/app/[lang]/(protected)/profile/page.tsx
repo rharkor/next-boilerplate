@@ -19,7 +19,7 @@ export default async function Profile({
   const session = await getServerSession(nextAuthOptions)
 
   return (
-    <main className="container flex flex-1 flex-col items-center justify-center p-6">
+    <main className="container flex flex-1 flex-col items-center justify-center p-6 pb-20">
       <div className="flex w-full max-w-max flex-col">
         <Card className="relative z-10 m-auto max-w-full">
           <CardHeader>

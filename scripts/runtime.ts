@@ -1,15 +1,13 @@
 import chalk from "chalk"
 import inquirer from "inquirer"
 import * as fs from "fs/promises"
-// import { stdin as input, stdout as output } from "node:process"
-// import * as readline from "node:readline/promises"
 import * as path from "path"
 import * as url from "url"
 
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url))
 const root = path.join(__dirname, "..")
 
-type IRuntime = {
+export type IRuntime = {
   npm: string
   npx: string
 }
@@ -18,17 +16,29 @@ const basicFiles = [
   {
     path: "package.json",
     replace: (oldRuntime: IRuntime, newRuntime: IRuntime, content: string) => {
-      content = content.replaceAll(`${oldRuntime.npx} `, `${newRuntime.npx} `)
-      content = content.replaceAll(`only-allow ${oldRuntime.npm}`, `only-allow ${newRuntime.npm}`)
-      return content.replaceAll(`${oldRuntime.npm} `, `${newRuntime.npm} `)
+      if (oldRuntime.npm === "npm" && newRuntime.npm !== "npm") {
+        content = content.replaceAll(
+          `only-allow-many ${oldRuntime.npm}`,
+          `only-allow-many ${newRuntime.npm} ${oldRuntime.npm}`
+        )
+      } else {
+        content = content.replaceAll(`only-allow-many ${oldRuntime.npm} npm`, `only-allow-many ${newRuntime.npm}`)
+      }
+      return content
     },
   },
   {
     path: "scripts/package.json",
     replace: (oldRuntime: IRuntime, newRuntime: IRuntime, content: string) => {
-      content = content.replaceAll(`${oldRuntime.npx} `, `${newRuntime.npx} `)
-      content = content.replaceAll(`only-allow ${oldRuntime.npm}`, `only-allow ${newRuntime.npm}`)
-      return content.replaceAll(`${oldRuntime.npm} `, `${newRuntime.npm} `)
+      if (oldRuntime.npm === "npm" && newRuntime.npm !== "npm") {
+        content = content.replaceAll(
+          `only-allow-many ${oldRuntime.npm}`,
+          `only-allow-many ${newRuntime.npm} ${oldRuntime.npm}`
+        )
+      } else {
+        content = content.replaceAll(`only-allow-many ${oldRuntime.npm} npm`, `only-allow-many ${newRuntime.npm}`)
+      }
+      return content
     },
   },
   {
@@ -47,9 +57,9 @@ const basicFiles = [
     path: ".github/workflows/check.yml",
     replace: (oldRuntime: IRuntime, newRuntime: IRuntime, content: string) => {
       if (oldRuntime.npm === "npm" && newRuntime.npm === "bun") {
-        content = content.replaceAll(`${oldRuntime.npm} ci`, `${newRuntime.npm} install --frozen-lockfile`)
+        content = content.replaceAll(`${oldRuntime.npm} install`, `${newRuntime.npm} install`)
       } else if (oldRuntime.npm === "bun" && newRuntime.npm === "npm") {
-        content = content.replaceAll(`${oldRuntime.npm} install --frozen-lockfile`, `${newRuntime.npm} ci`)
+        content = content.replaceAll(`${oldRuntime.npm} install`, `${newRuntime.npm} install`)
       }
       content = content.replaceAll(`${oldRuntime.npm} `, `${newRuntime.npm} `)
       if (oldRuntime.npm === "npm" && newRuntime.npm === "bun") {
@@ -80,9 +90,9 @@ const basicFiles = [
     path: ".github/workflows/nextjs_bundle_analysis.yml",
     replace: (oldRuntime: IRuntime, newRuntime: IRuntime, content: string) => {
       if (oldRuntime.npm === "npm" && newRuntime.npm === "bun") {
-        content = content.replaceAll(`${oldRuntime.npm} ci`, `${newRuntime.npm} install --frozen-lockfile`)
+        content = content.replaceAll(`${oldRuntime.npm} install`, `${newRuntime.npm} install`)
       } else if (oldRuntime.npm === "bun" && newRuntime.npm === "npm") {
-        content = content.replaceAll(`${oldRuntime.npm} install --frozen-lockfile`, `${newRuntime.npm} ci`)
+        content = content.replaceAll(`${oldRuntime.npm} install`, `${newRuntime.npm} install`)
       }
       content = content.replaceAll(`${oldRuntime.npm} `, `${newRuntime.npm} `)
       if (oldRuntime.npm === "npm" && newRuntime.npm === "bun") {
@@ -123,7 +133,7 @@ const basicFiles = [
     path: ".github/workflows/release.yml",
     replace: (oldRuntime: IRuntime, newRuntime: IRuntime, content: string) => {
       if (oldRuntime.npm === "npm" && newRuntime.npm === "bun") {
-        content = content.replaceAll(`${oldRuntime.npm} ci`, `${newRuntime.npm} install --frozen-lockfile`)
+        content = content.replaceAll(`${oldRuntime.npm} install`, `${newRuntime.npm} install`)
         content = content.replaceAll(
           `      - name: Setup Node.js
         uses: actions/setup-node@v3
@@ -133,7 +143,7 @@ const basicFiles = [
         uses: oven-sh/setup-bun@v1`
         )
       } else if (oldRuntime.npm === "bun" && newRuntime.npm === "npm") {
-        content = content.replaceAll(`${oldRuntime.npm} install --frozen-lockfile`, `${newRuntime.npm} ci`)
+        content = content.replaceAll(`${oldRuntime.npm} install`, `${newRuntime.npm} install`)
         content = content.replaceAll(
           `      - name: Install bun
         uses: oven-sh/setup-bun@v1`,
@@ -175,6 +185,10 @@ export const runtime = async () => {
   //? Replace the runtime
   const newRuntime = res.runtime === "node (npm)" ? { npm: "npm", npx: "npx" } : { npm: "bun", npx: "bunx" }
   await processBasicFiles(currentRuntime, newRuntime)
+
+  //? Delete old node_modules
+  console.log(chalk.blue(`Deleting old node_modules`))
+  await fs.rm(path.join(root, "node_modules"), { recursive: true, force: true })
 
   //? Save the new runtime
   projectInfoJson.runtime = newRuntime

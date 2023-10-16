@@ -49,15 +49,29 @@ export const redisGetSert = async <T>(
   return executeCallback()
 }
 
-export const redisDelete = async (groupOrKey: string | string[], pipeline?: ChainableCommander) => {
+export const redisDelete = async (
+  groupOrKey: string | string[],
+  pipeline?: ChainableCommander,
+  {
+    forceExec,
+  }: {
+    forceExec?: boolean
+  } = {}
+) => {
   const redisPipeline = pipeline ?? redis.pipeline()
   if (Array.isArray(groupOrKey)) {
-    await Promise.all(groupOrKey.map(async (key) => redisDelete(key, redisPipeline)))
+    await Promise.all(
+      groupOrKey.map(async (key) =>
+        redisDelete(key, redisPipeline, {
+          forceExec: true,
+        })
+      )
+    )
     return
   }
   const keys = await redis.smembers("group_" + groupOrKey)
   redisPipeline.del(...keys)
   redisPipeline.del(groupOrKey)
 
-  if (!pipeline) await redisPipeline.exec()
+  if (forceExec || !pipeline) await redisPipeline.exec()
 }

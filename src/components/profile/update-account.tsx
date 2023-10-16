@@ -3,7 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useRouter } from "next/navigation"
 import { useSession } from "next-auth/react"
-import { useCallback, useEffect, useState } from "react"
+import { useCallback, useState } from "react"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
 import { useAccount } from "@/contexts/account"
@@ -60,10 +60,6 @@ export default function UpdateAccount({
       username: account.data?.user.username ?? "",
     })
   }, [account.data?.user, form])
-
-  useEffect(() => {
-    resetForm()
-  }, [resetForm])
 
   if (form.formState.isDirty && !isNotSensibleInformationsUpdated) {
     setIsNotSensibleInformationsUpdated(true)

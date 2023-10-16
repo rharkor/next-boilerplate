@@ -88,29 +88,22 @@ cp .env.example .env
 3. Initialize the project:
 
 ```bash
-bun run init
+npm run init
 ```
 
 4. Install the dependencies:
 
 ```bash
-bun install
+npm install
 ```
 
 5. Run the development server:
 
 ```bash
-bun run dev
+npm run dev
 ```
 
 6. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-7. This project uses a git hook to enforce [conventional commits](https://github.com/qoomon/git-conventional-commits). To install the git hook, run the following command in the root directory of the project:
-
-```sh
-brew install pre-commit
-pre-commit install -t commit-msg
-```
 
 ## 🚀 Deployment
 
@@ -166,7 +159,7 @@ This boilerplate comes with various testing setups to ensure your application's 
 
 ### Running Tests
 
-- **Unit and integration tests**: Run Jest tests using `bun run test`
+- **Unit and integration tests**: Run Jest tests using `npm run test`
 
 <img width="1392" alt="image" src="https://user-images.githubusercontent.com/28964599/233666655-93b7d08b-2fd8-406a-b43c-44d4d96cf387.png">
 

@@ -32,7 +32,7 @@ export default function LocaleSwitcher({ lang }: { lang: Locale }) {
         setDynamicLocale(value)
       }}
     >
-      <SelectTrigger className="w-16">
+      <SelectTrigger className="w-16 bg-background">
         <SelectValue placeholder="Lang" />
       </SelectTrigger>
       <SelectContent>
