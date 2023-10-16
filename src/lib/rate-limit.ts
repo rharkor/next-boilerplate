@@ -16,12 +16,16 @@ export const RATE_LIMIT_DURATION = 30
 const rateLimiter = async (identifier: string, limit: number, duration: number): Promise<Result> => {
   const key = `rate_limit:${identifier}`
   const currentCount = await client.get(key)
-  const count = parseInt(currentCount as string, 10) || 0
+  if (currentCount === null) {
+    client.setex(key, duration, "1")
+    return { limit, remaining: limit - 1, success: true }
+  } else {
+    client.incr(key)
+  }
+  const count = currentCount ? parseInt(currentCount, 10) : 1
   if (count >= limit) {
     return { limit, remaining: limit - count, success: false }
   }
-  client.incr(key)
-  client.expire(key, duration)
   return { limit, remaining: limit - (count + 1), success: true }
 }
 
