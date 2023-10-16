@@ -3,4 +3,4 @@
 # fix for windows systems
 PATH="/c/Program Files/nodejs:$HOME/AppData/Roaming/npm/:$PATH"
 
-npx git-conventional-commits commit-msg-hook "$1"
+git-conventional-commits commit-msg-hook "$1"
