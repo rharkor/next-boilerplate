@@ -7,7 +7,7 @@
     "depcheck": "npx tsx depcheck.ts",
     "is-initialized": "npx tsx is-initialized.ts",
     "postinstall": "npx patch-package",
-    "preinstall": "npx only-allow-many npm"
+    "preinstall": "npx -y only-allow-many npm"
   },
   "type": "module",
   "dependencies": {
