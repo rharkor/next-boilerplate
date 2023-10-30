@@ -10,7 +10,7 @@ import * as url from "url"
 
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url))
 
-const filesToCheck = ["docker/docker-compose.yml"]
+const filesToCheck = ["docker/docker-compose.yml", ".devcontainer/devcontainer.json"]
 
 //? Find all tokens of all the files in the root directory
 const findTokens: () => {
