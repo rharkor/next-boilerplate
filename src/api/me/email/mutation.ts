@@ -11,7 +11,7 @@ import { env } from "env.mjs"
 
 export const sendVerificationEmail = async ({ input }: apiInputFromSchema<typeof sendVerificationEmailSchema>) => {
   try {
-    const { email, silent } = sendVerificationEmailSchema().parse(input)
+    const { email, silent } = input
 
     const token = randomUUID()
     const user = await prisma.user.findUnique({
@@ -86,7 +86,7 @@ export const sendVerificationEmail = async ({ input }: apiInputFromSchema<typeof
 
 export const verifyEmail = async ({ input }: apiInputFromSchema<typeof verifyEmailSchema>) => {
   try {
-    const { token } = verifyEmailSchema().parse(input)
+    const { token } = input
 
     const userEmailVerificationToken = await prisma.userEmailVerificationToken.findUnique({
       where: {
