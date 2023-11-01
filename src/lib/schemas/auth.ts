@@ -7,12 +7,12 @@ export const passwordSchema = (dictionary?: TDictionary) =>
     .string({
       required_error: dictionary && dictionary.errors.password.required,
     })
-    .min(4, dictionary && dictionary.errors.password.min4)
+    .min(8, dictionary && dictionary.errors.password.min8)
     .max(25, dictionary && dictionary.errors.password.max25)
 
 export const passwordSchemaWithRegex = (dictionary?: TDictionary) =>
   passwordSchema(dictionary).regex(
-    /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{8,}$/,
+    /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*\.]).{8,}$/,
     dictionary && dictionary.errors.password.regex
   )
 
