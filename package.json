@@ -1,6 +1,6 @@
 {
   "name": "next-boilerplate",
-  "version": "1.4.0-rec.2",
+  "version": "1.4.1",
   "private": true,
   "scripts": {
     "init": "cd scripts && npm i && npm run init && cd .. && npx prisma migrate dev && npm run seed",
