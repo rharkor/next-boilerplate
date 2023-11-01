@@ -82,10 +82,10 @@
       "exist": "Username already exists."
     },
     "password": {
-      "regex": "Password must contain at least one uppercase letter, one lowercase letter, and one number",
+      "regex": "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character",
       "required": "Password is required.",
       "dontMatch": "Passwords don't match.",
-      "min4": "Password must be at least 4 characters long.",
+      "min8": "Password must be at least 8 characters long.",
       "max25": "Password must be at most 25 characters long."
     },
     "email": {
