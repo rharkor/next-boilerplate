@@ -39,10 +39,13 @@ export default function UpdateAccount({
 
   const updateUserMutation = trpc.me.updateUser.useMutation({
     onError: (error) => handleMutationError(error, dictionary, router),
-    onSuccess: async () => {
+    onSuccess: async (data) => {
       logger.debug("User updated")
       await update()
       utils.me.getAccount.invalidate()
+      form.reset({
+        username: data.user.username ?? "",
+      })
     },
   })
 
@@ -51,7 +54,7 @@ export default function UpdateAccount({
   const form = useForm<INonSensibleForm>({
     resolver: zodResolver(nonSensibleSchema(dictionary)),
     defaultValues: {
-      username: account.data?.user.name || "",
+      username: account.data?.user.username || "",
     },
   })
 
