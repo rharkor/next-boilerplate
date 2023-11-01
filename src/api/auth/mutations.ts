@@ -12,7 +12,7 @@ import { emailVerificationExpiration } from "@/types/constants"
 import { env } from "env.mjs"
 
 export const register = async ({ input }: apiInputFromSchema<typeof signUpSchema>) => {
-  const { email, password, username } = signUpSchema().parse(input)
+  const { email, password, username } = input
   try {
     const hashedPassword = await hash(password, 12)
 

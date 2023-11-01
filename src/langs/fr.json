@@ -82,10 +82,10 @@
       "exist": "Le nom d'utilisateur existe déjà."
     },
     "password": {
-      "regex": "Le mot de passe doit contenir au moins une lettre majuscule, une lettre minuscule et un chiffre.",
+      "regex": "Le mot de passe doit contenir au moins une lettre majuscule, une lettre minuscule, un chiffre, et un caractère spécial.",
       "required": "Mot de passe requis",
       "dontMatch": "Les mots de passe ne correspondent pas",
-      "min4": "Le mot de passe doit être au moins 4 caractères long.",
+      "min8": "Le mot de passe doit être au moins 8 caractères long.",
       "max25": "Le mot de passe doit être au maximum 25 caractères long."
     },
     "email": {

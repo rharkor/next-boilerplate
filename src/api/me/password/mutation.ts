@@ -12,7 +12,7 @@ import { env } from "env.mjs"
 
 export const forgotPassword = async ({ input }: apiInputFromSchema<typeof forgotPasswordSchema>) => {
   try {
-    const { email } = forgotPasswordSchema().parse(input)
+    const { email } = input
     //? Check if user exists
     const user = await prisma.user.findUnique({
       where: {
@@ -74,7 +74,7 @@ export const forgotPassword = async ({ input }: apiInputFromSchema<typeof forgot
 
 export const resetPassword = async ({ input }: apiInputFromSchema<typeof resetPasswordSchema>) => {
   try {
-    const { token, password } = resetPasswordSchema().parse(input)
+    const { token, password } = input
     const resetPassordToken = await prisma.resetPassordToken.findUnique({
       where: {
         token,
