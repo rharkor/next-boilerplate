@@ -12,7 +12,7 @@ export const passwordSchema = (dictionary?: TDictionary) =>
 
 export const passwordSchemaWithRegex = (dictionary?: TDictionary) =>
   passwordSchema(dictionary).regex(
-    /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*.]).{8,}$/,
+    /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*\.]).{8,}$/,
     dictionary && dictionary.errors.password.regex
   )
 
