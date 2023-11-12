@@ -64,7 +64,6 @@ With this template, you get all the awesomeness you need:
   - [🤝 Contribution](#-contribution)
   - [Support](#support)
   - [📜 License](#-license)
-  - [Contributors](#contributors)
 
 ## 🎯 Getting Started
 
@@ -228,23 +227,3 @@ For support, contact me on discord at `ryzer` or by email at `louis@huort.com`.
 ## 📜 License
 
 This project is licensed under the MIT License. For more information, see the [LICENSE](./LICENSE) file.
-
-## Contributors
-
-<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
-<!-- prettier-ignore-start -->
-<!-- markdownlint-disable -->
-<table>
-  <tbody>
-    <tr>
-     <td align="center" valign="top" width="14.28%"><a href="https://bstefanski.com/"><img src="https://avatars.githubusercontent.com/u/28964599?v=4?s=100" width="100px;" alt="Bart Stefanski"/><br /><sub><b>Bart Stefanski</b></sub></a><br /><a href="https://github.com/Blazity/next-enterprise/commits?author=bmstefanski" title="Code">💻</a></td>
-      <td align="center" valign="top" width="14.28%"><a href="https://github.com/jjablonski-it"><img src="https://avatars.githubusercontent.com/u/51968772?v=4?s=100" width="100px;" alt="Jakub Jabłoński"/><br /><sub><b>Jakub Jabłoński</b></sub></a><br /><a href="#infra-jjablonski-it" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a></td>
-      <td align="center" valign="top" width="14.28%"><a href="https://louis.huort.com/"><img src="https://avatars.githubusercontent.com/u/70844594?v=4?s=100" width="100px;" alt="Louis Huort"/><br /><sub><b>Louis Huort</b></sub></a><br /><a href="https://github.com/rharkor/next-boilerplate/commits?author=rharkor" title="Code">💻</a></td>
-    </tr>
-  </tbody>
-</table>
-
-<!-- markdownlint-restore -->
-<!-- prettier-ignore-end -->
-
-<!-- ALL-CONTRIBUTORS-LIST:END -->
