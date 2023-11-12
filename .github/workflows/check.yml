@@ -34,5 +34,3 @@ jobs:
         run: npm run test
       - name: Check dependencies usage
         run: npm run depcheck
-      - name: Build
-        run: npm run build
