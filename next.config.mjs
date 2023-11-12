@@ -16,9 +16,6 @@ const config = withPlugins([[withBundleAnalyzer({ enabled: env.ANALYZE })]], {
       { source: "/api/ping", destination: "/api/health" },
     ]
   },
-  compiler: {
-    styledComponents: true,
-  },
 })
 
 export default config
