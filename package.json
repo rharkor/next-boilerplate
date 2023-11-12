@@ -1,6 +1,6 @@
 {
   "name": "next-boilerplate",
-  "version": "1.1.0-rec.1",
+  "version": "1.4.1-rec.1",
   "private": true,
   "scripts": {
     "init": "cd scripts && npm i && npm run init && cd .. && npx prisma migrate dev && npm run seed",
@@ -58,7 +58,7 @@
     "clsx": "^2.0.0",
     "concurrently": "^8.2.1",
     "cron": "^3.0.0",
-    "crypto-js": "^4.1.1",
+    "crypto-js": "^4.2.0",
     "dotenv": "^16.3.1",
     "ioredis": "^5.3.2",
     "lucide-react": "^0.292.0",

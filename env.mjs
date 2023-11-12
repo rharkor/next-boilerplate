@@ -7,16 +7,16 @@ export const env = createEnv({
       .enum(["true", "false"])
       .optional()
       .transform((value) => value === "true"),
-    PASSWORD_HASHER_SECRET: z.string().nonempty().min(16),
-    JWT_SECRET: z.string().nonempty().min(16),
-    DATABASE_PRISMA_URL: z.string().nonempty(),
+    PASSWORD_HASHER_SECRET: z.string().min(16),
+    JWT_SECRET: z.string().min(16),
+    DATABASE_PRISMA_URL: z.string().min(1),
     DATABASE_URL_NON_POOLING: z.string().optional(),
-    NEXTAUTH_SECRET: z.string().nonempty().min(16),
+    NEXTAUTH_SECRET: z.string().min(16),
     NEXTAUTH_URL: z.string().optional(),
-    GITHUB_CLIENT_ID: z.string().nonempty(),
-    GITHUB_CLIENT_SECRET: z.string().nonempty(),
-    AUTH_ADMIN_EMAIL: z.string().nonempty(),
-    AUTH_ADMIN_PASSWORD: z.string().nonempty(),
+    GITHUB_CLIENT_ID: z.string().min(1),
+    GITHUB_CLIENT_SECRET: z.string().min(1),
+    AUTH_ADMIN_EMAIL: z.string().min(1),
+    AUTH_ADMIN_PASSWORD: z.string().min(1),
     REDIS_HOST: z.string().optional(),
     REDIS_PORT: z
       .string()
