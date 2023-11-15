@@ -89,7 +89,6 @@
     "@types/cli-spinner": "^0.2.1",
     "@types/crypto-js": "^4.1.1",
     "@types/jest": "^29.5.5",
-    "@types/lodash.isequal": "^4.5.6",
     "@types/negotiator": "^0.6.1",
     "@types/node": "^20.4.9",
     "@types/nodemailer": "^6.4.10",
