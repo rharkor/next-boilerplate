@@ -1,23 +1,14 @@
 "use client"
 
+import { Button, Modal, ModalContent, ModalFooter, Pagination } from "@nextui-org/react"
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
-
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog"
-import Pagination from "@/components/ui/pagination"
+import { ModalDescription, ModalHeader, ModalTitle } from "@/components/ui/modal"
 import { useActiveSessions } from "@/contexts/active-sessions"
 import { IMeta } from "@/lib/json-api"
 import { TDictionary } from "@/lib/langs"
 import { trpc } from "@/lib/trpc/client"
+import { cn } from "@/lib/utils"
 import { handleMutationError } from "@/lib/utils/client-utils"
 import SessionRow from "./session-row"
 
@@ -25,15 +16,13 @@ const itemsPerPageInitial = 5
 
 export default function SessionsTable({ dictionary, isDisabled }: { dictionary: TDictionary; isDisabled?: boolean }) {
   const router = useRouter()
-  const utils = trpc.useContext()
+  const utils = trpc.useUtils()
 
   const [selectedSession, setSelectedSession] = useState<string | null>(null)
   const [currentPage, setCurrentPage] = useState(1)
-  const [itemsPerPage, setItemsPerPage] = useState(itemsPerPageInitial)
 
   const callParams = {
     page: currentPage,
-    perPage: itemsPerPage,
   }
   const activeSessions = useActiveSessions(dictionary, callParams, {
     disabled: isDisabled,
@@ -75,44 +64,51 @@ export default function SessionsTable({ dictionary, isDisabled }: { dictionary: 
   const skelRows = (
     <>
       {Array.from({ length: itemsPerPageInitial }).map((_, i) => (
-        <SessionRow skeleton key={i} dictionary={dictionary} />
+        <SessionRow skeleton skeletonAnimation={!isDisabled} key={i} dictionary={dictionary} />
       ))}
     </>
   )
 
-  const showPagination = Boolean((meta && meta.totalPages > 1) || itemsPerPageInitial !== itemsPerPage)
+  const showPagination = Boolean(meta && meta.totalPages > 1)
 
   return (
-    <div className="relative mt-4 flex flex-col space-y-4 overflow-hidden overflow-x-auto">
-      <AlertDialog>
+    <div className="relative mt-4 flex flex-col space-y-4">
+      <ul className="flex flex-col space-y-4 overflow-hidden overflow-x-auto">
         {activeSessions.isFetched ? rows : skelRows}
-        <Pagination
-          show={showPagination}
-          isLoading={activeSessions.isLoading}
-          currentNumberOfItems={activeSessions.data?.data?.length ?? 0}
-          currentPage={meta?.page}
-          totalPages={meta?.totalPages}
-          setCurrentPage={setCurrentPage}
-          itemsPerPage={meta?.perPage}
-          setItemsPerPage={setItemsPerPage}
-          dictionary={dictionary}
-        />
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>{dictionary.areYouAbsolutelySure}</AlertDialogTitle>
-            <AlertDialogDescription>
-              {dictionary.profilePage.profileDetails.deleteLoggedDevice.description}
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>{dictionary.cancel}</AlertDialogCancel>
-            <AlertDialogAction onClick={deleteSession}>{dictionary.continue}</AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+      </ul>
+      <Pagination
+        className={cn("ml-auto max-h-[50px] max-w-full overflow-y-hidden transition-all duration-300", {
+          "!m-0 max-h-0 p-0": !showPagination,
+        })}
+        total={meta?.totalPages ?? 1}
+        page={meta?.page ?? 1}
+        onChange={setCurrentPage}
+      />
+      <Modal isOpen={!!selectedSession} onOpenChange={(open) => !open && setSelectedSession(null)} backdrop="blur">
+        <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalHeader>
+                <ModalTitle>{dictionary.areYouAbsolutelySure}</ModalTitle>
+                <ModalDescription>
+                  {dictionary.profilePage.profileDetails.deleteLoggedDevice.description}
+                </ModalDescription>
+              </ModalHeader>
+              <ModalFooter>
+                <Button variant="flat" onClick={onClose}>
+                  {dictionary.cancel}
+                </Button>
+                <Button color="primary" onClick={deleteSession}>
+                  {dictionary.continue}
+                </Button>
+              </ModalFooter>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
       {isDisabled && (
         <div className="absolute inset-0 !mt-0 flex flex-col items-center justify-center backdrop-blur-sm">
-          <p className="text-sm text-muted-foreground">{dictionary.profilePage.unavailableWithOAuth}</p>
+          <p className="text-sm text-muted-foreground">{dictionary.errors.unavailableWithOAuth}</p>
         </div>
       )}
     </div>

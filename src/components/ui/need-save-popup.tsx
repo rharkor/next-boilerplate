@@ -1,5 +1,5 @@
+import { Button } from "@nextui-org/react"
 import { cn } from "@/lib/utils"
-import { Button } from "./ui/button"
 
 export type INeedSavePopupProps = {
   show: boolean
@@ -22,18 +22,18 @@ export default function NeedSavePopup({ show, onReset, onSave, text, isSubmittin
     >
       <div
         className={cn(
-          "m-auto flex w-max translate-y-full flex-col items-center justify-center space-y-2 rounded border border-card-foreground/40 bg-card px-4 py-2 opacity-0 transition-all duration-300 lg:flex-row lg:space-x-4 lg:space-y-0",
+          "m-auto flex w-max translate-y-full flex-col items-center justify-center space-y-2 rounded-3xl border border-foreground/10 bg-muted px-4 py-2 opacity-0 shadow-2xl transition-all duration-300 lg:flex-row lg:space-x-4 lg:space-y-0",
           {
             "translate-y-0 animate-[bounce-up_1s_ease-out] opacity-100": show,
           }
         )}
       >
-        <p className="text-sm text-gray-500">{text}</p>
+        <p className="text-sm text-foreground">{text}</p>
         <div className="flex flex-row gap-2">
-          <Button variant="link" onClick={onReset} className="px-2" type="button">
+          <Button onPress={onReset} className="!bg-transparent px-2 text-primary" color="primary" type="button">
             {dictionary.reset}
           </Button>
-          <Button onClick={onSave} isLoading={isSubmitting}>
+          <Button onPress={onSave} isLoading={isSubmitting} color="primary" type="submit">
             {dictionary.saveChanges}
           </Button>
         </div>

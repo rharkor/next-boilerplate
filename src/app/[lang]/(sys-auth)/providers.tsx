@@ -1,8 +1,7 @@
 import { redirect } from "next/navigation"
 import { getServerSession } from "next-auth"
-import { getProviders } from "next-auth/react"
 import GithubSignIn from "@/components/auth/github-sign-in"
-import { nextAuthOptions } from "@/lib/auth"
+import { nextAuthOptions, providersByName } from "@/lib/auth"
 import { TDictionary } from "@/lib/langs"
 
 export default async function Providers({
@@ -12,15 +11,21 @@ export default async function Providers({
   dictionary: TDictionary
   searchParams: { [key: string]: string | string[] | undefined }
 }) {
-  const providers = await getProviders()
   const session = await getServerSession(nextAuthOptions)
 
   const callbackUrl = searchParams.callbackUrl ? searchParams.callbackUrl.toString() : undefined
 
   //? If session and callbackUrl, redirect to callbackUrl
   if (session && callbackUrl) {
+    console.log("redirect", session, callbackUrl)
     redirect(callbackUrl)
   }
 
-  return <>{providers?.github && <GithubSignIn provider={providers.github} dictionary={dictionary} />}</>
+  return (
+    <>
+      {providersByName.GitHub !== undefined && (
+        <GithubSignIn providerId={providersByName.GitHub.id} dictionary={dictionary} />
+      )}
+    </>
+  )
 }

@@ -1,8 +1,8 @@
 "use client"
 
+import { Button } from "@nextui-org/react"
 import { useRouter } from "next/navigation"
 import { toast } from "react-toastify"
-import { Button } from "@/components/ui/button"
 
 import { authRoutes } from "@/lib/auth/constants"
 import { TDictionary } from "@/lib/langs"
@@ -28,7 +28,7 @@ export default function VerifyEmailButton({ dictionary, token }: { dictionary: T
 
   return (
     <div className={"!mt-5 grid w-[350px] space-y-2"}>
-      <Button onClick={onSubmit} isLoading={isLoading}>
+      <Button onClick={onSubmit} isLoading={isLoading} color="primary">
         {dictionary.verifyEmail}
       </Button>
     </div>

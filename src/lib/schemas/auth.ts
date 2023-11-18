@@ -34,7 +34,7 @@ export const emailSchema = (dictionary?: TDictionary) =>
 export const signInSchema = (dictionary?: TDictionary) =>
   z.object({
     email: emailSchema(dictionary),
-    password: passwordSchema(dictionary),
+    password: z.string(), //? Do not use the password schema because we don't want to tell why the password is invalid
   })
 
 export const signUpSchema = (dictionary?: TDictionary) =>

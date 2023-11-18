@@ -55,8 +55,5 @@ export const meRouter = router({
     .input(sendVerificationEmailSchema())
     .output(sendVerificationEmailResponseSchema())
     .mutation(sendVerificationEmail),
-  verifyEmail: authenticatedNoEmailVerificationProcedure
-    .input(verifyEmailSchema())
-    .output(verifyEmailResponseSchema())
-    .mutation(verifyEmail),
+  verifyEmail: publicProcedure.input(verifyEmailSchema()).output(verifyEmailResponseSchema()).mutation(verifyEmail),
 })

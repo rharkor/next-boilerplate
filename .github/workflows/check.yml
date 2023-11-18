@@ -34,3 +34,5 @@ jobs:
         run: npm run test
       - name: Check dependencies usage
         run: npm run depcheck
+      - name: Banned Keywords
+        run: bash ./scripts/banned-keywords.sh

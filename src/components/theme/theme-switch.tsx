@@ -1,29 +1,62 @@
 "use client"
 
+import { SwitchProps, useSwitch } from "@nextui-org/switch"
+import { useIsSSR } from "@react-aria/ssr"
+import { VisuallyHidden } from "@react-aria/visually-hidden"
 import { Moon, Sun } from "lucide-react"
 import { useTheme } from "next-themes"
-import * as React from "react"
+import { FC } from "react"
+import { cn } from "@/lib/utils"
 
-import { Button } from "@/components/ui/button"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+export interface ThemeSwitchProps {
+  className?: string
+  classNames?: SwitchProps["classNames"]
+}
 
-export function ThemeSwitch() {
-  const { setTheme } = useTheme()
+export const ThemeSwitch: FC<ThemeSwitchProps> = ({ className, classNames }) => {
+  const { theme, setTheme } = useTheme()
+  const isSSR = useIsSSR()
+
+  const onChange = () => {
+    theme === "light" ? setTheme("dark") : setTheme("light")
+  }
+
+  const { Component, slots, isSelected, getBaseProps, getInputProps, getWrapperProps } = useSwitch({
+    isSelected: theme === "light" || isSSR,
+    "aria-label": `Switch to ${theme === "light" || isSSR ? "dark" : "light"} mode`,
+    onChange,
+  })
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="icon">
-          <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-          <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-          <span className="sr-only">Toggle theme</span>
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={() => setTheme("light")}>Light</DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("dark")}>Dark</DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("system")}>System</DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <Component
+      {...getBaseProps({
+        className: cn("px-px transition-opacity hover:opacity-80 cursor-pointer", className, classNames?.base),
+      })}
+    >
+      <VisuallyHidden>
+        <input {...getInputProps()} />
+      </VisuallyHidden>
+      <div
+        {...getWrapperProps()}
+        className={slots.wrapper({
+          class: cn(
+            [
+              "h-auto w-auto",
+              "bg-transparent",
+              "rounded-lg",
+              "flex items-center justify-center",
+              "group-data-[selected=true]:bg-transparent",
+              "!text-default-500",
+              "pt-px",
+              "px-0",
+              "mx-0",
+            ],
+            classNames?.wrapper
+          ),
+        })}
+      >
+        {!isSelected || isSSR ? <Sun size={22} /> : <Moon size={22} />}
+      </div>
+    </Component>
   )
 }

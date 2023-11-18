@@ -17,9 +17,9 @@ export default async function ProtectedLayout({
   return (
     <>
       {children}
-      <div className="fixed right-2 top-2 z-10 flex flex-row space-x-2">
-        <LocaleSwitcher lang={lang} />
+      <div className="fixed right-2 top-2 z-10 flex flex-row gap-3">
         <ThemeSwitch />
+        <LocaleSwitcher lang={lang} />
       </div>
     </>
   )

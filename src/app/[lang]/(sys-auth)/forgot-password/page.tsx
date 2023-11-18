@@ -14,7 +14,7 @@ export default async function ForgotPassword({
   const dictionary = await getDictionary(lang)
 
   return (
-    <main className="container flex flex-1 flex-col items-center justify-center space-y-2">
+    <main className="container m-auto flex min-h-screen flex-1 flex-col items-center justify-center space-y-2">
       <h1 className="text-2xl font-semibold tracking-tight">{dictionary.forgotPasswordTitle}</h1>
       <p className="text-sm text-muted-foreground">{dictionary.forgotPasswordDescription}</p>
       <ForgotPasswordForm dictionary={dictionary} />
