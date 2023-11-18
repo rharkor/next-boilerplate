@@ -1,9 +1,10 @@
 import { Button, Skeleton as NSkeleton } from "@nextui-org/react"
-import { Prisma } from "@prisma/client"
 import { Dispatch, SetStateAction } from "react"
 import { UAParser } from "ua-parser-js"
+import { z } from "zod"
 import { Icons } from "@/components/icons"
 import { TDictionary } from "@/lib/langs"
+import { sessionsSchema } from "@/lib/schemas/user"
 import { cn, getTimeBetween } from "@/lib/utils"
 import GetDeviceIcon from "../get-device-icon"
 
@@ -14,7 +15,7 @@ export type InitialRowProps = {
 export type RowProps = InitialRowProps &
   (
     | {
-        session: Prisma.SessionGetPayload<undefined>
+        session: z.infer<ReturnType<typeof sessionsSchema>>
         setSelectedSession: Dispatch<SetStateAction<string | null>>
         skeleton?: never
         skeletonAnimation?: never
