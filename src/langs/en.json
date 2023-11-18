@@ -32,8 +32,7 @@
       "created": "Created",
       "expires": "Expires",
       "in": "in"
-    },
-    "unavailableWithOAuth": "This feature is not available with OAuth providers."
+    }
   },
   "auth": {
     "orContinueWith": "Or continue with",
@@ -109,7 +108,8 @@
     "cannotResetAdminPasswordInDemoMode": "You cannot reset the admin password in demo mode.",
     "emailNotVerified": "Please, verify your email.",
     "emailAlreadyVerified": "Email verified",
-    "emailServiceDisabled": "Email service disabled."
+    "emailServiceDisabled": "Email service disabled.",
+    "unavailableWithOAuth": "This feature is not available with OAuth providers."
   },
   "email": "Email",
   "emailPlaceholder": "name@example.com",

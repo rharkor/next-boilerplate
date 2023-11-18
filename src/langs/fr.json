@@ -32,8 +32,7 @@
       "created": "Créé",
       "expires": "Expire",
       "in": "dans"
-    },
-    "unavailableWithOAuth": "Cette fonctionnalité n'est pas disponible avec ce type de connexion."
+    }
   },
   "auth": {
     "orContinueWith": "Ou continuez avec",
@@ -109,7 +108,8 @@
     "cannotResetAdminPasswordInDemoMode": "Vous ne pouvez pas réinitialiser le mot de passe de l'administrateur en mode démo.",
     "emailNotVerified": "Veuillez vérifier votre email.",
     "emailAlreadyVerified": "Email vérifié",
-    "emailServiceDisabled": "Le service d'email est désactivé."
+    "emailServiceDisabled": "Le service d'email est désactivé.",
+    "unavailableWithOAuth": "Cette fonctionnalité n'est pas disponible avec ce type de connexion."
   },
   "email": "Email",
   "emailPlaceholder": "nom@exemple.com",

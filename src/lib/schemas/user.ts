@@ -1,5 +1,5 @@
 import { z } from "zod"
-import { emailSchema, usernameSchema } from "./auth"
+import { emailSchema, passwordSchemaWithRegex, usernameSchema } from "./auth"
 import { jsonApiQuerySchema, jsonApiResponseSchema } from "../json-api"
 import { TDictionary } from "../langs"
 
@@ -12,11 +12,12 @@ export const userSchema = (dictionary?: TDictionary) =>
     image: z.string().nullable(),
     username: usernameSchema(dictionary).nullable(),
     role: z.string(),
+    hasPassword: z.boolean(),
   })
 
 export const updateUserSchema = (dictionary?: TDictionary) =>
   z.object({
-    username: usernameSchema(dictionary),
+    username: usernameSchema(dictionary).or(z.literal("")),
   })
 
 export const updateUserResponseSchema = (dictionary?: TDictionary) =>
@@ -94,7 +95,7 @@ export const resetPasswordSchema = (dictionary?: TDictionary) =>
   z
     .object({
       token: z.string(),
-      password: z.string(),
+      password: passwordSchemaWithRegex(dictionary),
       passwordConfirmation: z.string(),
     })
     .refine((data) => data.password === data.passwordConfirmation, {

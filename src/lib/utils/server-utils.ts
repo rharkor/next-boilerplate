@@ -7,16 +7,6 @@ import { ValueOf } from "@/types"
 import { getDictionary, TDictionary } from "../langs"
 import { logger } from "../logger"
 
-export const validateSession = async (session: Session): Promise<string | false> => {
-  const getResult = async () => {
-    if (!session.user.id) return "No user id"
-    return false
-  }
-  const result = await getResult()
-  result && logger.debug("validateSession", result)
-  return result
-}
-
 export const parseRequestBody = async <T>(
   req: Request,
   schema: z.Schema<T>
@@ -43,6 +33,8 @@ export function ensureLoggedIn(session: Session | null | undefined): asserts ses
   if (!session) throw ApiError(throwableErrorsMessages.unauthorized, "UNAUTHORIZED")
 }
 
+type TValue = string | { [key: string]: TValue }
+
 /*
  * Transform a dictionary into a object of throwable errors
  * source example: { errors: { emailNotVerified: "Email not verified", test: { subKey: "sub key" } } }
@@ -50,11 +42,11 @@ export function ensureLoggedIn(session: Session | null | undefined): asserts ses
  */
 export const throwableErrorsMessages: TDictionary["errors"] = Object.entries((await getDictionary("en")).errors).reduce(
   (acc, [key, value]) => {
-    const handleNested = (key: string, value: Record<string, string | Record<string, string>>) => {
+    const handleNested = (key: string, value: TValue) => {
       Object.entries(value).forEach(([subKey, subValue]) => {
         if (typeof subValue === "string") {
           if (!acc[key]) acc[key] = {}
-          ;(acc[key] as { [key: string]: string })[subKey] = subKey
+          ;(acc[key] as { [key: string]: string })[subKey] = key + "." + subKey
         } else {
           handleNested(key, subValue)
         }

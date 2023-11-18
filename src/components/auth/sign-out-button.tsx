@@ -1,5 +1,6 @@
 "use client"
 
+import { Button } from "@nextui-org/react"
 import { useRouter } from "next/navigation"
 import { signOut, useSession } from "next-auth/react"
 import { useState } from "react"
@@ -7,7 +8,6 @@ import { TDictionary } from "@/lib/langs"
 import { logger } from "@/lib/logger"
 import { trpc } from "@/lib/trpc/client"
 import { handleMutationError } from "@/lib/utils/client-utils"
-import { Button } from "../ui/button"
 
 export default function SignoutButton({
   children,
@@ -18,7 +18,7 @@ export default function SignoutButton({
 }) {
   const router = useRouter()
   const session = useSession()
-  const utils = trpc.useContext()
+  const utils = trpc.useUtils()
 
   const currentSession = session.data?.user.uuid
 

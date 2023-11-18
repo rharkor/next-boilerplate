@@ -1,5 +1,6 @@
 import { PrismaAdapter } from "@next-auth/prisma-adapter"
 import { NextAuthOptions, Session } from "next-auth"
+import { Provider } from "next-auth/providers"
 import Credentials from "next-auth/providers/credentials"
 import GithubProvider from "next-auth/providers/github"
 import requestIp from "request-ip"
@@ -16,125 +17,134 @@ import { prisma } from "../prisma"
 import { signInSchema } from "../schemas/auth"
 import { ensureRelativeUrl } from "../utils"
 
-export const nextAuthOptions: NextAuthOptions & {
-  loadedDictionary: Map<Locale, TDictionary>
-} = {
-  loadedDictionary: new Map(),
+const loadedDictionary: Map<Locale, TDictionary> = new Map()
+
+export const providers: Provider[] = [
+  Credentials({
+    name: "credentials",
+    credentials: {
+      email: {
+        label: "Email",
+        type: "email",
+        placeholder: "youremail@gmail.com",
+      },
+      password: { label: "Password", type: "password" },
+    },
+    authorize: async (credentials, req) => {
+      const referer = req.headers?.referer ?? ""
+      const refererUrl = ensureRelativeUrl(referer)
+      const lang = i18n.locales.find((locale) => refererUrl.startsWith(`/${locale}/`)) ?? i18n.defaultLocale
+      const dictionary =
+        loadedDictionary.get(lang) ??
+        (await (async () => {
+          logger.debug("Loading dictionary in auth", lang)
+          const dictionary = await getDictionary(lang)
+          loadedDictionary.set(lang, dictionary)
+          return dictionary
+        })())
+
+      const creds = signInSchema(dictionary).parse(credentials)
+
+      if (!creds.email || !creds.password) {
+        logger.debug("Missing credentials", creds)
+        return null
+      }
+
+      const user = await prisma.user.findUnique({
+        where: { email: creds.email },
+        select: {
+          id: true,
+          email: true,
+          username: true,
+          role: true,
+          password: true,
+          emailVerified: true,
+          hasPassword: true,
+        },
+      })
+
+      if (!user) {
+        logger.debug("User not found", creds.email)
+        return null
+      }
+
+      if (!user.password) {
+        //? this should happen if the user signed up with a provider
+        throw new Error(dictionary.errors.wrongProvider)
+      }
+
+      const isValidPassword = await bcryptCompare(creds.password, user.password)
+
+      if (!isValidPassword) {
+        logger.debug("Invalid password", user.id)
+        return null
+      }
+
+      //* Store user agent and ip address in session
+      const uuid = randomUUID()
+      try {
+        const ua = req.headers?.["user-agent"] ?? ""
+        const ip = requestIp.getClientIp(req) ?? ""
+        await prisma.session.create({
+          data: {
+            userId: user.id,
+            expires: new Date(Date.now() + JWT_MAX_AGE * 1000),
+            ua,
+            ip,
+            sessionToken: uuid,
+            lastUsedAt: new Date(),
+            createdAt: new Date(),
+          },
+        })
+      } catch (error) {
+        logger.error("Error creating session", error)
+      }
+
+      //* Remove old sessions
+      const { count } = await prisma.session.deleteMany({
+        where: {
+          userId: user.id,
+          expires: {
+            lt: new Date(),
+          },
+        },
+      })
+      logger.debug("Deleted old sessions", count)
+
+      logger.debug("User logged in", user.id)
+      return {
+        id: user.id.toString(),
+        email: user.email,
+        username: user.username,
+        role: user.role,
+        uuid,
+        emailVerified: user.emailVerified,
+        hasPassword: user.hasPassword,
+      }
+    },
+  }),
+  GithubProvider({
+    clientId: env.GITHUB_CLIENT_ID,
+    clientSecret: env.GITHUB_CLIENT_SECRET,
+  }),
+]
+
+export const providersByName: {
+  [key: string]: Provider | undefined
+} = providers.reduce<{
+  [key: string]: Provider | undefined
+}>((acc, cur) => {
+  acc[cur.name] = cur
+  return acc
+}, {})
+
+export const nextAuthOptions: NextAuthOptions = {
   secret: env.NEXTAUTH_SECRET,
   adapter: PrismaAdapter(prisma), //? Require to use database
-  providers: [
-    Credentials({
-      name: "credentials",
-      credentials: {
-        email: {
-          label: "Email",
-          type: "email",
-          placeholder: "youremail@gmail.com",
-        },
-        password: { label: "Password", type: "password" },
-      },
-      authorize: async (credentials, req) => {
-        const referer = (req.headers?.referer as string | undefined) ?? ""
-        const refererUrl = ensureRelativeUrl(referer)
-        const lang = i18n.locales.find((locale) => refererUrl.startsWith(`/${locale}/`)) ?? i18n.defaultLocale
-        const dictionary =
-          nextAuthOptions.loadedDictionary.get(lang) ??
-          (await (async () => {
-            logger.debug("Loading dictionary in auth", lang)
-            const dictionary = await getDictionary(lang)
-            nextAuthOptions.loadedDictionary.set(lang, dictionary)
-            return dictionary
-          })())
-
-        const creds = signInSchema(dictionary).parse(credentials)
-
-        if (!creds.email || !creds.password) {
-          logger.debug("Missing credentials", creds)
-          return null
-        }
-
-        const user = await prisma.user.findUnique({
-          where: { email: creds.email },
-          select: {
-            id: true,
-            email: true,
-            username: true,
-            role: true,
-            password: true,
-            emailVerified: true,
-            hasPassword: true,
-          },
-        })
-
-        if (!user) {
-          logger.debug("User not found", creds.email)
-          return null
-        }
-
-        if (!user.password) {
-          //? this should happen if the user signed up with a provider
-          throw new Error(dictionary.errors.wrongProvider)
-        }
-
-        const isValidPassword = await bcryptCompare(creds.password, user.password)
-
-        if (!isValidPassword) {
-          logger.debug("Invalid password", user.id)
-          return null
-        }
-
-        //* Store user agent and ip address in session
-        const uuid = randomUUID()
-        try {
-          const ua = req.headers?.["user-agent"] ?? ""
-          const ip = requestIp.getClientIp(req) ?? ""
-          await prisma.session.create({
-            data: {
-              userId: user.id,
-              expires: new Date(Date.now() + JWT_MAX_AGE * 1000),
-              ua,
-              ip,
-              sessionToken: uuid,
-              lastUsedAt: new Date(),
-              createdAt: new Date(),
-            },
-          })
-        } catch (error) {
-          logger.error("Error creating session", error)
-        }
-
-        //* Remove old sessions
-        const { count } = await prisma.session.deleteMany({
-          where: {
-            userId: user.id,
-            expires: {
-              lt: new Date(),
-            },
-          },
-        })
-        logger.debug("Deleted old sessions", count)
-
-        logger.debug("User logged in", user.id)
-        return {
-          id: user.id.toString(),
-          email: user.email,
-          username: user.username,
-          role: user.role,
-          uuid,
-          emailVerified: user.emailVerified,
-          hasPassword: user.hasPassword,
-        }
-      },
-    }),
-    GithubProvider({
-      clientId: env.GITHUB_CLIENT_ID,
-      clientSecret: env.GITHUB_CLIENT_SECRET,
-    }),
-  ],
+  providers,
   callbacks: {
     jwt: async ({ token, user }) => {
       // logger.debug("JWT token", token)
-
       if (isPossiblyUndefined(user)) {
         token.id = user.id
         token.email = user.email
@@ -143,23 +153,19 @@ export const nextAuthOptions: NextAuthOptions & {
         if ("role" in user) token.role = user.role as string
         if ("uuid" in user) token.uuid = user.uuid as string
         if ("emailVerified" in user) token.emailVerified = user.emailVerified as Date
-
         //* Send verification email if needed
         if (user.email && "emailVerified" in user && !user.emailVerified) {
           await sendVerificationEmail({ input: { email: user.email, silent: true }, ctx: {} as ITrpcContext })
         }
       }
-
       return token
     },
     session: async ({ session, token }) => {
       // logger.debug("Session token", token)
-
       if (!token.id || typeof token.id !== "string") {
         logger.debug("Missing token id")
         return {} as Session
       }
-
       //* Verify that the user still exists
       const dbUser = await prisma.user.findUnique({
         where: {
@@ -170,17 +176,16 @@ export const nextAuthOptions: NextAuthOptions & {
         logger.debug("User not found", token.id)
         return {} as Session
       }
-
       //* Verify that the session still exists
       if (dbUser.hasPassword && (!token.uuid || typeof token.uuid !== "string")) {
+        console.log(dbUser.email)
         logger.debug("Missing token uuid")
         return {} as Session
       }
-
       if (token.uuid) {
         const loginSession = await prisma.session.findUnique({
           where: {
-            sessionToken: token.uuid,
+            sessionToken: token.uuid as string,
           },
         })
         if (!loginSession) {
@@ -198,16 +203,13 @@ export const nextAuthOptions: NextAuthOptions & {
           })
         }
       }
-
       //* Fill session with user data
       const username = dbUser.username
       const role = dbUser.role
       const hasPassword = dbUser.hasPassword
       const emailVerified = dbUser.emailVerified
-
       //* Fill session with token data
       const uuid = "uuid" in token ? token.uuid : undefined
-
       const sessionFilled = {
         ...session,
         user: {
@@ -231,7 +233,7 @@ export const nextAuthOptions: NextAuthOptions & {
     },
   },
   jwt: {
-    secret: env.JWT_SECRET,
+    // secret: env.JWT_SECRET,
     maxAge: JWT_MAX_AGE, // 30 days
   },
   pages: {

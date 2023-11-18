@@ -8,24 +8,30 @@ import { TDictionary } from "../langs"
 import { logger } from "../logger"
 import { handleApiError } from "."
 
+type TOptions = {
+  showNotification?: boolean // default true
+}
+
 export const handleQueryError = <T extends TRPCClientErrorLike<AppRouter>>(
   error: T,
   dictionary: TDictionary,
-  router: AppRouterInstance
+  router: AppRouterInstance,
+  opts: TOptions = { showNotification: true }
 ): T => {
   const resp = handleApiError(error, dictionary, router)
   logger.error("Query error:", resp)
-  toast.error(resp.message)
+  if (opts.showNotification) toast.error(resp.message)
   return resp
 }
 
 export const handleMutationError = <T extends TRPCClientErrorLike<AppRouter>>(
   error: T,
   dictionary: TDictionary,
-  router: AppRouterInstance
+  router: AppRouterInstance,
+  opts: TOptions = { showNotification: true }
 ): T => {
   const resp = handleApiError(error, dictionary, router)
   logger.error("Mutation error:", resp)
-  toast.error(resp.message)
+  if (opts.showNotification) toast.error(resp.message)
   return resp
 }

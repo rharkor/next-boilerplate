@@ -21,5 +21,3 @@ declare module "next-auth/jwt/types" {
     hasPassword: boolean
   }
 }
-
-declare module "server-only"

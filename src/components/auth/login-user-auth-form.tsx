@@ -1,12 +1,11 @@
 "use client"
 
 import { zodResolver } from "@hookform/resolvers/zod"
+import { Button, Card, CardBody, Link } from "@nextui-org/react"
 import { ArrowBigDown, BadgeInfo } from "lucide-react"
-import Link from "next/link"
 import { useRouter } from "next/navigation"
 import * as React from "react"
 import { useForm } from "react-hook-form"
-import { toast } from "react-toastify"
 import * as z from "zod"
 import { authRoutes } from "@/lib/auth/constants"
 import { handleSignError, handleSignIn } from "@/lib/auth/handle-sign"
@@ -14,11 +13,8 @@ import { TDictionary } from "@/lib/langs"
 import { signInSchema } from "@/lib/schemas/auth"
 import { cn, ensureRelativeUrl } from "@/lib/utils"
 import { env } from "env.mjs"
-import { Alert, AlertDescription, AlertTitle } from "../ui/alert"
-import { Button } from "../ui/button"
-import { Form } from "../ui/form"
-import FormField from "../ui/form-field"
-import { Label } from "../ui/label"
+import Copiable from "../ui/copiable"
+import FormField from "../ui/form"
 
 type UserAuthFormProps = React.HTMLAttributes<HTMLFormElement> & {
   dictionary: TDictionary
@@ -62,41 +58,21 @@ export function LoginUserAuthForm({ dictionary, searchParams, ...props }: UserAu
     }
   }
 
-  const copyToClipboard = (value?: string) => {
-    if (!value) return
-    navigator.clipboard.writeText(value)
-    toast(dictionary.copiedToClipboard)
-  }
-
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} {...props} className={cn("grid space-y-2", props.className)}>
-        {env.NEXT_PUBLIC_IS_DEMO && (
-          <Alert className="relative">
-            <BadgeInfo className="h-4 w-4" />
-            <AlertTitle>{dictionary.auth.demoMode}</AlertTitle>
-            <AlertDescription className="flex flex-col">
+    <form onSubmit={form.handleSubmit(onSubmit)} {...props} className={cn("grid space-y-2", props.className)}>
+      {env.NEXT_PUBLIC_IS_DEMO && (
+        <Card className="relative">
+          <CardBody>
+            <h3 className="flex flex-row items-center gap-1">
+              <BadgeInfo className="h-4 w-4" />
+              {dictionary.auth.demoMode}
+            </h3>
+            <div className="flex flex-col">
               <p className="m-1">
-                {dictionary.email}:{" "}
-                <code
-                  className="cursor-pointer rounded p-1 transition-all hover:bg-primary/20"
-                  onClick={() => {
-                    copyToClipboard(env.NEXT_PUBLIC_DEMO_EMAIL)
-                  }}
-                >
-                  {env.NEXT_PUBLIC_DEMO_EMAIL}
-                </code>
+                {dictionary.email}: <Copiable text={env.NEXT_PUBLIC_DEMO_EMAIL} dictionary={dictionary} />
               </p>
               <p className="m-1">
-                {dictionary.password}:{" "}
-                <code
-                  className="cursor-pointer rounded p-1 transition-all hover:bg-primary/20"
-                  onClick={() => {
-                    copyToClipboard(env.NEXT_PUBLIC_DEMO_PASSWORD)
-                  }}
-                >
-                  {env.NEXT_PUBLIC_DEMO_PASSWORD}
-                </code>
+                {dictionary.password}: <Copiable text={env.NEXT_PUBLIC_DEMO_PASSWORD} dictionary={dictionary} />
               </p>
               <div
                 className="absolute bottom-2 right-2 cursor-pointer"
@@ -107,43 +83,37 @@ export function LoginUserAuthForm({ dictionary, searchParams, ...props }: UserAu
               >
                 <ArrowBigDown className="h-5 w-5" />
               </div>
-            </AlertDescription>
-          </Alert>
-        )}
-        <div className="grid gap-1">
-          <Label className="sr-only" htmlFor="email">
-            {dictionary.email}
-          </Label>
-          <FormField
-            placeholder={dictionary.emailPlaceholder}
-            type="email"
-            autoCapitalize="none"
-            autoComplete="email"
-            autoCorrect="off"
-            disabled={isLoading}
-            name="email"
-          />
-        </div>
-        <div className="grid gap-1">
-          <Label className="sr-only" htmlFor="password">
-            {dictionary.password}
-          </Label>
-          <FormField
-            placeholder={dictionary.passwordPlaceholder}
-            type="password-eye-slash"
-            autoComplete="new-password"
-            autoCorrect="off"
-            disabled={isLoading}
-            name="password"
-          />
-        </div>
-        <Link className="ml-auto text-sm text-muted-foreground hover:text-primary" href={"/forgot-password"}>
-          {dictionary.forgotPassword}
-        </Link>
-        <Button type="submit" isLoading={isLoading}>
-          {dictionary.signIn}
-        </Button>
-      </form>
-    </Form>
+            </div>
+          </CardBody>
+        </Card>
+      )}
+      <FormField
+        form={form}
+        name="email"
+        aria-label={dictionary.email}
+        placeholder={dictionary.emailPlaceholder}
+        type="email"
+        autoCapitalize="none"
+        autoComplete="email"
+        autoCorrect="off"
+        disabled={isLoading}
+      />
+      <FormField
+        form={form}
+        name={"password"}
+        aria-label={dictionary.password}
+        placeholder={dictionary.passwordPlaceholder}
+        type="password-eye-slash"
+        autoComplete="new-password"
+        autoCorrect="off"
+        disabled={isLoading}
+      />
+      <Link className="ml-auto text-sm text-muted-foreground hover:text-primary" href={"/forgot-password"}>
+        {dictionary.forgotPassword}
+      </Link>
+      <Button type="submit" isLoading={isLoading} color="primary">
+        {dictionary.signIn}
+      </Button>
+    </form>
   )
 }

@@ -1,23 +1,14 @@
 "use client"
 
+import { Button, Modal, ModalContent, ModalFooter } from "@nextui-org/react"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { toast } from "react-toastify"
-import {
-  AlertDialog,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
 import { authRoutes } from "@/lib/auth/constants"
 import { TDictionary } from "@/lib/langs"
 import { trpc } from "@/lib/trpc/client"
 import { handleMutationError } from "@/lib/utils/client-utils"
-import { Button } from "../ui/button"
+import { ModalDescription, ModalHeader, ModalTitle } from "../ui/modal"
 
 export default function DeleteAccountButton({
   children,
@@ -44,25 +35,33 @@ export default function DeleteAccountButton({
     deleteAccountMutation.mutate()
   }
 
+  const [showModal, setShowModal] = useState(false)
+
   return (
-    <AlertDialog>
-      <AlertDialogTrigger asChild>
-        <Button variant="destructive" isLoading={isDeletingAccount}>
-          {children}
-        </Button>
-      </AlertDialogTrigger>
-      <AlertDialogContent>
-        <AlertDialogHeader>
-          <AlertDialogTitle>{dictionary.deleteAccountConfirmationTitle}</AlertDialogTitle>
-          <AlertDialogDescription>{dictionary.deleteAccountConfirmationDescription}</AlertDialogDescription>
-        </AlertDialogHeader>
-        <AlertDialogFooter>
-          <AlertDialogCancel>{dictionary.cancel}</AlertDialogCancel>
-          <Button variant="destructive" onClick={handleDeleteAccount} isLoading={isDeletingAccount}>
-            {dictionary.deleteAccountConfirm}
-          </Button>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
+    <>
+      <Button color="danger" isLoading={isDeletingAccount} onClick={() => setShowModal(true)}>
+        {children}
+      </Button>
+      <Modal isOpen={showModal} onOpenChange={(open) => setShowModal(open)} backdrop="blur">
+        <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalHeader>
+                <ModalTitle>{dictionary.deleteAccountConfirmationTitle}</ModalTitle>
+                <ModalDescription>{dictionary.deleteAccountConfirmationDescription}</ModalDescription>
+              </ModalHeader>
+              <ModalFooter>
+                <Button onPress={onClose} variant="flat">
+                  {dictionary.cancel}
+                </Button>
+                <Button color="danger" onPress={handleDeleteAccount} isLoading={isDeletingAccount}>
+                  {dictionary.deleteAccountConfirm}
+                </Button>
+              </ModalFooter>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
+    </>
   )
 }

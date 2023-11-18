@@ -101,12 +101,24 @@ export const formatCouldNotMessage = async ({
   return couldNotMessage.replace("{action}", action).replace("{subject}", subject)
 }
 
+type TDictKey = { [key: string]: TDictKey } | undefined | string
+export const findNestedKeyInDictionary = (key: string, dictionaryErrors: TDictionary["errors"]): string | undefined => {
+  const keys = key.split(".")
+  let currentKey = keys.shift()
+  let currentObject: TDictKey = dictionaryErrors
+  while (currentKey && currentObject && typeof currentObject === "object") {
+    currentObject = currentObject[currentKey]
+    currentKey = keys.shift()
+  }
+  return currentObject as string | undefined
+}
+
 export const translateError = (error: string, dictionary: TDictionary): string => {
-  if (!(error in dictionary.errors)) {
+  const errorTranslated = findNestedKeyInDictionary(error, dictionary.errors)
+  if (!errorTranslated) {
     logger.error(new Error(`Error not found in dictionary: ${error}`))
     return dictionary.errors.unknownError
   }
-  const errorTranslated = dictionary.errors[error as keyof typeof dictionary.errors]
   return errorTranslated.toString()
 }
 

@@ -1,12 +1,10 @@
+import { Button, Skeleton as NSkeleton } from "@nextui-org/react"
 import { Prisma } from "@prisma/client"
 import { Dispatch, SetStateAction } from "react"
 import { UAParser } from "ua-parser-js"
 import { Icons } from "@/components/icons"
-import { AlertDialogTrigger } from "@/components/ui/alert-dialog"
-import { Button } from "@/components/ui/button"
-import { Skeleton } from "@/components/ui/skeleton"
 import { TDictionary } from "@/lib/langs"
-import { getTimeBetween } from "@/lib/utils"
+import { cn, getTimeBetween } from "@/lib/utils"
 import GetDeviceIcon from "../get-device-icon"
 
 export type InitialRowProps = {
@@ -19,26 +17,43 @@ export type RowProps = InitialRowProps &
         session: Prisma.SessionGetPayload<undefined>
         setSelectedSession: Dispatch<SetStateAction<string | null>>
         skeleton?: never
+        skeletonAnimation?: never
       }
     | {
         session?: never
         setSelectedSession?: never
         skeleton: true
+        skeletonAnimation: boolean
       }
   )
 
-export default function SessionRow({ session, setSelectedSession, skeleton, dictionary }: RowProps) {
+function Skeleton({ className, disableAnimation }: { className?: string; disableAnimation?: boolean }) {
+  return (
+    <NSkeleton
+      className={cn(className, "!duration-1000 before:!duration-1000 after:!duration-1000", {
+        "!animate-none before:!animate-none after:!animate-none": disableAnimation,
+      })}
+      disableAnimation={disableAnimation}
+    />
+  )
+}
+
+export default function SessionRow({ session, setSelectedSession, skeleton, skeletonAnimation, dictionary }: RowProps) {
   const userAgents = session ? new UAParser(session.ua).getResult() : undefined
 
   return (
-    <div className="grid min-w-[475px] grid-cols-[1fr,1fr,1fr,1fr,auto] items-center space-x-4">
+    <li className="grid min-w-[475px] grid-cols-[1fr,1fr,1fr,1fr,auto] items-center space-x-4">
       <div className="flex flex-col space-y-1">
         <div className="flex flex-row space-x-2">
           <div className="flex flex-col space-y-1">
             <div className="flex flex-row items-center space-x-2">
-              {skeleton ? <Skeleton className="h-5 w-5" /> : <GetDeviceIcon name={userAgents?.os.name} />}
               {skeleton ? (
-                <Skeleton className="h-4 w-9" />
+                <Skeleton className="h-5 w-5 rounded-full" disableAnimation={!skeletonAnimation} />
+              ) : (
+                <GetDeviceIcon name={userAgents?.os.name} />
+              )}
+              {skeleton ? (
+                <Skeleton className="h-4 w-9 rounded-full" disableAnimation={!skeletonAnimation} />
               ) : (
                 <p className="text-sm font-medium">{userAgents?.os.name}</p>
               )}
@@ -46,7 +61,7 @@ export default function SessionRow({ session, setSelectedSession, skeleton, dict
           </div>
         </div>
         {skeleton ? (
-          <Skeleton className="h-4 w-9" />
+          <Skeleton className="h-4 w-9 rounded-full" disableAnimation={!skeletonAnimation} />
         ) : (
           <p className="text-xs text-muted-foreground">{userAgents?.browser.name}</p>
         )}
@@ -54,7 +69,7 @@ export default function SessionRow({ session, setSelectedSession, skeleton, dict
       <div className="flex flex-col space-y-1">
         <p className="text-xs text-muted-foreground">{dictionary.profilePage.profileDetails.lastUsed}</p>
         {skeleton ? (
-          <Skeleton className="h-4 w-8" />
+          <Skeleton className="h-4 w-8 rounded-full" disableAnimation={!skeletonAnimation} />
         ) : (
           <p className="text-xs text-muted-foreground">
             {session.lastUsedAt
@@ -68,7 +83,7 @@ export default function SessionRow({ session, setSelectedSession, skeleton, dict
       <div className="flex flex-col space-y-1">
         <p className="text-xs text-muted-foreground">{dictionary.profilePage.profileDetails.created}</p>
         {skeleton ? (
-          <Skeleton className="h-4 w-10" />
+          <Skeleton className="h-4 w-10 rounded-full" disableAnimation={!skeletonAnimation} />
         ) : (
           <p className="text-xs text-muted-foreground">{new Date(session.createdAt).toLocaleDateString()}</p>
         )}
@@ -76,7 +91,7 @@ export default function SessionRow({ session, setSelectedSession, skeleton, dict
       <div className="flex flex-col space-y-1">
         <p className="text-xs text-muted-foreground">{dictionary.profilePage.profileDetails.expires}</p>
         {skeleton ? (
-          <Skeleton className="h-4 w-10" />
+          <Skeleton className="h-4 w-10 rounded-full" disableAnimation={!skeletonAnimation} />
         ) : (
           <p className="text-xs text-muted-foreground">
             {dictionary.profilePage.profileDetails.in}{" "}
@@ -88,15 +103,18 @@ export default function SessionRow({ session, setSelectedSession, skeleton, dict
       </div>
       <div className="flex flex-row space-x-2">
         {skeleton ? (
-          <Skeleton className="h-8 w-10" />
+          <Skeleton className="h-8 w-10 rounded-full" disableAnimation={!skeletonAnimation} />
         ) : (
-          <AlertDialogTrigger asChild>
-            <Button variant={"destructive"} size={"sm"} onClick={() => setSelectedSession(session.id)}>
-              <Icons.trash />
-            </Button>
-          </AlertDialogTrigger>
+          <Button
+            color="danger"
+            className="h-8 w-10 min-w-0 p-2"
+            size={"sm"}
+            onClick={() => setSelectedSession(session.id)}
+          >
+            <Icons.trash />
+          </Button>
         )}
       </div>
-    </div>
+    </li>
   )
 }

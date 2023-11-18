@@ -1,10 +1,10 @@
 "use client"
 
+import { Avatar, Select, SelectItem } from "@nextui-org/react"
 import { usePathname } from "next/navigation"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { i18n, Locale } from "i18n-config"
+import { Locale, localesDetailed } from "i18n-config"
 
 export default function LocaleSwitcher({ lang }: { lang: Locale }) {
   const pathName = usePathname()
@@ -26,24 +26,28 @@ export default function LocaleSwitcher({ lang }: { lang: Locale }) {
 
   return (
     <Select
-      value={dynamicLocale}
-      onValueChange={(value: Locale) => {
-        handleLocaleChange(value)
-        setDynamicLocale(value)
+      selectedKeys={[dynamicLocale]}
+      onChange={(e) => {
+        const locale = e.target.value as Locale | undefined
+        if (!locale) return
+        handleLocaleChange(locale)
+        setDynamicLocale(locale)
       }}
+      className="w-[150px]"
+      aria-label="Locale"
+      startContent={<Avatar alt={lang} className="h-4 w-4 shrink-0" src={localesDetailed[lang].flag} />}
+      size="sm"
+      selectionMode="single"
     >
-      <SelectTrigger className="w-16 bg-background">
-        <SelectValue placeholder="Lang" />
-      </SelectTrigger>
-      <SelectContent>
-        {i18n.locales.map((locale) => {
-          return (
-            <SelectItem key={locale} value={locale}>
-              {locale}
-            </SelectItem>
-          )
-        })}
-      </SelectContent>
+      {Object.entries(localesDetailed).map(([locale, details]) => (
+        <SelectItem
+          key={locale}
+          value={locale}
+          startContent={<Avatar alt={locale} className="h-6 w-6" src={details.flag} />}
+        >
+          {details.nativeName}
+        </SelectItem>
+      ))}
     </Select>
   )
 }

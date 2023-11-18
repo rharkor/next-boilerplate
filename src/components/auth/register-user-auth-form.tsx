@@ -1,6 +1,7 @@
 "use client"
 
 import { zodResolver } from "@hookform/resolvers/zod"
+import { Button } from "@nextui-org/react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import * as React from "react"
@@ -14,10 +15,7 @@ import { signUpSchema } from "@/lib/schemas/auth"
 import { trpc } from "@/lib/trpc/client"
 import { cn } from "@/lib/utils"
 import { handleMutationError } from "@/lib/utils/client-utils"
-import { Button, buttonVariants } from "../ui/button"
-import { Form } from "../ui/form"
-import FormField from "../ui/form-field"
-import { Label } from "../ui/label"
+import FormField from "../ui/form"
 
 type UserAuthFormProps = React.HTMLAttributes<HTMLFormElement> & {
   dictionary: TDictionary
@@ -58,7 +56,7 @@ export function RegisterUserAuthForm({ dictionary, isMinimized, searchParams, ..
   const registerMutation = trpc.auth.register.useMutation({
     onError: (error) => {
       setIsLoading(false)
-      const translatedError = handleMutationError(error, dictionary, router)
+      const translatedError = handleMutationError(error, dictionary, router, { showNotification: false })
       if (error.message.includes("email")) {
         return form.setError("email", {
           type: "manual",
@@ -136,93 +134,72 @@ export function RegisterUserAuthForm({ dictionary, isMinimized, searchParams, ..
   }
 
   return (
-    <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(isMinimized ? onSubmitMinimized : onSubmit)}
-        {...props}
-        className={cn("grid gap-2", props.className)}
-      >
-        <div className="grid gap-1">
-          <Label className="sr-only" htmlFor="email">
-            {dictionary.email}
-          </Label>
-          <div className="relative">
-            <FormField
-              placeholder={dictionary.emailPlaceholder}
-              type="email"
-              autoCapitalize="none"
-              autoComplete="email"
-              autoCorrect="off"
-              disabled={isLoading || !isMinimized}
-              name="email"
-              className={cn({
-                "pointer-events-none": !isMinimized,
-              })}
-            />
-            {!isMinimized && (
-              <Link
-                className={cn(
-                  "absolute inset-y-0 right-0 flex items-center text-primary",
-                  buttonVariants({
-                    variant: "ghost",
-                  })
-                )}
-                href={{ pathname: authRoutes.signUp[0], query: { email: form.getValues("email") } }}
-                passHref
-              >
-                {dictionary.edit}
-              </Link>
-            )}
-          </div>
-        </div>
+    <form
+      onSubmit={form.handleSubmit(isMinimized ? onSubmitMinimized : onSubmit)}
+      {...props}
+      className={cn("grid gap-2", props.className)}
+    >
+      <div className="relative">
+        <FormField
+          form={form}
+          name="email"
+          label={dictionary.email}
+          placeholder={dictionary.emailPlaceholder}
+          type="email"
+          autoCapitalize="none"
+          autoComplete="email"
+          autoCorrect="off"
+          isDisabled={isLoading || !isMinimized}
+        />
         {!isMinimized && (
-          <>
-            <div className="grid gap-1">
-              <Label className="sr-only" htmlFor="username">
-                {dictionary.username}
-              </Label>
-              <FormField
-                placeholder={dictionary.usernamePlaceholder}
-                type="text"
-                autoCapitalize="none"
-                autoComplete="username"
-                autoCorrect="off"
-                disabled={isLoading}
-                name="username"
-              />
-            </div>
-            <div className="grid gap-1">
-              <Label className="sr-only" htmlFor="password">
-                {dictionary.password}
-              </Label>
-              <FormField
-                placeholder={dictionary.passwordPlaceholder}
-                type="password-eye-slash"
-                autoComplete="new-password"
-                autoCorrect="off"
-                disabled={isLoading}
-                name="password"
-              />
-            </div>
-            <div className="grid gap-1">
-              <Label className="sr-only" htmlFor="confirmPassword">
-                {dictionary.confirmPassword}
-              </Label>
-              <FormField
-                placeholder={dictionary.confirmPasswordPlaceholder}
-                type="password"
-                autoComplete="new-password"
-                autoCorrect="off"
-                disabled={isLoading}
-                name="confirmPassword"
-              />
-            </div>
-          </>
+          <Button
+            as={Link}
+            href={`${authRoutes.signUp[0]}?email=${form.getValues("email")}`}
+            className="absolute right-2 top-2 z-10"
+          >
+            {dictionary.edit}
+          </Button>
         )}
-        <Button type="submit" isLoading={isLoading}>
-          {dictionary.signUp} {isMinimized && dictionary.withEmail}
-        </Button>
-      </form>
-    </Form>
+      </div>
+
+      {!isMinimized && (
+        <>
+          <FormField
+            form={form}
+            name="username"
+            label={dictionary.username}
+            placeholder={dictionary.usernamePlaceholder}
+            type="text"
+            autoCapitalize="none"
+            autoComplete="username"
+            autoCorrect="off"
+            disabled={isLoading}
+          />
+          <FormField
+            form={form}
+            name="password"
+            label={dictionary.password}
+            placeholder={dictionary.passwordPlaceholder}
+            type="password-eye-slash"
+            autoComplete="new-password"
+            autoCorrect="off"
+            disabled={isLoading}
+          />
+          <FormField
+            form={form}
+            name="confirmPassword"
+            label={dictionary.confirmPassword}
+            placeholder={dictionary.confirmPasswordPlaceholder}
+            type="password"
+            autoComplete="new-password"
+            autoCorrect="off"
+            disabled={isLoading}
+          />
+        </>
+      )}
+      <Button type="submit" isLoading={isLoading} color="primary">
+        {dictionary.signUp} {isMinimized && dictionary.withEmail}
+      </Button>
+    </form>
   )
 }

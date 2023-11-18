@@ -1,10 +1,15 @@
+import { z } from "zod"
 import { TDictionary } from "@/lib/langs"
-import { serverTrpc } from "@/lib/trpc/server"
+import { getAccountResponseSchema } from "@/lib/schemas/user"
 import UpdateAccount from "./update-account"
 
-export default async function ProfileDetails({ dictionary }: { dictionary: TDictionary }) {
-  const serverAccount = await serverTrpc.me.getAccount()
-
+export default async function ProfileDetails({
+  dictionary,
+  serverAccount,
+}: {
+  dictionary: TDictionary
+  serverAccount: z.infer<ReturnType<typeof getAccountResponseSchema>>
+}) {
   return (
     <section className="mt-4 p-2 text-foreground">
       <header>

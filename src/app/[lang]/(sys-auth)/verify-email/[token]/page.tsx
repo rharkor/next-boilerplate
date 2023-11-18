@@ -15,7 +15,7 @@ export default async function VerifyEmail({
   const dictionary = await getDictionary(lang)
 
   return (
-    <main className="container flex flex-1 flex-col items-center justify-center space-y-2">
+    <main className="container m-auto flex min-h-screen flex-1 flex-col items-center justify-center space-y-2">
       <h1 className="text-2xl font-semibold tracking-tight">{dictionary.emailVerificationTitle}</h1>
       <p className="text-sm text-muted-foreground">{dictionary.emailVerificationDescription}</p>
       <VerifyEmailButton dictionary={dictionary} token={token} />
