@@ -1,30 +1,21 @@
 "use client"
 
-import { ClientSafeProvider, signIn } from "next-auth/react"
+import { Button } from "@nextui-org/react"
+import { signIn } from "next-auth/react"
 import { useState } from "react"
 import { toast } from "react-toastify"
 import { authRoutes } from "@/lib/auth/constants"
 import { TDictionary } from "@/lib/langs"
 import { logger } from "@/lib/logger"
 import { Icons } from "../icons"
-import { Button } from "../ui/button"
 
-export default function GithubSignIn({
-  provider,
-  dictionary,
-}: {
-  provider: ClientSafeProvider
-  dictionary: TDictionary
-}) {
+export default function GithubSignIn({ providerId, dictionary }: { providerId: string; dictionary: TDictionary }) {
   const [isLoading, setIsLoading] = useState(false)
 
   async function handleSignIn() {
     setIsLoading(true)
     try {
-      const sp = new URLSearchParams()
-      sp.set("redirectOnClient", authRoutes.redirectAfterSignIn)
-      // window.location.href = "?" + sp.toString()
-      const res = await signIn(provider.id, {
+      const res = await signIn(providerId, {
         callbackUrl: `${window.location.origin}${authRoutes.redirectAfterSignIn}`,
       })
 
@@ -52,7 +43,7 @@ export default function GithubSignIn({
   }
 
   return (
-    <Button variant="outline" type="button" onClick={handleSignIn} disabled={isLoading}>
+    <Button variant="ghost" color="primary" type="button" onClick={handleSignIn} disabled={isLoading}>
       {isLoading ? <Icons.spinner className="mr-2 h-4 w-4 animate-spin" /> : <Icons.gitHub className="mr-2 h-4 w-4" />}
       Github
     </Button>

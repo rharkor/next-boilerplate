@@ -1,14 +1,12 @@
 "use client"
 
 import { zodResolver } from "@hookform/resolvers/zod"
+import { Button } from "@nextui-org/react"
 import { useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
 import { z } from "zod"
-import { Button } from "@/components/ui/button"
-import { Form } from "@/components/ui/form"
-import FormField from "@/components/ui/form-field"
-import { Label } from "@/components/ui/label"
+import FormField from "@/components/ui/form"
 import { authRoutes } from "@/lib/auth/constants"
 import { TDictionary } from "@/lib/langs"
 import { resetPasswordSchema } from "@/lib/schemas/user"
@@ -45,34 +43,26 @@ export default function ResetPasswordForm({ dictionary, token }: { dictionary: T
   const isLoading = resetPasswordMutation.isLoading
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className={"!mt-5 grid w-[350px] space-y-2"}>
-        <div className="grid gap-1">
-          <Label className="sr-only" htmlFor="password">
-            {dictionary.password}
-          </Label>
-          <FormField
-            name="password"
-            type="password-eye-slash"
-            placeholder={dictionary.password}
-            autoComplete="new-password"
-          />
-        </div>
-        <div className="grid gap-1">
-          <Label className="sr-only" htmlFor="passwordConfirmation">
-            {dictionary.passwordConfirmation}
-          </Label>
-          <FormField
-            name="passwordConfirmation"
-            type="password"
-            placeholder={dictionary.passwordConfirmation}
-            autoComplete="new-password"
-          />
-        </div>
-        <Button type="submit" isLoading={isLoading}>
-          {dictionary.reset}
-        </Button>
-      </form>
-    </Form>
+    <form onSubmit={form.handleSubmit(onSubmit)} className={"!mt-5 grid w-[350px] space-y-2"}>
+      <FormField
+        form={form}
+        name="password"
+        type="password-eye-slash"
+        aria-label={dictionary.password}
+        placeholder={dictionary.password}
+        autoComplete="new-password"
+      />
+      <FormField
+        form={form}
+        name="passwordConfirmation"
+        type="password"
+        aria-label={dictionary.passwordConfirmation}
+        placeholder={dictionary.passwordConfirmation}
+        autoComplete="new-password"
+      />
+      <Button type="submit" color="primary" isLoading={isLoading}>
+        {dictionary.reset}
+      </Button>
+    </form>
   )
 }

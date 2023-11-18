@@ -1,19 +1,31 @@
 "use client"
 
+import { Button } from "@nextui-org/react"
 import { BadgeCheck } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { Session } from "next-auth"
 import { toast } from "react-toastify"
+import { z } from "zod"
 import { useAccount } from "@/contexts/account"
 import { TDictionary } from "@/lib/langs"
 import { logger } from "@/lib/logger"
+import { getAccountResponseSchema } from "@/lib/schemas/user"
 import { trpc } from "@/lib/trpc/client"
 import { handleMutationError } from "@/lib/utils/client-utils"
-import { Button } from "../ui/button"
 
-export default function VerifyEmailButton({ session, dictionary }: { session: Session; dictionary: TDictionary }) {
+export default function VerifyEmailButton({
+  session,
+  dictionary,
+  serverAccount,
+}: {
+  session: Session
+  dictionary: TDictionary
+  serverAccount: z.infer<ReturnType<typeof getAccountResponseSchema>>
+}) {
   const router = useRouter()
-  const account = useAccount(dictionary)
+  const account = useAccount(dictionary, {
+    initialData: serverAccount,
+  })
   const hasVerifiedEmail = session.user.emailVerified || !!account.data?.user.emailVerified
 
   const resendVerificationEmailMutation = trpc.me.sendVerificationEmail.useMutation({
@@ -47,6 +59,8 @@ export default function VerifyEmailButton({ session, dictionary }: { session: Se
       onClick={handleResendVerificationEmail}
       isLoading={resendVerificationEmailMutation.isLoading}
       className="flex-1 md:w-max"
+      variant="flat"
+      color="primary"
     >
       {dictionary.resendVerificationEmail}
     </Button>
