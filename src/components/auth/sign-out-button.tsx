@@ -36,7 +36,7 @@ export default function SignoutButton({
       //? Before signing out, we want to delete the session from the server
       if (currentSession)
         await deleteSessionMutation.mutateAsync({
-          sessionToken: currentSession,
+          id: currentSession,
         })
     } catch (e) {
       logger.error(e)
