@@ -1,7 +1,7 @@
 import { z } from "zod"
-import { getJsonApiSkip, getJsonApiSort, getJsonApiTake } from "@/lib/json-api"
-import { prisma } from "@/lib/prisma"
-import { getActiveSessionsResponseSchema, getActiveSessionsSchema } from "@/lib/schemas/user"
+import { getJsonApiSkip, getJsonApiTake } from "@/lib/json-api"
+import { redis } from "@/lib/redis"
+import { getActiveSessionsResponseSchema, getActiveSessionsSchema, sessionsSchema } from "@/lib/schemas/user"
 import { ensureLoggedIn, handleApiError } from "@/lib/utils/server-utils"
 import { apiInputFromSchema } from "@/types"
 
@@ -14,20 +14,11 @@ export const getActiveSessions = async ({
 
     const skip = getJsonApiSkip(input)
     const take = getJsonApiTake(input)
-    const activeSessions = await prisma.session.findMany({
-      where: {
-        userId: session.user.id,
-      },
-      skip,
-      take,
-      orderBy: getJsonApiSort(input),
-    })
+    const activeSessions = (await redis.getSessionWithPagination(session.user.id, take, skip)).map(
+      (s) => JSON.parse(s) as z.infer<ReturnType<typeof sessionsSchema>>
+    )
 
-    const total = await prisma.session.count({
-      where: {
-        userId: session.user.id,
-      },
-    })
+    const total = (await redis.keys(`session:${session.user.id}:*`)).length
 
     const response: z.infer<ReturnType<typeof getActiveSessionsResponseSchema>> = {
       data: activeSessions,

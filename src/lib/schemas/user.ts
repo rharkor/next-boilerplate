@@ -30,11 +30,11 @@ export const sessionsSchema = () =>
     id: z.string(),
     sessionToken: z.string(),
     userId: z.string(),
-    expires: z.date(),
+    expires: z.coerce.date(),
     ua: z.string(),
     ip: z.string(),
-    lastUsedAt: z.date().nullable(),
-    createdAt: z.date(),
+    lastUsedAt: z.coerce.date().nullable(),
+    createdAt: z.coerce.date(),
   })
 
 export const getActiveSessionsSchema = (dictionary?: TDictionary) =>
@@ -52,17 +52,9 @@ export const getActiveSessionsResponseSchema = () =>
   })
 
 export const deleteSessionSchema = () =>
-  z
-    .object({
-      id: z.string(),
-      sessionToken: z.never().optional(),
-    })
-    .or(
-      z.object({
-        id: z.never().optional(),
-        sessionToken: z.string(),
-      })
-    )
+  z.object({
+    id: z.string(),
+  })
 
 export const deleteSessionResponseSchema = () =>
   z.object({

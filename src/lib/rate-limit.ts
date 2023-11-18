@@ -17,12 +17,12 @@ const rateLimiter = async (identifier: string, limit: number, duration: number):
   const key = `rate_limit:${identifier}`
   const currentCount = await client.get(key)
   if (currentCount === null) {
-    client.setex(key, duration, "1")
+    client.setex(key, duration, 1)
     return { limit, remaining: limit - 1, success: true }
   } else {
-    client.incr(key)
+    client.setex(key, duration, parseInt(currentCount) + 1)
   }
-  const count = currentCount ? parseInt(currentCount, 10) : 1
+  const count = currentCount ? parseInt(currentCount) : 1
   if (count >= limit) {
     return { limit, remaining: limit - count, success: false }
   }

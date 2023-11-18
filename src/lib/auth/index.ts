@@ -4,6 +4,7 @@ import { Provider } from "next-auth/providers"
 import Credentials from "next-auth/providers/credentials"
 import GithubProvider from "next-auth/providers/github"
 import requestIp from "request-ip"
+import { z } from "zod"
 import { randomUUID } from "crypto"
 import { sendVerificationEmail } from "@/api/me/email/mutation"
 import { isPossiblyUndefined, ITrpcContext } from "@/types"
@@ -14,7 +15,9 @@ import { bcryptCompare } from "../bcrypt"
 import { getDictionary, TDictionary } from "../langs"
 import { logger } from "../logger"
 import { prisma } from "../prisma"
+import { redis } from "../redis"
 import { signInSchema } from "../schemas/auth"
+import { sessionsSchema } from "../schemas/user"
 import { ensureRelativeUrl } from "../utils"
 
 const loadedDictionary: Map<Locale, TDictionary> = new Map()
@@ -85,31 +88,21 @@ export const providers: Provider[] = [
       try {
         const ua = req.headers?.["user-agent"] ?? ""
         const ip = requestIp.getClientIp(req) ?? ""
-        await prisma.session.create({
-          data: {
-            userId: user.id,
-            expires: new Date(Date.now() + JWT_MAX_AGE * 1000),
-            ua,
-            ip,
-            sessionToken: uuid,
-            lastUsedAt: new Date(),
-            createdAt: new Date(),
-          },
-        })
+        const expires = new Date(Date.now() + JWT_MAX_AGE * 1000)
+        const body: z.infer<ReturnType<typeof sessionsSchema>> = {
+          id: uuid,
+          userId: user.id,
+          expires,
+          ua,
+          ip,
+          sessionToken: uuid,
+          lastUsedAt: new Date(),
+          createdAt: new Date(),
+        }
+        await redis.setex(`session:${user.id}:${uuid}`, JWT_MAX_AGE, JSON.stringify(body))
       } catch (error) {
         logger.error("Error creating session", error)
       }
-
-      //* Remove old sessions
-      const { count } = await prisma.session.deleteMany({
-        where: {
-          userId: user.id,
-          expires: {
-            lt: new Date(),
-          },
-        },
-      })
-      logger.debug("Deleted old sessions", count)
 
       logger.debug("User logged in", user.id)
       return {
@@ -183,24 +176,22 @@ export const nextAuthOptions: NextAuthOptions = {
         return {} as Session
       }
       if (token.uuid) {
-        const loginSession = await prisma.session.findUnique({
-          where: {
-            sessionToken: token.uuid as string,
-          },
-        })
+        const key = `session:${dbUser.id}:${token.uuid}`
+        const loginSession = await redis.get(key)
         if (!loginSession) {
           logger.debug("Session not found", token.uuid)
           return {} as Session
         } else {
           //? Update session lastUsed
-          await prisma.session.update({
-            where: {
-              id: loginSession.id,
-            },
-            data: {
+          const remainingTtl = await redis.ttl(key)
+          await redis.setex(
+            key,
+            remainingTtl,
+            JSON.stringify({
+              ...(JSON.parse(loginSession) as object),
               lastUsedAt: new Date(),
-            },
-          })
+            })
+          )
         }
       }
       //* Fill session with user data
