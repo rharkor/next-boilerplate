@@ -31,18 +31,15 @@ With this template, you get all the awesomeness you need:
 - 📝 **[Conventional commits git hook](https://www.conventionalcommits.org/)** - Keep your commit history neat and tidy
 - 🎯 **[Absolute imports](https://nextjs.org/docs/advanced-features/module-path-aliases)** - No more spaghetti imports
 - ⚕️ **[Health checks](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/)** - Kubernetes-compatible for robust deployments
-- 🧩 **[Radix UI](https://www.radix-ui.com/)** - Headless UI components for endless customization
-- 💎 **[CVA](http://cva.style/)** - Create a consistent, reusable, and atomic design system
 - 🤖 **[Renovate BOT](https://www.whitesourcesoftware.com/free-developer-tools/renovate)** - Auto-updating dependencies, so you can focus on coding
 - 🩹 **[Patch-package](https://www.npmjs.com/package/patch-package)** - Fix external dependencies without losing your mind
-- 🚀 **[GitHub Actions](https://github.com/features/actions)** - Pre-configured actions for smooth workflows, including Bundle Size and performance stats
-- 💯 **Perfect Lighthouse score** - Because performance matters
+- 🚀 **[GitHub Actions](https://github.com/features/actions)** - Pre-configured actions for smooth workflows, including check tests and deployment example
 - 🚢 **[Semantic Release](https://github.com/semantic-release/semantic-release)** - for automatic changelog
 - 💻 **[T3 Env](https://env.t3.gg/)** - Manage your environment variables with ease
 - 📦 **[Unused dependencies checker](https://www.npmjs.com/package/depcheck)** - Keep your dependencies clean
 - ✉️ **[Nodemailer](https://nodemailer.com/)** - Send emails with ease from any smtp server
 - 🔗 **[Trpc](https://trpc.io/)** - Move Fast and Break Nothing. End-to-end typesafe APIs made easy.
-- 🎨 **[Shadcn](https://ui.shadcn.com/)** - Beautifully designed components
+- 🎨 **[Next ui](https://nextui.org/)** - Beautifully designed components
 
 ## Table of Contents
 
@@ -55,8 +52,6 @@ With this template, you get all the awesomeness you need:
   - [🐳 Container Stack](#-container-stack)
   - [🧪 Testing](#-testing)
     - [Running Tests](#running-tests)
-  - [🎨 Styling and Design System](#-styling-and-design-system)
-    - [CVA - A New Approach to Variants](#cva---a-new-approach-to-variants)
   - [💾 State Management](#-state-management)
     - [Tanstack query](#tanstack-query)
   - [💻 Environment Variables handling](#-environment-variables-handling)
@@ -121,10 +116,7 @@ The following scripts are available in the `package.json`:
 - `lint:fix`: Automatically fixes linting errors
 - `prettier`: Checks the code for proper formatting
 - `prettier:fix`: Automatically fixes formatting issues
-- `analyze`: Analyzes the bundle sizes for Client, Server and Edge environments
 - `test`: Runs unit and integration tests
-- `e2e:headless`: Runs end-to-end tests in headless mode
-- `e2e:ui`: Runs end-to-end tests with UI
 - `format`: Formats the code with Prettier
 - `postinstall`: Applies patches to external dependencies
 - `preinstall`: Ensures the project is installed with Npm
@@ -160,16 +152,6 @@ This boilerplate comes with various testing setups to ensure your application's 
 - **Unit and integration tests**: Run Jest tests using `npm run test`
 
 <img width="1392" alt="image" src="https://user-images.githubusercontent.com/28964599/233666655-93b7d08b-2fd8-406a-b43c-44d4d96cf387.png">
-
-## 🎨 Styling and Design System
-
-This boilerplate uses Tailwind CSS for styling and CVA for creating a powerful, easy-to-use design system. If you want to learn more about the setup, check out this fantastic video by Vercel:
-
-### CVA - A New Approach to Variants
-
-While CSS-in-TS libraries such as [Stitches](https://stitches.dev/) and [Vanilla Extract](https://vanilla-extract.style/) are great for building type-safe UI components, they might not be the perfect fit for everyone. You may prefer more control over your stylesheets, need to use a framework like Tailwind CSS, or simply enjoy writing your own CSS.
-
-Creating variants using traditional CSS can be a tedious task, requiring you to manually match classes to props and add types. CVA is here to take that pain away, allowing you to focus on the enjoyable aspects of UI development. By providing an easy and type-safe way to create variants, CVA simplifies the process and helps you create powerful design systems without compromising on the flexibility and control of CSS.
 
 ## 💾 State Management
 
