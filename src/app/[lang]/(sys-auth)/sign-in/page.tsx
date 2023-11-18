@@ -20,7 +20,7 @@ export default async function SignInPage({
   const dictionary = await getDictionary(lang)
 
   return (
-    <main className="container relative grid min-h-screen flex-1 flex-col items-center justify-center lg:max-w-none lg:grid-cols-2 lg:px-0">
+    <main className="container relative m-auto grid min-h-screen flex-1 flex-col items-center justify-center px-2 lg:max-w-none lg:grid-cols-2 lg:px-0">
       <Button
         as={Link}
         href={authRoutes.signUp[0]}
@@ -29,12 +29,12 @@ export default async function SignInPage({
       >
         {dictionary.toSignUp}
       </Button>
-      <div className="bg-muted h-full"></div>
+      <div className="hidden h-full bg-muted lg:block"></div>
       <div className="lg:p-8">
         <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
           <div className="flex flex-col space-y-2 text-center">
             <h1 className="text-2xl font-semibold tracking-tight">{dictionary.signInPage.loginToYourAccount}</h1>
-            <p className="text-muted-foreground text-sm">{dictionary.signInPage.enterDetails}</p>
+            <p className="text-sm text-muted-foreground">{dictionary.signInPage.enterDetails}</p>
           </div>
           <div className="grid gap-6">
             <LoginUserAuthForm searchParams={searchParams} dictionary={dictionary} />
@@ -43,7 +43,7 @@ export default async function SignInPage({
                 <span className="w-full border-t" />
               </div>
               <div className="relative flex justify-center text-xs uppercase">
-                <span className="text-muted-foreground bg-background px-2">{dictionary.auth.orContinueWith}</span>
+                <span className="bg-background px-2 text-muted-foreground">{dictionary.auth.orContinueWith}</span>
               </div>
             </div>
             <Providers dictionary={dictionary} searchParams={searchParams} />
