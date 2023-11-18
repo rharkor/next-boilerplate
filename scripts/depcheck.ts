@@ -8,7 +8,15 @@ const rootPath = path.join(__dirname, "..")
 
 const options = {
   skipMissing: false,
-  ignoreMatches: ["@semantic-release/*", "env.mjs", "i18n-config", "sharp"],
+  ignoreMatches: [
+    "@semantic-release/*",
+    "env.mjs",
+    "i18n-config",
+    "sharp",
+    "@nextui-org/*",
+    "@react-aria/ssr",
+    "@react-aria/visually-hidden",
+  ],
 }
 
 depcheck(rootPath, options).then(async (unused) => {
