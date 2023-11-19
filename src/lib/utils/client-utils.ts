@@ -3,6 +3,7 @@ import "client-only"
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime"
 
 import { toast } from "react-toastify"
+import { env } from "env.mjs"
 import { AppRouter } from "../../api/_app"
 import { TDictionary } from "../langs"
 import { logger } from "../logger"
@@ -34,4 +35,13 @@ export const handleMutationError = <T extends TRPCClientErrorLike<AppRouter>>(
   logger.error("Mutation error:", resp)
   if (opts.showNotification) toast.error(resp.message)
   return resp
+}
+
+export const getImageUrl = (imageKey: string | undefined | null) => {
+  if (!imageKey || imageKey.startsWith("https://")) return imageKey
+  return (
+    (env.NEXT_PUBLIC_AWS_ENDPOINT ?? "").replace("https://", "https://" + env.NEXT_PUBLIC_AWS_BUCKET_NAME + ".") +
+    "/" +
+    imageKey
+  )
 }
