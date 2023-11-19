@@ -9,12 +9,13 @@ import { rolesAsObject } from "@/types/constants"
 export const updateUser = async ({ input, ctx: { session } }: apiInputFromSchema<typeof updateUserSchema>) => {
   ensureLoggedIn(session)
   try {
-    const { username } = input
+    const { username, image } = input
     //* Update the user
     const user = await prisma.user.update({
       where: { id: session.user.id },
       data: {
         username,
+        image,
       },
     })
 

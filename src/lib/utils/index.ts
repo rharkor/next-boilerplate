@@ -139,3 +139,19 @@ export const handleApiError = <T extends TRPCClientErrorLike<AppRouter>>(
     message: translatedError,
   }
 }
+
+export function bytesToMegabytes(bytes: number, round?: boolean): number {
+  const megabytes = bytes / (1024 * 1024)
+  if (round) return Math.round(megabytes * 100) / 100
+  return megabytes
+}
+
+export function chunk<T>(array: T[], size: number): T[][] {
+  const result: T[][] = []
+
+  for (let i = 0; i < array.length; i += size) {
+    result.push(array.slice(i, i + size))
+  }
+
+  return result
+}

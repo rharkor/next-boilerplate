@@ -109,7 +109,9 @@
     "emailNotVerified": "Please, verify your email.",
     "emailAlreadyVerified": "Email verified",
     "emailServiceDisabled": "Email service disabled.",
-    "unavailableWithOAuth": "This feature is not available with OAuth providers."
+    "unavailableWithOAuth": "This feature is not available with OAuth providers.",
+    "s3ServiceDisabled": "S3 service disabled.",
+    "noFileSelected": "No file selected."
   },
   "email": "Email",
   "emailPlaceholder": "name@example.com",
@@ -174,5 +176,8 @@
   "verifyEmail": "Verify email",
   "emailVerificationTitle": "Email verification",
   "emailVerificationDescription": "Please verify your email address.",
-  "copiedToClipboard": "Copied to clipboard"
+  "copiedToClipboard": "Copied to clipboard",
+  "avatarUpdated": "Avatar updated",
+  "updateAvatar": "Update avatar",
+  "uploadDescription": "Click or drag a file here to upload it."
 }
