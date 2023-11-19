@@ -109,7 +109,9 @@
     "emailNotVerified": "Veuillez vérifier votre email.",
     "emailAlreadyVerified": "Email vérifié",
     "emailServiceDisabled": "Le service d'email est désactivé.",
-    "unavailableWithOAuth": "Cette fonctionnalité n'est pas disponible avec ce type de connexion."
+    "unavailableWithOAuth": "Cette fonctionnalité n'est pas disponible avec ce type de connexion.",
+    "s3ServiceDisabled": "Le service S3 est désactivé.",
+    "noFileSelected": "Aucun fichier sélectionné."
   },
   "email": "Email",
   "emailPlaceholder": "nom@exemple.com",
@@ -174,5 +176,8 @@
   "verifyEmail": "Vérifier l'email",
   "emailVerificationTitle": "Vérification de l'email",
   "emailVerificationDescription": "Veuillez vérifier votre email pour continuer.",
-  "copiedToClipboard": "Copié dans le presse-papier"
+  "copiedToClipboard": "Copié dans le presse-papier",
+  "avatarUpdated": "Avatar mis à jour",
+  "updateAvatar": "Mettre à jour l'avatar",
+  "uploadDescription": "Cliquez ou faites glisser un fichier ici pour le télécharger."
 }
