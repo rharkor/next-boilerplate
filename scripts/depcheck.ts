@@ -16,6 +16,7 @@ const options = {
     "@nextui-org/*",
     "@react-aria/ssr",
     "@react-aria/visually-hidden",
+    "cron",
   ],
 }
 
