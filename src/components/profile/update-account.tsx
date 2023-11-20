@@ -12,6 +12,7 @@ import { logger } from "@/lib/logger"
 import { getAccountResponseSchema, updateUserSchema } from "@/lib/schemas/user"
 import { trpc } from "@/lib/trpc/client"
 import { handleMutationError } from "@/lib/utils/client-utils"
+import UpdateAvatar from "./avatar"
 import FormField from "../ui/form"
 import NeedSavePopup from "../ui/need-save-popup"
 
@@ -75,26 +76,29 @@ export default function UpdateAccount({
   }
 
   return (
-    <div className="relative mt-3 flex flex-col space-y-2">
-      <form onSubmit={form.handleSubmit(onUpdateNonSensibleInforation)} className="grid gap-2">
-        <FormField
-          form={form}
-          name="username"
-          label={dictionary.profilePage.profileDetails.username.label}
-          placeholder={dictionary.profilePage.profileDetails.username.placeholder}
-          type="text"
-          disabled={updateUserMutation.isLoading || account.isInitialLoading || !hasVerifiedEmail}
-        />
-        <NeedSavePopup
-          show={isNotSensibleInformationsUpdated}
-          onReset={resetForm}
-          isSubmitting={updateUserMutation.isLoading}
-          text={dictionary.needSavePopup}
-          dictionary={dictionary}
-        />
-      </form>
+    <div className="relative mt-3 flex flex-row items-center gap-3">
+      <UpdateAvatar account={account} dictionary={dictionary} />
+      <div className="flex flex-1 flex-col gap-2">
+        <form onSubmit={form.handleSubmit(onUpdateNonSensibleInforation)} className="grid gap-2">
+          <FormField
+            form={form}
+            name="username"
+            label={dictionary.profilePage.profileDetails.username.label}
+            placeholder={dictionary.profilePage.profileDetails.username.placeholder}
+            type="text"
+            disabled={updateUserMutation.isLoading || account.isInitialLoading || !hasVerifiedEmail}
+          />
+          <NeedSavePopup
+            show={isNotSensibleInformationsUpdated}
+            onReset={resetForm}
+            isSubmitting={updateUserMutation.isLoading}
+            text={dictionary.needSavePopup}
+            dictionary={dictionary}
+          />
+        </form>
+      </div>
       {!hasVerifiedEmail && (
-        <div className="absolute inset-0 z-10 !m-0 flex items-center justify-center backdrop-blur-sm">
+        <div className="absolute -inset-2 z-10 !m-0 flex items-center justify-center backdrop-blur-sm">
           <p className="text-center text-sm font-semibold text-muted-foreground">
             {dictionary.errors.emailNotVerified}
           </p>

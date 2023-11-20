@@ -17,7 +17,8 @@ export const userSchema = (dictionary?: TDictionary) =>
 
 export const updateUserSchema = (dictionary?: TDictionary) =>
   z.object({
-    username: usernameSchema(dictionary).or(z.literal("")),
+    username: usernameSchema(dictionary).or(z.literal("")).optional(),
+    image: z.string().optional().nullable(),
   })
 
 export const updateUserResponseSchema = (dictionary?: TDictionary) =>

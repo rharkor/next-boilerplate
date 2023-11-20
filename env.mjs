@@ -24,7 +24,6 @@ export const env = createEnv({
       .transform((value) => parseInt(value)),
     REDIS_USERNAME: z.string().optional(),
     REDIS_PASSWORD: z.string().optional(),
-    REDIS_URL: z.string().optional(),
     REDIS_USE_TLS: z
       .enum(["true", "false"])
       .optional()
@@ -46,6 +45,13 @@ export const env = createEnv({
       .enum(["true", "false"])
       .optional()
       .transform((value) => value === "true"),
+    AWS_REGION: z.string().optional(),
+    AWS_ACCESS_KEY_ID: z.string().optional(),
+    AWS_SECRET_ACCESS_KEY: z.string().optional(),
+    ENABLE_S3_SERVICE: z
+      .enum(["true", "false"])
+      .optional()
+      .transform((value) => value === "true"),
   },
   client: {
     NEXT_PUBLIC_IS_DEMO: z
@@ -54,6 +60,8 @@ export const env = createEnv({
       .transform((value) => value === "true"),
     NEXT_PUBLIC_DEMO_EMAIL: z.string().optional(),
     NEXT_PUBLIC_DEMO_PASSWORD: z.string().optional(),
+    NEXT_PUBLIC_AWS_ENDPOINT: z.string().optional(),
+    NEXT_PUBLIC_AWS_BUCKET_NAME: z.string().optional(),
   },
   runtimeEnv: {
     ANALYZE: process.env.ANALYZE,
@@ -72,7 +80,6 @@ export const env = createEnv({
     REDIS_USERNAME: process.env.REDIS_USERNAME,
     REDIS_PASSWORD: process.env.REDIS_PASSWORD,
     REDIS_TLS: process.env.REDIS_TLS,
-    REDIS_URL: process.env.REDIS_URL,
     REDIS_USE_TLS: process.env.REDIS_USE_TLS,
     NEXT_PUBLIC_IS_DEMO: process.env.NEXT_PUBLIC_IS_DEMO,
     NEXT_PUBLIC_DEMO_EMAIL: process.env.NEXT_PUBLIC_DEMO_EMAIL,
@@ -88,6 +95,12 @@ export const env = createEnv({
     SMTP_FROM_EMAIL: process.env.SMTP_FROM_EMAIL,
     SUPPORT_EMAIL: process.env.SUPPORT_EMAIL,
     ENABLE_MAILING_SERVICE: process.env.ENABLE_MAILING_SERVICE,
+    AWS_REGION: process.env.AWS_REGION,
+    NEXT_PUBLIC_AWS_BUCKET_NAME: process.env.NEXT_PUBLIC_AWS_BUCKET_NAME,
+    AWS_ACCESS_KEY_ID: process.env.AWS_ACCESS_KEY_ID,
+    AWS_SECRET_ACCESS_KEY: process.env.AWS_SECRET_ACCESS_KEY,
+    NEXT_PUBLIC_AWS_ENDPOINT: process.env.NEXT_PUBLIC_AWS_ENDPOINT,
+    ENABLE_S3_SERVICE: process.env.ENABLE_S3_SERVICE,
   },
   onValidationError: (error) => {
     console.error(error)
