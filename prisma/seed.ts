@@ -55,6 +55,7 @@ async function main() {
         role: rolesAsObject.admin,
         username: "admin",
         emailVerified: new Date(),
+        hasPassword: true,
       },
     })
     spinner.stop(true)
