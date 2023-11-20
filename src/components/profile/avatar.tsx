@@ -96,7 +96,7 @@ export default function UpdateAvatar({
           className="absolute inset-0 flex cursor-pointer items-center justify-center rounded-full bg-muted/40 opacity-0 backdrop-blur-sm transition-all duration-200 group-hover:opacity-100"
           onClick={() => setShowModal(true)}
         >
-          <Camera className="h-8 w-8" />
+          <Camera className="h-8 w-8 transition-all duration-250 group-active:scale-95" />
         </div>
       </div>
       <Modal isOpen={showModal} onOpenChange={(open) => setShowModal(open)} backdrop="blur">
