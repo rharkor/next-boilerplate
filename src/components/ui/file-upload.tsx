@@ -16,7 +16,7 @@ export type TFileUploadProps = Omit<
   onFilesChange?: (files: File[]) => void
   dictionary: TDictionary
   disabled?: boolean
-  accept: Accept //? See: https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types
+  accept?: Accept //? See: https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types
 }
 
 export default function FileUpload({
