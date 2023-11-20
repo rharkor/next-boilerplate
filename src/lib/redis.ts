@@ -29,6 +29,7 @@ const options: RedisOptions = {
       numberOfKeys: 1,
     },
   },
+  tls: process.env.REDIS_USE_TLS === "true" ? {} : undefined,
 }
 
 export const redis = new Redis(options)
