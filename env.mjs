@@ -24,7 +24,6 @@ export const env = createEnv({
       .transform((value) => parseInt(value)),
     REDIS_USERNAME: z.string().optional(),
     REDIS_PASSWORD: z.string().optional(),
-    REDIS_URL: z.string().optional(),
     REDIS_USE_TLS: z
       .enum(["true", "false"])
       .optional()
@@ -81,7 +80,6 @@ export const env = createEnv({
     REDIS_USERNAME: process.env.REDIS_USERNAME,
     REDIS_PASSWORD: process.env.REDIS_PASSWORD,
     REDIS_TLS: process.env.REDIS_TLS,
-    REDIS_URL: process.env.REDIS_URL,
     REDIS_USE_TLS: process.env.REDIS_USE_TLS,
     NEXT_PUBLIC_IS_DEMO: process.env.NEXT_PUBLIC_IS_DEMO,
     NEXT_PUBLIC_DEMO_EMAIL: process.env.NEXT_PUBLIC_DEMO_EMAIL,
