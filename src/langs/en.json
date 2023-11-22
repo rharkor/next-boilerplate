@@ -179,5 +179,6 @@
   "copiedToClipboard": "Copied to clipboard",
   "avatarUpdated": "Avatar updated",
   "updateAvatar": "Update avatar",
-  "uploadDescription": "Click or drag a file here to upload it."
+  "uploadDescription": "Click or drag a file here to upload it.",
+  "loading": "Loading"
 }

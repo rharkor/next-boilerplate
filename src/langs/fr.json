@@ -179,5 +179,6 @@
   "copiedToClipboard": "Copié dans le presse-papier",
   "avatarUpdated": "Avatar mis à jour",
   "updateAvatar": "Mettre à jour l'avatar",
-  "uploadDescription": "Cliquez ou faites glisser un fichier ici pour le télécharger."
+  "uploadDescription": "Cliquez ou faites glisser un fichier ici pour le télécharger.",
+  "loading": "Chargement"
 }

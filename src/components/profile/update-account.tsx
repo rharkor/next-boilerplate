@@ -9,7 +9,7 @@ import * as z from "zod"
 import { useAccount } from "@/contexts/account"
 import { TDictionary } from "@/lib/langs"
 import { logger } from "@/lib/logger"
-import { getAccountResponseSchema, updateUserSchema } from "@/lib/schemas/user"
+import { updateUserSchema } from "@/lib/schemas/user"
 import { trpc } from "@/lib/trpc/client"
 import { handleMutationError } from "@/lib/utils/client-utils"
 import UpdateAvatar from "./avatar"
@@ -23,19 +23,16 @@ type INonSensibleForm = z.infer<ReturnType<typeof nonSensibleSchema>>
 
 export default function UpdateAccount({
   dictionary,
-  serverAccount,
+  hasVerifiedEmail,
 }: {
   dictionary: TDictionary
-  serverAccount: z.infer<ReturnType<typeof getAccountResponseSchema>>
+  hasVerifiedEmail: boolean
 }) {
   const router = useRouter()
   const utils = trpc.useUtils()
 
   const { update } = useSession()
-  const account = useAccount(dictionary, {
-    initialData: serverAccount,
-  })
-  const hasVerifiedEmail = !!account.data?.user.emailVerified
+  const account = useAccount(dictionary)
 
   const updateUserMutation = trpc.me.updateUser.useMutation({
     onError: (error) => handleMutationError(error, dictionary, router),
@@ -87,6 +84,7 @@ export default function UpdateAccount({
             placeholder={dictionary.profilePage.profileDetails.username.placeholder}
             type="text"
             disabled={updateUserMutation.isLoading || account.isInitialLoading || !hasVerifiedEmail}
+            skeleton={account.isInitialLoading}
           />
           <NeedSavePopup
             show={isNotSensibleInformationsUpdated}

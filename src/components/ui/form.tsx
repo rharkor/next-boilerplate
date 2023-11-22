@@ -1,6 +1,6 @@
 "use client"
 
-import { Input, InputProps, Tooltip } from "@nextui-org/react"
+import { Input, InputProps, Skeleton, Tooltip } from "@nextui-org/react"
 import { useState } from "react"
 import { Controller, FieldPath, FieldValues, UseFormReturn } from "react-hook-form"
 import { Icons } from "../icons"
@@ -8,22 +8,23 @@ import { Icons } from "../icons"
 export type FormFieldProps<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-> = Omit<InputProps, "form" | "name" | "tooltip" | "type"> & {
+> = Omit<InputProps, "form" | "name" | "tooltip" | "type" | "skeleton"> & {
   form: UseFormReturn<TFieldValues>
   name: TName //? Required
   tooltip?: string
   type: InputProps["type"] | "password-eye-slash"
+  skeleton?: boolean
 }
 
 export default function FormField<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
->({ form, name, tooltip, type, ...props }: FormFieldProps<TFieldValues, TName>) {
+>({ form, name, tooltip, type, skeleton, ...props }: FormFieldProps<TFieldValues, TName>) {
   const [isVisible, setIsVisible] = useState(false)
 
   const toggleVisibility = () => setIsVisible(!isVisible)
 
-  const input = (
+  let input = (
     <Controller
       name={name}
       control={form.control}
@@ -55,11 +56,21 @@ export default function FormField<
     />
   )
 
-  if (!tooltip) return input
+  if (skeleton !== undefined) {
+    input = (
+      <Skeleton isLoaded={!skeleton} className="rounded-medium">
+        {input}
+      </Skeleton>
+    )
+  }
 
-  return (
-    <Tooltip content={tooltip}>
-      <div className="relative">{input}</div>
-    </Tooltip>
-  )
+  if (tooltip) {
+    return (
+      <Tooltip content={tooltip}>
+        <div className="relative">{input}</div>
+      </Tooltip>
+    )
+  }
+
+  return input
 }

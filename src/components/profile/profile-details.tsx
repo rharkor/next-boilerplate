@@ -1,14 +1,12 @@
-import { z } from "zod"
 import { TDictionary } from "@/lib/langs"
-import { getAccountResponseSchema } from "@/lib/schemas/user"
 import UpdateAccount from "./update-account"
 
 export default async function ProfileDetails({
   dictionary,
-  serverAccount,
+  hasVerifiedEmail,
 }: {
   dictionary: TDictionary
-  serverAccount: z.infer<ReturnType<typeof getAccountResponseSchema>>
+  hasVerifiedEmail: boolean
 }) {
   return (
     <section className="mt-4 p-2 text-foreground">
@@ -18,7 +16,7 @@ export default async function ProfileDetails({
           {dictionary.profilePage.profileDetails.updateAccountDescription}
         </p>
       </header>
-      <UpdateAccount dictionary={dictionary} serverAccount={serverAccount} />
+      <UpdateAccount dictionary={dictionary} hasVerifiedEmail={hasVerifiedEmail} />
     </section>
   )
 }

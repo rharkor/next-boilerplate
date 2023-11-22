@@ -5,27 +5,15 @@ import { BadgeCheck } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { Session } from "next-auth"
 import { toast } from "react-toastify"
-import { z } from "zod"
 import { useAccount } from "@/contexts/account"
 import { TDictionary } from "@/lib/langs"
 import { logger } from "@/lib/logger"
-import { getAccountResponseSchema } from "@/lib/schemas/user"
 import { trpc } from "@/lib/trpc/client"
 import { handleMutationError } from "@/lib/utils/client-utils"
 
-export default function VerifyEmailButton({
-  session,
-  dictionary,
-  serverAccount,
-}: {
-  session: Session
-  dictionary: TDictionary
-  serverAccount: z.infer<ReturnType<typeof getAccountResponseSchema>>
-}) {
+export default function VerifyEmailButton({ session, dictionary }: { session: Session; dictionary: TDictionary }) {
   const router = useRouter()
-  const account = useAccount(dictionary, {
-    initialData: serverAccount,
-  })
+  const account = useAccount(dictionary)
   const hasVerifiedEmail = session.user.emailVerified || !!account.data?.user.emailVerified
 
   const resendVerificationEmailMutation = trpc.me.sendVerificationEmail.useMutation({

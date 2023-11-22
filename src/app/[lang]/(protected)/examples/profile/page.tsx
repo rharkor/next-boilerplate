@@ -8,7 +8,6 @@ import UserActiveSessions from "@/components/profile/sessions/user-active-sessio
 import CardTitle from "@/components/ui/card"
 import { nextAuthOptions } from "@/lib/auth"
 import { getDictionary } from "@/lib/langs"
-import { serverTrpc } from "@/lib/trpc/server"
 import { Locale } from "i18n-config"
 
 export default async function Profile({
@@ -20,7 +19,8 @@ export default async function Profile({
 }) {
   const dictionary = await getDictionary(lang)
   const session = await getServerSession(nextAuthOptions)
-  const serverAccount = await serverTrpc.me.getAccount()
+
+  const hasVerifiedEmail = Boolean(session?.user.emailVerified)
 
   return (
     <main className="container m-auto flex flex-1 flex-col items-center justify-center p-6 pb-20">
@@ -35,11 +35,11 @@ export default async function Profile({
               {JSON.stringify(session, null, 2)}
             </pre>
             <div className="mt-4 flex flex-col items-center space-y-2 md:mr-0 md:w-full md:flex-row md:justify-end md:space-x-2 md:space-y-0">
-              {session && <VerifyEmailButton session={session} dictionary={dictionary} serverAccount={serverAccount} />}
+              {session && <VerifyEmailButton session={session} dictionary={dictionary} />}
               <DeleteAccountButton dictionary={dictionary}>{dictionary.deleteAccount}</DeleteAccountButton>
               <SignoutButton dictionary={dictionary}>{dictionary.signOut}</SignoutButton>
             </div>
-            <ProfileDetails dictionary={dictionary} serverAccount={serverAccount} />
+            <ProfileDetails dictionary={dictionary} hasVerifiedEmail={hasVerifiedEmail} />
             <UserActiveSessions dictionary={dictionary} session={session} />
           </CardBody>
         </Card>
