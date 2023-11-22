@@ -176,23 +176,25 @@ export const nextAuthOptions: NextAuthOptions = {
         return {} as Session
       }
       if (token.uuid) {
-        const key = `session:${dbUser.id}:${token.uuid}`
-        const loginSession = await redis.get(key)
-        if (!loginSession) {
-          logger.debug("Session not found", token.uuid)
-          return {} as Session
-        } else {
-          //? Update session lastUsed
-          const remainingTtl = await redis.ttl(key)
-          await redis.setex(
-            key,
-            remainingTtl,
-            JSON.stringify({
-              ...(JSON.parse(loginSession) as object),
-              lastUsedAt: new Date(),
-            })
-          )
-        }
+        new Promise(async () => {
+          const key = `session:${dbUser.id}:${token.uuid}`
+          const loginSession = await redis.get(key)
+          if (!loginSession) {
+            logger.debug("Session not found", token.uuid)
+            return {} as Session
+          } else {
+            //? Update session lastUsed
+            const remainingTtl = await redis.ttl(key)
+            await redis.setex(
+              key,
+              remainingTtl,
+              JSON.stringify({
+                ...(JSON.parse(loginSession) as object),
+                lastUsedAt: new Date(),
+              })
+            )
+          }
+        })
       }
       //* Fill session with user data
       const username = dbUser.username

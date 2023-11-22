@@ -110,6 +110,7 @@ export default function SessionRow({ session, setSelectedSession, skeleton, skel
             color="danger"
             className="h-8 w-10 min-w-0 p-2"
             size={"sm"}
+            aria-label="delete"
             onClick={() => setSelectedSession(session.id)}
           >
             <Icons.trash />

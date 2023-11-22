@@ -34,7 +34,7 @@ export default function LocaleSwitcher({ lang }: { lang: Locale }) {
         setDynamicLocale(locale)
       }}
       className="w-[150px]"
-      aria-label="Locale"
+      aria-label={localesDetailed[lang].nativeName}
       startContent={<Avatar alt={lang} className="h-4 w-4 shrink-0" src={localesDetailed[lang].flag} />}
       size="sm"
       selectionMode="single"
