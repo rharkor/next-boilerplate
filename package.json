@@ -70,7 +70,6 @@
     "sharp": "^0.32.5",
     "superjson": "^2.0.0",
     "tailwind-merge": "^2.0.0",
-    "tailwindcss-animate": "^1.0.6",
     "ua-parser-js": "^1.0.35",
     "zod": "^3.21.4"
   },
