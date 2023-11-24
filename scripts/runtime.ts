@@ -87,49 +87,6 @@ const basicFiles = [
     },
   },
   {
-    path: ".github/workflows/nextjs_bundle_analysis.yml",
-    replace: (oldRuntime: IRuntime, newRuntime: IRuntime, content: string) => {
-      if (oldRuntime.npm === "npm" && newRuntime.npm === "bun") {
-        content = content.replaceAll(`${oldRuntime.npm} install`, `${newRuntime.npm} install`)
-      } else if (oldRuntime.npm === "bun" && newRuntime.npm === "npm") {
-        content = content.replaceAll(`${oldRuntime.npm} install`, `${newRuntime.npm} install`)
-      }
-      content = content.replaceAll(`${oldRuntime.npm} `, `${newRuntime.npm} `)
-      if (oldRuntime.npm === "npm" && newRuntime.npm === "bun") {
-        content = content.replaceAll(
-          `      - name: Install Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18`,
-          `      - name: Install bun
-        uses: oven-sh/setup-bun@v1`
-        )
-        content = content.replaceAll(
-          `      - name: Install dependencies
-        uses: bahmutov/npm-install@v1`,
-          `      - name: Install dependencies
-        run: bun install`
-        )
-      } else if (oldRuntime.npm === "bun" && newRuntime.npm === "npm") {
-        content = content.replaceAll(
-          `      - name: Install bun
-        uses: oven-sh/setup-bun@v1`,
-          `      - name: Install Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18`
-        )
-        content = content.replaceAll(
-          `      - name: Install dependencies
-        run: bun install`,
-          `      - name: Install dependencies
-        uses: bahmutov/npm-install@v1`
-        )
-      }
-      return content
-    },
-  },
-  {
     path: ".github/workflows/release.yml",
     replace: (oldRuntime: IRuntime, newRuntime: IRuntime, content: string) => {
       if (oldRuntime.npm === "npm" && newRuntime.npm === "bun") {
