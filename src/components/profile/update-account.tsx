@@ -23,16 +23,19 @@ type INonSensibleForm = z.infer<ReturnType<typeof nonSensibleSchema>>
 
 export default function UpdateAccount({
   dictionary,
-  hasVerifiedEmail,
+  sessionHasVerifiedEmail,
 }: {
   dictionary: TDictionary
-  hasVerifiedEmail: boolean
+  sessionHasVerifiedEmail: boolean
 }) {
   const router = useRouter()
   const utils = trpc.useUtils()
 
   const { update } = useSession()
   const account = useAccount(dictionary)
+
+  const hasVerifiedEmail =
+    account.data?.user.emailVerified === undefined ? sessionHasVerifiedEmail : account.data.user.emailVerified
 
   const updateUserMutation = trpc.me.updateUser.useMutation({
     onError: (error) => handleMutationError(error, dictionary, router),

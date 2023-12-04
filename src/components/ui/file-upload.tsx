@@ -50,11 +50,11 @@ export default function FileUpload({
       <div
         {...getRootProps()}
         className={cn(
-          "flex h-[250px] cursor-pointer flex-col items-center justify-center gap-4 rounded-medium border border-dashed border-transparent bg-muted/50 p-2 px-6 text-foreground transition-all",
+          "flex h-[250px] cursor-pointer flex-col items-center justify-center gap-4 rounded-medium border border-dashed border-transparent bg-muted/20 p-2 px-6 text-foreground transition-all",
           {
-            "hover:border-primary hover:bg-muted/70 focus:border-primary focus:bg-muted/70": !disabled,
-            "border-primary bg-muted/70": isDragAccept,
-            "border-danger bg-danger/70": isDragReject,
+            "hover:border-primary hover:bg-muted/40 focus:border-primary focus:bg-muted/40": !disabled,
+            "border-primary bg-muted/50": isDragAccept,
+            "border-danger bg-danger/40": isDragReject,
           },
           className
         )}

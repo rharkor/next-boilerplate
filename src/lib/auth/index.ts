@@ -116,11 +116,16 @@ export const providers: Provider[] = [
       }
     },
   }),
-  GithubProvider({
-    clientId: env.GITHUB_CLIENT_ID,
-    clientSecret: env.GITHUB_CLIENT_SECRET,
-  }),
 ]
+
+if (env.ENABLE_REGISTRATION) {
+  providers.push(
+    GithubProvider({
+      clientId: env.GITHUB_CLIENT_ID,
+      clientSecret: env.GITHUB_CLIENT_SECRET,
+    })
+  )
+}
 
 export const providersByName: {
   [key: string]: Provider | undefined
@@ -235,5 +240,13 @@ export const nextAuthOptions: NextAuthOptions = {
   },
   session: {
     strategy: "jwt", //? Strategy database could not work with credentials provider for security reasons
+  },
+  logger: {
+    error(code, metadata) {
+      logger.error("error", code, metadata)
+    },
+    warn(code) {
+      logger.warn("warn", code)
+    },
   },
 }

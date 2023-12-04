@@ -52,6 +52,10 @@ export const env = createEnv({
       .enum(["true", "false"])
       .optional()
       .transform((value) => value === "true"),
+    ENABLE_REGISTRATION: z
+      .enum(["true", "false"])
+      .optional()
+      .transform((value) => value === "true"),
   },
   client: {
     NEXT_PUBLIC_IS_DEMO: z
@@ -101,6 +105,7 @@ export const env = createEnv({
     AWS_SECRET_ACCESS_KEY: process.env.AWS_SECRET_ACCESS_KEY,
     NEXT_PUBLIC_AWS_ENDPOINT: process.env.NEXT_PUBLIC_AWS_ENDPOINT,
     ENABLE_S3_SERVICE: process.env.ENABLE_S3_SERVICE,
+    ENABLE_REGISTRATION: process.env.ENABLE_REGISTRATION,
   },
   onValidationError: (error) => {
     console.error(error)

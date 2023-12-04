@@ -14,6 +14,9 @@ import { env } from "env.mjs"
 export const register = async ({ input }: apiInputFromSchema<typeof signUpSchema>) => {
   const { email, password, username } = input
   try {
+    if (env.ENABLE_REGISTRATION === false) {
+      return ApiError(throwableErrorsMessages.registrationDisabled)
+    }
     const hashedPassword = await hash(password, 12)
 
     const user = await prisma.user.create({

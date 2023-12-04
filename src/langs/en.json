@@ -111,7 +111,8 @@
     "emailServiceDisabled": "Email service disabled.",
     "unavailableWithOAuth": "This feature is not available with OAuth providers.",
     "s3ServiceDisabled": "S3 service disabled.",
-    "noFileSelected": "No file selected."
+    "noFileSelected": "No file selected.",
+    "registrationDisabled": "Registration disabled."
   },
   "email": "Email",
   "emailPlaceholder": "name@example.com",
