@@ -1,6 +1,6 @@
 "use client"
 
-import { Avatar, Button, Modal, ModalBody, ModalContent } from "@nextui-org/react"
+import { Avatar, Button, Modal, ModalBody, ModalContent, Skeleton } from "@nextui-org/react"
 import { Camera } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
@@ -86,12 +86,14 @@ export default function UpdateAvatar({
   return (
     <>
       <div className={cn("group relative h-20 w-20 rounded-full")}>
-        <Avatar
-          className="h-20 w-20 text-large"
-          src={getImageUrl(account.data?.user.image) || undefined}
-          name={account.data?.user.username || undefined}
-          onClick={() => setShowModal(true)}
-        />
+        <Skeleton isLoaded={!account.isInitialLoading} className="rounded-full">
+          <Avatar
+            className="h-20 w-20 text-large"
+            src={getImageUrl(account.data?.user.image) || undefined}
+            name={account.data?.user.username || undefined}
+            onClick={() => setShowModal(true)}
+          />
+        </Skeleton>
         <div
           className="absolute inset-0 flex cursor-pointer items-center justify-center rounded-full bg-muted/40 opacity-0 backdrop-blur-sm transition-all duration-200 group-hover:opacity-100"
           onClick={() => setShowModal(true)}
