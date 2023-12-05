@@ -14,6 +14,8 @@
     "prettier:fix": "prettier --write \"**/*.{js,jsx,ts,tsx}\"",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "test": "npm run test --ws",
+    "build": "npm run build --ws",
+    "start": "npm run start --ws",
     "preinstall": "npx -y only-allow-many npm"
   },
   "devDependencies": {},

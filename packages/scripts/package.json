@@ -9,7 +9,9 @@
     "postinstall": "npx patch-package",
     "lint": "eslint --ext .ts,.tsx .",
     "lint:fix": "eslint --fix --ext .ts,.tsx .",
-    "test": "exit 0"
+    "test": "exit 0",
+    "build": "exit 0",
+    "start": "exit 0"
   },
   "dependencies": {
     "@types/inquirer": "^9.0.3",
