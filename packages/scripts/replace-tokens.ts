@@ -7,6 +7,7 @@ import inquirer from "inquirer"
 import * as fs from "fs"
 import * as path from "path"
 import * as url from "url"
+import chalk from "chalk"
 
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url))
 
@@ -62,21 +63,28 @@ export const replaceTokens = async () => {
     for (const token of fileTokens) {
       if (!allTokensValues[token]) continue
       newFileContent = newFileContent.replaceAll(`#{${token}}#`, allTokensValues[token])
-      console.log(`Done for ${filePath}`)
+      console.log(chalk.green(`Done for ${filePath}`))
       if (token === "PROJECT_NAME") {
         //? Replace the project name in the devcontainer.json & package.json
         const nameToReplace = "next-boilerplate"
         const newProjectName = allTokensValues[token]
-        const devContainerFile = path.join(__dirname, "..", ".devcontainer/devcontainer.json")
-        const pJsonFile = path.join(__dirname, "..", "package.json")
+        const devContainerFile = path.join(__dirname, "../../.devcontainer/devcontainer.json")
         const devContainerFileContent = fs.readFileSync(devContainerFile, "utf8")
-        const pJsonFileContent = fs.readFileSync(pJsonFile, "utf8")
         const newDevContainerFileContent = devContainerFileContent.replaceAll(nameToReplace, newProjectName)
-        const newPJsonFileContent = pJsonFileContent.replaceAll(nameToReplace, newProjectName)
         fs.writeFileSync(devContainerFile, newDevContainerFileContent, "utf8")
         console.log(`Done for ${devContainerFile}`)
-        fs.writeFileSync(pJsonFile, newPJsonFileContent, "utf8")
-        console.log(`Done for ${pJsonFile}`)
+        const packages = fs.readdirSync(path.join(__dirname, ".."))
+        const pJsonFiles = [
+          path.join(__dirname, "../../package.json"),
+          ...packages.map((p) => path.join(__dirname, "..", p, "package.json")),
+        ]
+        for (const pJsonFile of pJsonFiles) {
+          if (!fs.existsSync(pJsonFile)) continue
+          const pJsonFileContent = fs.readFileSync(pJsonFile, "utf8")
+          const newPJsonFileContent = pJsonFileContent.replaceAll(nameToReplace, newProjectName)
+          fs.writeFileSync(pJsonFile, newPJsonFileContent, "utf8")
+          console.log(`Done for ${pJsonFile}`)
+        }
       }
     }
     fs.writeFileSync(filePath, newFileContent, "utf8")
