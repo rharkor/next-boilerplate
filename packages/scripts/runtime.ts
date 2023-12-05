@@ -14,7 +14,7 @@ export type IRuntime = {
 
 const basicFiles = [
   {
-    path: "package.json",
+    path: "../package.json",
     replace: (oldRuntime: IRuntime, newRuntime: IRuntime, content: string) => {
       if (oldRuntime.npm === "npm" && newRuntime.npm !== "npm") {
         content = content.replaceAll(
@@ -28,33 +28,19 @@ const basicFiles = [
     },
   },
   {
-    path: "scripts/package.json",
-    replace: (oldRuntime: IRuntime, newRuntime: IRuntime, content: string) => {
-      if (oldRuntime.npm === "npm" && newRuntime.npm !== "npm") {
-        content = content.replaceAll(
-          `only-allow-many ${oldRuntime.npm}`,
-          `only-allow-many ${newRuntime.npm} ${oldRuntime.npm}`
-        )
-      } else {
-        content = content.replaceAll(`only-allow-many ${oldRuntime.npm} npm`, `only-allow-many ${newRuntime.npm}`)
-      }
-      return content
-    },
-  },
-  {
-    path: "README.md",
+    path: "../README.md",
     replace: (oldRuntime: IRuntime, newRuntime: IRuntime, content: string) => {
       return content.replaceAll(`${oldRuntime.npm} `, `${newRuntime.npm} `)
     },
   },
   {
-    path: ".devcontainer/devcontainer.json",
+    path: "../.devcontainer/devcontainer.json",
     replace: (oldRuntime: IRuntime, newRuntime: IRuntime, content: string) => {
       return content.replaceAll(`${oldRuntime.npm} `, `${newRuntime.npm} `)
     },
   },
   {
-    path: ".github/workflows/check.yml",
+    path: "../.github/workflows/check.yml",
     replace: (oldRuntime: IRuntime, newRuntime: IRuntime, content: string) => {
       if (oldRuntime.npm === "npm" && newRuntime.npm === "bun") {
         content = content.replaceAll(`${oldRuntime.npm} install`, `${newRuntime.npm} install`)
@@ -87,7 +73,7 @@ const basicFiles = [
     },
   },
   {
-    path: ".github/workflows/release.yml",
+    path: "../.github/workflows/release.yml",
     replace: (oldRuntime: IRuntime, newRuntime: IRuntime, content: string) => {
       if (oldRuntime.npm === "npm" && newRuntime.npm === "bun") {
         content = content.replaceAll(`${oldRuntime.npm} install`, `${newRuntime.npm} install`)
@@ -145,7 +131,7 @@ export const runtime = async () => {
 
   //? Delete old node_modules
   console.log(chalk.blue(`Deleting old node_modules`))
-  await fs.rm(path.join(root, "node_modules"), { recursive: true, force: true })
+  await fs.rm(path.join(root, "../node_modules"), { recursive: true, force: true })
 
   //? Save the new runtime
   projectInfoJson.runtime = newRuntime
