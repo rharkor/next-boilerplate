@@ -28,7 +28,7 @@ export default function UpdateAvatar({
   const router = useRouter()
   const utils = trpc.useUtils()
 
-  const getpresignedUrlMutation = trpc.upload.presignedUrl.useMutation({
+  const getPresignedUrlMutation = trpc.upload.presignedUrl.useMutation({
     onError: (error) => handleMutationError(error, dictionary, router),
   })
   const updateUserMutation = trpc.me.updateUser.useMutation({
@@ -50,7 +50,7 @@ export default function UpdateAvatar({
     }
     setUploading(true)
     try {
-      const { url, fields } = await getpresignedUrlMutation.mutateAsync({
+      const { url, fields } = await getPresignedUrlMutation.mutateAsync({
         filename: file.name,
         filetype: file.type,
         kind: "avatar",
@@ -91,9 +91,7 @@ export default function UpdateAvatar({
         logger.error(e)
         toast.error(dictionary.errors.unknownError)
       }
-    } catch (e) {
-      logger.error(e)
-      toast.error(dictionary.errors.unknownError)
+    } catch {
     } finally {
       setUploading(false)
     }
@@ -142,7 +140,7 @@ export default function UpdateAvatar({
           className={cn(
             "text-foreground absolute right-0 top-0 h-[unset] min-w-0 rounded-full p-1.5 opacity-0 transition-all duration-200 group-hover:opacity-100",
             {
-              hidden: account.isInitialLoading,
+              hidden: account.isInitialLoading || !account.data?.user.image,
             }
           )}
           onPress={() => handleDelete()}
