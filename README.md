@@ -40,6 +40,7 @@ With this template, you get all the awesomeness you need:
 - ✉️ **[Nodemailer](https://nodemailer.com/)** - Send emails with ease from any smtp server
 - 🔗 **[Trpc](https://trpc.io/)** - Move Fast and Break Nothing. End-to-end typesafe APIs made easy.
 - 🎨 **[Next ui](https://nextui.org/)** - Beautifully designed components
+- Monorepo
 
 ## Table of Contents
 
