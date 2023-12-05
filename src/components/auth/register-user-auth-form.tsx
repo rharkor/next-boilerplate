@@ -144,7 +144,6 @@ export function RegisterUserAuthForm({ dictionary, isMinimized, searchParams, ..
           form={form}
           name="email"
           label={dictionary.email}
-          placeholder={dictionary.emailPlaceholder}
           type="email"
           autoCapitalize="none"
           autoComplete="email"
@@ -168,7 +167,6 @@ export function RegisterUserAuthForm({ dictionary, isMinimized, searchParams, ..
             form={form}
             name="username"
             label={dictionary.username}
-            placeholder={dictionary.usernamePlaceholder}
             type="text"
             autoCapitalize="none"
             autoComplete="username"
@@ -179,17 +177,17 @@ export function RegisterUserAuthForm({ dictionary, isMinimized, searchParams, ..
             form={form}
             name="password"
             label={dictionary.password}
-            placeholder={dictionary.passwordPlaceholder}
             type="password-eye-slash"
             autoComplete="new-password"
             autoCorrect="off"
             disabled={isLoading}
+            passwordStrength
+            dictionary={dictionary}
           />
           <FormField
             form={form}
             name="confirmPassword"
             label={dictionary.confirmPassword}
-            placeholder={dictionary.confirmPasswordPlaceholder}
             type="password"
             autoComplete="new-password"
             autoCorrect="off"

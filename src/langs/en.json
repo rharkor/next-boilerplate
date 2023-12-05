@@ -117,13 +117,10 @@
   "email": "Email",
   "emailPlaceholder": "name@example.com",
   "password": "Password",
-  "passwordPlaceholder": "Password",
   "passwordConfirmation": "Confirm Password",
   "edit": "Edit",
   "username": "Username",
-  "usernamePlaceholder": "Username",
   "confirmPassword": "Confirm Password",
-  "confirmPasswordPlaceholder": "Confirm Password",
   "withEmail": "with email",
   "timeUnit": {
     "now": "now",
@@ -181,5 +178,10 @@
   "avatarUpdated": "Avatar updated",
   "updateAvatar": "Update avatar",
   "uploadDescription": "Click or drag a file here to upload it.",
-  "loading": "Loading"
+  "loading": "Loading",
+  "min8Chars": "8 characters minimum",
+  "containsNumber": "Contains numbers",
+  "containsLowercase": "Contains lowercase characters",
+  "containsUppercase": "Contains uppercase characters",
+  "containsSpecial": "Contains special characters"
 }

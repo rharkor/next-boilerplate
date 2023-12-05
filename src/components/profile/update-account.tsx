@@ -84,7 +84,6 @@ export default function UpdateAccount({
             form={form}
             name="username"
             label={dictionary.profilePage.profileDetails.username.label}
-            placeholder={dictionary.profilePage.profileDetails.username.placeholder}
             type="text"
             disabled={updateUserMutation.isLoading || account.isInitialLoading || !hasVerifiedEmail}
             skeleton={account.isInitialLoading}

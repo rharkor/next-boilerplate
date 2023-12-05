@@ -117,13 +117,10 @@
   "email": "Email",
   "emailPlaceholder": "nom@exemple.com",
   "password": "Mot de passe",
-  "passwordPlaceholder": "Mot de passe",
   "passwordConfirmation": "Confirmer le mot de passe",
   "edit": "Modifier",
   "username": "Nom d'utilisateur",
-  "usernamePlaceholder": "Nom d'utilisateur",
   "confirmPassword": "Confirmer le mot de passe",
-  "confirmPasswordPlaceholder": "Confirmer le mot de passe",
   "withEmail": "avec email",
   "timeUnit": {
     "now": "maintenant",
@@ -181,5 +178,10 @@
   "avatarUpdated": "Avatar mis à jour",
   "updateAvatar": "Mettre à jour l'avatar",
   "uploadDescription": "Cliquez ou faites glisser un fichier ici pour le télécharger.",
-  "loading": "Chargement"
+  "loading": "Chargement",
+  "min8Chars": "8 caractères minimum",
+  "containsNumber": "Contient des chiffres",
+  "containsLowercase": "Contient des minuscules",
+  "containsUppercase": "Contient des majuscules",
+  "containsSpecial": "Contient des caractères spéciaux"
 }

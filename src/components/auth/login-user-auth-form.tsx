@@ -90,8 +90,7 @@ export function LoginUserAuthForm({ dictionary, searchParams, ...props }: UserAu
       <FormField
         form={form}
         name="email"
-        aria-label={dictionary.email}
-        placeholder={dictionary.emailPlaceholder}
+        label={dictionary.email}
         type="email"
         autoCapitalize="none"
         autoComplete="email"
@@ -101,8 +100,7 @@ export function LoginUserAuthForm({ dictionary, searchParams, ...props }: UserAu
       <FormField
         form={form}
         name={"password"}
-        aria-label={dictionary.password}
-        placeholder={dictionary.passwordPlaceholder}
+        label={dictionary.password}
         type="password-eye-slash"
         autoComplete="new-password"
         autoCorrect="off"
