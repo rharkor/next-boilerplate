@@ -25,7 +25,7 @@ jobs:
       - name: Install dependencies
         run: npm install
       - name: Set example env
-        run: cp .env.example .env
+        run: npm run init:env
       - name: Lint check
         run: npm run lint
       - name: Format check
@@ -35,4 +35,4 @@ jobs:
       - name: Check dependencies usage
         run: npm run depcheck
       - name: Banned Keywords
-        run: bash ./scripts/banned-keywords.sh
+        run: bash ./packages/scripts/banned-keywords.sh
