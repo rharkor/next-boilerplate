@@ -22,8 +22,7 @@ async function main() {
 
   console.log(chalk.green("Welcome to the init script!"))
   console.log(chalk.blue(' Starting the "replace tokens" script...'))
-  //TODO decomment
-  // await replaceTokens()
+  await replaceTokens()
   console.log(chalk.green("Done!"))
 
   console.log(chalk.blue(' Starting the "runtime" script...'))
