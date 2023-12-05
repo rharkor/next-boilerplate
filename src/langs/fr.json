@@ -112,7 +112,8 @@
     "unavailableWithOAuth": "Cette fonctionnalité n'est pas disponible avec ce type de connexion.",
     "s3ServiceDisabled": "Le service S3 est désactivé.",
     "noFileSelected": "Aucun fichier sélectionné.",
-    "registrationDisabled": "L'inscription est désactivée."
+    "registrationDisabled": "L'inscription est désactivée.",
+    "fileTooLarge": "Le fichier est trop volumineux."
   },
   "email": "Email",
   "emailPlaceholder": "nom@exemple.com",

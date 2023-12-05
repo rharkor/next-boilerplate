@@ -11,6 +11,7 @@ import { logger } from "@/lib/logger"
 import { trpc } from "@/lib/trpc/client"
 import { cn } from "@/lib/utils"
 import { getImageUrl, handleMutationError } from "@/lib/utils/client-utils"
+import { maxUploadSize } from "@/types/constants"
 import { Icons } from "../icons"
 import FileUpload from "../ui/file-upload"
 import { ModalHeader, ModalTitle } from "../ui/modal"
@@ -41,7 +42,10 @@ export default function UpdateAvatar({
       toast.error(dictionary.errors.noFileSelected)
       return
     }
-
+    if (file.size > maxUploadSize) {
+      toast.error(dictionary.errors.fileTooLarge)
+      return
+    }
     setUploading(true)
     try {
       const { url, fields } = await getpresignedUrlMutation.mutateAsync({
@@ -75,8 +79,11 @@ export default function UpdateAvatar({
           const parser = new DOMParser()
           const xmlDoc = parser.parseFromString(xml, "text/xml")
           const error = xmlDoc.getElementsByTagName("Message")[0]
-          console.error(error)
-          toast.error(dictionary.errors.unknownError)
+          if (error.textContent === "Your proposed upload exceeds the maximum allowed size") {
+            toast.error(dictionary.errors.fileTooLarge)
+          } else {
+            toast.error(dictionary.errors.unknownError)
+          }
         }
       } catch (e) {
         logger.error(e)

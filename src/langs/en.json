@@ -112,7 +112,8 @@
     "unavailableWithOAuth": "This feature is not available with OAuth providers.",
     "s3ServiceDisabled": "S3 service disabled.",
     "noFileSelected": "No file selected.",
-    "registrationDisabled": "Registration disabled."
+    "registrationDisabled": "Registration disabled.",
+    "fileTooLarge": "File too large."
   },
   "email": "Email",
   "emailPlaceholder": "name@example.com",
