@@ -53,7 +53,7 @@ export default function UpdateAccount({
 
   const form = useForm<INonSensibleForm>({
     resolver: zodResolver(nonSensibleSchema(dictionary)),
-    defaultValues: {
+    values: {
       username: account.data?.user.username || "",
     },
   })

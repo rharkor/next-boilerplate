@@ -1,6 +1,6 @@
 "use client"
 
-import { Button } from "@nextui-org/react"
+import { Button, Spinner } from "@nextui-org/react"
 import { signIn } from "next-auth/react"
 import { useState } from "react"
 import { toast } from "react-toastify"
@@ -44,7 +44,11 @@ export default function GithubSignIn({ providerId, dictionary }: { providerId: s
 
   return (
     <Button variant="ghost" color="primary" type="button" onClick={handleSignIn} disabled={isLoading}>
-      {isLoading ? <Icons.spinner className="mr-2 h-4 w-4 animate-spin" /> : <Icons.gitHub className="mr-2 h-4 w-4" />}
+      {isLoading ? (
+        <Spinner classNames={{ base: "mr-2", wrapper: "h-4 w-4" }} />
+      ) : (
+        <Icons.gitHub className="mr-2 h-4 w-4" />
+      )}
       Github
     </Button>
   )

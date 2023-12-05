@@ -1,15 +1,17 @@
 "use client"
 
-import { Avatar, Button, Modal, ModalBody, ModalContent, Skeleton } from "@nextui-org/react"
+import { Avatar, Button, Modal, ModalBody, ModalContent, Skeleton, Spinner } from "@nextui-org/react"
 import { Camera } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { toast } from "react-toastify"
 import { useAccount } from "@/contexts/account"
 import { TDictionary } from "@/lib/langs"
+import { logger } from "@/lib/logger"
 import { trpc } from "@/lib/trpc/client"
 import { cn } from "@/lib/utils"
 import { getImageUrl, handleMutationError } from "@/lib/utils/client-utils"
+import { Icons } from "../icons"
 import FileUpload from "../ui/file-upload"
 import { ModalHeader, ModalTitle } from "../ui/modal"
 
@@ -65,19 +67,40 @@ export default function UpdateAvatar({
             image: fields.key,
           })
 
-          toast.success(dictionary.avatarUpdated)
           utils.me.getAccount.invalidate()
 
           setShowModal(false)
         } else {
+          const xml = await uploadResponse.text()
+          const parser = new DOMParser()
+          const xmlDoc = parser.parseFromString(xml, "text/xml")
+          const error = xmlDoc.getElementsByTagName("Message")[0]
+          console.error(error)
           toast.error(dictionary.errors.unknownError)
         }
       } catch (e) {
+        logger.error(e)
         toast.error(dictionary.errors.unknownError)
       }
-    } catch {
+    } catch (e) {
+      logger.error(e)
+      toast.error(dictionary.errors.unknownError)
     } finally {
       setUploading(false)
+    }
+  }
+
+  const handleDelete = async () => {
+    try {
+      await updateUserMutation.mutateAsync({
+        image: null,
+      })
+
+      utils.me.getAccount.invalidate()
+
+      setShowModal(false)
+    } catch {
+      toast.error(dictionary.errors.unknownError)
     }
   }
 
@@ -95,11 +118,37 @@ export default function UpdateAvatar({
           />
         </Skeleton>
         <div
-          className="absolute inset-0 flex cursor-pointer items-center justify-center rounded-full bg-muted/40 opacity-0 backdrop-blur-sm transition-all duration-200 group-hover:opacity-100"
+          className={cn(
+            "upload-group group absolute inset-0 flex cursor-pointer items-center justify-center rounded-full bg-muted/40 opacity-0 backdrop-blur-sm transition-all duration-200 group-hover:opacity-100",
+            {
+              hidden: account.isInitialLoading,
+            }
+          )}
           onClick={() => setShowModal(true)}
         >
-          <Camera className="h-8 w-8 transition-all duration-250 group-active:scale-95" />
+          <Camera className="h-8 w-8 transition-all duration-250 group-[.upload-group]:active:scale-95" />
         </div>
+        <Button
+          color="danger"
+          className={cn(
+            "absolute right-0 top-0 h-[unset] min-w-0 rounded-full p-1.5 text-foreground opacity-0 transition-all duration-200 group-hover:opacity-100",
+            {
+              hidden: account.isInitialLoading,
+            }
+          )}
+          onPress={() => handleDelete()}
+        >
+          {updateUserMutation.isLoading ? (
+            <Spinner
+              classNames={{
+                wrapper: "h-4 w-4",
+              }}
+              color="current"
+            />
+          ) : (
+            <Icons.trash className="h-4 w-4" />
+          )}
+        </Button>
       </div>
       <Modal isOpen={showModal} onOpenChange={(open) => setShowModal(open)} backdrop="blur">
         <ModalContent>

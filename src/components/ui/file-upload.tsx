@@ -66,14 +66,18 @@ export default function FileUpload({
       <ul className="flex flex-col gap-2">
         {files.map((file, i) => (
           <li
-            className="flex flex-row items-center justify-between rounded-medium border border-muted-foreground/30 p-1 pl-3"
+            className="flex flex-row items-center justify-between gap-1 rounded-medium border border-muted-foreground/30 p-1 pl-3"
             key={i}
           >
-            <p>
-              <span className="max-w-[140px] truncate">{file.name}</span>
-              <span className="ml-1 text-muted-foreground">({bytesToMegabytes(file.size, true)}Mo)</span>
+            <p className="flex flex-row overflow-hidden">
+              <span className="block truncate">{file.name}</span>
+              <span className="ml-1 block text-muted-foreground">({bytesToMegabytes(file.size, true)}Mo)</span>
             </p>
-            <Button color="danger" className="h-[unset] min-w-0 rounded-full p-1" onPress={() => removeFile(i)}>
+            <Button
+              color="danger"
+              className="h-[unset] min-w-0 shrink-0 rounded-full p-1"
+              onPress={() => removeFile(i)}
+            >
               <Icons.trash className="h-4 w-4" />
             </Button>
           </li>
