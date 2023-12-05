@@ -10,7 +10,7 @@ import * as url from "url"
 
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url))
 
-const filesToCheck = ["docker/docker-compose.yml", ".devcontainer/devcontainer.json"]
+const filesToCheck = ["../docker/docker-compose.yml", "../.devcontainer/devcontainer.json"]
 
 //? Find all tokens of all the files in the root directory
 const findTokens: () => {
@@ -37,7 +37,7 @@ const findTokens: () => {
 export const replaceTokens = async () => {
   const tokens = findTokens()
 
-  const allTokens = Object.values(tokens).flat()
+  const allTokens = Array.from(new Set(Object.values(tokens).flat()))
   const allTokensValues: {
     [token: string]: string
   } = {}
@@ -46,12 +46,12 @@ export const replaceTokens = async () => {
     const answers = await inquirer.prompt([
       {
         type: "input",
-        name: token,
+        name: "token",
         message: `What is the value of ${token}?`,
         prefix: `🔑 [${i + 1}/${allTokens.length}]`,
       },
     ])
-    allTokensValues[token] = answers[token]
+    allTokensValues[token] = answers.token
     i++
   }
 

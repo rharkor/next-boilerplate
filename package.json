@@ -2,11 +2,13 @@
   "name": "next-boilerplate",
   "private": true,
   "scripts": {
-    "init": "cd scripts && npm i && npm run init && cd ../packages/app && cp .env.example .env && npx prisma migrate dev && npm run seed",
-    "dev": "npm run dev --prefix packages/app"
+    "init": "npm run init -w packages/scripts && cd packages/app && cp .env.example .env && npx prisma migrate dev && npm run seed",
+    "depcheck": "npm run depcheck -w packages/scripts",
+    "dev": "npm run dev -w packages/app"
   },
   "devDependencies": {},
   "workspaces": [
-    "packages/*"
+    "packages/scripts",
+    "packages/app"
   ]
 }

@@ -19,7 +19,6 @@
     "postinstall": "npx patch-package && prisma generate",
     "preinstall": "npx -y only-allow-many npm",
     "seed": "NODE_ENV=development prisma db seed",
-    "depcheck": "cd scripts && npm i && npm run depcheck",
     "full-sub-package-setup": "npm run sub-package:scripts",
     "sub-package:scripts": "cd scripts && npm i && cd ..",
     "is-initialized": "cd scripts && npm i && npm run is-initialized"
