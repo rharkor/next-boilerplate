@@ -1,5 +1,6 @@
-import { Card, CardBody, CardHeader } from "@nextui-org/react"
 import { getServerSession } from "next-auth"
+import { Locale } from "i18n-config"
+
 import DeleteAccountButton from "@/components/auth/delete-account-button"
 import SignoutButton from "@/components/auth/sign-out-button"
 import VerifyEmailButton from "@/components/auth/verify-email-button"
@@ -8,7 +9,7 @@ import UserActiveSessions from "@/components/profile/sessions/user-active-sessio
 import CardTitle from "@/components/ui/card"
 import { nextAuthOptions } from "@/lib/auth"
 import { getDictionary } from "@/lib/langs"
-import { Locale } from "i18n-config"
+import { Card, CardBody, CardHeader } from "@nextui-org/react"
 
 export default async function Profile({
   params: { lang },
@@ -31,7 +32,7 @@ export default async function Profile({
           </CardHeader>
           <CardBody>
             <p className="text-muted-foreground">{dictionary.profilePage.serverSideData}</p>
-            <pre className="mt-2 w-[40rem] max-w-full overflow-auto rounded bg-muted p-2">
+            <pre className="bg-muted mt-2 w-[40rem] max-w-full overflow-auto rounded p-2">
               {JSON.stringify(session, null, 2)}
             </pre>
             <div className="mt-4 flex flex-col items-center space-y-2 md:mr-0 md:w-full md:flex-row md:justify-end md:space-x-2 md:space-y-0">

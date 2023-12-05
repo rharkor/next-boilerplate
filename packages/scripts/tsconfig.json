@@ -14,8 +14,9 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "incremental": true,
-    "baseUrl": "."
+    "baseUrl": ".",
+    "rootDir": "."
   },
-  "include": ["**/*.ts"],
+  "include": ["**/*.ts", ".eslintrc.js"],
   "exclude": ["node_modules"]
 }

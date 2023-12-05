@@ -1,13 +1,12 @@
 "use client"
 
-import { zodResolver } from "@hookform/resolvers/zod"
-import { Button, Tooltip } from "@nextui-org/react"
-import { Clock } from "lucide-react"
-import { useRouter } from "next/navigation"
 import { useState } from "react"
+import { useRouter } from "next/navigation"
+import { Clock } from "lucide-react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
 import { z } from "zod"
+
 import AutoRefresh from "@/components/auto-refresh"
 import FormField from "@/components/ui/form"
 import { TDictionary } from "@/lib/langs"
@@ -15,6 +14,8 @@ import { forgotPasswordSchema } from "@/lib/schemas/user"
 import { trpc } from "@/lib/trpc/client"
 import { handleMutationError } from "@/lib/utils/client-utils"
 import { resendResetPasswordExpiration } from "@/types/constants"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { Button, Tooltip } from "@nextui-org/react"
 
 const formSchema = forgotPasswordSchema
 type IForm = z.infer<ReturnType<typeof formSchema>>

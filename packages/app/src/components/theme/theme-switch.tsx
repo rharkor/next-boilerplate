@@ -1,12 +1,13 @@
 "use client"
 
+import { FC } from "react"
+import { useTheme } from "next-themes"
+import { Moon, Sun } from "lucide-react"
+
+import { cn } from "@/lib/utils"
 import { SwitchProps, useSwitch } from "@nextui-org/switch"
 import { useIsSSR } from "@react-aria/ssr"
 import { VisuallyHidden } from "@react-aria/visually-hidden"
-import { Moon, Sun } from "lucide-react"
-import { useTheme } from "next-themes"
-import { FC } from "react"
-import { cn } from "@/lib/utils"
 
 export interface ThemeSwitchProps {
   className?: string

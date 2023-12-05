@@ -1,5 +1,7 @@
 import * as z from "zod"
+
 import { TDictionary } from "@/lib/langs"
+
 import { userSchema } from "./user"
 
 export const passwordSchema = (dictionary?: TDictionary) =>

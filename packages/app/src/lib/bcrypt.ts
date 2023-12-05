@@ -1,4 +1,4 @@
-import { hash as bhash, compare } from "bcryptjs"
+import { compare, hash as bhash } from "bcryptjs"
 import crypto from "crypto-js"
 import { env } from "env.mjs"
 

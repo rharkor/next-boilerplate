@@ -1,6 +1,6 @@
 import chalk from "chalk"
-import inquirer from "inquirer"
 import * as fs from "fs/promises"
+import inquirer from "inquirer"
 import * as path from "path"
 import * as url from "url"
 

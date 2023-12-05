@@ -1,9 +1,10 @@
-import { Button, Link } from "@nextui-org/react"
+import { Locale } from "i18n-config"
+
 import LocaleSwitcher from "@/components/locale-switcher"
 import { ThemeSwitch } from "@/components/theme/theme-switch"
 import { authRoutes } from "@/lib/auth/constants"
 import { getDictionary } from "@/lib/langs"
-import { Locale } from "i18n-config"
+import { Button, Link } from "@nextui-org/react"
 
 export default async function Home({
   params: { lang },

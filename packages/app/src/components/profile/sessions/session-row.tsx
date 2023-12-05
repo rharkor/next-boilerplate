@@ -1,11 +1,13 @@
-import { Button, Skeleton as NSkeleton } from "@nextui-org/react"
 import { Dispatch, SetStateAction } from "react"
 import { UAParser } from "ua-parser-js"
 import { z } from "zod"
+
 import { Icons } from "@/components/icons"
 import { TDictionary } from "@/lib/langs"
 import { sessionsSchema } from "@/lib/schemas/user"
 import { cn, getTimeBetween } from "@/lib/utils"
+import { Button, Skeleton as NSkeleton } from "@nextui-org/react"
+
 import GetDeviceIcon from "../get-device-icon"
 
 export type InitialRowProps = {
@@ -64,15 +66,15 @@ export default function SessionRow({ session, setSelectedSession, skeleton, skel
         {skeleton ? (
           <Skeleton className="h-4 w-9 rounded-full" disableAnimation={!skeletonAnimation} />
         ) : (
-          <p className="text-xs text-muted-foreground">{userAgents?.browser.name}</p>
+          <p className="text-muted-foreground text-xs">{userAgents?.browser.name}</p>
         )}
       </div>
       <div className="flex flex-col space-y-1">
-        <p className="text-xs text-muted-foreground">{dictionary.profilePage.profileDetails.lastUsed}</p>
+        <p className="text-muted-foreground text-xs">{dictionary.profilePage.profileDetails.lastUsed}</p>
         {skeleton ? (
           <Skeleton className="h-4 w-8 rounded-full" disableAnimation={!skeletonAnimation} />
         ) : (
-          <p className="text-xs text-muted-foreground">
+          <p className="text-muted-foreground text-xs">
             {session.lastUsedAt
               ? getTimeBetween(new Date(session.lastUsedAt), new Date(), {
                   dictionary,
@@ -82,19 +84,19 @@ export default function SessionRow({ session, setSelectedSession, skeleton, skel
         )}
       </div>
       <div className="flex flex-col space-y-1">
-        <p className="text-xs text-muted-foreground">{dictionary.profilePage.profileDetails.created}</p>
+        <p className="text-muted-foreground text-xs">{dictionary.profilePage.profileDetails.created}</p>
         {skeleton ? (
           <Skeleton className="h-4 w-10 rounded-full" disableAnimation={!skeletonAnimation} />
         ) : (
-          <p className="text-xs text-muted-foreground">{new Date(session.createdAt).toLocaleDateString()}</p>
+          <p className="text-muted-foreground text-xs">{new Date(session.createdAt).toLocaleDateString()}</p>
         )}
       </div>
       <div className="flex flex-col space-y-1">
-        <p className="text-xs text-muted-foreground">{dictionary.profilePage.profileDetails.expires}</p>
+        <p className="text-muted-foreground text-xs">{dictionary.profilePage.profileDetails.expires}</p>
         {skeleton ? (
           <Skeleton className="h-4 w-10 rounded-full" disableAnimation={!skeletonAnimation} />
         ) : (
-          <p className="text-xs text-muted-foreground">
+          <p className="text-muted-foreground text-xs">
             {dictionary.profilePage.profileDetails.in}{" "}
             {getTimeBetween(new Date(session.expires), new Date(), {
               dictionary,

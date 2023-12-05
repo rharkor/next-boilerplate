@@ -1,12 +1,14 @@
 "use client"
 
-import { Button, Spinner } from "@nextui-org/react"
-import { signIn } from "next-auth/react"
 import { useState } from "react"
+import { signIn } from "next-auth/react"
 import { toast } from "react-toastify"
+
 import { authRoutes } from "@/lib/auth/constants"
 import { TDictionary } from "@/lib/langs"
 import { logger } from "@/lib/logger"
+import { Button, Spinner } from "@nextui-org/react"
+
 import { Icons } from "../icons"
 
 export default function GithubSignIn({ providerId, dictionary }: { providerId: string; dictionary: TDictionary }) {

@@ -5,22 +5,15 @@
     "init": "npm run init -w packages/scripts && cd packages/app && cp .env.example .env && npx prisma migrate dev && npm run seed",
     "depcheck": "npm run depcheck -w packages/scripts",
     "dev": "npm run dev -w packages/app",
+    "is-initialized": "npm run is-initialized -w packages/scripts",
+    "lint": "npm run lint -w packages/scripts && npm run lint -w packages/app",
+    "lint:fix": "npm run lint:fix -w packages/scripts && npm run lint:fix -w packages/app",
+    "prettier": "prettier --check \"**/*.{js,jsx,ts,tsx}\"",
+    "prettier:fix": "prettier --write \"**/*.{js,jsx,ts,tsx}\"",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "preinstall": "npx -y only-allow-many npm"
   },
-  "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^6.13.2",
-    "@typescript-eslint/parser": "^6.13.2",
-    "eslint": "^8.55.0",
-    "eslint-config-next": "^14.0.3",
-    "eslint-config-prettier": "^9.1.0",
-    "eslint-config-react-app": "^7.0.1",
-    "eslint-plugin-import": "^2.29.0",
-    "eslint-plugin-react": "^7.33.2",
-    "eslint-plugin-tailwindcss": "^3.13.0",
-    "eslint-plugin-unused-imports": "^3.0.0",
-    "prettier": "^3.1.0",
-    "prettier-plugin-tailwindcss": "^0.5.7"
-  },
+  "devDependencies": {},
   "workspaces": [
     "packages/scripts",
     "packages/app"

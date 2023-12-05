@@ -3,11 +3,11 @@
  * This script is intended to run only once at the beginning of the project
  */
 
-import inquirer from "inquirer"
+import chalk from "chalk"
 import * as fs from "fs"
+import inquirer from "inquirer"
 import * as path from "path"
 import * as url from "url"
-import chalk from "chalk"
 
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url))
 

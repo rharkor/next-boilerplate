@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation"
 import { NextResponse } from "next/server"
 import { getServerSession } from "next-auth"
+
 import { nextAuthOptions } from "@/lib/auth"
 import { authRoutes } from "@/lib/auth/constants"
 import { logger } from "@/lib/logger"

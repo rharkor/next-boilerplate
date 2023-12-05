@@ -1,8 +1,10 @@
-import "server-only"
-import { createTransport } from "nodemailer"
 import { env } from "env.mjs"
-import { logger } from "./logger"
+import { createTransport } from "nodemailer"
+
 import { ApiError, throwableErrorsMessages } from "./utils/server-utils"
+import { logger } from "./logger"
+
+import "server-only"
 
 export const configOptions = {
   port: env.SMTP_PORT,

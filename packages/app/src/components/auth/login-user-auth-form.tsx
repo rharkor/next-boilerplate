@@ -1,18 +1,20 @@
 "use client"
 
-import { zodResolver } from "@hookform/resolvers/zod"
-import { Button, Card, CardBody, Link } from "@nextui-org/react"
-import { ArrowBigDown, BadgeInfo } from "lucide-react"
-import { useRouter } from "next/navigation"
 import * as React from "react"
+import { useRouter } from "next/navigation"
+import { env } from "env.mjs"
+import { ArrowBigDown, BadgeInfo } from "lucide-react"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
+
 import { authRoutes } from "@/lib/auth/constants"
 import { handleSignError, handleSignIn } from "@/lib/auth/handle-sign"
 import { TDictionary } from "@/lib/langs"
 import { signInSchema } from "@/lib/schemas/auth"
 import { cn, ensureRelativeUrl } from "@/lib/utils"
-import { env } from "env.mjs"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { Button, Card, CardBody, Link } from "@nextui-org/react"
+
 import Copiable from "../ui/copiable"
 import FormField from "../ui/form"
 
@@ -106,7 +108,7 @@ export function LoginUserAuthForm({ dictionary, searchParams, ...props }: UserAu
         autoCorrect="off"
         disabled={isLoading}
       />
-      <Link className="ml-auto text-sm text-muted-foreground hover:text-primary" href={"/forgot-password"}>
+      <Link className="text-muted-foreground hover:text-primary ml-auto text-sm" href={"/forgot-password"}>
         {dictionary.forgotPassword}
       </Link>
       <Button type="submit" isLoading={isLoading} color="primary">

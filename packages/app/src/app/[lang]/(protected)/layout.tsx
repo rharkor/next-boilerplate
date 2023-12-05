@@ -1,7 +1,8 @@
+import { Locale } from "i18n-config"
+
 import requireAuth from "@/components/auth/require-auth"
 import LocaleSwitcher from "@/components/locale-switcher"
 import { ThemeSwitch } from "@/components/theme/theme-switch"
-import { Locale } from "i18n-config"
 
 export default async function ProtectedLayout({
   children,

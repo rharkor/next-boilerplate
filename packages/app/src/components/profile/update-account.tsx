@@ -1,20 +1,23 @@
 "use client"
 
-import { zodResolver } from "@hookform/resolvers/zod"
+import { useCallback, useState } from "react"
 import { useRouter } from "next/navigation"
 import { useSession } from "next-auth/react"
-import { useCallback, useState } from "react"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
+
 import { useAccount } from "@/contexts/account"
 import { TDictionary } from "@/lib/langs"
 import { logger } from "@/lib/logger"
 import { updateUserSchema } from "@/lib/schemas/user"
 import { trpc } from "@/lib/trpc/client"
 import { handleMutationError } from "@/lib/utils/client-utils"
-import UpdateAvatar from "./avatar"
+import { zodResolver } from "@hookform/resolvers/zod"
+
 import FormField from "../ui/form"
 import NeedSavePopup from "../ui/need-save-popup"
+
+import UpdateAvatar from "./avatar"
 
 //? Put only the fields you can update withou password confirmation
 const nonSensibleSchema = updateUserSchema
@@ -99,7 +102,7 @@ export default function UpdateAccount({
       </div>
       {!hasVerifiedEmail && (
         <div className="absolute -inset-2 z-10 !m-0 flex items-center justify-center backdrop-blur-sm">
-          <p className="text-center text-sm font-semibold text-muted-foreground">
+          <p className="text-muted-foreground text-center text-sm font-semibold">
             {dictionary.errors.emailNotVerified}
           </p>
         </div>

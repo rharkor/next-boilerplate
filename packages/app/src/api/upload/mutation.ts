@@ -1,7 +1,7 @@
-import { DeleteObjectCommand } from "@aws-sdk/client-s3"
-import { createPresignedPost } from "@aws-sdk/s3-presigned-post"
-import { z } from "zod"
 import { randomUUID } from "crypto"
+import { env } from "env.mjs"
+import { z } from "zod"
+
 import { logger } from "@/lib/logger"
 import { prisma } from "@/lib/prisma"
 import { s3Client } from "@/lib/s3"
@@ -9,7 +9,8 @@ import { presignedUrlResponseSchema, presignedUrlSchema } from "@/lib/schemas/up
 import { ApiError, ensureLoggedIn, handleApiError, throwableErrorsMessages } from "@/lib/utils/server-utils"
 import { apiInputFromSchema } from "@/types"
 import { maxUploadSize } from "@/types/constants"
-import { env } from "env.mjs"
+import { DeleteObjectCommand } from "@aws-sdk/client-s3"
+import { createPresignedPost } from "@aws-sdk/s3-presigned-post"
 
 export const presignedUrl = async ({ input, ctx: { session } }: apiInputFromSchema<typeof presignedUrlSchema>) => {
   ensureLoggedIn(session)
@@ -35,7 +36,6 @@ export const presignedUrl = async ({ input, ctx: { session } }: apiInputFromSche
       Expires: 600, //? Seconds before the presigned post expires. 3600 by default.
     })
 
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (kind === "avatar") {
       //? Delete the old one
       if (session.user.image) {

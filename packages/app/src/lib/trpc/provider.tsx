@@ -1,8 +1,10 @@
 "use client"
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
-import { httpBatchLink, loggerLink } from "@trpc/client"
 import React, { useState } from "react"
 import SuperJSON from "superjson"
+
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
+import { httpBatchLink, loggerLink } from "@trpc/client"
+
 import { trpc } from "./client"
 import { getUrl } from "./utils"
 

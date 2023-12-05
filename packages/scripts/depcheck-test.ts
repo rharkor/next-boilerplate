@@ -1,8 +1,8 @@
 import chalk from "chalk"
 import depcheck from "depcheck"
+import * as fs from "fs"
 import * as path from "path"
 import * as url from "url"
-import * as fs from "fs"
 
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url))
 const rootPath = path.join(__dirname, "..")
@@ -25,40 +25,48 @@ const options = {
   ],
 }
 
-packagesPath.forEach((pkg) => {
-  console.log(chalk.blue(`Checking ${pkg}...`))
-  depcheck(pkg, options).then(async (unused) => {
-    const beautify = (arr: string[]) => {
-      return arr
-        .map((item) => {
-          return `  - ${item}`
-        })
-        .join("\n")
-    }
-    const hasUnused = unused.dependencies.length > 0
-    const hasMissing = Object.keys(unused.missing).length > 0
-    const message = `${
-      hasUnused
-        ? `${chalk.red("Unused dependencies:")}
+const main = async () => {
+  let message = ""
+  let hasError = false
+  for (const pkg of packagesPath) {
+    console.log(chalk.blue(`Checking ${pkg}...`))
+    await depcheck(pkg, options).then(async (unused) => {
+      const beautify = (arr: string[]) => {
+        return arr
+          .map((item) => {
+            return `  - ${item}`
+          })
+          .join("\n")
+      }
+      const hasUnused = unused.dependencies.length > 0
+      const hasMissing = Object.keys(unused.missing).length > 0
+      message += `${
+        hasUnused
+          ? `${chalk.red(pkg + " Unused dependencies:")}
   ${beautify(unused.dependencies)}`
-        : ""
-    }
+          : ""
+      }
   ${
     hasMissing
-      ? `${chalk.yellow("Missing dependencies:")}
+      ? `${chalk.yellow(pkg + " Missing dependencies:")}
   ${beautify(Object.keys(unused.missing))}`
       : ""
   }`
+      if (unused.dependencies.length > 0 || Object.keys(unused.missing).length > 0) {
+        hasError = true
+      }
+    })
+    console.log(chalk.green(`Done ${pkg}`))
+  }
+  if (hasError) {
+    console.log(message)
+    process.exit(1)
+  }
 
-    if (unused.dependencies.length > 0 || Object.keys(unused.missing).length > 0) {
-      console.log(message)
-      process.exit(1)
-    }
+  process.exit(0)
+}
 
-    process.exit(0)
-  })
-  console.log(chalk.green(`Done ${pkg}`))
-})
+main()
 
 process.on("SIGINT", function () {
   console.log("\n")

@@ -1,7 +1,9 @@
 import { z } from "zod"
-import { emailSchema, passwordSchemaWithRegex, usernameSchema } from "./auth"
+
 import { jsonApiQuerySchema, jsonApiResponseSchema } from "../json-api"
 import { TDictionary } from "../langs"
+
+import { emailSchema, passwordSchemaWithRegex, usernameSchema } from "./auth"
 
 export const userSchema = (dictionary?: TDictionary) =>
   z.object({

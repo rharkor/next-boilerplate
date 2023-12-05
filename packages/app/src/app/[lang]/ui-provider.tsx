@@ -1,7 +1,8 @@
 "use client"
 
-import { NextUIProvider } from "@nextui-org/react"
 import { useRouter } from "next/navigation"
+
+import { NextUIProvider } from "@nextui-org/react"
 
 export default function UIProvider({ children }: { children: React.ReactNode }) {
   const router = useRouter()

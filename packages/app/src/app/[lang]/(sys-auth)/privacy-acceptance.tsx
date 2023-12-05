@@ -1,15 +1,15 @@
-import { Link } from "@nextui-org/react"
 import { TDictionary } from "@/lib/langs"
+import { Link } from "@nextui-org/react"
 
 export default function PrivacyAcceptance({ dictionary }: { dictionary: TDictionary }) {
   return (
-    <p className="px-8 text-center text-sm text-muted-foreground">
+    <p className="text-muted-foreground px-8 text-center text-sm">
       {dictionary.auth.clickingAggreement}{" "}
-      <Link href="/terms" className="inline text-sm underline underline-offset-4 hover:text-primary">
+      <Link href="/terms" className="hover:text-primary inline text-sm underline underline-offset-4">
         {dictionary.auth.termsOfService}
       </Link>{" "}
       {dictionary.and}{" "}
-      <Link href="/privacy" className="inline text-sm underline underline-offset-4 hover:text-primary">
+      <Link href="/privacy" className="hover:text-primary inline text-sm underline underline-offset-4">
         {dictionary.auth.privacyPolicy}
       </Link>
       .

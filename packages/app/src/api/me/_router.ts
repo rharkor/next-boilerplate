@@ -22,12 +22,13 @@ import {
   publicProcedure,
   router,
 } from "@/lib/server/trpc"
+
 import { sendVerificationEmail, verifyEmail } from "./email/mutation"
-import { deleteAccount, updateUser } from "./mutation"
 import { forgotPassword, resetPassword } from "./password/mutation"
-import { getAccount } from "./queries"
 import { deleteSession } from "./sessions/mutation"
 import { getActiveSessions } from "./sessions/queries"
+import { deleteAccount, updateUser } from "./mutation"
+import { getAccount } from "./queries"
 
 export const meRouter = router({
   updateUser: authenticatedProcedure.input(updateUserSchema()).output(updateUserResponseSchema()).mutation(updateUser),

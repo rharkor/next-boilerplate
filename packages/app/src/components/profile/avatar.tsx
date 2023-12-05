@@ -1,10 +1,10 @@
 "use client"
 
-import { Avatar, Button, Modal, ModalBody, ModalContent, Skeleton, Spinner } from "@nextui-org/react"
-import { Camera } from "lucide-react"
-import { useRouter } from "next/navigation"
 import { useState } from "react"
+import { useRouter } from "next/navigation"
+import { Camera } from "lucide-react"
 import { toast } from "react-toastify"
+
 import { useAccount } from "@/contexts/account"
 import { TDictionary } from "@/lib/langs"
 import { logger } from "@/lib/logger"
@@ -12,6 +12,8 @@ import { trpc } from "@/lib/trpc/client"
 import { cn } from "@/lib/utils"
 import { getImageUrl, handleMutationError } from "@/lib/utils/client-utils"
 import { maxUploadSize } from "@/types/constants"
+import { Avatar, Button, Modal, ModalBody, ModalContent, Skeleton, Spinner } from "@nextui-org/react"
+
 import { Icons } from "../icons"
 import FileUpload from "../ui/file-upload"
 import { ModalHeader, ModalTitle } from "../ui/modal"
@@ -118,7 +120,7 @@ export default function UpdateAvatar({
       <div className={cn("group relative h-20 w-20 rounded-full")}>
         <Skeleton isLoaded={!account.isInitialLoading} className="rounded-full">
           <Avatar
-            className="h-20 w-20 text-large"
+            className="text-large h-20 w-20"
             src={getImageUrl(account.data?.user.image) || undefined}
             name={account.data?.user.username || undefined}
             onClick={() => setShowModal(true)}
@@ -126,19 +128,19 @@ export default function UpdateAvatar({
         </Skeleton>
         <div
           className={cn(
-            "upload-group group absolute inset-0 flex cursor-pointer items-center justify-center rounded-full bg-muted/40 opacity-0 backdrop-blur-sm transition-all duration-200 group-hover:opacity-100",
+            "upload-group bg-muted/40 group absolute inset-0 flex cursor-pointer items-center justify-center rounded-full opacity-0 backdrop-blur-sm transition-all duration-200 group-hover:opacity-100",
             {
               hidden: account.isInitialLoading,
             }
           )}
           onClick={() => setShowModal(true)}
         >
-          <Camera className="h-8 w-8 transition-all duration-250 group-[.upload-group]:active:scale-95" />
+          <Camera className="duration-250 h-8 w-8 transition-all group-[.upload-group]:active:scale-95" />
         </div>
         <Button
           color="danger"
           className={cn(
-            "absolute right-0 top-0 h-[unset] min-w-0 rounded-full p-1.5 text-foreground opacity-0 transition-all duration-200 group-hover:opacity-100",
+            "text-foreground absolute right-0 top-0 h-[unset] min-w-0 rounded-full p-1.5 opacity-0 transition-all duration-200 group-hover:opacity-100",
             {
               hidden: account.isInitialLoading,
             }

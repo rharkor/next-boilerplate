@@ -33,11 +33,11 @@
   },
 
   // Use 'postCreateCommand' to run commands after the container is created.
-  "postCreateCommand": "bash ./scripts/install/install.sh",
+  "postCreateCommand": "bash ./packages/scripts/install/install.sh",
 
   // Configure tool-specific properties.
   "customizations": {
-    "postCreateCommand": "bash ./scripts/install/install.sh",
+    "postCreateCommand": "bash ./packages/scripts/install/install.sh",
     "vscode": {
       "extensions": [
         "formulahendry.auto-rename-tag",

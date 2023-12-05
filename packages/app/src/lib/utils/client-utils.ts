@@ -1,13 +1,16 @@
-import { TRPCClientErrorLike } from "@trpc/client"
-import "client-only"
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime"
-
-import { toast } from "react-toastify"
 import { env } from "env.mjs"
+import { toast } from "react-toastify"
+
+import { TRPCClientErrorLike } from "@trpc/client"
+
 import { AppRouter } from "../../api/_app"
 import { TDictionary } from "../langs"
 import { logger } from "../logger"
+
 import { handleApiError } from "."
+
+import "client-only"
 
 type TOptions = {
   showNotification?: boolean // default true

@@ -1,6 +1,5 @@
 "use client"
 
-import { Button } from "@nextui-org/react"
 import { useRouter } from "next/navigation"
 import { toast } from "react-toastify"
 
@@ -8,6 +7,7 @@ import { authRoutes } from "@/lib/auth/constants"
 import { TDictionary } from "@/lib/langs"
 import { trpc } from "@/lib/trpc/client"
 import { handleMutationError } from "@/lib/utils/client-utils"
+import { Button } from "@nextui-org/react"
 
 export default function VerifyEmailButton({ dictionary, token }: { dictionary: TDictionary; token: string }) {
   const router = useRouter()

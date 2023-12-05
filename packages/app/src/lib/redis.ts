@@ -1,5 +1,6 @@
 import Redis, { Callback, ChainableCommander, RedisOptions } from "ioredis"
 import { Result } from "ioredis"
+
 import { logger } from "./logger"
 
 const options: RedisOptions = {

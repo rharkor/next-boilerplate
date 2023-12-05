@@ -1,14 +1,17 @@
-import { Metadata } from "next"
 import React from "react"
-import "../globals.css"
+import { Metadata } from "next"
+import { i18n } from "i18n-config"
+
 import { NextAuthProvider } from "@/components/auth/provider"
 import { ThemeProvider } from "@/components/theme/theme-provider"
 import { fontSans } from "@/lib/fonts"
 import TrpcProvider from "@/lib/trpc/provider"
 import { cn } from "@/lib/utils"
-import { i18n } from "i18n-config"
+
 import Toaster from "./toaster"
 import UIProvider from "./ui-provider"
+
+import "../globals.css"
 
 export const metadata: Metadata = {
   title: "Home",
@@ -22,7 +25,7 @@ export async function generateStaticParams() {
 export default function RootLayout({ children, params }: { children: React.ReactNode; params: { lang: string } }) {
   return (
     <html lang={params.lang}>
-      <body className={cn("antialiaseds min-h-screen bg-background font-sans", fontSans.variable)}>
+      <body className={cn("antialiaseds bg-background min-h-screen font-sans", fontSans.variable)}>
         <UIProvider>
           <NextAuthProvider>
             <TrpcProvider>

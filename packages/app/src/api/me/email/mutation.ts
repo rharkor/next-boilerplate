@@ -1,4 +1,6 @@
 import { randomUUID } from "crypto"
+import { env } from "env.mjs"
+
 import { logger } from "@/lib/logger"
 import { sendMail } from "@/lib/mailer"
 import { prisma } from "@/lib/prisma"
@@ -7,7 +9,6 @@ import { html, plainText, subject } from "@/lib/templates/mail/verify-email"
 import { ApiError, handleApiError, throwableErrorsMessages } from "@/lib/utils/server-utils"
 import { apiInputFromSchema } from "@/types"
 import { emailVerificationExpiration, resendEmailVerificationExpiration } from "@/types/constants"
-import { env } from "env.mjs"
 
 export const sendVerificationEmail = async ({ input }: apiInputFromSchema<typeof sendVerificationEmailSchema>) => {
   try {

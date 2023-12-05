@@ -1,11 +1,13 @@
 "use client"
 
-import { Button } from "@nextui-org/react"
-import { Upload } from "lucide-react"
 import { InputHTMLAttributes, useEffect, useState } from "react"
+import { Upload } from "lucide-react"
 import { Accept, useDropzone } from "react-dropzone"
+
 import { TDictionary } from "@/lib/langs"
 import { bytesToMegabytes, cn } from "@/lib/utils"
+import { Button } from "@nextui-org/react"
+
 import { Icons } from "../icons"
 
 export type TFileUploadProps = Omit<
@@ -50,7 +52,7 @@ export default function FileUpload({
       <div
         {...getRootProps()}
         className={cn(
-          "flex h-[250px] cursor-pointer flex-col items-center justify-center gap-4 rounded-medium border border-dashed border-transparent bg-muted/20 p-2 px-6 text-foreground transition-all",
+          "rounded-medium bg-muted/20 text-foreground flex h-[250px] cursor-pointer flex-col items-center justify-center gap-4 border border-dashed border-transparent p-2 px-6 transition-all",
           {
             "hover:border-primary hover:bg-muted/40 focus:border-primary focus:bg-muted/40": !disabled,
             "border-primary bg-muted/50": isDragAccept,
@@ -61,17 +63,17 @@ export default function FileUpload({
       >
         <input type="file" {...getInputProps()} disabled={disabled} {...props} />
         <Upload className="h-12 w-12" />
-        <p className="text-center text-sm text-foreground/80">{dictionary.uploadDescription}</p>
+        <p className="text-foreground/80 text-center text-sm">{dictionary.uploadDescription}</p>
       </div>
       <ul className="flex flex-col gap-2">
         {files.map((file, i) => (
           <li
-            className="flex flex-row items-center justify-between gap-1 rounded-medium border border-muted-foreground/30 p-1 pl-3"
+            className="rounded-medium border-muted-foreground/30 flex flex-row items-center justify-between gap-1 border p-1 pl-3"
             key={i}
           >
             <p className="flex flex-row overflow-hidden">
               <span className="block truncate">{file.name}</span>
-              <span className="ml-1 block text-muted-foreground">({bytesToMegabytes(file.size, true)}Mo)</span>
+              <span className="text-muted-foreground ml-1 block">({bytesToMegabytes(file.size, true)}Mo)</span>
             </p>
             <Button
               color="danger"

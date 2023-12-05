@@ -1,12 +1,11 @@
 "use client"
 
-import { zodResolver } from "@hookform/resolvers/zod"
-import { Button } from "@nextui-org/react"
+import * as React from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import * as React from "react"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
+
 import { authRoutes } from "@/lib/auth/constants"
 import { handleSignError, handleSignIn } from "@/lib/auth/handle-sign"
 import { TDictionary } from "@/lib/langs"
@@ -15,6 +14,9 @@ import { signUpSchema } from "@/lib/schemas/auth"
 import { trpc } from "@/lib/trpc/client"
 import { cn } from "@/lib/utils"
 import { handleMutationError } from "@/lib/utils/client-utils"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { Button } from "@nextui-org/react"
+
 import FormField from "../ui/form"
 
 type UserAuthFormProps = React.HTMLAttributes<HTMLFormElement> & {

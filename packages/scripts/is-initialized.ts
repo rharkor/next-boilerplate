@@ -3,11 +3,12 @@ import { config } from "dotenv"
 import * as fs from "fs/promises"
 import * as path from "path"
 import * as url from "url"
+
 import { IRuntime } from "./runtime"
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url))
 const rootPath = path.join(__dirname, "..")
 
-config({ path: path.join(rootPath, ".env") })
+config()
 
 if (process.env.SKIP_INIT_CHECK === "true") process.exit(0)
 

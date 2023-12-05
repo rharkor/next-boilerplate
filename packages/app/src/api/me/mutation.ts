@@ -1,5 +1,5 @@
-import { DeleteObjectCommand } from "@aws-sdk/client-s3"
-import { Prisma } from "@prisma/client"
+import { env } from "env.mjs"
+
 import { logger } from "@/lib/logger"
 import { prisma } from "@/lib/prisma"
 import { s3Client } from "@/lib/s3"
@@ -8,7 +8,8 @@ import { ApiError, throwableErrorsMessages } from "@/lib/utils/server-utils"
 import { ensureLoggedIn, handleApiError } from "@/lib/utils/server-utils"
 import { apiInputFromSchema } from "@/types"
 import { rolesAsObject } from "@/types/constants"
-import { env } from "env.mjs"
+import { DeleteObjectCommand } from "@aws-sdk/client-s3"
+import { Prisma } from "@prisma/client"
 
 export const updateUser = async ({ input, ctx: { session } }: apiInputFromSchema<typeof updateUserSchema>) => {
   ensureLoggedIn(session)

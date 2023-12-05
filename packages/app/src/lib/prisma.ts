@@ -3,7 +3,6 @@ import { PrismaClient } from "@prisma/client"
 const globalForPrisma = global as unknown as { prisma: PrismaClient }
 
 export const prisma =
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   globalForPrisma.prisma ||
   new PrismaClient({
     log: ["warn", "error"],

@@ -4,6 +4,7 @@ import * as fs from "fs/promises"
 import { exit } from "node:process"
 import * as path from "path"
 import * as url from "url"
+
 import { completeInitialisation } from "./complete-initialisation"
 import { replaceTokens } from "./replace-tokens"
 import { runtime } from "./runtime"
@@ -11,7 +12,7 @@ import { runtime } from "./runtime"
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url))
 const rootPath = path.join(__dirname, "..")
 
-config({ path: path.join(rootPath, ".env") })
+config()
 
 async function main() {
   const alreadyInitialized = await fs.access(path.join(rootPath, "scripts", ".init-todo")).catch(() => false)

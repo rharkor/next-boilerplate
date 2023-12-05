@@ -1,13 +1,14 @@
 "use client"
 
-import { Button } from "@nextui-org/react"
+import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { signOut, useSession } from "next-auth/react"
-import { useState } from "react"
+
 import { TDictionary } from "@/lib/langs"
 import { logger } from "@/lib/logger"
 import { trpc } from "@/lib/trpc/client"
 import { handleMutationError } from "@/lib/utils/client-utils"
+import { Button } from "@nextui-org/react"
 
 export default function SignoutButton({
   children,

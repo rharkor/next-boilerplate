@@ -1,12 +1,13 @@
-import { Button, Card, CardBody, CardHeader } from "@nextui-org/react"
-import { ChevronRight } from "lucide-react"
 import Link from "next/link"
 import { redirect } from "next/navigation"
+import { Locale } from "i18n-config"
+import { ChevronRight } from "lucide-react"
+
 import { RegisterUserAuthForm } from "@/components/auth/register-user-auth-form"
 import CardTitle from "@/components/ui/card"
 import { authRoutes } from "@/lib/auth/constants"
 import { getDictionary } from "@/lib/langs"
-import { Locale } from "i18n-config"
+import { Button, Card, CardBody, CardHeader } from "@nextui-org/react"
 
 export default async function SignupByCredentials({
   searchParams,

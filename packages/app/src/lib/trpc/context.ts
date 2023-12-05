@@ -1,5 +1,5 @@
-import { FetchCreateContextFnOptions } from "@trpc/server/adapters/fetch"
 import { ITrpcContext } from "@/types"
+import { FetchCreateContextFnOptions } from "@trpc/server/adapters/fetch"
 
 export async function createContext(opts?: FetchCreateContextFnOptions) {
   const response: ITrpcContext = {

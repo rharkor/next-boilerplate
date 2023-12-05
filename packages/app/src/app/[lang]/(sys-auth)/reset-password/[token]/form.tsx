@@ -1,17 +1,18 @@
 "use client"
 
-import { zodResolver } from "@hookform/resolvers/zod"
-import { Button } from "@nextui-org/react"
 import { useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
 import { z } from "zod"
+
 import FormField from "@/components/ui/form"
 import { authRoutes } from "@/lib/auth/constants"
 import { TDictionary } from "@/lib/langs"
 import { resetPasswordSchema } from "@/lib/schemas/user"
 import { trpc } from "@/lib/trpc/client"
 import { handleMutationError } from "@/lib/utils/client-utils"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { Button } from "@nextui-org/react"
 
 const formSchema = resetPasswordSchema
 type IForm = z.infer<ReturnType<typeof formSchema>>

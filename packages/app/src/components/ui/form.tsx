@@ -1,11 +1,13 @@
 "use client"
 
-import { Checkbox, Input, InputProps, Skeleton, Tooltip } from "@nextui-org/react"
 import { useCallback, useEffect, useRef, useState } from "react"
 import { createPortal } from "react-dom"
 import { Controller, FieldPath, FieldValues, UseFormReturn } from "react-hook-form"
+
 import { TDictionary } from "@/lib/langs"
 import { cn } from "@/lib/utils"
+import { Checkbox, Input, InputProps, Skeleton, Tooltip } from "@nextui-org/react"
+
 import { Icons } from "../icons"
 
 const WithPasswordStrenghPopover = <
@@ -72,7 +74,7 @@ const WithPasswordStrenghPopover = <
         createPortal(
           <div
             className={cn(
-              "pointer-events-none fixed z-50 flex h-max flex-col gap-2 rounded-medium border border-default-100 bg-default-50 p-2 opacity-0 transition-opacity duration-200 ease-in-out",
+              "rounded-medium border-default-100 bg-default-50 pointer-events-none fixed z-50 flex h-max flex-col gap-2 border p-2 opacity-0 transition-opacity duration-200 ease-in-out",
               {
                 "pointer-events-auto opacity-100": isFocused,
               }
@@ -85,7 +87,7 @@ const WithPasswordStrenghPopover = <
             ref={popoverRef}
           >
             <div
-              className={cn("h-2 rounded-medium transition-all duration-300 ease-out", {
+              className={cn("rounded-medium h-2 transition-all duration-300 ease-out", {
                 "bg-danger-500": passwordStrengthValue < 2,
                 "bg-warning": passwordStrengthValue < 5 && passwordStrengthValue >= 2,
                 "bg-success": passwordStrengthValue === 5,
@@ -195,7 +197,7 @@ export default function FormField<
             props.endContent ||
             (type === "password-eye-slash" ? (
               <button
-                className="text-2xl text-default-400 hover:text-primary focus:outline-none"
+                className="text-default-400 hover:text-primary text-2xl focus:outline-none"
                 type="button"
                 onClick={toggleVisibility}
               >

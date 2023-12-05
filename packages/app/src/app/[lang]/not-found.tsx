@@ -1,5 +1,6 @@
-import { Button, Link } from "@nextui-org/react"
 import React from "react"
+
+import { Button, Link } from "@nextui-org/react"
 
 export default async function Page404MatchAll() {
   return (
