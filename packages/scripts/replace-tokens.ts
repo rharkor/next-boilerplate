@@ -63,7 +63,7 @@ export const replaceTokens = async () => {
     for (const token of fileTokens) {
       if (!allTokensValues[token]) continue
       newFileContent = newFileContent.replaceAll(`#{${token}}#`, allTokensValues[token])
-      console.log(chalk.green(`Done for ${filePath}`))
+      console.log(chalk.gray(`Done for ${filePath}`))
       if (token === "PROJECT_NAME") {
         //? Replace the project name in the devcontainer.json & package.json
         const nameToReplace = "next-boilerplate"
@@ -72,7 +72,7 @@ export const replaceTokens = async () => {
         const devContainerFileContent = fs.readFileSync(devContainerFile, "utf8")
         const newDevContainerFileContent = devContainerFileContent.replaceAll(nameToReplace, newProjectName)
         fs.writeFileSync(devContainerFile, newDevContainerFileContent, "utf8")
-        console.log(chalk.green(`Done for ${devContainerFile}`))
+        console.log(chalk.gray(`Done for ${devContainerFile}`))
         const packages = fs.readdirSync(path.join(__dirname, ".."))
         const pJsonFiles = [
           path.join(__dirname, "../../package.json"),
@@ -83,7 +83,7 @@ export const replaceTokens = async () => {
           const pJsonFileContent = fs.readFileSync(pJsonFile, "utf8")
           const newPJsonFileContent = pJsonFileContent.replaceAll(nameToReplace, newProjectName)
           fs.writeFileSync(pJsonFile, newPJsonFileContent, "utf8")
-          console.log(chalk.green(`Done for ${pJsonFile}`))
+          console.log(chalk.gray(`Done for ${pJsonFile}`))
         }
       }
     }
