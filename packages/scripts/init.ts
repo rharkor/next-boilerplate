@@ -7,8 +7,6 @@ import * as path from "path"
 import * as url from "url"
 
 import { completeInitialisation } from "./complete-initialisation"
-import { replaceTokens } from "./replace-tokens"
-import { runtime } from "./runtime"
 
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url))
 const rootPath = path.join(__dirname, "..")
@@ -22,14 +20,15 @@ async function main() {
     exit(1)
   }
 
-  console.log(chalk.green("Welcome to the init script!"))
-  console.log(chalk.blue(' Starting the "replace tokens" script...'))
-  await replaceTokens()
-  console.log(chalk.green("Done!"))
+  //TODO: Uncomment this when the scripts are ready
+  // console.log(chalk.green("Welcome to the init script!"))
+  // console.log(chalk.blue(' Starting the "replace tokens" script...'))
+  // await replaceTokens()
+  // console.log(chalk.green("Done!"))
 
-  console.log(chalk.blue(' Starting the "runtime" script...'))
-  await runtime()
-  console.log(chalk.green("Done!"))
+  // console.log(chalk.blue(' Starting the "runtime" script...'))
+  // await runtime()
+  // console.log(chalk.green("Done!"))
 
   console.log(chalk.blue(' Starting the "packages selection" script...'))
   await packagesSelection()
