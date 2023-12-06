@@ -1,6 +1,6 @@
 {
   "name": "@next-boilerplate/app",
-  "version": "2.0.0-rec.3",
+  "version": "3.0.0",
   "private": true,
   "scripts": {
     "dev": "npm run is-initialized && npx prisma migrate dev && cross-env FORCE_COLOR=1 next dev",
