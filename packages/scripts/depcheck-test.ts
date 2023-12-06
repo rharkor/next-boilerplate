@@ -10,19 +10,9 @@ const rootPath = path.join(__dirname, "..")
 const packages = fs.readdirSync(path.join(rootPath))
 const packagesPath = packages.map((pkg) => path.join(rootPath, pkg))
 
-const options = {
+const options: { skipMissing: boolean; ignoreMatches: string[] } = {
   skipMissing: false,
-  ignoreMatches: [
-    "@semantic-release/*",
-    "env.mjs",
-    "i18n-config",
-    "sharp",
-    "@nextui-org/*",
-    "@react-aria/ssr",
-    "@react-aria/visually-hidden",
-    "cron",
-    "autoprefixer",
-  ],
+  ignoreMatches: [],
 }
 
 const main = async () => {
@@ -30,6 +20,21 @@ const main = async () => {
   let hasError = false
   for (const pkg of packagesPath) {
     console.log(chalk.blue(`Checking ${pkg}...`))
+    if (pkg === path.join(rootPath, "docs")) {
+      options.ignoreMatches.push("@docusaurus/preset-classic", "@mdx-js/react", "clsx", "prism-react-renderer")
+    } else if (pkg === path.join(rootPath, "app")) {
+      options.ignoreMatches.push(
+        "@semantic-release/*",
+        "env.mjs",
+        "i18n-config",
+        "sharp",
+        "@nextui-org/*",
+        "@react-aria/ssr",
+        "@react-aria/visually-hidden",
+        "cron",
+        "autoprefixer"
+      )
+    }
     await depcheck(pkg, options).then(async (unused) => {
       const beautify = (arr: string[]) => {
         return arr
