@@ -37,7 +37,9 @@ export const packagesSelection = async () => {
     await fs.promises.rm(path.join(rootDir, "packages", packageToRemove), { recursive: true })
     //? Remove from the workspace in the root package.json
     const rootPackageJson = JSON.parse(fs.readFileSync(path.join(rootDir, "package.json")).toString())
-    delete rootPackageJson.workspaces.packages[packageToRemove]
+    rootPackageJson.workspaces = rootPackageJson.workspaces.filter(
+      (w: string) => !w.includes(`packages/${packageToRemove}`)
+    )
     fs.writeFileSync(path.join(rootDir, "package.json"), JSON.stringify(rootPackageJson, null, 2))
     console.log(chalk.green(`- Removed ${packageToRemove}!`))
   }
