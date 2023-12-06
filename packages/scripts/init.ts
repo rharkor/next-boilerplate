@@ -24,19 +24,19 @@ async function main() {
   }
 
   console.log(chalk.green("Welcome to the init script!"))
-  console.log(chalk.blue(' Starting the "replace tokens" script...'))
+  console.log(chalk.blue('Starting the "replace tokens" script...'))
   await replaceTokens()
   console.log(chalk.green("Done!"))
 
-  console.log(chalk.blue(' Starting the "runtime" script...'))
+  console.log(chalk.blue('Starting the "runtime" script...'))
   await runtime()
   console.log(chalk.green("Done!"))
 
-  console.log(chalk.blue(' Starting the "packages selection" script...'))
+  console.log(chalk.blue('Starting the "packages selection" script...'))
   await packagesSelection()
   console.log(chalk.green("Done!"))
 
-  console.log(chalk.blue(' Starting the "env setup" script...'))
+  console.log(chalk.blue('Starting the "env setup" script...'))
   await envSetup()
   console.log(chalk.green("Done!"))
 
