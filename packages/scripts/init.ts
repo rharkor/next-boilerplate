@@ -1,9 +1,12 @@
 import chalk from "chalk"
 import { config } from "dotenv"
+import { envSetup } from "env-setup"
 import * as fs from "fs/promises"
 import { exit } from "node:process"
 import { packagesSelection } from "packages-selection"
 import * as path from "path"
+import { replaceTokens } from "replace-tokens"
+import { runtime } from "runtime"
 import * as url from "url"
 
 import { completeInitialisation } from "./complete-initialisation"
@@ -20,18 +23,21 @@ async function main() {
     exit(1)
   }
 
-  //TODO: Uncomment this when the scripts are ready
-  // console.log(chalk.green("Welcome to the init script!"))
-  // console.log(chalk.blue(' Starting the "replace tokens" script...'))
-  // await replaceTokens()
-  // console.log(chalk.green("Done!"))
+  console.log(chalk.green("Welcome to the init script!"))
+  console.log(chalk.blue(' Starting the "replace tokens" script...'))
+  await replaceTokens()
+  console.log(chalk.green("Done!"))
 
-  // console.log(chalk.blue(' Starting the "runtime" script...'))
-  // await runtime()
-  // console.log(chalk.green("Done!"))
+  console.log(chalk.blue(' Starting the "runtime" script...'))
+  await runtime()
+  console.log(chalk.green("Done!"))
 
   console.log(chalk.blue(' Starting the "packages selection" script...'))
   await packagesSelection()
+  console.log(chalk.green("Done!"))
+
+  console.log(chalk.blue(' Starting the "env setup" script...'))
+  await envSetup()
   console.log(chalk.green("Done!"))
 
   if (process.env.SKIP_INIT_CHECK !== "true") await completeInitialisation()

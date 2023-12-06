@@ -2,9 +2,7 @@
   "name": "next-boilerplate",
   "private": true,
   "scripts": {
-    "init": "npm run init -w packages/scripts && npm run init:env && npm run init:db",
-    "init:env": "cp packages/app/.env.example packages/app/.env && cp packages/landing/.env.example packages/landing/.env",
-    "init:db": "cd packages/app && npx prisma migrate dev && npm run seed",
+    "init": "npm run init -w packages/scripts",
     "depcheck": "npm run depcheck -w packages/scripts",
     "dev": "npm run dev -w packages/app",
     "dev:all": "concurrently \"npm run dev -w packages/app\" \"npm run dev -w packages/landing\" \"npm run dev -w packages/docs\"",
