@@ -2,6 +2,7 @@ import chalk from "chalk"
 import { config } from "dotenv"
 import * as fs from "fs/promises"
 import { exit } from "node:process"
+import { packagesSelection } from "packages-selection"
 import * as path from "path"
 import * as url from "url"
 
@@ -28,6 +29,10 @@ async function main() {
 
   console.log(chalk.blue(' Starting the "runtime" script...'))
   await runtime()
+  console.log(chalk.green("Done!"))
+
+  console.log(chalk.blue(' Starting the "packages selection" script...'))
+  await packagesSelection()
   console.log(chalk.green("Done!"))
 
   if (process.env.SKIP_INIT_CHECK !== "true") await completeInitialisation()
