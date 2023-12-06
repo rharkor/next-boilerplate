@@ -43,5 +43,4 @@ export const packagesSelection = async () => {
     fs.writeFileSync(path.join(rootDir, "package.json"), JSON.stringify(rootPackageJson, null, 2))
     console.log(chalk.green(`- Removed ${packageToRemove}!`))
   }
-  console.log(chalk.green("Done!"))
 }
