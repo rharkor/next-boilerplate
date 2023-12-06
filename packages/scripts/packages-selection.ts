@@ -27,7 +27,7 @@ export const packagesSelection = async () => {
   const packagesToRemove = packagesAvailable.filter((p) => !packages.includes(p))
 
   if (packagesToRemove.length === 0) {
-    console.log(chalk.green("No packages to remove!"))
+    console.log(chalk.gray("No packages to remove!"))
     return
   }
 
@@ -41,6 +41,6 @@ export const packagesSelection = async () => {
       (w: string) => !w.includes(`packages/${packageToRemove}`)
     )
     fs.writeFileSync(path.join(rootDir, "package.json"), JSON.stringify(rootPackageJson, null, 2))
-    console.log(chalk.green(`- Removed ${packageToRemove}!`))
+    console.log(chalk.gray(`Removed ${packageToRemove}!`))
   }
 }
