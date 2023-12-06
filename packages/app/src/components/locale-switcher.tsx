@@ -25,6 +25,8 @@ export default function LocaleSwitcher({ lang }: { lang: Locale }) {
 
   const [dynamicLocale, setDynamicLocale] = useState<Locale>(lang)
 
+  if (!localesDetailed[lang]) return null
+
   return (
     <Select
       selectedKeys={[dynamicLocale]}
