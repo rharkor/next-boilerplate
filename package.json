@@ -3,10 +3,11 @@
   "private": true,
   "scripts": {
     "init": "npm run init -w packages/scripts && npm run init:env && npm run init:db",
-    "init:env": "cd packages/app && cp .env.example .env",
+    "init:env": "cp packages/app/.env.example packages/app/.env && cp packages/landing/.env.example packages/landing/.env",
     "init:db": "cd packages/app && npx prisma migrate dev && npm run seed",
     "depcheck": "npm run depcheck -w packages/scripts",
     "dev": "npm run dev -w packages/app",
+    "dev:all": "concurrently \"npm run dev -w packages/app\" \"npm run dev -w packages/landing\" \"npm run dev -w packages/docs\"",
     "is-initialized": "npm run is-initialized -w packages/scripts",
     "lint": "npm run lint --ws",
     "lint:fix": "npm run lint:fix --ws",
@@ -18,10 +19,13 @@
     "start": "npm run start --ws",
     "preinstall": "npx -y only-allow-many npm"
   },
-  "devDependencies": {},
   "workspaces": [
     "packages/scripts",
     "packages/app",
-    "packages/docs"
-  ]
+    "packages/docs",
+    "packages/landing"
+  ],
+  "dependencies": {
+    "concurrently": "^8.2.2"
+  }
 }

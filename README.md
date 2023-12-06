@@ -48,6 +48,7 @@ With this template, you get all the awesomeness you need:
   - [📚 Features](#-features)
   - [Table of Contents](#table-of-contents)
   - [🎯 Getting Started](#-getting-started)
+  - [🗄️ Monorepo packages](#️-monorepo-packages)
   - [🚀 Deployment](#-deployment)
   - [📃 Scripts Overview](#-scripts-overview)
   - [🐳 Container Stack](#-container-stack)
@@ -73,31 +74,55 @@ To get started with this boilerplate, follow these steps:
 git clone https://github.com/rharkor/next-boilerplate
 ```
 
-2. Create a `.env` file and add the following environment variables:
-
-```bash
-cp .env.example .env
-```
-
-3. Initialize the project:
+2. Initialize the project:
 
 ```bash
 npm run init
 ```
 
-4. Install the dependencies:
+3. Install the dependencies:
 
 ```bash
 npm install
 ```
 
-5. Run the development server:
+4. Run the development server:
 
 ```bash
 npm run dev
 ```
 
-6. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+5. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+## 🗄️ Monorepo packages
+
+This boilerplate uses [npm workspaces](https://docs.npmjs.com/cli/v7/using-npm/workspaces) to manage multiple packages in one repository.
+The following packages are available:
+
+- `app`: The main application
+- `docs`: The documentation website
+- `landing`: The landing page
+- `scripts`: Scripts to help you manage your project
+
+To run a script in a package, you can use the following command:
+
+```bash
+npm run <script> --workspace=<package>
+```
+
+For example, to run the `dev` script in the `app` package, you can use the following command:
+
+```bash
+npm run dev --workspace=app
+```
+
+Each package has its own `package.json` file, so you can add dependencies specific to a package.
+
+Port for each package:
+
+- **App**: `3000`
+- **Docs**: `3001`
+- **Landing**: `3002`
 
 ## 🚀 Deployment
 
