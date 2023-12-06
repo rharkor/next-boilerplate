@@ -17,28 +17,32 @@ export const envSetup = async () => {
   if (!fs.existsSync(appEnvPath) && fs.existsSync(path.join(rootDir, "packages", "app", ".env.example"))) {
     fs.copyFileSync(path.join(rootDir, "packages", "app", ".env.example"), appEnvPath)
     console.log(chalk.green("Created .env for app"))
-  } else console.log(chalk.yellow("Skipping .env for app"))
+  } else console.log(chalk.gray("Skipping .env for app"))
   // Landing
   const landingEnvPath = path.join(rootDir, "packages", "landing", ".env")
   if (!fs.existsSync(landingEnvPath) && fs.existsSync(path.join(rootDir, "packages", "landing", ".env.example"))) {
     fs.copyFileSync(path.join(rootDir, "packages", "landing", ".env.example"), landingEnvPath)
     console.log(chalk.green("Created .env for landing"))
-  } else console.log(chalk.yellow("Skipping .env for landing"))
+  } else console.log(chalk.gray("Skipping .env for landing"))
 
   //* Initialize the database
   const appPath = path.join(rootDir, "packages", "app")
   console.log(chalk.blue("Initializing the database..."))
-  await new Promise<void>((resolve, reject) => {
-    exec("npx prisma migrate dev && npm run seed", { cwd: appPath }, (err, stdout, stderr) => {
-      if (err) {
-        console.log(chalk.red(err.message))
-        reject(err)
-      }
-      if (stderr) {
-        console.log(chalk.red(stderr))
-        reject(stderr)
-      }
-      resolve()
+  if (!fs.existsSync(appPath)) {
+    console.log(chalk.gray("Skipping database initialization (no app folder)"))
+  } else {
+    await new Promise<void>((resolve, reject) => {
+      exec("npx prisma migrate dev && npm run seed", { cwd: appPath }, (err, stdout, stderr) => {
+        if (err) {
+          console.log(chalk.red(err.message))
+          reject(err)
+        }
+        if (stderr) {
+          console.log(chalk.red(stderr))
+          reject(stderr)
+        }
+        resolve()
+      })
     })
-  })
+  }
 }
