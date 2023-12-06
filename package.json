@@ -21,6 +21,7 @@
   "devDependencies": {},
   "workspaces": [
     "packages/scripts",
-    "packages/app"
+    "packages/app",
+    "packages/docs"
   ]
 }
