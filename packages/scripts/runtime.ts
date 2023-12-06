@@ -107,7 +107,7 @@ const processBasicFiles = async (currentRuntime: IRuntime, newRuntime: IRuntime)
     const fileContent = await fs.readFile(filePath, "utf8")
     const newFileContent = file.replace(currentRuntime, newRuntime, fileContent)
     await fs.writeFile(filePath, newFileContent, "utf8")
-    console.log(chalk.blue(`Done for ${filePath}`))
+    console.log(chalk.gray(`Done for ${filePath}`))
   }
 }
 
@@ -125,6 +125,12 @@ export const runtime = async () => {
     },
   ])
 
+  //? If the runtime is the same, do nothing
+  if (res.runtime === "node (npm)") {
+    console.log(chalk.gray(`No change`))
+    return
+  }
+
   //? Replace the runtime
   const newRuntime = res.runtime === "node (npm)" ? { npm: "npm", npx: "npx" } : { npm: "bun", npx: "bunx" }
   await processBasicFiles(currentRuntime, newRuntime)
@@ -136,5 +142,5 @@ export const runtime = async () => {
   //? Save the new runtime
   projectInfoJson.runtime = newRuntime
   await fs.writeFile(path.join(root, "scripts", ".pinfo.json"), JSON.stringify(projectInfoJson, null, 2) + "\n", "utf8")
-  console.log(chalk.blue(`Done for .pinfo.json`))
+  console.log(chalk.gray(`Done for .pinfo.json`))
 }

@@ -14,13 +14,13 @@ export const envSetup = async () => {
   //* Copy the .env.example to .env for
   // App
   const appEnvPath = path.join(rootDir, "packages", "app", ".env")
-  if (!fs.existsSync(appEnvPath)) {
+  if (!fs.existsSync(appEnvPath) && fs.existsSync(path.join(rootDir, "packages", "app", ".env.example"))) {
     fs.copyFileSync(path.join(rootDir, "packages", "app", ".env.example"), appEnvPath)
     console.log(chalk.green("Created .env for app"))
   } else console.log(chalk.yellow("Skipping .env for app"))
   // Landing
   const landingEnvPath = path.join(rootDir, "packages", "landing", ".env")
-  if (!fs.existsSync(landingEnvPath)) {
+  if (!fs.existsSync(landingEnvPath) && fs.existsSync(path.join(rootDir, "packages", "landing", ".env.example"))) {
     fs.copyFileSync(path.join(rootDir, "packages", "landing", ".env.example"), landingEnvPath)
     console.log(chalk.green("Created .env for landing"))
   } else console.log(chalk.yellow("Skipping .env for landing"))
