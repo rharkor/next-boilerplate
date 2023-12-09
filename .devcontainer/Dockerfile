@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/devcontainers/typescript-node:1-18-bullseye
+FROM mcr.microsoft.com/devcontainers/typescript-node:1-20-bullseye
 
 # Install additional OS packages.
 RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
