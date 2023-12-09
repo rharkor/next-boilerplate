@@ -3,6 +3,7 @@
   "private": true,
   "scripts": {
     "init": "npm run init -w packages/scripts",
+    "init:env": "npm run init:env -w packages/scripts",
     "depcheck": "npm run depcheck -w packages/scripts",
     "dev": "npm run dev -w packages/app",
     "dev:all": "concurrently \"npm run dev -w packages/app\" \"npm run dev -w packages/landing\" \"npm run dev -w packages/docs\"",

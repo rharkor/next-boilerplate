@@ -4,6 +4,7 @@
   "main": "index.js",
   "scripts": {
     "init": "npx tsx init.ts",
+    "init:env": "npx tsx init-env.ts",
     "depcheck": "npx tsx depcheck-test.ts",
     "is-initialized": "npx tsx is-initialized.ts",
     "postinstall": "npx patch-package",
