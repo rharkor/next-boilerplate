@@ -118,6 +118,22 @@ npm run dev --workspace=app
 
 Each package has its own `package.json` file, so you can add dependencies specific to a package.
 
+Please make sure to add the dependencies to the `package.json` file of the package you want to use them in.
+For example, if you want to add a dependency to the `app` package, you should add it to the `app/package.json` file with the following command:
+
+```bash
+npm install <package> --workspace=app
+```
+
+or
+
+```bash
+cd app
+npm install <package>
+```
+
+> If you install a dependency in the root `package.json` file, it will be available in all packages and in most cases, you don't want that.
+
 Port for each package:
 
 - **App**: `3000`
