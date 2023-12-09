@@ -10,7 +10,7 @@ import * as url from "url"
 
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url))
 const rootDir = path.join(__dirname, "..", "..")
-export const envSetup = async () => {
+export const envSetup = async (initDb: boolean = true) => {
   //* Copy the .env.example to .env for
   // App
   const appEnvPath = path.join(rootDir, "packages", "app", ".env")
@@ -25,24 +25,26 @@ export const envSetup = async () => {
     console.log(chalk.green("Created .env for landing"))
   } else console.log(chalk.gray("Skipping .env for landing"))
 
-  //* Initialize the database
-  const appPath = path.join(rootDir, "packages", "app")
-  console.log(chalk.blue("Initializing the database..."))
-  if (!fs.existsSync(appPath)) {
-    console.log(chalk.gray("Skipping database initialization (no app folder)"))
-  } else {
-    await new Promise<void>((resolve, reject) => {
-      exec("npx prisma migrate dev && npm run seed", { cwd: appPath }, (err, stdout, stderr) => {
-        if (err) {
-          console.log(chalk.red(err.message))
-          reject(err)
-        }
-        if (stderr) {
-          console.log(chalk.red(stderr))
-          reject(stderr)
-        }
-        resolve()
+  if (initDb) {
+    //* Initialize the database
+    const appPath = path.join(rootDir, "packages", "app")
+    console.log(chalk.blue("Initializing the database..."))
+    if (!fs.existsSync(appPath)) {
+      console.log(chalk.gray("Skipping database initialization (no app folder)"))
+    } else {
+      await new Promise<void>((resolve, reject) => {
+        exec("npx prisma migrate dev && npm run seed", { cwd: appPath }, (err, stdout, stderr) => {
+          if (err) {
+            console.log(chalk.red(err.message))
+            reject(err)
+          }
+          if (stderr) {
+            console.log(chalk.red(stderr))
+            reject(stderr)
+          }
+          resolve()
+        })
       })
-    })
+    }
   }
 }
