@@ -1,3 +1,5 @@
 {
-  "home": "Accueil"
+  "home": {
+    "title": "Next boilerplate"
+  }
 }
