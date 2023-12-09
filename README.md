@@ -99,10 +99,10 @@ npm run dev
 This boilerplate uses [npm workspaces](https://docs.npmjs.com/cli/v7/using-npm/workspaces) to manage multiple packages in one repository.
 The following packages are available:
 
-- `app`: The main application
-- `docs`: The documentation website
-- `landing`: The landing page
-- `scripts`: Scripts to help you manage your project
+- `packages/app`: The main application
+- `packages/docs`: The documentation website
+- `packages/landing`: The landing page
+- `packages/scripts`: Scripts to help you manage your project
 
 To run a script in a package, you can use the following command:
 
@@ -122,7 +122,7 @@ Please make sure to add the dependencies to the `package.json` file of the packa
 For example, if you want to add a dependency to the `app` package, you should add it to the `app/package.json` file with the following command:
 
 ```bash
-npm install <package> --workspace=app
+npm install <package> --workspace=packages/app
 ```
 
 or

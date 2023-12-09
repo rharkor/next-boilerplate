@@ -1,3 +1,4 @@
+import { env } from "env.mjs"
 import { Locale } from "i18n-config"
 
 import { getDictionary } from "@/lib/langs"
@@ -21,6 +22,9 @@ export default async function Home({
       <h1 className="animate-fade-in-scale relative z-10 rounded-lg p-5 text-center text-4xl font-bold text-white/80 md:text-6xl lg:text-8xl">
         {dictionary.home.title}
       </h1>
+      <a href={env.NEXT_PUBLIC_APP_URL} className="mt-10">
+        {dictionary.home.link}
+      </a>
     </main>
   )
 }

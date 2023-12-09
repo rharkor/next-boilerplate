@@ -34,6 +34,10 @@ const main = async () => {
         "cron",
         "autoprefixer"
       )
+    } else if (pkg === path.join(rootPath, "landing")) {
+      options.ignoreMatches.push("@types/react-dom")
+    } else if (pkg === path.join(rootPath, "scripts")) {
+      options.ignoreMatches.push("env-setup", "packages-selection", "replace-tokens", "runtime")
     }
     await depcheck(pkg, options).then(async (unused) => {
       const beautify = (arr: string[]) => {
@@ -61,7 +65,7 @@ const main = async () => {
         hasError = true
       }
     })
-    console.log(chalk.green(`Done ${pkg}`))
+    console.log(chalk.gray(`Done ${pkg}`))
   }
   if (hasError) {
     console.log(message)
