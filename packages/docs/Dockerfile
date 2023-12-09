@@ -10,10 +10,14 @@ ENV NODE_ENV production
 
 COPY package.json .
 COPY package-lock.json .
-COPY prisma/schema.prisma ./prisma/schema.prisma
 
 RUN npm i --only=production
 
 COPY . .
 
-CMD [ "npm", "run", "cron" ]
+RUN npm run build
+
+#? Comment this section if you are using the static files directly
+# see: https://docusaurus.io/docs/deployment#configuration
+EXPOSE 3000
+CMD [ "npm", "run", "serve" ]

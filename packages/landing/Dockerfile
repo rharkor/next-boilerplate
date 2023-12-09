@@ -10,10 +10,13 @@ ENV NODE_ENV production
 
 COPY package.json .
 COPY package-lock.json .
-COPY prisma/schema.prisma ./prisma/schema.prisma
 
 RUN npm i --only=production
 
 COPY . .
 
-CMD [ "npm", "run", "cron" ]
+RUN npm run build
+
+EXPOSE 3000
+
+CMD [ "npm", "start" ]

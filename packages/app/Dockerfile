@@ -12,7 +12,7 @@ COPY package.json .
 COPY package-lock.json .
 COPY prisma/schema.prisma ./prisma/schema.prisma
 
-RUN npm ci --only=production
+RUN npm i --only=production
 
 COPY . .
 
