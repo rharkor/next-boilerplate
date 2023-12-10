@@ -16,13 +16,13 @@ export default async function Home({
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center p-6 md:p-24">
-      <div className="absolute left-0 top-0 h-full w-full overflow-hidden">
+      <div className="pointer-events-none absolute left-0 top-0 h-full w-full overflow-hidden">
         <Blob />
       </div>
-      <h1 className="animate-fade-in-scale relative z-10 rounded-lg p-5 text-center text-4xl font-bold text-white/80 md:text-6xl lg:text-8xl">
+      <h1 className="animate-fade-in-scale relative rounded-lg p-5 text-center text-4xl font-bold text-white/80 md:text-6xl lg:text-8xl">
         {dictionary.home.title}
       </h1>
-      <a href={env.NEXT_PUBLIC_APP_URL} className="mt-10">
+      <a href={env.NEXT_PUBLIC_APP_URL} className="animate-fade-in-scale mt-10 hover:text-blue-500">
         {dictionary.home.link}
       </a>
     </main>

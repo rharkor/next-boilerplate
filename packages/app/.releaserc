@@ -21,5 +21,6 @@
     "@semantic-release/commit-analyzer",
     "@semantic-release/git",
     "@semantic-release/changelog"
-  ]
+  ],
+  "tagFormat": "@next-boilerplate/app@v${version}"
 }
