@@ -46,8 +46,8 @@ export const register = async ({ input }: apiInputFromSchema<typeof signUpSchema
         from: `"${env.SMTP_FROM_NAME}" <${env.SMTP_FROM_EMAIL}>`,
         to: email.toLowerCase(),
         subject: subject,
-        text: plainText(url),
-        html: html(url),
+        text: plainText(url, input.locale),
+        html: html(url, input.locale),
       })
     } else {
       logger.debug("Email verification disabled, skipping email sending on registration")
