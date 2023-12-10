@@ -40,12 +40,4 @@ jobs:
       - name: Release docs
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: cd packages/docs && npx semantic-release
-      - name: Release landing
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: cd packages/landing && npx semantic-release
-      - name: Release app
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: cd packages/app && npx semantic-release
+        run: npx semantic-release
