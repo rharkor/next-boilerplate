@@ -1,5 +1,6 @@
 import { randomUUID } from "crypto"
 import { env } from "env.mjs"
+import { i18n } from "i18n-config"
 
 import { hash } from "@/lib/bcrypt"
 import { logger } from "@/lib/logger"
@@ -63,8 +64,16 @@ export const forgotPassword = async ({ input }: apiInputFromSchema<typeof forgot
       from: `"${env.SMTP_FROM_NAME}" <${env.SMTP_FROM_EMAIL}>`,
       to: email,
       subject: subject,
-      text: plainText(user.username ?? email, `${env.VERCEL_URL ?? env.BASE_URL}/reset-password/${resetPasswordToken}`),
-      html: html(user.username ?? email, `${env.VERCEL_URL ?? env.BASE_URL}/reset-password/${resetPasswordToken}`),
+      text: plainText(
+        user.username ?? email,
+        `${env.VERCEL_URL ?? env.BASE_URL}/reset-password/${resetPasswordToken}`,
+        user.lastLocale ?? i18n.defaultLocale
+      ),
+      html: html(
+        user.username ?? email,
+        `${env.VERCEL_URL ?? env.BASE_URL}/reset-password/${resetPasswordToken}`,
+        user.lastLocale ?? i18n.defaultLocale
+      ),
     })
 
     return { email }

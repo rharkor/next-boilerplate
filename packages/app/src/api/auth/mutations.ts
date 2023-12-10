@@ -5,6 +5,7 @@ import { hash } from "@/lib/bcrypt"
 import { logger } from "@/lib/logger"
 import { sendMail } from "@/lib/mailer"
 import { prisma } from "@/lib/prisma"
+import { redis } from "@/lib/redis"
 import { signUpSchema } from "@/lib/schemas/auth"
 import { html, plainText, subject } from "@/lib/templates/mail/verify-email"
 import { ApiError, handleApiError, throwableErrorsMessages } from "@/lib/utils/server-utils"
@@ -25,8 +26,10 @@ export const register = async ({ input }: apiInputFromSchema<typeof signUpSchema
         email: email.toLowerCase(),
         username,
         password: hashedPassword,
+        lastLocale: input.locale,
       },
     })
+    await redis.set(`lastLocale:${user.id}`, input.locale)
 
     //* Send verification email
     if (env.ENABLE_MAILING_SERVICE === true) {
@@ -43,8 +46,8 @@ export const register = async ({ input }: apiInputFromSchema<typeof signUpSchema
         from: `"${env.SMTP_FROM_NAME}" <${env.SMTP_FROM_EMAIL}>`,
         to: email.toLowerCase(),
         subject: subject,
-        text: plainText(url),
-        html: html(url),
+        text: plainText(url, input.locale),
+        html: html(url, input.locale),
       })
     } else {
       logger.debug("Email verification disabled, skipping email sending on registration")

@@ -2,7 +2,8 @@ import { env } from "env.mjs"
 
 export const subject = "Reset your password"
 
-export const plainText = (username: string, resetLink: string) => `Password Reset
+export const plainText = (username: string, resetLink: string, locale: string) => {
+  const en = `Password Reset
 
 Hello ${username},
 
@@ -13,12 +14,29 @@ ${resetLink}
 If you did not request this password reset, you can safely ignore this email.
 
 This email was sent to you as part of our account services.${
-  env.SUPPORT_EMAIL ? ` If you have any questions, please contact us at ${env.SUPPORT_EMAIL}.` : ""
-}
+    env.SUPPORT_EMAIL ? ` If you have any questions, please contact us at ${env.SUPPORT_EMAIL}.` : ""
+  }
 `
+  const fr = `Réinitialiser votre mot de passe
 
-export const html = (username: string, resetLink: string) => `<!DOCTYPE html>
-<html xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office" lang="en">
+Bonjour ${username},
+
+Nous avons reçu une demande de réinitialisation de votre mot de passe. Vous pouvez réinitialiser votre mot de passe en cliquant sur le lien suivant :
+
+${resetLink}
+
+Si vous n'avez pas demandé cette réinitialisation de mot de passe, vous pouvez ignorer cet e-mail en toute sécurité.
+
+Ce courriel vous a été envoyé dans le cadre de nos services de compte.${
+    env.SUPPORT_EMAIL ? ` Si vous avez des questions, veuillez nous contacter à l'adresse ${env.SUPPORT_EMAIL}.` : ""
+  }
+`
+  if (locale === "fr") return fr
+  return en
+}
+
+export const html = (username: string, resetLink: string, locale: string) => `<!DOCTYPE html>
+<html xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office" lang="${locale}">
 
 <head>
     <title></title>
@@ -134,7 +152,13 @@ export const html = (username: string, resetLink: string) => `<!DOCTYPE html>
                                                             <td class="pad" style="text-align:center;width:100%;">
                                                                 <h1
                                                                     style="margin: 0; color: #101010; direction: ltr; font-family: Arial, Helvetica Neue, Helvetica, sans-serif; font-size: 27px; font-weight: normal; letter-spacing: normal; line-height: 120%; text-align: center; margin-top: 0; margin-bottom: 0;">
-                                                                    <strong>Forgot Your Password?</strong>
+                                                                    <strong>
+                                                                    ${
+                                                                      locale === "fr"
+                                                                        ? "Mot de passe oublié ?"
+                                                                        : "Forgot Your Password?"
+                                                                    }
+                                                                    </strong>
                                                                 </h1>
                                                             </td>
                                                         </tr>
@@ -175,7 +199,12 @@ export const html = (username: string, resetLink: string) => `<!DOCTYPE html>
                                                                     style="color:#848484;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:14px;line-height:180%;text-align:center;mso-line-height-alt:25.2px;">
                                                                     <p style="margin: 0; word-break: break-word;">
                                                                         <span>
-                                                                            Hi ${username}, you recently requested to reset your password for your account. Click the button below to reset it.
+                                                                        ${
+                                                                          locale === "fr"
+                                                                            ? `Bonjour ${username}, vous avez récemment demandé à réinitialiser votre mot de passe pour votre compte. Cliquez sur le bouton ci-dessous pour le réinitialiser.`
+                                                                            : `
+                                                                            Hi ${username}, you recently requested to reset your password for your account. Click the button below to reset it.`
+                                                                        }
                                                                         </span>
                                                                     </p>
                                                                 </div>
@@ -195,8 +224,13 @@ export const html = (username: string, resetLink: string) => `<!DOCTYPE html>
                                                                         href="${resetLink}" target="_blank"
                                                                         style="text-decoration:none;display:inline-block;color:#ffffff;background-color:#101;border-radius:4px;width:auto;border-top:1px solid #101;font-weight:undefined;border-right:1px solid #101;border-bottom:1px solid #101;border-left:1px solid #101;padding-top:5px;padding-bottom:5px;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:16px;text-align:center;mso-border-alt:none;word-break:keep-all;"><span
                                                                             style="padding-left:20px;padding-right:20px;font-size:16px;display:inline-block;letter-spacing:normal;"><span
-                                                                                style="word-break: break-word; line-height: 32px;">Reset
-                                                                                Password</span></span></a><!--[if mso]></center></v:textbox></v:roundrect><![endif]-->
+                                                                                style="word-break: break-word; line-height: 32px;">
+                                                                                ${
+                                                                                  locale === "fr"
+                                                                                    ? "Réinitialiser le mot de passe"
+                                                                                    : "Reset Password"
+                                                                                }
+                                                                                </span></span></a><!--[if mso]></center></v:textbox></v:roundrect><![endif]-->
                                                                 </div>
                                                             </td>
                                                         </tr>

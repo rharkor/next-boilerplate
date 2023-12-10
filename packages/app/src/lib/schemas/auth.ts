@@ -43,6 +43,7 @@ export const signUpSchema = (dictionary?: TDictionary) =>
   signInSchema(dictionary).extend({
     username: usernameSchema(dictionary),
     password: passwordSchemaWithRegex(dictionary),
+    locale: z.string(),
   })
 
 export const signUpResponseSchema = (dictionary?: TDictionary) =>

@@ -27,6 +27,7 @@ CREATE TABLE "User" (
     "role" TEXT NOT NULL DEFAULT 'user',
     "password" TEXT,
     "hasPassword" BOOLEAN NOT NULL DEFAULT false,
+    "lastLocale" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 

@@ -45,6 +45,7 @@ model User {
   hasPassword                Boolean                     @default(false)
   resetPasswordToken         ResetPassordToken?
   userEmailVerificationToken UserEmailVerificationToken?
+  lastLocale               String?
 
   // Timestamps
   createdAt DateTime @default(now())
