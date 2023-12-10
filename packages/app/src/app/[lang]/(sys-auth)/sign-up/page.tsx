@@ -39,7 +39,7 @@ export default async function SignUpPage({
             <p className="text-muted-foreground text-sm">{dictionary.signUpPage.enterEmail}</p>
           </div>
           <div className="grid gap-6">
-            <RegisterUserAuthForm isMinimized searchParams={searchParams} dictionary={dictionary} />
+            <RegisterUserAuthForm isMinimized searchParams={searchParams} dictionary={dictionary} locale={lang} />
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
                 <span className="w-full border-t" />

@@ -23,6 +23,7 @@ type UserAuthFormProps = React.HTMLAttributes<HTMLFormElement> & {
   dictionary: TDictionary
   isMinimized?: boolean
   searchParams?: { [key: string]: string | string[] | undefined }
+  locale: string
 }
 
 export const formSchema = (dictionary: TDictionary) =>
@@ -52,7 +53,7 @@ export const getFormSchema = ({ dictionary, isMinimized }: { dictionary: TDictio
 export type IForm = z.infer<ReturnType<typeof formSchema>>
 export type IFormMinimized = z.infer<ReturnType<typeof formMinizedSchema>>
 
-export function RegisterUserAuthForm({ dictionary, isMinimized, searchParams, ...props }: UserAuthFormProps) {
+export function RegisterUserAuthForm({ dictionary, isMinimized, searchParams, locale, ...props }: UserAuthFormProps) {
   const router = useRouter()
 
   const registerMutation = trpc.auth.register.useMutation({
@@ -102,6 +103,7 @@ export function RegisterUserAuthForm({ dictionary, isMinimized, searchParams, ..
       username: "",
       password: "",
       confirmPassword: "",
+      locale,
     },
   })
 

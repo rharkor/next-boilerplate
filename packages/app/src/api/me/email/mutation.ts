@@ -20,6 +20,7 @@ export const sendVerificationEmail = async ({ input }: apiInputFromSchema<typeof
         email: email.toLowerCase(),
       },
     })
+
     if (!user) {
       logger.debug("User not found")
       return { email }
