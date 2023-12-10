@@ -1,0 +1,26 @@
+{
+  "branches": [
+    {
+      "name": "rec",
+      "channel": "beta",
+      "prerelease": true
+    },
+    {
+      "name": "main"
+    }
+  ],
+  "plugins": [
+    [
+      "@semantic-release/npm",
+      {
+        "npmPublish": false
+      }
+    ],
+    "@semantic-release/release-notes-generator",
+    "@semantic-release/github",
+    "@semantic-release/commit-analyzer",
+    "@semantic-release/git",
+    "@semantic-release/changelog"
+  ],
+  "tagFormat": "@next-boilerplate/landing@v${version}"
+}

@@ -9,8 +9,6 @@ services:
       driver: "json-file"
       options:
         max-size: "50m"
-    volumes:
-      - ./uploads:/app/uploads
     ports:
       - "3000:3000"
 
@@ -22,8 +20,31 @@ services:
       driver: "json-file"
       options:
         max-size: "50m"
+
+  landing:
+    image: DOCKER_DEPLOY_LANDING_IMAGE
+    container_name: #{PROJECT_NAME}#_landing
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+    ports:
+      - "3001:3000"
+
+  docs:
+    image: DOCKER_DEPLOY_DOCS_IMAGE
+    container_name: #{PROJECT_NAME}#_docs
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+    ports:
+      - "3002:3000"
+    #? You can comment the volumes section if you are not using the static files
     volumes:
-      - ./uploads:/app/uploads
+      - .:/docs/.docusaurus
 
   db:
     image: postgres:latest

@@ -12,7 +12,7 @@ on:
 jobs:
   check:
     env:
-      node_version: 18
+      node_version: 20
     name: Check
     runs-on: ubuntu-latest
     steps:
@@ -20,12 +20,12 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "18.x"
+          node-version: "20.x"
           cache: "npm"
       - name: Install dependencies
         run: npm install
       - name: Set example env
-        run: cp .env.example .env
+        run: npm run init:env
       - name: Lint check
         run: npm run lint
       - name: Format check
@@ -35,4 +35,4 @@ jobs:
       - name: Check dependencies usage
         run: npm run depcheck
       - name: Banned Keywords
-        run: bash ./scripts/banned-keywords.sh
+        run: bash ./packages/scripts/banned-keywords.sh
