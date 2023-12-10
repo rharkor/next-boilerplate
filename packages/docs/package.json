@@ -1,6 +1,6 @@
 {
   "name": "@next-boilerplate/docs",
-  "version": "1.0.0-rec.1",
+  "version": "1.0.0",
   "scripts": {
     "docusaurus": "docusaurus",
     "start": "docusaurus start",
