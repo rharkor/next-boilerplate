@@ -37,7 +37,15 @@ jobs:
         run: npm install
       # - name: Verify the integrity of provenance attestations and registry signatures for installed dependencies
       #   run: npm audit signatures
-      - name: Release
+      - name: Release docs
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: npx semantic-release
+        run: cd packages/docs && npx semantic-release
+      - name: Release landing
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: cd packages/landing && npx semantic-release
+      - name: Release app
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: cd packages/app && npx semantic-release

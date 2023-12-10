@@ -1,6 +1,5 @@
 {
   "name": "@next-boilerplate/scripts",
-  "version": "1.0.0-rec.1",
   "main": "index.js",
   "scripts": {
     "init": "npx tsx init.ts",
