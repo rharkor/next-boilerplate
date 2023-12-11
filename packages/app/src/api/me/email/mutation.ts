@@ -13,14 +13,10 @@ import { emailVerificationExpiration, resendEmailVerificationExpiration } from "
 
 export const sendVerificationEmail = async ({ input }: apiInputFromSchema<typeof sendVerificationEmailSchema>) => {
   try {
-    const { email, silent } = input
+    const { user, silent } = input
+    const email = user.email?.toLowerCase() ?? ""
 
     const token = randomUUID()
-    const user = await prisma.user.findUnique({
-      where: {
-        email: email.toLowerCase(),
-      },
-    })
 
     if (!user) {
       logger.debug("User not found")

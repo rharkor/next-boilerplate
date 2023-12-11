@@ -5,4 +5,5 @@ export const authRoutes = {
   signUp: ["/sign-up", "/register", "/signup"],
   redirectAfterSignIn: "/examples/profile",
   redirectOnUnhauthorized: "/sign-in",
+  otp: ["/sign-in?withOtp=true"],
 }

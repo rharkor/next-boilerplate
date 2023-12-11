@@ -110,7 +110,7 @@ export default function SessionsTable({ dictionary, isDisabled }: { dictionary: 
       </Modal>
       {isDisabled && (
         <div className="absolute -inset-2 !mt-0 flex flex-col items-center justify-center backdrop-blur-sm">
-          <p className="text-muted-foreground text-sm">{dictionary.errors.unavailableWithOAuth}</p>
+          <p className="text-muted-foreground text-sm font-semibold">{dictionary.errors.unavailableWithOAuth}</p>
         </div>
       )}
     </div>

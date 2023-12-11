@@ -64,6 +64,10 @@
   "reset": "Réinitialiser",
   "saveChanges": "Sauvegarder",
   "errors": {
+    "otpInvalid": "Code OTP invalide.",
+    "otpSecretAlreadyExists": "Un secret OTP existe déjà.",
+    "otpSecretNotFound": "Secret OTP introuvable.",
+    "demoAdminCannotHaveOtpSecret": "L'administrateur en mode démo ne peut pas avoir de secret OTP.",
     "typeError": {
       "number": {
         "invalid": "Veuillez entrer un nombre valide.",
@@ -184,5 +188,24 @@
   "containsNumber": "Contient des chiffres",
   "containsLowercase": "Contient des minuscules",
   "containsUppercase": "Contient des majuscules",
-  "containsSpecial": "Contient des caractères spéciaux"
+  "containsSpecial": "Contient des caractères spéciaux",
+  "totp": {
+    "generate": "Activer le 2FA",
+    "generateTitle": "Authentification à deux facteurs",
+    "generateStep1": "Ajouter le secret OTP à votre application d'authentification (Google Authenticator, 2FA Auth, etc.)",
+    "generateStep1Description": "Cliquez sur le qr code pour copier l'url dans le presse-papier.",
+    "generateStep2": "Sauvegardez la phrase secrète ci-dessous dans un endroit sûr.",
+    "generateStep2Description": "Vous pouvez utiliser cette phrase secrète pour récupérer votre secret OTP si vous perdez votre téléphone.",
+    "generateStep3": "Vérifier la phrase secrète.",
+    "generateStep4": "Entrez le code OTP généré par votre application d'authentification.",
+    "desactivate": "Désactiver le 2FA",
+    "totpDesactivated": "2FA désactivé",
+    "desactivateTitle": "Désactiver le 2FA",
+    "enterCode": "Vérification 2FA",
+    "generateDescription": "Veuillez noter que si vous vous connectez avec un provider, le 2FA ne sera pas demandé."
+  },
+  "back": "Retour",
+  "urlCopiedToClipboard": "URL copiée dans le presse-papier",
+  "confirm": "Confirmer",
+  "totpEnabled": "2FA activé"
 }

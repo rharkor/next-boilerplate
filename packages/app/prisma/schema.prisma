@@ -45,7 +45,10 @@ model User {
   hasPassword                Boolean                     @default(false)
   resetPasswordToken         ResetPassordToken?
   userEmailVerificationToken UserEmailVerificationToken?
-  lastLocale               String?
+  lastLocale                 String?
+  otpSecret                  String                      @default("")
+  otpMnemonic                String                      @default("")
+  otpVerified                Boolean                     @default(false)
 
   // Timestamps
   createdAt DateTime @default(now())

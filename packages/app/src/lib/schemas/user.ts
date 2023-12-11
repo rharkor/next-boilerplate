@@ -15,6 +15,8 @@ export const userSchema = (dictionary?: TDictionary) =>
     username: usernameSchema(dictionary).nullable(),
     role: z.string(),
     hasPassword: z.boolean(),
+    otpVerified: z.boolean(),
+    lastLocale: z.string().nullable(),
   })
 
 export const updateUserSchema = (dictionary?: TDictionary) =>
@@ -105,7 +107,7 @@ export const resetPasswordResponseSchema = () =>
 
 export const sendVerificationEmailSchema = (dictionary?: TDictionary) =>
   z.object({
-    email: emailSchema(dictionary),
+    user: userSchema(dictionary),
     silent: z.boolean().optional(),
   })
 

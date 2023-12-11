@@ -8,7 +8,6 @@ export const env = createEnv({
       .optional()
       .transform((value) => value === "true"),
     PASSWORD_HASHER_SECRET: z.string().min(16),
-    JWT_SECRET: z.string().min(16),
     DATABASE_PRISMA_URL: z.string().min(1),
     DATABASE_URL_NON_POOLING: z.string().optional(),
     NEXTAUTH_SECRET: z.string().min(16),
@@ -70,7 +69,6 @@ export const env = createEnv({
   runtimeEnv: {
     ANALYZE: process.env.ANALYZE,
     PASSWORD_HASHER_SECRET: process.env.PASSWORD_HASHER_SECRET,
-    JWT_SECRET: process.env.JWT_SECRET,
     DATABASE_PRISMA_URL: process.env.DATABASE_PRISMA_URL,
     DATABASE_URL_NON_POOLING: process.env.DATABASE_URL_NON_POOLING,
     NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,

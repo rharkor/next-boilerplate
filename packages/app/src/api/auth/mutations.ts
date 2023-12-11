@@ -1,14 +1,28 @@
+import * as bip39 from "bip39"
 import { randomUUID } from "crypto"
 import { env } from "env.mjs"
+import { authenticator } from "otplib"
+import { z } from "zod"
 
 import { hash } from "@/lib/bcrypt"
 import { logger } from "@/lib/logger"
 import { sendMail } from "@/lib/mailer"
 import { prisma } from "@/lib/prisma"
 import { redis } from "@/lib/redis"
-import { signUpSchema } from "@/lib/schemas/auth"
+import {
+  desactivateTotpSchema,
+  generateTotpSecretResponseSchema,
+  signUpSchema,
+  verifyTotpSchema,
+} from "@/lib/schemas/auth"
 import { html, plainText, subject } from "@/lib/templates/mail/verify-email"
-import { ApiError, handleApiError, throwableErrorsMessages } from "@/lib/utils/server-utils"
+import {
+  ApiError,
+  ensureLoggedIn,
+  generateRandomSecret,
+  handleApiError,
+  throwableErrorsMessages,
+} from "@/lib/utils/server-utils"
 import { apiInputFromSchema } from "@/types"
 import { emailVerificationExpiration } from "@/types/constants"
 import { Prisma } from "@prisma/client"
@@ -66,6 +80,108 @@ export const register = async ({ input }: apiInputFromSchema<typeof signUpSchema
         }
       }
     }
+    return handleApiError(error)
+  }
+}
+
+export const generateTotpSecret = async ({ ctx: { session } }: apiInputFromSchema<typeof undefined>) => {
+  ensureLoggedIn(session)
+  try {
+    const user = await prisma.user.findFirst({
+      where: {
+        email: session.user.email,
+      },
+    })
+    if (!user) return ApiError(throwableErrorsMessages.userNotFound)
+    if (env.NEXT_PUBLIC_IS_DEMO && user.role === "admin")
+      return ApiError(throwableErrorsMessages.demoAdminCannotHaveOtpSecret)
+    if (user.otpSecret && user.otpVerified) return ApiError(throwableErrorsMessages.otpSecretAlreadyExists)
+    const secret = generateRandomSecret()
+    let mnemonic = bip39.generateMnemonic()
+    let it = 0
+    //? Check if mnemonic doesnt contain two words that are the same
+    while (mnemonic.split(" ").length !== new Set(mnemonic.split(" ")).size) {
+      mnemonic = bip39.generateMnemonic()
+      it++
+      if (it > 100) throw new Error("Could not generate a valid mnemonic")
+    }
+    await prisma.user.update({
+      where: {
+        id: session.user.id,
+      },
+      data: {
+        otpSecret: secret,
+        otpMnemonic: mnemonic,
+      },
+    })
+    if (!user.email) return ApiError(throwableErrorsMessages.unknownError)
+    const response: z.infer<ReturnType<typeof generateTotpSecretResponseSchema>> = {
+      success: true,
+      url: authenticator.keyuri(user.email, "#{PROJECT_NAME}#", secret),
+      mnemonic,
+    }
+    return response
+  } catch (error: unknown) {
+    return handleApiError(error)
+  }
+}
+
+export const verifyTotp = async ({ input, ctx: { session } }: apiInputFromSchema<typeof verifyTotpSchema>) => {
+  ensureLoggedIn(session)
+  try {
+    const { token } = verifyTotpSchema().parse(input)
+    const user = await prisma.user.findFirst({
+      where: {
+        email: session.user.email,
+      },
+    })
+    if (!user) return ApiError(throwableErrorsMessages.userNotFound)
+    if (!user.otpSecret) return ApiError(throwableErrorsMessages.otpSecretNotFound)
+    const isValid = authenticator.check(token, user.otpSecret)
+    if (user.otpVerified === false && isValid) {
+      await prisma.user.update({
+        where: {
+          id: session.user.id,
+        },
+        data: {
+          otpVerified: true,
+        },
+      })
+    }
+    if (!isValid) return ApiError(throwableErrorsMessages.otpInvalid)
+    return { success: true }
+  } catch (error: unknown) {
+    return handleApiError(error)
+  }
+}
+
+export const desactivateTotp = async ({
+  ctx: { session },
+  input,
+}: apiInputFromSchema<typeof desactivateTotpSchema>) => {
+  ensureLoggedIn(session)
+  try {
+    const user = await prisma.user.findFirst({
+      where: {
+        email: session.user.email,
+      },
+    })
+    if (!user) return ApiError(throwableErrorsMessages.userNotFound)
+    if (!user.otpSecret) return ApiError(throwableErrorsMessages.otpSecretNotFound)
+    const isValid = authenticator.check(input.token, user.otpSecret)
+    if (!isValid) return ApiError(throwableErrorsMessages.otpInvalid)
+    await prisma.user.update({
+      where: {
+        id: session.user.id,
+      },
+      data: {
+        otpSecret: "",
+        otpMnemonic: "",
+        otpVerified: false,
+      },
+    })
+    return { success: true }
+  } catch (error: unknown) {
     return handleApiError(error)
   }
 }
