@@ -106,11 +106,11 @@ export default function SessionRow({ session, setSelectedSession, skeleton, skel
       </div>
       <div className="flex flex-row space-x-2">
         {skeleton ? (
-          <Skeleton className="h-8 w-10 rounded-full" disableAnimation={!skeletonAnimation} />
+          <Skeleton className="mr-1 h-8 w-10 rounded-full" disableAnimation={!skeletonAnimation} />
         ) : (
           <Button
             color="danger"
-            className="h-8 w-10 min-w-0 p-2"
+            className="mr-1 h-8 w-10 min-w-0 p-2"
             size={"sm"}
             aria-label="delete"
             onClick={() => setSelectedSession(session.id)}
