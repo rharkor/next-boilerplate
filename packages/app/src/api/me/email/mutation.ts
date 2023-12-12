@@ -13,8 +13,9 @@ import { emailVerificationExpiration, resendEmailVerificationExpiration } from "
 
 export const sendVerificationEmail = async ({ input }: apiInputFromSchema<typeof sendVerificationEmailSchema>) => {
   try {
-    const { user, silent } = input
-    const email = user.email?.toLowerCase() ?? ""
+    const { silent, email: iEmail, user: iUser } = input
+    const email = (iUser ? iUser.email?.toLowerCase() : iEmail?.toLowerCase()) ?? ""
+    const user = iUser ?? (await prisma.user.findUnique({ where: { email } }))
 
     const token = randomUUID()
 
