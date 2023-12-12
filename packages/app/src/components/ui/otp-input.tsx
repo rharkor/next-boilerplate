@@ -6,9 +6,10 @@ import { cn } from "@/lib/utils"
 export type OtpInputProps = {
   otp: string[]
   setOtp: React.Dispatch<React.SetStateAction<string[]>>
+  withAutoFocus?: boolean
 }
 
-export default function OtpInput({ otp, setOtp }: OtpInputProps) {
+export default function OtpInput({ otp, setOtp, withAutoFocus }: OtpInputProps) {
   const handleChange = (element: HTMLInputElement, index: number) => {
     const value = element.value
     if (value === "") {
@@ -62,6 +63,7 @@ export default function OtpInput({ otp, setOtp }: OtpInputProps) {
                 "!ml-4": index === 3 && otp.length === 6,
               }
             )}
+            autoFocus={withAutoFocus && index === 0}
             key={index}
             type="text"
             name={`otp-${index}`}
