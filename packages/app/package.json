@@ -4,9 +4,9 @@
   "scripts": {
     "dev": "npm run is-initialized && npx prisma migrate dev && cross-env FORCE_COLOR=1 next dev",
     "build": "next build",
-    "start": "npm run deploy-db:prod && npm run seed && next start",
-    "start:with-cron": "npm run deploy-db:prod && npm run seed && concurrently \"next start\" \"npm run cron\"",
-    "deploy-db:prod": "npx prisma migrate deploy",
+    "start": "npm run deploy-db:prod && next start",
+    "start:with-cron": "npm run deploy-db:prod && concurrently \"next start\" \"npm run cron\"",
+    "deploy-db:prod": "npx prisma migrate deploy && npm run seed",
     "cron": "npx tsx ./crons/index.ts",
     "lint": "next lint",
     "lint:fix": "next lint --fix",
