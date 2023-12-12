@@ -1,6 +1,8 @@
 import Link from "next/link"
 import { Locale } from "i18n-config"
 
+import LocaleSwitcher from "@/components/locale-switcher"
+import { ThemeSwitch } from "@/components/theme/theme-switch"
 import { authRoutes } from "@/lib/auth/constants"
 import { getDictionary } from "@/lib/langs"
 
@@ -24,6 +26,10 @@ export default async function VerifyEmail({
       <Link href={authRoutes.signIn[0]} className="text-muted-foreground hover:text-primary text-sm">
         {dictionary.goToSignInPage}
       </Link>
+      <div className="fixed right-3 top-3 z-10 flex flex-row gap-3">
+        <ThemeSwitch />
+        <LocaleSwitcher lang={lang} />
+      </div>
     </main>
   )
 }

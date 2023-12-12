@@ -82,7 +82,7 @@ export const desactivateTotpResponseSchema = () =>
 export const recover2FASchema = (dictionary?: TDictionary) =>
   z.object({
     email: emailSchema(dictionary),
-    mnemonic: z.string().refine((value) => value.split(" ").length === 12, {
+    mnemonic: z.string().refine((value) => value.split(" ").filter((v) => !!v).length === 12, {
       message: dictionary && dictionary.mnemonic.invalid,
     }),
   })
