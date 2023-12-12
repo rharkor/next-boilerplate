@@ -19,7 +19,7 @@
     "@semantic-release/release-notes-generator",
     "@semantic-release/commit-analyzer",
     "@semantic-release/git",
-    "@semantic-release/changelog"
-  ],
-  "tagFormat": "@next-boilerplate/landing@v${version}"
+    "@semantic-release/changelog",
+    "@semantic-release/github"
+  ]
 }

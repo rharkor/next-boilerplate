@@ -37,15 +37,57 @@ export const signInSchema = (dictionary?: TDictionary) =>
   z.object({
     email: emailSchema(dictionary),
     password: z.string(), //? Do not use the password schema because we don't want to tell why the password is invalid
+    otp: z.string().optional(),
   })
 
 export const signUpSchema = (dictionary?: TDictionary) =>
   signInSchema(dictionary).extend({
     username: usernameSchema(dictionary),
     password: passwordSchemaWithRegex(dictionary),
+    locale: z.string(),
   })
 
 export const signUpResponseSchema = (dictionary?: TDictionary) =>
   z.object({
     user: userSchema(dictionary),
+  })
+
+export const generateTotpSecretResponseSchema = () =>
+  z.object({
+    success: z.boolean(),
+    url: z.string(),
+    mnemonic: z.string(),
+  })
+
+export const verifyTotpSchema = () =>
+  z.object({
+    token: z.string(),
+  })
+
+export const verifyTotpResponseSchema = () =>
+  z.object({
+    success: z.boolean(),
+  })
+
+export const desactivateTotpSchema = () =>
+  z.object({
+    token: z.string(),
+  })
+
+export const desactivateTotpResponseSchema = () =>
+  z.object({
+    success: z.boolean(),
+  })
+
+export const recover2FASchema = (dictionary?: TDictionary) =>
+  z.object({
+    email: emailSchema(dictionary),
+    mnemonic: z.string().refine((value) => value.split(" ").filter((v) => !!v).length === 12, {
+      message: dictionary && dictionary.mnemonic.invalid,
+    }),
+  })
+
+export const recover2FAResponseSchema = () =>
+  z.object({
+    success: z.boolean(),
   })

@@ -1,5 +1,6 @@
 import { randomUUID } from "crypto"
 import { env } from "env.mjs"
+import { i18n } from "i18n-config"
 
 import { logger } from "@/lib/logger"
 import { sendMail } from "@/lib/mailer"
@@ -12,14 +13,12 @@ import { emailVerificationExpiration, resendEmailVerificationExpiration } from "
 
 export const sendVerificationEmail = async ({ input }: apiInputFromSchema<typeof sendVerificationEmailSchema>) => {
   try {
-    const { email, silent } = input
+    const { silent, email: iEmail, user: iUser } = input
+    const email = (iUser ? iUser.email?.toLowerCase() : iEmail?.toLowerCase()) ?? ""
+    const user = iUser ?? (await prisma.user.findUnique({ where: { email } }))
 
     const token = randomUUID()
-    const user = await prisma.user.findUnique({
-      where: {
-        email: email.toLowerCase(),
-      },
-    })
+
     if (!user) {
       logger.debug("User not found")
       return { email }
@@ -70,8 +69,8 @@ export const sendVerificationEmail = async ({ input }: apiInputFromSchema<typeof
         from: `"${env.SMTP_FROM_NAME}" <${env.SMTP_FROM_EMAIL}>`,
         to: email.toLowerCase(),
         subject: subject,
-        text: plainText(url),
-        html: html(url),
+        text: plainText(url, user.lastLocale ?? i18n.defaultLocale),
+        html: html(url, user.lastLocale ?? i18n.defaultLocale),
       })
     } else {
       logger.debug("Email verification disabled")

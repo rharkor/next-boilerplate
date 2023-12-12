@@ -27,6 +27,10 @@ CREATE TABLE "User" (
     "role" TEXT NOT NULL DEFAULT 'user',
     "password" TEXT,
     "hasPassword" BOOLEAN NOT NULL DEFAULT false,
+    "lastLocale" TEXT,
+    "otpSecret" TEXT NOT NULL DEFAULT '',
+    "otpMnemonic" TEXT NOT NULL DEFAULT '',
+    "otpVerified" BOOLEAN NOT NULL DEFAULT false,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 

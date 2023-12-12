@@ -2,7 +2,8 @@ import { env } from "env.mjs"
 
 export const subject = "Verify your email address"
 
-export const plainText = (verificationLink: string) => `Email Verification
+export const plainText = (verificationLink: string, locale: string) => {
+  const en = `Email Verification
 
 Hello,
 
@@ -13,12 +14,31 @@ ${verificationLink}
 If you did not sign up for an account, you can safely ignore this email.
 
 This email was sent to you as part of our account services. ${
-  env.SUPPORT_EMAIL ? ` If you have any questions, please contact us at ${env.SUPPORT_EMAIL}.` : ""
-}
+    env.SUPPORT_EMAIL ? ` If you have any questions, please contact us at ${env.SUPPORT_EMAIL}.` : ""
+  }
 `
 
-export const html = (verificationLink: string) => `<!DOCTYPE html>
-<html xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office" lang="en">
+  const fr = `Vérification de l'adresse e-mail
+
+Bonjour,
+
+Merci de vous être inscrit chez nous. Veuillez vérifier votre adresse e-mail en cliquant sur le lien suivant :
+
+${verificationLink}
+
+Si vous ne vous êtes pas inscrit pour un compte, vous pouvez ignorer cet e-mail en toute sécurité.
+
+Cet e-mail vous a été envoyé dans le cadre de nos services de compte. ${
+    env.SUPPORT_EMAIL ? ` Si vous avez des questions, veuillez nous contacter à ${env.SUPPORT_EMAIL}.` : ""
+  }
+`
+
+  if (locale === "fr") return fr
+  return en
+}
+
+export const html = (verificationLink: string, locale: string) => `<!DOCTYPE html>
+<html xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office" lang="${locale}">
 
 <head>
     <title></title>
@@ -133,7 +153,11 @@ export const html = (verificationLink: string) => `<!DOCTYPE html>
                                                             <td class="pad" style="text-align:center;width:100%;">
                                                                 <h1
                                                                     style="margin: 0; color: #101010; direction: ltr; font-family: Arial, Helvetica Neue, Helvetica, sans-serif; font-size: 27px; font-weight: normal; letter-spacing: normal; line-height: 120%; text-align: center; margin-top: 0; margin-bottom: 0;">
-                                                                    <strong>Verify your email</strong>
+                                                                    <strong>${
+                                                                      locale === "fr"
+                                                                        ? "Vérification de l'adresse e-mail"
+                                                                        : "Email Verification"
+                                                                    }</strong>
                                                                 </h1>
                                                             </td>
                                                         </tr>
@@ -174,8 +198,11 @@ export const html = (verificationLink: string) => `<!DOCTYPE html>
                                                                     style="color:#848484;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:14px;line-height:180%;text-align:center;mso-line-height-alt:25.2px;">
                                                                     <p style="margin: 0; word-break: break-word;">
                                                                         <span>
-                                                                            Click the button below to verify your email
-                                                                            and complete your registration.
+                                                                        ${
+                                                                          locale === "fr"
+                                                                            ? `Cliquez sur le bouton ci-dessous pour vérifier votre adresse e-mail et terminer votre inscription.`
+                                                                            : `Click the button below to verify your email and complete your registration.`
+                                                                        }
                                                                         </span>
                                                                     </p>
                                                                 </div>
@@ -195,9 +222,11 @@ export const html = (verificationLink: string) => `<!DOCTYPE html>
                                                                         href="${verificationLink}" target="_blank"
                                                                         style="text-decoration:none;display:inline-block;color:#ffffff;background-color:#101;border-radius:4px;width:auto;border-top:1px solid #101;font-weight:undefined;border-right:1px solid #101;border-bottom:1px solid #101;border-left:1px solid #101;padding-top:5px;padding-bottom:5px;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:16px;text-align:center;mso-border-alt:none;word-break:keep-all;"><span
                                                                             style="padding-left:20px;padding-right:20px;font-size:16px;display:inline-block;letter-spacing:normal;"><span
-                                                                                style="word-break: break-word; line-height: 32px;">Confirm
-                                                                                my
-                                                                                email</span></span></a><!--[if mso]></center></v:textbox></v:roundrect><![endif]-->
+                                                                                style="word-break: break-word; line-height: 32px;">${
+                                                                                  locale === "fr"
+                                                                                    ? "Vérifier mon adresse e-mail"
+                                                                                    : "Confirm my email"
+                                                                                }</span></span></a><!--[if mso]></center></v:textbox></v:roundrect><![endif]-->
                                                                 </div>
                                                             </td>
                                                         </tr>
