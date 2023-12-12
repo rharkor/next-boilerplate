@@ -17,6 +17,7 @@ import { handleMutationError } from "@/lib/utils/client-utils"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Button } from "@nextui-org/react"
 
+import TotpVerificationModal from "../profile/totp/totp-verification-modal"
 import FormField from "../ui/form"
 
 type UserAuthFormProps = React.HTMLAttributes<HTMLFormElement> & {
@@ -56,6 +57,16 @@ export type IFormMinimized = z.infer<ReturnType<typeof formMinizedSchema>>
 export function RegisterUserAuthForm({ dictionary, isMinimized, searchParams, locale, ...props }: UserAuthFormProps) {
   const router = useRouter()
 
+  const [isDesactivate2FAModalOpen, setDesactivate2FAModalOpen] = React.useState(false)
+  const [otpPromiseResolve, setOtpPromiseResolve] = React.useState<(otp: string | null) => void>()
+
+  const getOtpCode = () => {
+    return new Promise<string>((resolve) => {
+      setOtpPromiseResolve(() => resolve)
+      setDesactivate2FAModalOpen(true)
+    })
+  }
+
   const registerMutation = trpc.auth.register.useMutation({
     onError: (error) => {
       setIsLoading(false)
@@ -79,6 +90,7 @@ export function RegisterUserAuthForm({ dictionary, isMinimized, searchParams, lo
         callbackUrl: authRoutes.redirectAfterSignIn,
         router,
         dictionary,
+        getOtpCode,
       }).catch((error) => {
         logger.error("Error while signing in after sign up", error)
         setIsLoading(false)
@@ -138,70 +150,92 @@ export function RegisterUserAuthForm({ dictionary, isMinimized, searchParams, lo
   }
 
   return (
-    <form
-      onSubmit={form.handleSubmit(isMinimized ? onSubmitMinimized : onSubmit)}
-      {...props}
-      className={cn("grid gap-2", props.className)}
-    >
-      <div className="relative">
-        <FormField
-          form={form}
-          name="email"
-          label={dictionary.email}
-          type="email"
-          autoCapitalize="none"
-          autoComplete="email"
-          autoCorrect="off"
-          isDisabled={isLoading || !isMinimized}
-        />
-        {!isMinimized && (
-          <Button
-            as={Link}
-            href={`${authRoutes.signUp[0]}?email=${form.getValues("email")}`}
-            className="absolute right-2 top-2 z-10"
-          >
-            {dictionary.edit}
-          </Button>
-        )}
-      </div>
-
-      {!isMinimized && (
-        <>
+    <>
+      <form
+        onSubmit={form.handleSubmit(isMinimized ? onSubmitMinimized : onSubmit)}
+        {...props}
+        className={cn("grid gap-2", props.className)}
+      >
+        <div className="relative">
           <FormField
             form={form}
-            name="username"
-            label={dictionary.username}
-            type="text"
+            name="email"
+            label={dictionary.email}
+            type="email"
             autoCapitalize="none"
-            autoComplete="username"
+            autoComplete="email"
             autoCorrect="off"
-            disabled={isLoading}
+            isDisabled={isLoading || !isMinimized}
           />
-          <FormField
-            form={form}
-            name="password"
-            label={dictionary.password}
-            type="password-eye-slash"
-            autoComplete="new-password"
-            autoCorrect="off"
-            disabled={isLoading}
-            passwordStrength
-            dictionary={dictionary}
-          />
-          <FormField
-            form={form}
-            name="confirmPassword"
-            label={dictionary.confirmPassword}
-            type="password"
-            autoComplete="new-password"
-            autoCorrect="off"
-            disabled={isLoading}
-          />
-        </>
-      )}
-      <Button type="submit" isLoading={isLoading} color="primary">
-        {dictionary.signUp} {isMinimized && dictionary.withEmail}
-      </Button>
-    </form>
+          {!isMinimized && (
+            <Button
+              as={Link}
+              href={`${authRoutes.signUp[0]}?email=${form.getValues("email")}`}
+              className="absolute right-2 top-2 z-10"
+            >
+              {dictionary.edit}
+            </Button>
+          )}
+        </div>
+
+        {!isMinimized && (
+          <>
+            <FormField
+              form={form}
+              name="username"
+              label={dictionary.username}
+              type="text"
+              autoCapitalize="none"
+              autoComplete="username"
+              autoCorrect="off"
+              disabled={isLoading}
+            />
+            <FormField
+              form={form}
+              name="password"
+              label={dictionary.password}
+              type="password-eye-slash"
+              autoComplete="new-password"
+              autoCorrect="off"
+              disabled={isLoading}
+              passwordStrength
+              dictionary={dictionary}
+            />
+            <FormField
+              form={form}
+              name="confirmPassword"
+              label={dictionary.confirmPassword}
+              type="password"
+              autoComplete="new-password"
+              autoCorrect="off"
+              disabled={isLoading}
+            />
+          </>
+        )}
+        <Button type="submit" isLoading={isLoading} color="primary">
+          {dictionary.signUp} {isMinimized && dictionary.withEmail}
+        </Button>
+      </form>
+      <TotpVerificationModal
+        dictionary={dictionary}
+        isOpen={isDesactivate2FAModalOpen}
+        onOpenChange={(isOpen) => {
+          if (!isOpen && otpPromiseResolve) {
+            otpPromiseResolve(null)
+          }
+          setDesactivate2FAModalOpen(isOpen)
+        }}
+        onConfirm={(otp) => {
+          if (otpPromiseResolve) {
+            otpPromiseResolve(otp)
+            setDesactivate2FAModalOpen(false)
+          }
+        }}
+        title={dictionary.totp.desactivateTitle}
+        submitText={dictionary.totp.desactivate}
+        closeText={dictionary.cancel}
+        onlyPrompt
+      />
+    </>
   )
 }

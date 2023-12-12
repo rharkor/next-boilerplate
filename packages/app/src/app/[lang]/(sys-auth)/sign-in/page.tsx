@@ -1,8 +1,10 @@
 import Link from "next/link"
+import { getServerSession } from "next-auth"
 import { env } from "env.mjs"
 import { Locale } from "i18n-config"
 
 import { LoginUserAuthForm } from "@/components/auth/login-user-auth-form"
+import { nextAuthOptions } from "@/lib/auth"
 import { authRoutes } from "@/lib/auth/constants"
 import { getDictionary } from "@/lib/langs"
 import { cn } from "@/lib/utils"
@@ -21,6 +23,7 @@ export default async function SignInPage({
   }
 }) {
   const dictionary = await getDictionary(lang)
+  const session = await getServerSession(nextAuthOptions)
 
   return (
     <main className="container relative m-auto grid min-h-screen flex-1 flex-col items-center justify-center px-2 lg:max-w-none lg:grid-cols-2 lg:px-0">
@@ -53,7 +56,7 @@ export default async function SignInPage({
                     <span className="bg-background text-muted-foreground px-2">{dictionary.auth.orContinueWith}</span>
                   </div>
                 </div>
-                <Providers dictionary={dictionary} searchParams={searchParams} />
+                <Providers dictionary={dictionary} searchParams={searchParams} session={session} />
               </>
             )}
           </div>

@@ -1,32 +1,61 @@
+"use client"
+
 import { redirect } from "next/navigation"
-import { getServerSession } from "next-auth"
+import { Session } from "next-auth"
+import { signIn } from "next-auth/react"
+import { toast } from "react-toastify"
 
 import GithubSignIn from "@/components/auth/github-sign-in"
-import { nextAuthOptions, providersByName } from "@/lib/auth"
+import { authRoutes } from "@/lib/auth/constants"
 import { TDictionary } from "@/lib/langs"
+import { logger } from "@/lib/logger"
 
-export default async function Providers({
+export default function Providers({
   dictionary,
   searchParams,
+  session,
 }: {
   dictionary: TDictionary
   searchParams: { [key: string]: string | string[] | undefined }
+  session: Session | null
 }) {
-  const session = await getServerSession(nextAuthOptions)
-
   const callbackUrl = searchParams.callbackUrl ? searchParams.callbackUrl.toString() : undefined
 
   //? If session and callbackUrl, redirect to callbackUrl
   if (session && callbackUrl) {
-    console.log("redirect", session, callbackUrl)
     redirect(callbackUrl)
+  }
+
+  async function handleSignIn({ providerId }: { providerId: string }) {
+    try {
+      const res = await signIn(providerId, {
+        callbackUrl: `${window.location.origin}${authRoutes.redirectAfterSignIn}`,
+      })
+
+      if (res) {
+        logger.debug("SignIn result", res)
+        if (res.error) {
+          if (res.error === "OAuthAccountNotLinked") {
+            toast.error(dictionary.errors.wrongProvider)
+          } else {
+            throw new Error(dictionary.errors.unknownError)
+          }
+        }
+      }
+      //? Do not setIsLoading(false) here because the user will be redirected to profile
+    } catch (error) {
+      logger.error(error)
+      if (error instanceof Error) {
+        toast.error(error.message)
+      } else {
+        toast(dictionary.errors.unknownError)
+      }
+    }
   }
 
   return (
     <>
-      {providersByName.GitHub !== undefined && (
-        <GithubSignIn providerId={providersByName.GitHub.id} dictionary={dictionary} />
-      )}
+      <GithubSignIn providerId={"github"} handleSignIn={handleSignIn} />
     </>
   )
 }

@@ -1,57 +1,39 @@
 "use client"
 
 import { useState } from "react"
-import { signIn } from "next-auth/react"
-import { toast } from "react-toastify"
 
-import { authRoutes } from "@/lib/auth/constants"
-import { TDictionary } from "@/lib/langs"
-import { logger } from "@/lib/logger"
 import { Button, Spinner } from "@nextui-org/react"
 
 import { Icons } from "../icons"
 
-export default function GithubSignIn({ providerId, dictionary }: { providerId: string; dictionary: TDictionary }) {
+export default function GithubSignIn({
+  providerId,
+  handleSignIn,
+}: {
+  providerId: string
+  handleSignIn: ({ depth, otp, providerId }: { depth?: number; otp?: string; providerId: string }) => Promise<void>
+}) {
   const [isLoading, setIsLoading] = useState(false)
 
-  async function handleSignIn() {
-    setIsLoading(true)
-    try {
-      const res = await signIn(providerId, {
-        callbackUrl: `${window.location.origin}${authRoutes.redirectAfterSignIn}`,
-      })
-
-      if (res) {
-        logger.debug("SignIn result", res)
-        if (res.error) {
-          if (res.error === "OAuthAccountNotLinked") {
-          } else {
-            throw new Error(dictionary.errors.unknownError)
-          }
-        }
-
-        setIsLoading(false)
-      }
-      //? Do not setIsLoading(false) here because the user will be redirected to profile
-    } catch (error) {
-      setIsLoading(false)
-      logger.error(error)
-      if (error instanceof Error) {
-        toast.error(error.message)
-      } else {
-        toast(dictionary.errors.unknownError)
-      }
-    }
-  }
-
   return (
-    <Button variant="ghost" color="primary" type="button" onClick={handleSignIn} disabled={isLoading}>
-      {isLoading ? (
-        <Spinner classNames={{ base: "mr-2", wrapper: "h-4 w-4" }} />
-      ) : (
-        <Icons.gitHub className="mr-2 h-4 w-4" />
-      )}
-      Github
-    </Button>
+    <>
+      <Button
+        variant="ghost"
+        color="primary"
+        type="button"
+        onClick={() => {
+          setIsLoading(true)
+          handleSignIn({ providerId }).finally(() => setIsLoading(false))
+        }}
+        disabled={isLoading}
+      >
+        {isLoading ? (
+          <Spinner classNames={{ base: "mr-2", wrapper: "h-4 w-4" }} color="current" />
+        ) : (
+          <Icons.gitHub className="mr-2 h-4 w-4" />
+        )}
+        Github
+      </Button>
+    </>
   )
 }

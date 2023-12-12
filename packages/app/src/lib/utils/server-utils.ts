@@ -1,4 +1,5 @@
 import { Session } from "next-auth"
+import base32Encode from "base32-encode"
 import { z } from "zod"
 
 import { ValueOf } from "@/types"
@@ -75,4 +76,9 @@ export function ApiError(message: ValueOf<typeof throwableErrorsMessages>, code?
     code: code ?? "BAD_REQUEST",
     message: message.toString(),
   })
+}
+
+export const generateRandomSecret = () => {
+  const secret = base32Encode(crypto.getRandomValues(new Uint8Array(10)), "RFC4648", { padding: false })
+  return secret
 }

@@ -17,7 +17,7 @@ export default function NeedSavePopup({ show, onReset, onSave, text, isSubmittin
   return (
     <div
       className={cn("fixed bottom-0 left-1 right-1 z-50 mx-0 overflow-hidden pb-4 lg:left-2 lg:right-2", {
-        "pointer-events-none": !show,
+        "pointer-events-none invisible": !show,
       })}
     >
       <div
