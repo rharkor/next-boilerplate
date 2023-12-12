@@ -51,15 +51,15 @@ export default function OtpInput({ otp, setOtp }: OtpInputProps) {
   const divRef = useRef<HTMLDivElement>(null)
 
   return (
-    <div className="flex justify-center space-x-2" ref={divRef}>
+    <div className="flex justify-center space-x-1" ref={divRef}>
       {otp.map((data, index) => {
         return (
           <input
             className={cn(
-              "border-muted-foreground focus:border-primary h-12 w-12 rounded border-2 text-center text-xl !outline-none transition-all duration-200 ease-in-out",
+              "border-muted-foreground/50 rounded-medium focus:border-primary h-12 w-12 border-2 text-center text-xl !outline-none transition-all duration-200 ease-in-out",
               {
-                "rounded-medium": data,
-                "!ml-6": index === 3 && otp.length === 6,
+                "border-primary-400/50": data,
+                "!ml-4": index === 3 && otp.length === 6,
               }
             )}
             key={index}

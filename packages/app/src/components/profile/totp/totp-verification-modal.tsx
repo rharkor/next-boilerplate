@@ -17,7 +17,9 @@ export type TotpVerificationModalProps = {
   submitText: string
   closeText: string
   onlyPrompt?: boolean
-  onConfirm?: (otp: string) => void
+  onConfirm?: (otp: string) => void | Promise<void>
+  isDanger?: boolean
+  isLoading?: boolean
 }
 
 export default function TotpVerificationModal({
@@ -30,6 +32,8 @@ export default function TotpVerificationModal({
   closeText,
   onlyPrompt,
   onConfirm,
+  isDanger,
+  isLoading,
 }: TotpVerificationModalProps) {
   const router = useRouter()
 
@@ -41,7 +45,7 @@ export default function TotpVerificationModal({
 
   const handleConfirm = async () => {
     if (onlyPrompt) {
-      onConfirm?.(otp.join(""))
+      await onConfirm?.(otp.join(""))
       setOtp(new Array(6).fill(""))
       return
     }
@@ -62,7 +66,7 @@ export default function TotpVerificationModal({
             <ModalHeader>
               <ModalTitle>{title}</ModalTitle>
             </ModalHeader>
-            <ModalBody>
+            <ModalBody className="py-6">
               <OtpInput otp={otp} setOtp={setOtp} />
             </ModalBody>
             <ModalFooter>
@@ -76,12 +80,12 @@ export default function TotpVerificationModal({
                 {closeText}
               </Button>
               <Button
-                color="primary"
+                color={isDanger ? "danger" : "primary"}
                 onPress={() => {
                   handleConfirm()
                 }}
                 isDisabled={otp.length !== 6}
-                isLoading={verifyTotpMutation.isLoading}
+                isLoading={verifyTotpMutation.isLoading || isLoading}
               >
                 {submitText}
               </Button>

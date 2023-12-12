@@ -245,7 +245,7 @@ export const nextAuthOptions: NextAuthOptions = {
         const userHasOtp = dbUser?.otpVerified
         const provId = account?.provider
         if (
-          !provId &&
+          provId === "credentials" &&
           userHasOtp &&
           (!credentials?.otp || typeof credentials.otp !== "string" || credentials.otp === "undefined")
         ) {

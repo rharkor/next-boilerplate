@@ -26,7 +26,6 @@ export default function GenerateTotp({
 }) {
   const router = useRouter()
 
-  //TODO Desactivate 2FA
   const hasOtpVerified = account.data?.user.otpVerified
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [modalIndex, setModalIndex] = useState(0)
@@ -88,6 +87,17 @@ export default function GenerateTotp({
 
   const [isDesactivate2FAModalOpen, setDesactivate2FAModalOpen] = useState(false)
 
+  const desactivate2FAMutation = trpc.auth.desactivateTotp.useMutation({
+    onError: (error) => handleMutationError(error, dictionary, router),
+  })
+
+  const handleDesactivate2FA = async (token: string) => {
+    await desactivate2FAMutation.mutateAsync({ token })
+    account.refetch()
+    toast.success(dictionary.totp.totpDesactivated)
+    setDesactivate2FAModalOpen(false)
+  }
+
   return (
     <div className="flex flex-col gap-2">
       <div className="flex flex-col">
@@ -101,6 +111,7 @@ export default function GenerateTotp({
             onClick={() => {
               setDesactivate2FAModalOpen(true)
             }}
+            isLoading={desactivate2FAMutation.isLoading}
           >
             {dictionary.totp.desactivate}
           </Button>
@@ -110,6 +121,7 @@ export default function GenerateTotp({
             onClick={() => {
               setIsModalOpen(true)
             }}
+            isLoading={generateTotpSecretMutation.isLoading}
           >
             {dictionary.totp.generate}
           </Button>
@@ -273,14 +285,13 @@ export default function GenerateTotp({
         dictionary={dictionary}
         isOpen={isDesactivate2FAModalOpen}
         onOpenChange={setDesactivate2FAModalOpen}
-        onSuccessfulVerification={() => {
-          account.refetch()
-          toast.success(dictionary.totp.totpDesactivated)
-          //TODO Desactivate 2FA
-        }}
+        onConfirm={handleDesactivate2FA}
         title={dictionary.totp.desactivateTitle}
         submitText={dictionary.totp.desactivate}
         closeText={dictionary.cancel}
+        onlyPrompt
+        isDanger
+        isLoading={desactivate2FAMutation.isLoading}
       />
     </div>
   )
