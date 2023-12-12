@@ -136,17 +136,14 @@ export default function GenerateTotp({
               </ModalHeader>
               <ModalBody className="overflow-hidden p-0">
                 <div
-                  className={cn("flex flex-row transition-all duration-300 ease-in-out [&>*]:px-6 [&>*]:py-2", {
-                    "h-[372px]": modalIndex === 0,
-                    "h-[200px]": modalIndex === 1,
-                    "h-[400px]": modalIndex === 2,
-                    "h-[220px]": modalIndex === 3,
-                  })}
+                  className={cn(
+                    "flex h-[372px] flex-row transition-all duration-300 ease-in-out [&>*]:px-6 [&>*]:py-2"
+                  )}
                   style={{
                     transform: `translateX(-${modalIndex * 100}%)`,
                   }}
                 >
-                  <section className="flex h-full min-w-full flex-col items-center justify-center gap-4">
+                  <section className="flex h-full min-w-full flex-col items-center justify-center gap-4 overflow-auto">
                     <h4 className="text-medium w-full">
                       <span className="text-foreground text-lg font-semibold">1.</span> {dictionary.totp.generateStep1}
                     </h4>
@@ -159,13 +156,18 @@ export default function GenerateTotp({
                       onClick={() => copyToClipboard(totpSecretData?.url)}
                       tabIndex={0}
                     >
-                      <QRCodeSVG value={totpSecretData?.url ?? ""} size={256} includeMargin />
+                      <QRCodeSVG
+                        value={totpSecretData?.url ?? ""}
+                        size={256}
+                        includeMargin
+                        className="h-48 w-48 lg:h-64 lg:w-64"
+                      />
                     </Skeleton>
                     <Skeleton isLoaded={!!totpSecretData} className="rounded-medium">
                       <p className="text-muted-foreground text-xs">({dictionary.totp.generateStep1Description})</p>
                     </Skeleton>
                   </section>
-                  <section className="flex h-full min-w-full flex-col items-center gap-4">
+                  <section className="flex h-full min-w-full flex-col items-center gap-4 overflow-auto">
                     <div className="flex w-full flex-col">
                       <h4 className="text-medium">
                         <span className="text-foreground text-lg font-semibold">2.</span>{" "}
@@ -177,7 +179,7 @@ export default function GenerateTotp({
                       <p className="bg-muted rounded-medium p-2 text-lg">{totpSecretData?.mnemonic}</p>
                     </div>
                   </section>
-                  <section className="flex h-full min-w-full flex-col items-center gap-4">
+                  <section className="flex h-full min-w-full flex-col items-center gap-4 overflow-auto">
                     <h4 className="text-medium w-full">
                       <span className="text-foreground text-lg font-semibold">3.</span> {dictionary.totp.generateStep3}
                     </h4>
@@ -185,11 +187,15 @@ export default function GenerateTotp({
                       <div className="grid grid-cols-3 gap-x-6 gap-y-2">
                         {totpSecretData?.mnemonic.split(" ").map((word, index) => (
                           <p
-                            className={cn("bg-muted rounded-medium group relative h-[34px] w-[100px] p-1.5 text-sm", {
-                              "border-danger text-danger border":
-                                mnemonicVerif.split(" ")[index] && mnemonicVerif.split(" ")[index] !== word,
-                              "before:absolute before:-left-6 before:translate-x-1/2 before:content-['-']": index % 3,
-                            })}
+                            className={cn(
+                              "bg-muted rounded-medium hover:bg-primary-200/70 focus:bg-primary-200/70 group relative h-[34px] w-full min-w-[70px] p-1.5 text-sm transition-all",
+                              {
+                                "bg-danger-50 hover:bg-danger-100":
+                                  mnemonicVerif.split(" ")[index] && mnemonicVerif.split(" ")[index] !== word,
+                                "before:absolute before:-left-3 before:-translate-x-1/2 before:content-['-'] before:max-[340px]:hidden":
+                                  index % 3,
+                              }
+                            )}
                             key={index}
                           >
                             {mnemonicVerif.split(" ")[index]}

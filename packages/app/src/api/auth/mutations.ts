@@ -12,6 +12,7 @@ import { redis } from "@/lib/redis"
 import {
   desactivateTotpSchema,
   generateTotpSecretResponseSchema,
+  recover2FASchema,
   signUpSchema,
   verifyTotpSchema,
 } from "@/lib/schemas/auth"
@@ -173,6 +174,37 @@ export const desactivateTotp = async ({
     await prisma.user.update({
       where: {
         id: session.user.id,
+      },
+      data: {
+        otpSecret: "",
+        otpMnemonic: "",
+        otpVerified: false,
+      },
+    })
+    return { success: true }
+  } catch (error: unknown) {
+    return handleApiError(error)
+  }
+}
+
+export const recover2FA = async ({ input }: apiInputFromSchema<typeof recover2FASchema>) => {
+  try {
+    const { email, mnemonic } = recover2FASchema().parse(input)
+    const tries = await redis.get(`recover2FA:${email.toLowerCase()}`)
+    if (tries && Number(tries) > 5) return ApiError(throwableErrorsMessages.tooManyAttempts)
+    await redis.setex(`recover2FA:${email.toLowerCase()}`, 60 * 60, Number(tries) + 1) //? 1 hour
+    const user = await prisma.user.findFirst({
+      where: {
+        email: email.toLowerCase(),
+      },
+    })
+    if (!user) return ApiError(throwableErrorsMessages.invalidCredentials)
+    if (!user.otpSecret) return ApiError(throwableErrorsMessages.invalidCredentials)
+    const isValid = mnemonic === user.otpMnemonic
+    if (!isValid) return ApiError(throwableErrorsMessages.invalidCredentials)
+    await prisma.user.update({
+      where: {
+        id: user.id,
       },
       data: {
         otpSecret: "",

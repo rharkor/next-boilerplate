@@ -2,6 +2,8 @@ import {
   desactivateTotpResponseSchema,
   desactivateTotpSchema,
   generateTotpSecretResponseSchema,
+  recover2FAResponseSchema,
+  recover2FASchema,
   signUpResponseSchema,
   signUpSchema,
   verifyTotpResponseSchema,
@@ -9,7 +11,7 @@ import {
 } from "@/lib/schemas/auth"
 import { authenticatedProcedure, publicProcedure, router } from "@/lib/server/trpc"
 
-import { desactivateTotp, generateTotpSecret, register, verifyTotp } from "./mutations"
+import { desactivateTotp, generateTotpSecret, recover2FA, register, verifyTotp } from "./mutations"
 
 export const authRouter = router({
   register: publicProcedure.input(signUpSchema()).output(signUpResponseSchema()).mutation(register),
@@ -19,4 +21,5 @@ export const authRouter = router({
     .input(desactivateTotpSchema())
     .output(desactivateTotpResponseSchema())
     .mutation(desactivateTotp),
+  recover2FA: publicProcedure.input(recover2FASchema()).output(recover2FAResponseSchema()).mutation(recover2FA),
 })

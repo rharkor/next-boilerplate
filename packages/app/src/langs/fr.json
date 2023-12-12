@@ -64,6 +64,7 @@
   "reset": "Réinitialiser",
   "saveChanges": "Sauvegarder",
   "errors": {
+    "tooManyAttempts": "Trop de tentatives. Veuillez réessayer dans quelques minutes.",
     "otpInvalid": "Code OTP invalide.",
     "otpSecretAlreadyExists": "Un secret OTP existe déjà.",
     "otpSecretNotFound": "Secret OTP introuvable.",
@@ -202,10 +203,22 @@
     "totpDesactivated": "2FA désactivé",
     "desactivateTitle": "Désactiver le 2FA",
     "enterCode": "Vérification 2FA",
-    "generateDescription": "Veuillez noter que si vous vous connectez avec un provider, le 2FA ne sera pas demandé."
+    "generateDescription": "Veuillez noter que si vous vous connectez avec un provider, le 2FA ne sera pas demandé.",
+    "lostYourDevice": "Vous avez perdu votre téléphone ?"
   },
   "back": "Retour",
   "urlCopiedToClipboard": "URL copiée dans le presse-papier",
   "confirm": "Confirmer",
-  "totpEnabled": "2FA activé"
+  "totpEnabled": "2FA activé",
+  "recover2FA": "Récupérer votre compte",
+  "recover2FADescription": "Entrez la phrase secrète que vous avez sauvegardé lors de l'activation du 2FA. Si vous ne l'avez pas, veuillez contacter le support.",
+  "mnemonic": {
+    "write": "Ecrivez",
+    "down": "ci-dessous",
+    "your": "votre",
+    "mnemonic": "phrase",
+    "phrase": "secrète",
+    "here": "",
+    "invalid": "Phrase secrète invalide"
+  }
 }

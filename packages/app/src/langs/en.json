@@ -64,6 +64,7 @@
   "reset": "Reset",
   "saveChanges": "Save changes",
   "errors": {
+    "tooManyAttempts": "Too many attempts. Please try again later.",
     "otpInvalid": "Invalid OTP code.",
     "otpSecretAlreadyExists": "You already have an OTP secret.",
     "otpSecretNotFound": "OTP secret not found.",
@@ -202,10 +203,22 @@
     "totpDesactivated": "2FA disabled",
     "desactivateTitle": "Desactivate 2FA",
     "enterCode": "Enter 2FA code",
-    "generateDescription": "Please note that if you login with a provider, the 2FA will not be asked."
+    "generateDescription": "Please note that if you login with a provider, the 2FA will not be asked.",
+    "lostYourDevice": "Lost your device?"
   },
   "back": "Back",
   "urlCopiedToClipboard": "URL copied to clipboard",
   "confirm": "Confirm",
-  "totpEnabled": "2FA enabled"
+  "totpEnabled": "2FA enabled",
+  "recover2FA": "Recover your account",
+  "recover2FADescription": "Enter the secret phrase you saved when you activated the 2FA. If you don't have it, please contact support.",
+  "mnemonic": {
+    "write": "Write",
+    "down": "down",
+    "your": "your",
+    "mnemonic": "mnemonic",
+    "phrase": "phrase",
+    "here": "here",
+    "invalid": "Invalid mnemonic phrase."
+  }
 }

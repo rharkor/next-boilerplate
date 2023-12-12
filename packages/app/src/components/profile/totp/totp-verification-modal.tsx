@@ -6,7 +6,7 @@ import OtpInput from "@/components/ui/otp-input"
 import { TDictionary } from "@/lib/langs"
 import { trpc } from "@/lib/trpc/client"
 import { handleMutationError } from "@/lib/utils/client-utils"
-import { Button, Modal, ModalBody, ModalContent, ModalFooter } from "@nextui-org/react"
+import { Button, Link, Modal, ModalBody, ModalContent, ModalFooter } from "@nextui-org/react"
 
 export type TotpVerificationModalProps = {
   dictionary: TDictionary
@@ -20,6 +20,7 @@ export type TotpVerificationModalProps = {
   onConfirm?: (otp: string) => void | Promise<void>
   isDanger?: boolean
   isLoading?: boolean
+  curEmail?: string
 }
 
 export default function TotpVerificationModal({
@@ -34,6 +35,7 @@ export default function TotpVerificationModal({
   onConfirm,
   isDanger,
   isLoading,
+  curEmail,
 }: TotpVerificationModalProps) {
   const router = useRouter()
 
@@ -68,6 +70,9 @@ export default function TotpVerificationModal({
             </ModalHeader>
             <ModalBody className="py-6">
               <OtpInput otp={otp} setOtp={setOtp} />
+              <Link className="ml-auto" href={`/recover-2fa${curEmail ? `?email=${curEmail}` : ""}`}>
+                {dictionary.totp.lostYourDevice}
+              </Link>
             </ModalBody>
             <ModalFooter>
               <Button

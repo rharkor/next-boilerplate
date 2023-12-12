@@ -146,6 +146,7 @@ export function LoginUserAuthForm({ dictionary, searchParams, ...props }: UserAu
         submitText={dictionary.confirm}
         closeText={dictionary.cancel}
         onlyPrompt
+        curEmail={form.watch("email")}
       />
     </>
   )
