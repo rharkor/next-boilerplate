@@ -5,6 +5,7 @@ import GithubProvider from "next-auth/providers/github"
 import { randomUUID } from "crypto"
 import { env } from "env.mjs"
 import { i18n, Locale } from "i18n-config"
+import { authenticator } from "otplib"
 import requestIp from "request-ip"
 import { z } from "zod"
 
@@ -156,7 +157,13 @@ export const nextAuthOptions: NextAuthOptions = {
         if ("emailVerified" in user) token.emailVerified = user.emailVerified as Date
         //* Send verification email if needed
         if (user.email && "emailVerified" in user && !user.emailVerified) {
-          await sendVerificationEmail({ input: { email: user.email, silent: true }, ctx: {} as ITrpcContext })
+          const dbUser = await prisma.user.findUnique({
+            where: {
+              email: user.email.toLowerCase(),
+            },
+          })
+          if (!dbUser) throw new Error("User not found")
+          await sendVerificationEmail({ input: { user: dbUser, silent: true }, ctx: {} as ITrpcContext })
         }
       }
       return token
@@ -179,7 +186,6 @@ export const nextAuthOptions: NextAuthOptions = {
       }
       //* Verify that the session still exists
       if (dbUser.hasPassword && (!token.uuid || typeof token.uuid !== "string")) {
-        console.log(dbUser.email)
         logger.debug("Missing token uuid")
         return {} as Session
       }
@@ -225,28 +231,52 @@ export const nextAuthOptions: NextAuthOptions = {
       }
       return sessionFilled
     },
-    async signIn({ user }) {
-      //* Send verification email if needed
+    async signIn({ user, credentials, account }) {
       if (user.email) {
-        await sendVerificationEmail({ input: { email: user.email, silent: true }, ctx: {} as ITrpcContext })
+        const dbUser = await prisma.user.findUnique({
+          where: {
+            email: user.email.toLowerCase(),
+          },
+        })
+        if (!dbUser) return true
+        //* Send verification email if needed
+        await sendVerificationEmail({ input: { user: dbUser, silent: true }, ctx: {} as ITrpcContext })
+        //* Redirect to otp page if needed
+        const userHasOtp = dbUser?.otpVerified
+        const provId = account?.provider
+        if (
+          provId === "credentials" &&
+          userHasOtp &&
+          (!credentials?.otp || typeof credentials.otp !== "string" || credentials.otp === "undefined")
+        ) {
+          throw new Error("OTP_REQUIRED")
+        } else if (userHasOtp && credentials?.otp) {
+          //? Check the otp
+          const isValid = authenticator.check(credentials.otp as string, dbUser.otpSecret)
+          if (!isValid) {
+            throw new Error("OTP_INVALID")
+          }
+        }
       }
       return true
     },
   },
   jwt: {
-    // secret: env.JWT_SECRET,
     maxAge: JWT_MAX_AGE, // 30 days
   },
   pages: {
     signIn: authRoutes.signIn[0],
     newUser: authRoutes.signUp[0],
+    error: authRoutes.signIn[0],
   },
   session: {
     strategy: "jwt", //? Strategy database could not work with credentials provider for security reasons
   },
   logger: {
     error(code, metadata) {
-      logger.error("error", code, metadata)
+      if (["CLIENT_FETCH_ERROR", "JWT_SESSION_ERROR"].includes(code)) return
+      logger.error("error", code)
+      logger.error(metadata)
     },
     warn(code) {
       logger.warn("warn", code)

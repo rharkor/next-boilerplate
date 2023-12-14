@@ -115,8 +115,13 @@ export default function UpdateAvatar({
 
   return (
     <>
-      <div className={cn("group relative h-20 w-20 rounded-full")}>
-        <Skeleton isLoaded={!account.isInitialLoading} className="rounded-full">
+      <div className={cn("group relative h-20 w-20 rounded-full")} tabIndex={0}>
+        <Skeleton
+          isLoaded={!account.isInitialLoading}
+          className={cn("rounded-full", {
+            "overflow-visible": account.isInitialLoading === false,
+          })}
+        >
           <Avatar
             className="text-large h-20 w-20"
             src={getImageUrl(account.data?.user.image) || undefined}
@@ -124,9 +129,9 @@ export default function UpdateAvatar({
             onClick={() => setShowModal(true)}
           />
         </Skeleton>
-        <div
+        <Button
           className={cn(
-            "upload-group bg-muted/40 group absolute inset-0 flex cursor-pointer items-center justify-center rounded-full opacity-0 backdrop-blur-sm transition-all duration-200 group-hover:opacity-100",
+            "upload-group bg-muted/40 group absolute inset-0 flex h-[unset] cursor-pointer items-center justify-center overflow-hidden rounded-full opacity-0 backdrop-blur-sm transition-all duration-200 focus:opacity-100 group-hover:opacity-100 group-focus:opacity-100",
             {
               hidden: account.isInitialLoading,
             }
@@ -134,11 +139,11 @@ export default function UpdateAvatar({
           onClick={() => setShowModal(true)}
         >
           <Camera className="duration-250 h-8 w-8 transition-all group-[.upload-group]:active:scale-95" />
-        </div>
+        </Button>
         <Button
           color="danger"
           className={cn(
-            "text-foreground absolute right-0 top-0 h-[unset] min-w-0 rounded-full p-1.5 opacity-0 transition-all duration-200 group-hover:opacity-100",
+            "text-foreground absolute right-0 top-0 h-[unset] min-w-0 rounded-full p-1.5 opacity-0 transition-all duration-200 focus:opacity-100 group-hover:opacity-100 group-focus:opacity-100",
             {
               hidden: account.isInitialLoading || !account.data?.user.image,
             }

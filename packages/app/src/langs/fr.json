@@ -64,6 +64,11 @@
   "reset": "Réinitialiser",
   "saveChanges": "Sauvegarder",
   "errors": {
+    "tooManyAttempts": "Trop de tentatives. Veuillez réessayer dans quelques minutes.",
+    "otpInvalid": "Code OTP invalide.",
+    "otpSecretAlreadyExists": "Un secret OTP existe déjà.",
+    "otpSecretNotFound": "Secret OTP introuvable.",
+    "demoAdminCannotHaveOtpSecret": "L'administrateur en mode démo ne peut pas avoir de secret OTP.",
     "typeError": {
       "number": {
         "invalid": "Veuillez entrer un nombre valide.",
@@ -184,5 +189,36 @@
   "containsNumber": "Contient des chiffres",
   "containsLowercase": "Contient des minuscules",
   "containsUppercase": "Contient des majuscules",
-  "containsSpecial": "Contient des caractères spéciaux"
+  "containsSpecial": "Contient des caractères spéciaux",
+  "totp": {
+    "generate": "Activer le 2FA",
+    "generateTitle": "Authentification à deux facteurs",
+    "generateStep1": "Ajouter le secret OTP à votre application d'authentification (Google Authenticator, 2FA Auth, etc.)",
+    "generateStep1Description": "Cliquez sur le qr code pour copier l'url dans le presse-papier.",
+    "generateStep2": "Sauvegardez la phrase secrète ci-dessous dans un endroit sûr.",
+    "generateStep2Description": "Vous pouvez utiliser cette phrase secrète pour récupérer votre secret OTP si vous perdez votre téléphone.",
+    "generateStep3": "Vérifier la phrase secrète.",
+    "generateStep4": "Entrez le code OTP généré par votre application d'authentification.",
+    "desactivate": "Désactiver le 2FA",
+    "totpDesactivated": "2FA désactivé",
+    "desactivateTitle": "Désactiver le 2FA",
+    "enterCode": "Vérification 2FA",
+    "generateDescription": "Veuillez noter que si vous vous connectez avec un provider, le 2FA ne sera pas demandé.",
+    "lostYourDevice": "Vous avez perdu votre téléphone ?"
+  },
+  "back": "Retour",
+  "urlCopiedToClipboard": "URL copiée dans le presse-papier",
+  "confirm": "Confirmer",
+  "totpEnabled": "2FA activé",
+  "recover2FA": "Récupérer votre compte",
+  "recover2FADescription": "Entrez la phrase secrète que vous avez sauvegardé lors de l'activation du 2FA. Si vous ne l'avez pas, veuillez contacter le support.",
+  "mnemonic": {
+    "write": "Ecrivez",
+    "down": "ci-dessous",
+    "your": "votre",
+    "mnemonic": "phrase",
+    "phrase": "secrète",
+    "here": "",
+    "invalid": "Phrase secrète invalide"
+  }
 }

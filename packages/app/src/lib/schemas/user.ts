@@ -15,6 +15,8 @@ export const userSchema = (dictionary?: TDictionary) =>
     username: usernameSchema(dictionary).nullable(),
     role: z.string(),
     hasPassword: z.boolean(),
+    otpVerified: z.boolean(),
+    lastLocale: z.string().nullable(),
   })
 
 export const updateUserSchema = (dictionary?: TDictionary) =>
@@ -104,10 +106,19 @@ export const resetPasswordResponseSchema = () =>
   })
 
 export const sendVerificationEmailSchema = (dictionary?: TDictionary) =>
-  z.object({
-    email: emailSchema(dictionary),
-    silent: z.boolean().optional(),
-  })
+  z
+    .object({
+      user: userSchema(dictionary),
+      silent: z.boolean().optional(),
+      email: z.never().optional(),
+    })
+    .or(
+      z.object({
+        email: emailSchema(dictionary),
+        silent: z.boolean().optional(),
+        user: z.never().optional(),
+      })
+    )
 
 export const sendVerificationEmailResponseSchema = () =>
   z.object({
