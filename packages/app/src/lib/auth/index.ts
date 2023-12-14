@@ -274,7 +274,7 @@ export const nextAuthOptions: NextAuthOptions = {
   },
   logger: {
     error(code, metadata) {
-      if (code === "CLIENT_FETCH_ERROR") return
+      if (["CLIENT_FETCH_ERROR", "JWT_SESSION_ERROR"].includes(code)) return
       logger.error("error", code)
       logger.error(metadata)
     },
