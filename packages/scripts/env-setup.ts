@@ -3,7 +3,7 @@
  */
 
 import chalk from "chalk"
-import { exec } from "child_process"
+import { execSync } from "child_process"
 import * as fs from "fs"
 import * as path from "path"
 import * as url from "url"
@@ -16,13 +16,13 @@ export const envSetup = async (initDb: boolean = true) => {
   const appEnvPath = path.join(rootDir, "packages", "app", ".env")
   if (!fs.existsSync(appEnvPath) && fs.existsSync(path.join(rootDir, "packages", "app", ".env.example"))) {
     fs.copyFileSync(path.join(rootDir, "packages", "app", ".env.example"), appEnvPath)
-    console.log(chalk.green("Created .env for app"))
+    console.log(chalk.gray("Created .env for app"))
   } else console.log(chalk.gray("Skipping .env for app"))
   // Landing
   const landingEnvPath = path.join(rootDir, "packages", "landing", ".env")
   if (!fs.existsSync(landingEnvPath) && fs.existsSync(path.join(rootDir, "packages", "landing", ".env.example"))) {
     fs.copyFileSync(path.join(rootDir, "packages", "landing", ".env.example"), landingEnvPath)
-    console.log(chalk.green("Created .env for landing"))
+    console.log(chalk.gray("Created .env for landing"))
   } else console.log(chalk.gray("Skipping .env for landing"))
 
   if (initDb) {
@@ -32,19 +32,23 @@ export const envSetup = async (initDb: boolean = true) => {
     if (!fs.existsSync(appPath)) {
       console.log(chalk.gray("Skipping database initialization (no app folder)"))
     } else {
-      await new Promise<void>((resolve, reject) => {
-        exec("npx prisma migrate dev && npm run seed", { cwd: appPath }, (err, stdout, stderr) => {
-          if (err) {
-            console.log(chalk.red(err.message))
-            reject(err)
-          }
-          if (stderr) {
-            console.log(chalk.red(stderr))
-            reject(stderr)
-          }
-          resolve()
-        })
-      })
+      //? Prisma command exists
+      try {
+        console.log(chalk.gray("Checking if prisma is installed..."))
+        execSync("npx prisma --version", { cwd: appPath })
+      } catch {
+        console.log(chalk.gray("Prisma is not installed"))
+        console.log(chalk.gray("Installing prisma..."))
+        execSync("npm i -g prisma", { cwd: appPath })
+      }
+
+      //? Prisma migrate dev
+      console.log(chalk.gray("Migrating the database..."))
+      execSync("prisma migrate dev", { cwd: appPath })
+
+      //? Prisma seed
+      console.log(chalk.gray("Seeding the database..."))
+      execSync("prisma db seed", { cwd: appPath })
     }
   }
 }

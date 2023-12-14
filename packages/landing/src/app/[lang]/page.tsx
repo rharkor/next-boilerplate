@@ -19,10 +19,13 @@ export default async function Home({
       <div className="pointer-events-none absolute left-0 top-0 h-full w-full overflow-hidden">
         <Blob />
       </div>
-      <h1 className="animate-fade-in-scale relative rounded-lg p-5 text-center text-4xl font-bold text-white/80 md:text-6xl lg:text-8xl">
+      <h1 className="animate-fade-in-scale text-foreground/80 relative rounded-lg p-5 text-center text-4xl font-bold md:text-6xl lg:text-8xl">
         {dictionary.home.title}
       </h1>
-      <a href={env.NEXT_PUBLIC_APP_URL} className="animate-fade-in-scale mt-10 hover:text-blue-500">
+      <a
+        href={env.NEXT_PUBLIC_APP_URL}
+        className="animate-fade-in-scale text-foreground mt-10 font-semibold transition-all hover:text-blue-500"
+      >
         {dictionary.home.link}
       </a>
     </main>

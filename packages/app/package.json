@@ -8,11 +8,11 @@
     "start:with-cron": "npm run deploy-db:prod && concurrently \"next start\" \"npm run cron\"",
     "deploy-db:prod": "npx prisma migrate deploy && npm run seed",
     "cron": "npx tsx ./crons/index.ts",
-    "lint": "next lint",
-    "lint:fix": "next lint --fix",
+    "lint": "next lint && eslint . --ext .js,.jsx,.ts,.tsx",
+    "lint:fix": "next lint --fix && eslint . --ext .js,.jsx,.ts,.tsx --fix",
     "test": "cross-env FORCE_COLOR=1 jest --passWithNoTests",
     "postinstall": "npx patch-package && prisma generate",
-    "seed": "NODE_ENV=development prisma db seed",
+    "seed": "cross-env NODE_ENV=development prisma db seed",
     "is-initialized": "cd ../scripts && npm run is-initialized"
   },
   "dependencies": {
@@ -59,7 +59,7 @@
     "eslint-plugin-unused-imports": "^3.0.0",
     "framer-motion": "^10.16.5",
     "ioredis": "^5.3.2",
-    "lucide-react": "^0.294.0",
+    "lucide-react": "^0.295.0",
     "negotiator": "^0.6.3",
     "next": "^14.0.0",
     "next-auth": "^4.24.5",

@@ -15,16 +15,17 @@ export interface ThemeSwitchProps {
 }
 
 export const ThemeSwitch: FC<ThemeSwitchProps> = ({ className, classNames }) => {
-  const { theme, setTheme } = useTheme()
+  const { theme, setTheme, systemTheme } = useTheme()
+  const curTheme = theme === "system" ? systemTheme ?? "light" : theme
   const isSSR = useIsSSR()
 
   const onChange = () => {
-    theme === "light" ? setTheme("dark") : setTheme("light")
+    curTheme === "light" ? setTheme("dark") : setTheme("light")
   }
 
   const { Component, slots, isSelected, getBaseProps, getInputProps, getWrapperProps } = useSwitch({
-    isSelected: theme === "light" || isSSR,
-    "aria-label": `Switch to ${theme === "light" || isSSR ? "dark" : "light"} mode`,
+    isSelected: curTheme === "light" || isSSR,
+    "aria-label": `Switch to ${curTheme === "light" || isSSR ? "dark" : "light"} mode`,
     onChange,
   })
 
