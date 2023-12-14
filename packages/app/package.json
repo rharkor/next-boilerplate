@@ -12,7 +12,7 @@
     "lint:fix": "next lint --fix && eslint . --ext .js,.jsx,.ts,.tsx --fix",
     "test": "cross-env FORCE_COLOR=1 jest --passWithNoTests",
     "postinstall": "npx patch-package && prisma generate",
-    "seed": "NODE_ENV=development prisma db seed",
+    "seed": "cross-env NODE_ENV=development prisma db seed",
     "is-initialized": "cd ../scripts && npm run is-initialized"
   },
   "dependencies": {
