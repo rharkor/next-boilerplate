@@ -17,24 +17,35 @@ const rootPath = path.join(__dirname, "..")
 config()
 
 async function main() {
-  const alreadyInitialized = await fs.access(path.join(rootPath, "scripts", ".init-todo")).catch(() => false)
-  if (alreadyInitialized) {
-    console.log(chalk.red("Project already initialized!"))
-    exit(1)
+  const alreadyInitialized = await fs
+    .access(path.join(rootPath, "scripts", ".init-todo"))
+    .then(() => false)
+    .catch(() => true)
+
+  if (!alreadyInitialized) {
+    console.log(chalk.green("Welcome to the init script!"))
+    console.log(chalk.blue('Starting the "replace tokens" script...'))
+    await replaceTokens()
+    console.log(chalk.green("Done!"))
+  } else {
+    console.log(chalk.yellow("Skipping replaceTokens()"))
   }
 
-  console.log(chalk.green("Welcome to the init script!"))
-  console.log(chalk.blue('Starting the "replace tokens" script...'))
-  await replaceTokens()
-  console.log(chalk.green("Done!"))
+  if (!alreadyInitialized) {
+    console.log(chalk.blue('Starting the "runtime" script...'))
+    await runtime()
+    console.log(chalk.green("Done!"))
+  } else {
+    console.log(chalk.gray("Skipping runtime()"))
+  }
 
-  console.log(chalk.blue('Starting the "runtime" script...'))
-  await runtime()
-  console.log(chalk.green("Done!"))
-
-  console.log(chalk.blue('Starting the "packages selection" script...'))
-  await packagesSelection()
-  console.log(chalk.green("Done!"))
+  if (!alreadyInitialized) {
+    console.log(chalk.blue('Starting the "packages selection" script...'))
+    await packagesSelection()
+    console.log(chalk.green("Done!"))
+  } else {
+    console.log(chalk.gray("Skipping packagesSelection()"))
+  }
 
   console.log(chalk.blue('Starting the "env setup" script...'))
   await envSetup()
