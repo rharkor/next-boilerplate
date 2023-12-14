@@ -15,11 +15,17 @@
   "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
 
   // Use 'forwardPorts' to make a list of ports inside the container available locally.
-  "forwardPorts": [3000, 5432, 6379, 6080],
+  "forwardPorts": [3000, 3001, 3002, 5432, 6379, 6080],
 
   "portsAttributes": {
     "3000": {
-      "label": "nextjs"
+      "label": "app"
+    },
+    "3001": {
+      "label": "docs"
+    },
+    "3002": {
+      "label": "landing"
     },
     "5432": {
       "label": "postgres"
