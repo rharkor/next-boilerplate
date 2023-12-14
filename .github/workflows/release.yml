@@ -5,6 +5,8 @@ on:
       - main
       - rec
 
+  workflow_dispatch:
+
 permissions:
   contents: read # for checkout
 
