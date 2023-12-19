@@ -116,7 +116,7 @@ export default function UpdateAvatar({
 
   return (
     <>
-      <div className={cn("group relative h-20 w-20 rounded-full")} tabIndex={0}>
+      <div className={cn("group relative h-20 w-20 rounded-full")}>
         <Skeleton
           isLoaded={!account.isInitialLoading}
           className={cn("rounded-full", {
