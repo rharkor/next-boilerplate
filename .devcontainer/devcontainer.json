@@ -71,8 +71,7 @@
         "ChakrounAnas.turbo-console-log",
         "yoavbls.pretty-ts-errors",
         "humao.rest-client",
-        "ambar.bundle-size",
-        "rharkor.node-exec-function"
+        "ambar.bundle-size"
       ]
     }
   },
