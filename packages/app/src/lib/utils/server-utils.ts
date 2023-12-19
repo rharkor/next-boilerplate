@@ -46,20 +46,27 @@ type TValue = string | { [key: string]: TValue }
  */
 export const throwableErrorsMessages: TDictionary["errors"] = Object.entries((await getDictionary("en")).errors).reduce(
   (acc, [key, value]) => {
-    const handleNested = (key: string, value: TValue) => {
-      Object.entries(value).forEach(([subKey, subValue]) => {
+    const handleNested = (
+      obj: {
+        [key: string]: unknown
+      },
+      key: string,
+      realValue: TValue,
+      keySum: string
+    ) => {
+      Object.entries(realValue).forEach(([subKey, subValue]) => {
+        if (!obj[key]) obj[key] = {}
         if (typeof subValue === "string") {
-          if (!acc[key]) acc[key] = {}
-          ;(acc[key] as { [key: string]: string })[subKey] = key + "." + subKey
+          ;(obj[key] as { [key: string]: string })[subKey] = keySum + "." + subKey
         } else {
-          handleNested(key, subValue)
+          handleNested(obj[key] as { [key: string]: string }, subKey, subValue, keySum + "." + subKey)
         }
       })
     }
     if (typeof value === "string") {
       acc[key] = key
     } else {
-      handleNested(key, value)
+      handleNested(acc, key, value, key)
     }
     return acc
   },

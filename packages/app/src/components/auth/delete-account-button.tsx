@@ -7,7 +7,6 @@ import { toast } from "react-toastify"
 import { authRoutes } from "@/lib/auth/constants"
 import { TDictionary } from "@/lib/langs"
 import { trpc } from "@/lib/trpc/client"
-import { handleMutationError } from "@/lib/utils/client-utils"
 import { Button, Modal, ModalContent, ModalFooter } from "@nextui-org/react"
 
 import { ModalDescription, ModalHeader, ModalTitle } from "../ui/modal"
@@ -21,8 +20,7 @@ export default function DeleteAccountButton({
 }) {
   const router = useRouter()
   const deleteAccountMutation = trpc.me.deleteAccount.useMutation({
-    onError: (error) => {
-      handleMutationError(error, dictionary, router)
+    onError: () => {
       setIsDeletingAccount(false)
     },
     onSuccess: () => {
@@ -44,7 +42,7 @@ export default function DeleteAccountButton({
       <Button color="danger" isLoading={isDeletingAccount} onClick={() => setShowModal(true)}>
         {children}
       </Button>
-      <Modal isOpen={showModal} onOpenChange={(open) => setShowModal(open)} backdrop="blur">
+      <Modal isOpen={showModal} onOpenChange={(open) => setShowModal(open)}>
         <ModalContent>
           {(onClose) => (
             <>

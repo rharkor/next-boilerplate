@@ -157,3 +157,10 @@ export function chunk<T>(array: T[], size: number): T[][] {
 
   return result
 }
+
+export function stringToSlug(string: string): string {
+  return string
+    .toLowerCase()
+    .replace(/[^\w -]+/g, "")
+    .replace(/ +/g, "-")
+}

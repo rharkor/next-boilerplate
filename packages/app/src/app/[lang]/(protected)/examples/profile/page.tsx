@@ -38,7 +38,7 @@ export default async function Profile({
             <div className="mt-4 flex flex-col items-center space-y-2 md:mr-0 md:w-full md:flex-row md:justify-end md:space-x-2 md:space-y-0">
               {session && <VerifyEmailButton session={session} dictionary={dictionary} />}
               <DeleteAccountButton dictionary={dictionary}>{dictionary.deleteAccount}</DeleteAccountButton>
-              <SignoutButton dictionary={dictionary}>{dictionary.signOut}</SignoutButton>
+              <SignoutButton>{dictionary.signOut}</SignoutButton>
             </div>
             <ProfileDetails dictionary={dictionary} hasVerifiedEmail={hasVerifiedEmail} />
             <UserActiveSessions dictionary={dictionary} session={session} />

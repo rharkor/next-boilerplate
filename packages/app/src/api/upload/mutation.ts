@@ -6,6 +6,7 @@ import { logger } from "@/lib/logger"
 import { prisma } from "@/lib/prisma"
 import { s3Client } from "@/lib/s3"
 import { presignedUrlResponseSchema, presignedUrlSchema } from "@/lib/schemas/upload"
+import { stringToSlug } from "@/lib/utils"
 import { ApiError, ensureLoggedIn, handleApiError, throwableErrorsMessages } from "@/lib/utils/server-utils"
 import { apiInputFromSchema } from "@/types"
 import { maxUploadSize } from "@/types/constants"
@@ -20,7 +21,9 @@ export const presignedUrl = async ({ input, ctx: { session } }: apiInputFromSche
     }
 
     const { filename, filetype, kind } = input
-    const Key = randomUUID() + "-" + filename
+    //? Slug and max length
+    const filenameFormatted = stringToSlug(filename).slice(0, 50)
+    const Key = randomUUID() + "-" + filenameFormatted
 
     const { url, fields } = await createPresignedPost(s3Client, {
       Bucket: env.NEXT_PUBLIC_AWS_BUCKET_NAME ?? "",

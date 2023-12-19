@@ -1,11 +1,9 @@
 import { useState } from "react"
-import { useRouter } from "next/navigation"
 
 import { ModalHeader, ModalTitle } from "@/components/ui/modal"
 import OtpInput from "@/components/ui/otp-input"
 import { TDictionary } from "@/lib/langs"
 import { trpc } from "@/lib/trpc/client"
-import { handleMutationError } from "@/lib/utils/client-utils"
 import { Button, Link, Modal, ModalBody, ModalContent, ModalFooter } from "@nextui-org/react"
 
 export type TotpVerificationModalProps = {
@@ -37,11 +35,7 @@ export default function TotpVerificationModal({
   isLoading,
   curEmail,
 }: TotpVerificationModalProps) {
-  const router = useRouter()
-
-  const verifyTotpMutation = trpc.auth.verifyTotp.useMutation({
-    onError: (error) => handleMutationError(error, dictionary, router),
-  })
+  const verifyTotpMutation = trpc.auth.verifyTotp.useMutation()
 
   const [otp, setOtp] = useState(new Array(6).fill(""))
 
@@ -61,7 +55,7 @@ export default function TotpVerificationModal({
   }
 
   return (
-    <Modal isOpen={isOpen} onOpenChange={onOpenChange} backdrop="blur">
+    <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
       <ModalContent>
         {(onClose) => (
           <>

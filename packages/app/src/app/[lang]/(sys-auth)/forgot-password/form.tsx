@@ -1,7 +1,6 @@
 "use client"
 
 import { useState } from "react"
-import { useRouter } from "next/navigation"
 import { Clock } from "lucide-react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
@@ -12,7 +11,6 @@ import FormField from "@/components/ui/form"
 import { TDictionary } from "@/lib/langs"
 import { forgotPasswordSchema } from "@/lib/schemas/user"
 import { trpc } from "@/lib/trpc/client"
-import { handleMutationError } from "@/lib/utils/client-utils"
 import { resendResetPasswordExpiration } from "@/types/constants"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Button, Tooltip } from "@nextui-org/react"
@@ -21,12 +19,9 @@ const formSchema = forgotPasswordSchema
 type IForm = z.infer<ReturnType<typeof formSchema>>
 
 export default function ForgotPasswordForm({ dictionary }: { dictionary: TDictionary }) {
-  const router = useRouter()
-
   const [latestEmailSentAt, setLatestEmailSentAt] = useState<number | null>(null)
 
   const forgotPasswordMutation = trpc.me.forgotPassword.useMutation({
-    onError: (error) => handleMutationError(error, dictionary, router),
     onSuccess: () => {
       setLatestEmailSentAt(Date.now())
       toast.success(dictionary.forgotPasswordSuccessDescription)

@@ -1,7 +1,6 @@
 "use client"
 
 import React, { useCallback, useEffect, useState } from "react"
-import { useRouter } from "next/navigation"
 import { QRCodeSVG } from "qrcode.react"
 import { toast } from "react-toastify"
 
@@ -12,7 +11,6 @@ import { useAccount } from "@/contexts/account"
 import { TDictionary } from "@/lib/langs"
 import { trpc } from "@/lib/trpc/client"
 import { cn } from "@/lib/utils"
-import { handleMutationError } from "@/lib/utils/client-utils"
 import { Button, Modal, ModalBody, ModalContent, ModalFooter, Skeleton } from "@nextui-org/react"
 
 import TotpVerificationModal from "./totp-verification-modal"
@@ -24,19 +22,13 @@ export default function GenerateTotp({
   dictionary: TDictionary
   account: ReturnType<typeof useAccount>
 }) {
-  const router = useRouter()
-
   const hasOtpVerified = account.data?.user.otpVerified
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [modalIndex, setModalIndex] = useState(0)
 
-  const generateTotpSecretMutation = trpc.auth.generateTotpSecret.useMutation({
-    onError: (error) => handleMutationError(error, dictionary, router),
-  })
+  const generateTotpSecretMutation = trpc.auth.generateTotpSecret.useMutation()
 
-  const verifyTotpMutation = trpc.auth.verifyTotp.useMutation({
-    onError: (error) => handleMutationError(error, dictionary, router),
-  })
+  const verifyTotpMutation = trpc.auth.verifyTotp.useMutation()
 
   const [totpSecretData, setTotpSecretData] = useState<{ url: string; mnemonic: string }>()
   const handleGenerateTotpSecret = useCallback(async () => {
@@ -87,9 +79,7 @@ export default function GenerateTotp({
 
   const [isDesactivate2FAModalOpen, setDesactivate2FAModalOpen] = useState(false)
 
-  const desactivate2FAMutation = trpc.auth.desactivateTotp.useMutation({
-    onError: (error) => handleMutationError(error, dictionary, router),
-  })
+  const desactivate2FAMutation = trpc.auth.desactivateTotp.useMutation()
 
   const handleDesactivate2FA = async (token: string) => {
     await desactivate2FAMutation.mutateAsync({ token })
@@ -104,12 +94,7 @@ export default function GenerateTotp({
         <h3 className="text-medium font-medium">{dictionary.totp.generateTitle}</h3>
         <p className="text-muted-foreground text-sm">{dictionary.totp.generateDescription}</p>
       </div>
-      <Skeleton
-        isLoaded={account.isInitialLoading === false}
-        className={cn("rounded-medium", {
-          "overflow-visible": account.isInitialLoading === false,
-        })}
-      >
+      <Skeleton isLoaded={account.isInitialLoading === false} className={cn("rounded-medium -m-1 p-1")}>
         {hasOtpVerified ? (
           <Button
             color="danger"
@@ -132,7 +117,7 @@ export default function GenerateTotp({
           </Button>
         )}
       </Skeleton>
-      <Modal isOpen={isModalOpen} onOpenChange={setIsModalOpen} backdrop="blur">
+      <Modal isOpen={isModalOpen} onOpenChange={setIsModalOpen}>
         <ModalContent>
           {(onClose) => (
             <>
@@ -142,7 +127,8 @@ export default function GenerateTotp({
               <ModalBody className="overflow-hidden p-0">
                 <div
                   className={cn(
-                    "flex h-[372px] flex-row transition-all duration-300 ease-in-out [&>*]:px-6 [&>*]:py-2"
+                    "flex h-[372px] flex-row transition-all duration-300 ease-in-out [&>*]:px-6 [&>*]:py-2",
+                    { "h-[410px]": modalIndex === 0 }
                   )}
                   style={{
                     transform: `translateX(-${modalIndex * 100}%)`,
@@ -154,7 +140,7 @@ export default function GenerateTotp({
                     </h4>
                     <Skeleton
                       isLoaded={!!totpSecretData}
-                      className={cn("rounded-medium w-max !transition-all duration-200", {
+                      className={cn("rounded-medium w-max shrink-0 !transition-all duration-200", {
                         "outline-primary cursor-pointer outline outline-0 outline-offset-2 focus-visible:outline-4 active:scale-[.98] active:outline-4":
                           !!totpSecretData,
                       })}
@@ -168,7 +154,7 @@ export default function GenerateTotp({
                         className="h-48 w-48 lg:h-64 lg:w-64"
                       />
                     </Skeleton>
-                    <Skeleton isLoaded={!!totpSecretData} className="rounded-medium">
+                    <Skeleton isLoaded={!!totpSecretData} className="rounded-medium shrink-0">
                       <p className="text-muted-foreground text-xs">({dictionary.totp.generateStep1Description})</p>
                     </Skeleton>
                   </section>

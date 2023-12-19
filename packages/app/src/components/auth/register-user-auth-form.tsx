@@ -83,6 +83,9 @@ export function RegisterUserAuthForm({ dictionary, isMinimized, searchParams, lo
         })
       }
     },
+    meta: {
+      noDefaultErrorHandling: true,
+    },
     onSuccess: (_, vars) => {
       logger.debug("Sign up successful")
       handleSignIn({
