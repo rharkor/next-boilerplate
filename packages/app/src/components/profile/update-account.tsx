@@ -1,7 +1,6 @@
 "use client"
 
 import { useCallback, useState } from "react"
-import { useRouter } from "next/navigation"
 import { useSession } from "next-auth/react"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
@@ -11,7 +10,6 @@ import { TDictionary } from "@/lib/langs"
 import { logger } from "@/lib/logger"
 import { updateUserSchema } from "@/lib/schemas/user"
 import { trpc } from "@/lib/trpc/client"
-import { handleMutationError } from "@/lib/utils/client-utils"
 import { zodResolver } from "@hookform/resolvers/zod"
 
 import FormField from "../ui/form"
@@ -32,7 +30,6 @@ export default function UpdateAccount({
   dictionary: TDictionary
   sessionHasVerifiedEmail: boolean
 }) {
-  const router = useRouter()
   const utils = trpc.useUtils()
 
   const { update } = useSession()
@@ -42,7 +39,6 @@ export default function UpdateAccount({
     account.data?.user.emailVerified === undefined ? sessionHasVerifiedEmail : account.data.user.emailVerified
 
   const updateUserMutation = trpc.me.updateUser.useMutation({
-    onError: (error) => handleMutationError(error, dictionary, router),
     onSuccess: async (data) => {
       logger.debug("User updated")
       await update()

@@ -1,7 +1,6 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { useRouter } from "next/navigation"
 
 import { ModalDescription, ModalHeader, ModalTitle } from "@/components/ui/modal"
 import { useActiveSessions } from "@/contexts/active-sessions"
@@ -9,7 +8,6 @@ import { IMeta } from "@/lib/json-api"
 import { TDictionary } from "@/lib/langs"
 import { trpc } from "@/lib/trpc/client"
 import { cn } from "@/lib/utils"
-import { handleMutationError } from "@/lib/utils/client-utils"
 import { Button, Modal, ModalContent, ModalFooter, Pagination } from "@nextui-org/react"
 
 import SessionRow from "./session-row"
@@ -17,7 +15,6 @@ import SessionRow from "./session-row"
 const itemsPerPageInitial = 5
 
 export default function SessionsTable({ dictionary, isDisabled }: { dictionary: TDictionary; isDisabled?: boolean }) {
-  const router = useRouter()
   const utils = trpc.useUtils()
 
   const [selectedSession, setSelectedSession] = useState<string | null>(null)
@@ -37,7 +34,6 @@ export default function SessionsTable({ dictionary, isDisabled }: { dictionary: 
   }, [activeSessions])
 
   const deleteSessionMutation = trpc.me.deleteSession.useMutation({
-    onError: (error) => handleMutationError(error, dictionary, router),
     onSettled: () => {
       setSelectedSession(null)
       utils.me.getActiveSessions.invalidate(callParams)

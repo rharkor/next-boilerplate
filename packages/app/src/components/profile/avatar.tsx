@@ -1,7 +1,6 @@
 "use client"
 
 import { useState } from "react"
-import { useRouter } from "next/navigation"
 import { Camera } from "lucide-react"
 import { toast } from "react-toastify"
 
@@ -10,7 +9,7 @@ import { TDictionary } from "@/lib/langs"
 import { logger } from "@/lib/logger"
 import { trpc } from "@/lib/trpc/client"
 import { cn } from "@/lib/utils"
-import { getImageUrl, handleMutationError } from "@/lib/utils/client-utils"
+import { getImageUrl } from "@/lib/utils/client-utils"
 import { maxUploadSize } from "@/types/constants"
 import { Avatar, Button, Modal, ModalBody, ModalContent, Skeleton, Spinner } from "@nextui-org/react"
 
@@ -25,15 +24,10 @@ export default function UpdateAvatar({
   account: ReturnType<typeof useAccount>
   dictionary: TDictionary
 }) {
-  const router = useRouter()
   const utils = trpc.useUtils()
 
-  const getPresignedUrlMutation = trpc.upload.presignedUrl.useMutation({
-    onError: (error) => handleMutationError(error, dictionary, router),
-  })
-  const updateUserMutation = trpc.me.updateUser.useMutation({
-    onError: (error) => handleMutationError(error, dictionary, router),
-  })
+  const getPresignedUrlMutation = trpc.upload.presignedUrl.useMutation()
+  const updateUserMutation = trpc.me.updateUser.useMutation()
 
   const [file, setFile] = useState<File | null>(null)
   const [uploading, setUploading] = useState(false)

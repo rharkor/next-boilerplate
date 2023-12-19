@@ -1,30 +1,19 @@
 "use client"
 
 import { useState } from "react"
-import { useRouter } from "next/navigation"
 import { signOut, useSession } from "next-auth/react"
 
-import { TDictionary } from "@/lib/langs"
 import { logger } from "@/lib/logger"
 import { trpc } from "@/lib/trpc/client"
-import { handleMutationError } from "@/lib/utils/client-utils"
 import { Button } from "@nextui-org/react"
 
-export default function SignoutButton({
-  children,
-  dictionary,
-}: {
-  children: React.ReactNode
-  dictionary: TDictionary
-}) {
-  const router = useRouter()
+export default function SignoutButton({ children }: { children: React.ReactNode }) {
   const session = useSession()
   const utils = trpc.useUtils()
 
   const currentSession = session.data?.user.uuid
 
   const deleteSessionMutation = trpc.me.deleteSession.useMutation({
-    onError: (error) => handleMutationError(error, dictionary, router),
     onSettled: () => {
       utils.me.getActiveSessions.invalidate()
     },
