@@ -164,7 +164,7 @@ export default function UpdateAvatar({
           )}
         </Button>
       </div>
-      <Modal isOpen={showModal} onOpenChange={(open) => setShowModal(open)} backdrop="blur">
+      <Modal isOpen={showModal} onOpenChange={(open) => setShowModal(open)}>
         <ModalContent>
           <ModalHeader>
             <ModalTitle>{dictionary.updateAvatar}</ModalTitle>

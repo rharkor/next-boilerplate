@@ -122,7 +122,7 @@ export default function GenerateTotp({
           </Button>
         )}
       </Skeleton>
-      <Modal isOpen={isModalOpen} onOpenChange={setIsModalOpen} backdrop="blur">
+      <Modal isOpen={isModalOpen} onOpenChange={setIsModalOpen}>
         <ModalContent>
           {(onClose) => (
             <>

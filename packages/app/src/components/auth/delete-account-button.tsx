@@ -42,7 +42,7 @@ export default function DeleteAccountButton({
       <Button color="danger" isLoading={isDeletingAccount} onClick={() => setShowModal(true)}>
         {children}
       </Button>
-      <Modal isOpen={showModal} onOpenChange={(open) => setShowModal(open)} backdrop="blur">
+      <Modal isOpen={showModal} onOpenChange={(open) => setShowModal(open)}>
         <ModalContent>
           {(onClose) => (
             <>

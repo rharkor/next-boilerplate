@@ -82,7 +82,7 @@ export default function SessionsTable({ dictionary, isDisabled }: { dictionary: 
         page={meta?.page ?? 1}
         onChange={setCurrentPage}
       />
-      <Modal isOpen={!!selectedSession} onOpenChange={(open) => !open && setSelectedSession(null)} backdrop="blur">
+      <Modal isOpen={!!selectedSession} onOpenChange={(open) => !open && setSelectedSession(null)}>
         <ModalContent>
           {(onClose) => (
             <>
