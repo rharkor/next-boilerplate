@@ -105,7 +105,14 @@ export default function UpdateAvatar({
     }
   }
 
-  const [showModal, setShowModal] = useState(false)
+  const [showModal, _setShowModal] = useState(false)
+  const setShowModal = (show: boolean) => {
+    if (show) {
+      const active = document.activeElement as HTMLButtonElement | null
+      active?.blur()
+    }
+    _setShowModal(show)
+  }
 
   return (
     <>
@@ -125,7 +132,8 @@ export default function UpdateAvatar({
         </Skeleton>
         <Button
           className={cn(
-            "upload-group bg-muted/40 group absolute inset-0 flex h-[unset] cursor-pointer items-center justify-center overflow-hidden rounded-full opacity-0 backdrop-blur-sm transition-all duration-200 focus:opacity-100 group-hover:opacity-100 group-focus:opacity-100",
+            "upload-group bg-muted/40 group absolute inset-0 flex h-[unset] cursor-pointer items-center justify-center overflow-hidden rounded-full opacity-0 backdrop-blur-sm transition-all duration-200",
+            "focus:opacity-100 group-hover:opacity-100 group-focus:opacity-100",
             {
               hidden: account.isInitialLoading,
             }
