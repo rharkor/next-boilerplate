@@ -130,7 +130,7 @@ export default function UpdateAvatar({
               hidden: account.isInitialLoading,
             }
           )}
-          onClick={() => setShowModal(true)}
+          onPress={() => setShowModal(true)}
         >
           <Camera className="duration-250 h-8 w-8 transition-all group-[.upload-group]:active:scale-95" />
         </Button>
