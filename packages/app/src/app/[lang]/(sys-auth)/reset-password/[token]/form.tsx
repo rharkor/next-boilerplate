@@ -10,7 +10,6 @@ import { authRoutes } from "@/lib/auth/constants"
 import { TDictionary } from "@/lib/langs"
 import { resetPasswordSchema } from "@/lib/schemas/user"
 import { trpc } from "@/lib/trpc/client"
-import { handleMutationError } from "@/lib/utils/client-utils"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Button } from "@nextui-org/react"
 
@@ -21,7 +20,6 @@ export default function ResetPasswordForm({ dictionary, token }: { dictionary: T
   const router = useRouter()
 
   const resetPasswordMutation = trpc.me.resetPassword.useMutation({
-    onError: (error) => handleMutationError(error, dictionary, router),
     onSuccess: () => {
       toast.success(dictionary.resetPasswordSuccessDescription)
       router.push(authRoutes.signIn[0])

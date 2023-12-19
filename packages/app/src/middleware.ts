@@ -37,8 +37,12 @@ export function middleware(request: NextRequest) {
   if (
     [
       "/favicon.ico",
+      "/favicon.webp",
+      "/robots.txt",
+      "/sitemap.xml",
       // Your other files in `public`
-    ].includes(pathname)
+    ].includes(pathname) ||
+    pathname.match(/^\/[a-z]+\/_next$/)
   )
     return
 

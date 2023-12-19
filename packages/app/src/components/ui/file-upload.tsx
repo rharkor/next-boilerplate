@@ -19,6 +19,7 @@ export type TFileUploadProps = Omit<
   dictionary: TDictionary
   disabled?: boolean
   accept?: Accept //? See: https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types
+  maxFiles?: number
 }
 
 export default function FileUpload({
@@ -27,14 +28,16 @@ export default function FileUpload({
   dictionary,
   disabled,
   accept,
+  maxFiles,
   ...props
 }: TFileUploadProps) {
   const { acceptedFiles, getRootProps, getInputProps, isDragAccept, isDragReject } = useDropzone({
     accept,
+    maxFiles,
   })
   const [files, setFiles] = useState<File[]>([])
-
   useEffect(() => {
+    if (!acceptedFiles.length) return
     onFilesChange?.(acceptedFiles)
     setFiles(acceptedFiles)
     // eslint-disable-next-line react-hooks/exhaustive-deps

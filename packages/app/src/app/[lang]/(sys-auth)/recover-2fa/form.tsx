@@ -12,7 +12,6 @@ import { TDictionary } from "@/lib/langs"
 import { recover2FASchema } from "@/lib/schemas/auth"
 import { trpc } from "@/lib/trpc/client"
 import { cn } from "@/lib/utils"
-import { handleMutationError } from "@/lib/utils/client-utils"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Button } from "@nextui-org/react"
 
@@ -23,7 +22,6 @@ export default function Recover2FAForm({ dictionary, email }: { dictionary: TDic
   const router = useRouter()
 
   const recover2FAMutation = trpc.auth.recover2FA.useMutation({
-    onError: (error) => handleMutationError(error, dictionary, router),
     onSuccess: () => {
       toast.success(dictionary.totp.totpDesactivated)
       router.push(authRoutes.signIn[0])
