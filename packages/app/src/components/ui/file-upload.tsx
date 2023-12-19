@@ -36,8 +36,8 @@ export default function FileUpload({
     maxFiles,
   })
   const [files, setFiles] = useState<File[]>([])
-
   useEffect(() => {
+    if (!acceptedFiles.length) return
     onFilesChange?.(acceptedFiles)
     setFiles(acceptedFiles)
     // eslint-disable-next-line react-hooks/exhaustive-deps
