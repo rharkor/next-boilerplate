@@ -167,6 +167,7 @@ export default function UpdateAvatar({
                 onFilesChange={(files) => {
                   setFile(files[0])
                 }}
+                maxFiles={1}
                 accept={{
                   "image/png": [".png"],
                   "image/jpeg": [".jpg", ".jpeg"],
