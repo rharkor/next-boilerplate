@@ -117,12 +117,7 @@ export default function UpdateAvatar({
   return (
     <>
       <div className={cn("group relative h-20 w-20 rounded-full")}>
-        <Skeleton
-          isLoaded={!account.isInitialLoading}
-          className={cn("rounded-full", {
-            "overflow-visible": account.isInitialLoading === false,
-          })}
-        >
+        <Skeleton isLoaded={!account.isInitialLoading} className={cn("rounded-full")}>
           <Avatar
             className="text-large h-20 w-20"
             src={getImageUrl(account.data?.user.image) || undefined}

@@ -94,12 +94,7 @@ export default function GenerateTotp({
         <h3 className="text-medium font-medium">{dictionary.totp.generateTitle}</h3>
         <p className="text-muted-foreground text-sm">{dictionary.totp.generateDescription}</p>
       </div>
-      <Skeleton
-        isLoaded={account.isInitialLoading === false}
-        className={cn("rounded-medium", {
-          "overflow-visible": account.isInitialLoading === false,
-        })}
-      >
+      <Skeleton isLoaded={account.isInitialLoading === false} className={cn("rounded-medium -m-1 p-1")}>
         {hasOtpVerified ? (
           <Button
             color="danger"
