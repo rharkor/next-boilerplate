@@ -76,7 +76,7 @@ export default function UpdateAccount({
   }
 
   return (
-    <div className="relative flex flex-col gap-4">
+    <div className="relative mt-2 flex flex-col gap-4">
       <div className="mt-3 flex flex-row items-center gap-3">
         <UpdateAvatar account={account} dictionary={dictionary} />
         <div className="flex flex-1 flex-col gap-2">
