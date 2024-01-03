@@ -46,22 +46,27 @@ async function main() {
     spinner = new Spinner(chalk.blue(" Creating admin.. %s"))
     spinner.setSpinnerString(18)
     spinner.start()
-    await prisma.user.upsert({
+    const adminExists = await prisma.user.findFirst({
       where: {
         email: env.AUTH_ADMIN_EMAIL,
       },
-      update: {},
-      create: {
-        email: env.AUTH_ADMIN_EMAIL as string,
-        password: await hash(env.AUTH_ADMIN_PASSWORD ?? "", 12),
-        role: rolesAsObject.admin,
-        username: "admin",
-        emailVerified: new Date(),
-        hasPassword: true,
-      },
     })
-    spinner.stop(true)
-    logger.log("Admin created")
+    if (!adminExists) {
+      await prisma.user.create({
+        data: {
+          email: env.AUTH_ADMIN_EMAIL as string,
+          password: await hash(env.AUTH_ADMIN_PASSWORD ?? "", 12),
+          role: rolesAsObject.admin,
+          username: "admin",
+          emailVerified: new Date(),
+          hasPassword: true,
+        },
+      })
+      spinner.stop(true)
+      logger.log("Admin created")
+    } else {
+      spinner.stop(true)
+    }
   } catch (e) {
     console.error(e)
     process.exit(1)
