@@ -52,7 +52,7 @@
   "notFound": "Page introuvable",
   "login": "Connexion",
   "cancel": "Annuler",
-  "continue": "Confirmer",
+  "continue": "Suivant",
   "areYouAbsolutelySure": "Êtes-vous absolument sûr ?",
   "error": "Erreur",
   "couldNotMessage": "Impossible de {action} {subject}. Veuillez ressayer plus tard.",

@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 import { ModalHeader, ModalTitle } from "@/components/ui/modal"
 import OtpInput from "@/components/ui/otp-input"
@@ -53,6 +53,14 @@ export default function TotpVerificationModal({
       setOtp(new Array(6).fill(""))
     }
   }
+
+  useEffect(() => {
+    console.log(otp, otp.filter((x) => x !== "").length)
+    if (otp.filter((x) => x !== "").length === 6) {
+      handleConfirm()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [otp])
 
   return (
     <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
