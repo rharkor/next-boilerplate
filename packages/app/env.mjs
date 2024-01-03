@@ -40,7 +40,7 @@ export const env = createEnv({
     SMTP_FROM_NAME: z.string().optional(),
     SMTP_FROM_EMAIL: z.string().optional(),
     SUPPORT_EMAIL: z.string().optional(),
-    ENABLE_MAILING_SERVICE: z
+    NEXT_PUBLIC_ENABLE_MAILING_SERVICE: z
       .enum(["true", "false"])
       .optional()
       .transform((value) => value === "true"),
@@ -96,7 +96,7 @@ export const env = createEnv({
     SMTP_FROM_NAME: process.env.SMTP_FROM_NAME,
     SMTP_FROM_EMAIL: process.env.SMTP_FROM_EMAIL,
     SUPPORT_EMAIL: process.env.SUPPORT_EMAIL,
-    ENABLE_MAILING_SERVICE: process.env.ENABLE_MAILING_SERVICE,
+    NEXT_PUBLIC_ENABLE_MAILING_SERVICE: process.env.NEXT_PUBLIC_ENABLE_MAILING_SERVICE,
     AWS_REGION: process.env.AWS_REGION,
     NEXT_PUBLIC_AWS_BUCKET_NAME: process.env.NEXT_PUBLIC_AWS_BUCKET_NAME,
     AWS_ACCESS_KEY_ID: process.env.AWS_ACCESS_KEY_ID,

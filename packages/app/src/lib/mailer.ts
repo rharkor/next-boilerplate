@@ -23,7 +23,7 @@ const transporter = createTransport({
 })
 
 export const sendMail = async (...params: Parameters<typeof transporter.sendMail>) => {
-  if (!env.ENABLE_MAILING_SERVICE) {
+  if (!env.NEXT_PUBLIC_ENABLE_MAILING_SERVICE) {
     logger.error("Email service is disabled, sending email is skipped.")
     return ApiError(throwableErrorsMessages.emailServiceDisabled, "PRECONDITION_FAILED")
   }

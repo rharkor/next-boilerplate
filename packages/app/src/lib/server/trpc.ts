@@ -73,7 +73,7 @@ const isAuthenticated = middleware(async (opts) => {
 const hasVerifiedEmail = middleware(async (opts) => {
   const { ctx } = opts
   const session = ctx.session as (Session & { user: Omit<User, "password"> }) | null
-  if (!session || (!session.user.emailVerified && env.ENABLE_MAILING_SERVICE === true)) {
+  if (!session || (!session.user.emailVerified && env.NEXT_PUBLIC_ENABLE_MAILING_SERVICE === true)) {
     throw new TRPCError({ code: "UNAUTHORIZED", message: throwableErrorsMessages.emailNotVerified })
   }
   return opts.next()

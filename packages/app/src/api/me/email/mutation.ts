@@ -56,7 +56,7 @@ export const sendVerificationEmail = async ({ input }: apiInputFromSchema<typeof
       })
     }
 
-    if (env.ENABLE_MAILING_SERVICE === true) {
+    if (env.NEXT_PUBLIC_ENABLE_MAILING_SERVICE === true) {
       await prisma.userEmailVerificationToken.create({
         data: {
           identifier: user.id,

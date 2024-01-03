@@ -47,7 +47,7 @@ export const register = async ({ input }: apiInputFromSchema<typeof signUpSchema
     await redis.set(`lastLocale:${user.id}`, input.locale)
 
     //* Send verification email
-    if (env.ENABLE_MAILING_SERVICE === true) {
+    if (env.NEXT_PUBLIC_ENABLE_MAILING_SERVICE === true) {
       const token = randomUUID()
       await prisma.userEmailVerificationToken.create({
         data: {
