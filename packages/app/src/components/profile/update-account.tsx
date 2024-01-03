@@ -35,8 +35,11 @@ export default function UpdateAccount({
   const { update } = useSession()
   const account = useAccount(dictionary)
 
-  const hasVerifiedEmail =
-    account.data?.user.emailVerified === undefined ? sessionHasVerifiedEmail : account.data.user.emailVerified
+  const hasVerifiedEmail = env.NEXT_PUBLIC_ENABLE_MAILING_SERVICE
+    ? account.data?.user.emailVerified === undefined
+      ? sessionHasVerifiedEmail
+      : account.data.user.emailVerified
+    : true
 
   const updateUserMutation = trpc.me.updateUser.useMutation({
     onSuccess: async (data) => {
