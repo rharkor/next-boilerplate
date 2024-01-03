@@ -10,6 +10,7 @@ export const hash = async (value: string, saltOrRounds: string | number) => {
 }
 
 export const bcryptCompare = async (value: string, hash: string) => {
+  if (value.length > 100) throw new Error("Value for password is too long")
   const preHashed = crypto.HmacSHA256(value, PASSWORD_HASHER_SECRET).toString()
   return compare(preHashed, hash)
 }

@@ -2,6 +2,8 @@ import * as z from "zod"
 
 import { TDictionary } from "@/lib/langs"
 
+import { maxPasswordLength, minPasswordLength } from "../auth/constants"
+
 import { userSchema } from "./user"
 
 export const passwordSchema = (dictionary?: TDictionary) =>
@@ -9,8 +11,8 @@ export const passwordSchema = (dictionary?: TDictionary) =>
     .string({
       required_error: dictionary && dictionary.errors.password.required,
     })
-    .min(8, dictionary && dictionary.errors.password.min8)
-    .max(25, dictionary && dictionary.errors.password.max25)
+    .min(minPasswordLength, dictionary && dictionary.errors.password.min8)
+    .max(maxPasswordLength, dictionary && dictionary.errors.password.max25)
 
 export const passwordSchemaWithRegex = (dictionary?: TDictionary) =>
   passwordSchema(dictionary).regex(
@@ -36,7 +38,7 @@ export const emailSchema = (dictionary?: TDictionary) =>
 export const signInSchema = (dictionary?: TDictionary) =>
   z.object({
     email: emailSchema(dictionary),
-    password: z.string(), //? Do not use the password schema because we don't want to tell why the password is invalid
+    password: z.string().max(maxPasswordLength, dictionary && dictionary.errors.password.max25), //? Do not use the password schema because we don't want to tell why the password is invalid
     otp: z.string().optional(),
   })
 
