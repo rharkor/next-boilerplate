@@ -25,8 +25,8 @@ export const sendVerificationEmail = async ({ input }: apiInputFromSchema<typeof
     }
 
     if (user.emailVerified) {
-      logger.debug("User email already verified")
       if (silent) return { email }
+      logger.debug("User email already verified")
       return ApiError(throwableErrorsMessages.emailAlreadyVerified, "BAD_REQUEST")
     }
 

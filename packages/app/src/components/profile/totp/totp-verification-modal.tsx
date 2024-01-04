@@ -55,7 +55,6 @@ export default function TotpVerificationModal({
   }
 
   useEffect(() => {
-    console.log(otp, otp.filter((x) => x !== "").length)
     if (otp.filter((x) => x !== "").length === 6) {
       handleConfirm()
     }

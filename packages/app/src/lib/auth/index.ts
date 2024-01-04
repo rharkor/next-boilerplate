@@ -44,7 +44,7 @@ export const providers: Provider[] = [
       const dictionary =
         loadedDictionary.get(lang) ??
         (await (async () => {
-          logger.debug("Loading dictionary in auth", lang)
+          //? Load the dictionary
           const dictionary = await getDictionary(lang)
           loadedDictionary.set(lang, dictionary)
           return dictionary
