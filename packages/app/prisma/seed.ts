@@ -3,7 +3,7 @@ import { Spinner } from "cli-spinner"
 import crypto from "crypto-js"
 import { config } from "dotenv"
 
-import { logger as oLogger } from "@lib/logger"
+import { logger } from "@lib/logger"
 import { PrismaClient } from "@prisma/client"
 
 import { rolesAsObject } from "../src/types/constants"
@@ -21,7 +21,7 @@ const hash = async (value: string, saltOrRounds: string | number) => {
 }
 
 if (!env.AUTH_ADMIN_EMAIL || !env.AUTH_ADMIN_PASSWORD || !env.PASSWORD_HASHER_SECRET) {
-  console.error("Missing AUTH_ADMIN_EMAIL or AUTH_ADMIN_PASSWORD or PASSWORD_HASHER_SECRET")
+  logger.error("Missing AUTH_ADMIN_EMAIL or AUTH_ADMIN_PASSWORD or PASSWORD_HASHER_SECRET")
   process.exit(1)
 }
 
@@ -30,13 +30,6 @@ let spinner: Spinner | null = null
 const chalk = {
   blue: (text: string) => `\x1b[34m${text}\x1b[0m`,
   green: (text: string) => `\x1b[32m${text}\x1b[0m`,
-}
-
-const logger = {
-  ...oLogger,
-  log: (text: string) => {
-    console.log(chalk.green(text + " ✔"))
-  },
 }
 
 const prisma = new PrismaClient()
@@ -68,7 +61,7 @@ async function main() {
       spinner.stop(true)
     }
   } catch (e) {
-    console.error(e)
+    logger.error(e)
     process.exit(1)
   } finally {
     await prisma.$disconnect()
@@ -80,7 +73,7 @@ main()
     await prisma.$disconnect()
   })
   .catch(async (e) => {
-    console.error(e)
+    logger.error(e)
     await prisma.$disconnect()
     process.exit(1)
   })

@@ -1,3 +1,4 @@
+import { logger } from "@lib/logger"
 import { createEnv } from "@t3-oss/env-nextjs"
 import { z } from "zod"
 
@@ -106,7 +107,7 @@ export const env = createEnv({
     ENABLE_REGISTRATION: process.env.ENABLE_REGISTRATION,
   },
   onValidationError: (error) => {
-    console.error(error)
-    throw error
+    logger.error(error)
+    throw "Invalid environment variables"
   },
 })

@@ -9,6 +9,8 @@ import inquirer from "inquirer"
 import * as path from "path"
 import * as url from "url"
 
+import { logger } from "@lib/logger"
+
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url))
 
 const filesToCheck = ["../docker/docker-compose.yml", "app/src/api/auth/mutations.ts"]
@@ -63,7 +65,7 @@ export const replaceTokens = async () => {
     for (const token of fileTokens) {
       if (!allTokensValues[token]) continue
       newFileContent = newFileContent.replaceAll(`#{${token}}#`, allTokensValues[token])
-      console.log(chalk.gray(`Done for ${filePath}`))
+      logger.log(chalk.gray(`Done for ${filePath}`))
       if (token === "PROJECT_NAME") {
         //? Replace the project name in the devcontainer.json & package.json
         const nameToReplace = "next-boilerplate"
@@ -72,7 +74,7 @@ export const replaceTokens = async () => {
         const devContainerFileContent = fs.readFileSync(devContainerFile, "utf8")
         const newDevContainerFileContent = devContainerFileContent.replaceAll(nameToReplace, newProjectName)
         fs.writeFileSync(devContainerFile, newDevContainerFileContent, "utf8")
-        console.log(chalk.gray(`Done for ${devContainerFile}`))
+        logger.log(chalk.gray(`Done for ${devContainerFile}`))
         const packages = fs.readdirSync(path.join(__dirname, ".."))
         const pJsonFiles = [
           path.join(__dirname, "../../package.json"),
@@ -83,7 +85,7 @@ export const replaceTokens = async () => {
           const pJsonFileContent = fs.readFileSync(pJsonFile, "utf8")
           const newPJsonFileContent = pJsonFileContent.replaceAll(nameToReplace, newProjectName)
           fs.writeFileSync(pJsonFile, newPJsonFileContent, "utf8")
-          console.log(chalk.gray(`Done for ${pJsonFile}`))
+          logger.log(chalk.gray(`Done for ${pJsonFile}`))
         }
       }
     }

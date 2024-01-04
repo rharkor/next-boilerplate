@@ -9,6 +9,8 @@ import { replaceTokens } from "replace-tokens"
 import { runtime } from "runtime"
 import * as url from "url"
 
+import { logger } from "@lib/logger"
+
 import { completeInitialisation } from "./complete-initialisation"
 
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url))
@@ -23,36 +25,36 @@ async function main() {
     .catch(() => true)
 
   if (!alreadyInitialized) {
-    console.log(chalk.green("Welcome to the init script!"))
-    console.log(chalk.blue('Starting the "replace tokens" script...'))
+    logger.log(chalk.green("Welcome to the init script!"))
+    logger.log(chalk.blue('Starting the "replace tokens" script...'))
     await replaceTokens()
-    console.log(chalk.green("Done!"))
+    logger.log(chalk.green("Done!"))
   } else {
-    console.log(chalk.yellow("Skipping replaceTokens()"))
+    logger.log(chalk.yellow("Skipping replaceTokens()"))
   }
 
   if (!alreadyInitialized) {
-    console.log(chalk.blue('Starting the "runtime" script...'))
+    logger.log(chalk.blue('Starting the "runtime" script...'))
     await runtime()
-    console.log(chalk.green("Done!"))
+    logger.log(chalk.green("Done!"))
   } else {
-    console.log(chalk.gray("Skipping runtime()"))
+    logger.log(chalk.gray("Skipping runtime()"))
   }
 
   if (!alreadyInitialized) {
-    console.log(chalk.blue('Starting the "packages selection" script...'))
+    logger.log(chalk.blue('Starting the "packages selection" script...'))
     await packagesSelection()
-    console.log(chalk.green("Done!"))
+    logger.log(chalk.green("Done!"))
   } else {
-    console.log(chalk.gray("Skipping packagesSelection()"))
+    logger.log(chalk.gray("Skipping packagesSelection()"))
   }
 
-  console.log(chalk.blue('Starting the "env setup" script...'))
+  logger.log(chalk.blue('Starting the "env setup" script...'))
   await envSetup()
-  console.log(chalk.green("Done!"))
+  logger.log(chalk.green("Done!"))
 
   if (process.env.SKIP_INIT_CHECK !== "true") await completeInitialisation()
-  else console.log(chalk.yellow("Skipping completeInitialisation()"))
+  else logger.log(chalk.yellow("Skipping completeInitialisation()"))
   exit(0)
 }
 

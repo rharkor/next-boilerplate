@@ -4,6 +4,8 @@ import * as fs from "fs"
 import * as path from "path"
 import * as url from "url"
 
+import { logger } from "@lib/logger"
+
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url))
 const rootPath = path.join(__dirname, "..")
 
@@ -19,7 +21,7 @@ const main = async () => {
   let message = ""
   let hasError = false
   for (const pkg of packagesPath) {
-    console.log(chalk.blue(`Checking ${pkg}...`))
+    logger.log(chalk.blue(`Checking ${pkg}...`))
     if (pkg === path.join(rootPath, "docs")) {
       options.ignoreMatches.push("@docusaurus/preset-classic", "@mdx-js/react", "clsx", "prism-react-renderer")
     } else if (pkg === path.join(rootPath, "app")) {
@@ -65,10 +67,10 @@ const main = async () => {
         hasError = true
       }
     })
-    console.log(chalk.gray(`Done ${pkg}`))
+    logger.log(chalk.gray(`Done ${pkg}`))
   }
   if (hasError) {
-    console.log(message)
+    logger.log(message)
     process.exit(1)
   }
 
@@ -78,7 +80,7 @@ const main = async () => {
 main()
 
 process.on("SIGINT", function () {
-  console.log("\n")
-  console.log("Bye!")
+  logger.log("\n")
+  logger.log("Bye!")
   process.exit()
 })
