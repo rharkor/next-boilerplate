@@ -6,8 +6,8 @@ import { toast } from "react-toastify"
 
 import { useAccount } from "@/contexts/account"
 import { TDictionary } from "@/lib/langs"
-import { logger } from "@/lib/logger"
 import { trpc } from "@/lib/trpc/client"
+import { logger } from "@lib/logger"
 import { Button } from "@nextui-org/react"
 
 export default function VerifyEmailButton({ session, dictionary }: { session: Session; dictionary: TDictionary }) {

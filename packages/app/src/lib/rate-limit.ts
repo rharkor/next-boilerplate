@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server"
 import requestIp from "request-ip"
 
+import { logger } from "@lib/logger"
 import { TRPCError } from "@trpc/server"
 
-import { logger } from "./logger"
 import { redis as client } from "./redis"
 
 type Result = {

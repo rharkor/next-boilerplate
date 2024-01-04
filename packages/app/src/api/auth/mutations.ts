@@ -5,7 +5,6 @@ import { authenticator } from "otplib"
 import { z } from "zod"
 
 import { hash } from "@/lib/bcrypt"
-import { logger } from "@/lib/logger"
 import { sendMail } from "@/lib/mailer"
 import { prisma } from "@/lib/prisma"
 import { redis } from "@/lib/redis"
@@ -26,6 +25,7 @@ import {
 } from "@/lib/utils/server-utils"
 import { apiInputFromSchema } from "@/types"
 import { emailVerificationExpiration } from "@/types/constants"
+import { logger } from "@lib/logger"
 import { Prisma } from "@prisma/client"
 
 export const register = async ({ input }: apiInputFromSchema<typeof signUpSchema>) => {

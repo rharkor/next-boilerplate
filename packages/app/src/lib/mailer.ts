@@ -1,8 +1,9 @@
 import { env } from "env.mjs"
 import { createTransport } from "nodemailer"
 
+import { logger } from "@lib/logger"
+
 import { ApiError, throwableErrorsMessages } from "./utils/server-utils"
-import { logger } from "./logger"
 
 import "server-only"
 

@@ -8,10 +8,10 @@ import * as z from "zod"
 
 import { useAccount } from "@/contexts/account"
 import { TDictionary } from "@/lib/langs"
-import { logger } from "@/lib/logger"
 import { updateUserSchema } from "@/lib/schemas/user"
 import { trpc } from "@/lib/trpc/client"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { logger } from "@lib/logger"
 
 import FormField from "../ui/form"
 import NeedSavePopup from "../ui/need-save-popup"

@@ -22,7 +22,8 @@
     "packages/scripts",
     "packages/app",
     "packages/docs",
-    "packages/landing"
+    "packages/landing",
+    "packages/lib"
   ],
   "dependencies": {
     "concurrently": "^8.2.2"

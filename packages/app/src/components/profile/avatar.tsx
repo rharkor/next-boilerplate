@@ -6,11 +6,11 @@ import { toast } from "react-toastify"
 
 import { useAccount } from "@/contexts/account"
 import { TDictionary } from "@/lib/langs"
-import { logger } from "@/lib/logger"
 import { trpc } from "@/lib/trpc/client"
 import { cn } from "@/lib/utils"
 import { getImageUrl } from "@/lib/utils/client-utils"
 import { maxUploadSize } from "@/types/constants"
+import { logger } from "@lib/logger"
 import { Avatar, Button, Modal, ModalBody, ModalContent, Skeleton, Spinner } from "@nextui-org/react"
 
 import { Icons } from "../icons"

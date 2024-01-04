@@ -3,11 +3,11 @@ import base32Encode from "base32-encode"
 import { z } from "zod"
 
 import { ValueOf } from "@/types"
+import { logger } from "@lib/logger"
 import { TRPCError } from "@trpc/server"
 import { TRPC_ERROR_CODE_KEY } from "@trpc/server/rpc"
 
 import { getDictionary, TDictionary } from "../langs"
-import { logger } from "../logger"
 
 import "server-only"
 

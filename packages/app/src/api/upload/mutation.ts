@@ -2,7 +2,6 @@ import { randomUUID } from "crypto"
 import { env } from "env.mjs"
 import { z } from "zod"
 
-import { logger } from "@/lib/logger"
 import { prisma } from "@/lib/prisma"
 import { s3Client } from "@/lib/s3"
 import { presignedUrlResponseSchema, presignedUrlSchema } from "@/lib/schemas/upload"
@@ -12,6 +11,7 @@ import { apiInputFromSchema } from "@/types"
 import { maxUploadSize } from "@/types/constants"
 import { DeleteObjectCommand } from "@aws-sdk/client-s3"
 import { createPresignedPost } from "@aws-sdk/s3-presigned-post"
+import { logger } from "@lib/logger"
 
 export const presignedUrl = async ({ input, ctx: { session } }: apiInputFromSchema<typeof presignedUrlSchema>) => {
   ensureLoggedIn(session)

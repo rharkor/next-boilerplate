@@ -8,7 +8,7 @@ import { toast } from "react-toastify"
 import GithubSignIn from "@/components/auth/github-sign-in"
 import { authRoutes } from "@/lib/auth/constants"
 import { TDictionary } from "@/lib/langs"
-import { logger } from "@/lib/logger"
+import { logger } from "@lib/logger"
 
 export default function Providers({
   dictionary,

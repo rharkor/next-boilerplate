@@ -11,11 +11,11 @@ import { z } from "zod"
 
 import { sendVerificationEmail } from "@/api/me/email/mutation"
 import { isPossiblyUndefined, ITrpcContext } from "@/types"
+import { logger } from "@lib/logger"
 import { PrismaAdapter } from "@next-auth/prisma-adapter"
 
 import { bcryptCompare } from "../bcrypt"
 import { getDictionary, TDictionary } from "../langs"
-import { logger } from "../logger"
 import { prisma } from "../prisma"
 import { redis } from "../redis"
 import { signInSchema } from "../schemas/auth"

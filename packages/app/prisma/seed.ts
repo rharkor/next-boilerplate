@@ -3,9 +3,9 @@ import { Spinner } from "cli-spinner"
 import crypto from "crypto-js"
 import { config } from "dotenv"
 
+import { logger as oLogger } from "@lib/logger"
 import { PrismaClient } from "@prisma/client"
 
-import { logger as oLogger } from "../src/lib/logger"
 import { rolesAsObject } from "../src/types/constants"
 config()
 

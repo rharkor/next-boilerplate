@@ -3,10 +3,9 @@ import { NextResponse } from "next/server"
 import Negotiator from "negotiator"
 
 import { match as matchLocale } from "@formatjs/intl-localematcher"
+import { logger } from "@lib/logger"
 
 import { i18n } from "../i18n-config"
-
-import { logger } from "./lib/logger"
 
 const blackListedPaths = ["healthz", "api/healthz", "health", "ping", "api/ping"]
 

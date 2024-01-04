@@ -2,11 +2,11 @@ import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.share
 import { env } from "env.mjs"
 import { toast } from "react-toastify"
 
+import { logger } from "@lib/logger"
 import { TRPCClientErrorLike } from "@trpc/client"
 
 import { AppRouter } from "../../api/_app"
 import { TDictionary } from "../langs"
-import { logger } from "../logger"
 
 import { handleApiError } from "."
 

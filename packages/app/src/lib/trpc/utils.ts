@@ -1,6 +1,6 @@
 import { env } from "env.mjs"
 
-import { logger } from "../logger"
+import { logger } from "@lib/logger"
 
 function getBaseUrl() {
   if (typeof window !== "undefined") return ""
