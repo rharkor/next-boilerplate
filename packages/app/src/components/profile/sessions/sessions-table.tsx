@@ -4,8 +4,8 @@ import { useEffect, useState } from "react"
 
 import { ModalDescription, ModalHeader, ModalTitle } from "@/components/ui/modal"
 import { useActiveSessions } from "@/contexts/active-sessions"
+import { useDictionary } from "@/contexts/dictionary/utils"
 import { IMeta } from "@/lib/json-api"
-import { TDictionary } from "@/lib/langs"
 import { trpc } from "@/lib/trpc/client"
 import { cn } from "@/lib/utils"
 import { Button, Modal, ModalContent, ModalFooter, Pagination } from "@nextui-org/react"
@@ -14,7 +14,8 @@ import SessionRow from "./session-row"
 
 const itemsPerPageInitial = 5
 
-export default function SessionsTable({ dictionary, isDisabled }: { dictionary: TDictionary; isDisabled?: boolean }) {
+export default function SessionsTable({ isDisabled }: { isDisabled?: boolean }) {
+  const dictionary = useDictionary()
   const utils = trpc.useUtils()
 
   const [selectedSession, setSelectedSession] = useState<string | null>(null)

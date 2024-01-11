@@ -1,4 +1,62 @@
 {
+  "errors": {
+    "notImplemented": "Not implemented.",
+    "tooManyAttempts": "Too many attempts. Please try again later.",
+    "otpInvalid": "Invalid OTP code.",
+    "otpSecretAlreadyExists": "You already have an OTP secret.",
+    "otpSecretNotFound": "OTP secret not found.",
+    "demoAdminCannotHaveOtpSecret": "The administator cannot have an OTP secret in demo mode.",
+    "typeError": {
+      "number": {
+        "invalid": "Please enter a valid number.",
+        "required": "Please enter a number."
+      },
+      "string": {
+        "invalid": "Please enter a valid string.",
+        "required": "Please enter a string."
+      }
+    },
+    "username": {
+      "required": "Username is required.",
+      "min3": "Username must be at least 3 characters long.",
+      "max30": "Username must be at most 30 characters long.",
+      "exist": "Username already exists."
+    },
+    "password": {
+      "regex": "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character",
+      "required": "Password is required.",
+      "dontMatch": "Passwords don't match.",
+      "min8": "Password must be at least 8 characters long.",
+      "max25": "Password must be at most 25 characters long."
+    },
+    "email": {
+      "required": "Email is required.",
+      "invalid": "Email is invalid.",
+      "exist": "Email already exists."
+    },
+    "unknownError": "An unknown error has occurred. Please try again later.",
+    "wrongProvider": "You already have an account with a different provider. Please sign in with it.",
+    "invalidCredentials": "Invalid credentials. Please try again.",
+    "unauthorized": "You have been logged out. Please sign in again.",
+    "userNotFound": "This user does not exist.",
+    "cannotDeleteAdmin": "You cannot delete the admin account.",
+    "accountAlreadyExists": "An account with this email already exists.",
+    "userDoesNotHaveAPassword": "This user does not have a password.",
+    "pleaseTryAgainInFewMinutes": "Please try again in a few minutes.",
+    "emailAlreadySentPleaseTryAgainInFewMinutes": "An email has already been sent. Please try again in a few minutes.",
+    "tokenNotFound": "Token invalid or already used.",
+    "tokenExpired": "Token has expired.",
+    "passwordsDoNotMatch": "Passwords do not match.",
+    "cannotResetAdminPasswordInDemoMode": "You cannot reset the admin password in demo mode.",
+    "emailNotVerified": "Please, verify your email.",
+    "emailAlreadyVerified": "Email verified",
+    "emailServiceDisabled": "Email service disabled.",
+    "unavailableWithOAuth": "This feature is not available with OAuth providers.",
+    "s3ServiceDisabled": "S3 service disabled.",
+    "noFileSelected": "No file selected.",
+    "registrationDisabled": "Registration disabled.",
+    "fileTooLarge": "File too large."
+  },
   "home": "Home",
   "homePage": {
     "title": "Hello World!"
@@ -63,63 +121,6 @@
   "needSavePopup": "Be careful, there are still unsaved changes!",
   "reset": "Reset",
   "saveChanges": "Save changes",
-  "errors": {
-    "tooManyAttempts": "Too many attempts. Please try again later.",
-    "otpInvalid": "Invalid OTP code.",
-    "otpSecretAlreadyExists": "You already have an OTP secret.",
-    "otpSecretNotFound": "OTP secret not found.",
-    "demoAdminCannotHaveOtpSecret": "The administator cannot have an OTP secret in demo mode.",
-    "typeError": {
-      "number": {
-        "invalid": "Please enter a valid number.",
-        "required": "Please enter a number."
-      },
-      "string": {
-        "invalid": "Please enter a valid string.",
-        "required": "Please enter a string."
-      }
-    },
-    "username": {
-      "required": "Username is required.",
-      "min3": "Username must be at least 3 characters long.",
-      "max30": "Username must be at most 30 characters long.",
-      "exist": "Username already exists."
-    },
-    "password": {
-      "regex": "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character",
-      "required": "Password is required.",
-      "dontMatch": "Passwords don't match.",
-      "min8": "Password must be at least 8 characters long.",
-      "max25": "Password must be at most 25 characters long."
-    },
-    "email": {
-      "required": "Email is required.",
-      "invalid": "Email is invalid.",
-      "exist": "Email already exists."
-    },
-    "unknownError": "An unknown error has occurred. Please try again later.",
-    "wrongProvider": "You already have an account with a different provider. Please sign in with it.",
-    "invalidCredentials": "Invalid credentials. Please try again.",
-    "unauthorized": "You have been logged out. Please sign in again.",
-    "userNotFound": "This user does not exist.",
-    "cannotDeleteAdmin": "You cannot delete the admin account.",
-    "accountAlreadyExists": "An account with this email already exists.",
-    "userDoesNotHaveAPassword": "This user does not have a password.",
-    "pleaseTryAgainInFewMinutes": "Please try again in a few minutes.",
-    "emailAlreadySentPleaseTryAgainInFewMinutes": "An email has already been sent. Please try again in a few minutes.",
-    "tokenNotFound": "Token invalid or already used.",
-    "tokenExpired": "Token has expired.",
-    "passwordsDoNotMatch": "Passwords do not match.",
-    "cannotResetAdminPasswordInDemoMode": "You cannot reset the admin password in demo mode.",
-    "emailNotVerified": "Please, verify your email.",
-    "emailAlreadyVerified": "Email verified",
-    "emailServiceDisabled": "Email service disabled.",
-    "unavailableWithOAuth": "This feature is not available with OAuth providers.",
-    "s3ServiceDisabled": "S3 service disabled.",
-    "noFileSelected": "No file selected.",
-    "registrationDisabled": "Registration disabled.",
-    "fileTooLarge": "File too large."
-  },
   "email": "Email",
   "emailPlaceholder": "name@example.com",
   "password": "Password",

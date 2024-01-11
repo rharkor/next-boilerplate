@@ -5,12 +5,13 @@ import { BadgeCheck } from "lucide-react"
 import { toast } from "react-toastify"
 
 import { useAccount } from "@/contexts/account"
-import { TDictionary } from "@/lib/langs"
-import { logger } from "@/lib/logger"
+import { useDictionary } from "@/contexts/dictionary/utils"
 import { trpc } from "@/lib/trpc/client"
+import { logger } from "@lib/logger"
 import { Button } from "@nextui-org/react"
 
-export default function VerifyEmailButton({ session, dictionary }: { session: Session; dictionary: TDictionary }) {
+export default function VerifyEmailButton({ session }: { session: Session }) {
+  const dictionary = useDictionary()
   const account = useAccount(dictionary)
   const hasVerifiedEmail = session.user.emailVerified || !!account.data?.user.emailVerified
 

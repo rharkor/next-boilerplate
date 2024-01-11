@@ -8,6 +8,8 @@ import inquirer from "inquirer"
 import * as path from "path"
 import * as url from "url"
 
+import { logger } from "@lib/logger"
+
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url))
 const rootDir = path.join(__dirname, "..", "..")
 
@@ -27,11 +29,11 @@ export const packagesSelection = async () => {
   const packagesToRemove = packagesAvailable.filter((p) => !packages.includes(p))
 
   if (packagesToRemove.length === 0) {
-    console.log(chalk.gray("No packages to remove!"))
+    logger.log(chalk.gray("No packages to remove!"))
     return
   }
 
-  console.log(chalk.blue("Removing packages..."))
+  logger.log(chalk.blue("Removing packages..."))
   for (const packageToRemove of packagesToRemove) {
     //? Remove the package folder
     await fs.promises.rm(path.join(rootDir, "packages", packageToRemove), { recursive: true })
@@ -41,6 +43,6 @@ export const packagesSelection = async () => {
       (w: string) => !w.includes(`packages/${packageToRemove}`)
     )
     fs.writeFileSync(path.join(rootDir, "package.json"), JSON.stringify(rootPackageJson, null, 2))
-    console.log(chalk.gray(`Removed ${packageToRemove}!`))
+    logger.log(chalk.gray(`Removed ${packageToRemove}!`))
   }
 }

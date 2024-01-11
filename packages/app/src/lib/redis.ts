@@ -1,7 +1,7 @@
 import Redis, { Callback, ChainableCommander, RedisOptions } from "ioredis"
 import { Result } from "ioredis"
 
-import { logger } from "./logger"
+import { logger } from "@lib/logger"
 
 const options: RedisOptions = {
   host: process.env.REDIS_HOST,

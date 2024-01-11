@@ -8,7 +8,7 @@
 import { CronJob } from "cron"
 import { config } from "dotenv"
 
-import { logger } from "@/lib/logger"
+import { logger } from "@lib/logger"
 config()
 
 //? Do a task every day

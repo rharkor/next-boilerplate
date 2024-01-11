@@ -5,25 +5,20 @@ import { Camera } from "lucide-react"
 import { toast } from "react-toastify"
 
 import { useAccount } from "@/contexts/account"
-import { TDictionary } from "@/lib/langs"
-import { logger } from "@/lib/logger"
+import { useDictionary } from "@/contexts/dictionary/utils"
 import { trpc } from "@/lib/trpc/client"
 import { cn } from "@/lib/utils"
 import { getImageUrl } from "@/lib/utils/client-utils"
 import { maxUploadSize } from "@/types/constants"
+import { logger } from "@lib/logger"
 import { Avatar, Button, Modal, ModalBody, ModalContent, Skeleton, Spinner } from "@nextui-org/react"
 
 import { Icons } from "../icons"
 import FileUpload from "../ui/file-upload"
 import { ModalHeader, ModalTitle } from "../ui/modal"
 
-export default function UpdateAvatar({
-  account,
-  dictionary,
-}: {
-  account: ReturnType<typeof useAccount>
-  dictionary: TDictionary
-}) {
+export default function UpdateAvatar({ account }: { account: ReturnType<typeof useAccount> }) {
+  const dictionary = useDictionary()
   const utils = trpc.useUtils()
 
   const getPresignedUrlMutation = trpc.upload.presignedUrl.useMutation()
@@ -175,7 +170,6 @@ export default function UpdateAvatar({
                   "image/png": [".png"],
                   "image/jpeg": [".jpg", ".jpeg"],
                 }}
-                dictionary={dictionary}
                 disabled={uploading}
               />
               <Button color="primary" type="submit" isDisabled={uploading || !file} isLoading={uploading}>

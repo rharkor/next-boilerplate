@@ -15,7 +15,9 @@
     "isolatedModules": true,
     "incremental": true,
     "baseUrl": ".",
-    "rootDir": "."
+    "paths": {
+      "@lib/*": ["../lib/*"]
+    }
   },
   "include": ["**/*.ts", ".eslintrc.js"],
   "exclude": ["node_modules"]

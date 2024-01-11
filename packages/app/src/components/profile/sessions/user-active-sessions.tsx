@@ -19,7 +19,7 @@ export default async function UserActiveSessions({
           {dictionary.profilePage.profileDetails.loggedDevicesDescription}
         </p>
       </header>
-      <SessionsTable dictionary={dictionary} isDisabled={session?.user.hasPassword === false} />
+      <SessionsTable isDisabled={session?.user.hasPassword === false} />
     </section>
   )
 }

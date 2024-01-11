@@ -7,9 +7,9 @@ import { ArrowBigDown, BadgeInfo } from "lucide-react"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
 
+import { useDictionary } from "@/contexts/dictionary/utils"
 import { authRoutes } from "@/lib/auth/constants"
 import { handleSignError, handleSignIn } from "@/lib/auth/handle-sign"
-import { TDictionary } from "@/lib/langs"
 import { signInSchema } from "@/lib/schemas/auth"
 import { cn, ensureRelativeUrl } from "@/lib/utils"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -20,7 +20,6 @@ import Copiable from "../ui/copiable"
 import FormField from "../ui/form"
 
 type UserAuthFormProps = React.HTMLAttributes<HTMLFormElement> & {
-  dictionary: TDictionary
   searchParams: { [key: string]: string | string[] | undefined }
 }
 
@@ -28,7 +27,8 @@ const formSchema = signInSchema
 
 type IForm = z.infer<ReturnType<typeof formSchema>>
 
-export function LoginUserAuthForm({ dictionary, searchParams, ...props }: UserAuthFormProps) {
+export function LoginUserAuthForm({ searchParams, ...props }: UserAuthFormProps) {
+  const dictionary = useDictionary()
   const router = useRouter()
 
   const callbackUrl = ensureRelativeUrl(searchParams.callbackUrl?.toString()) || authRoutes.redirectAfterSignIn

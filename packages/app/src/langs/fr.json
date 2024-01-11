@@ -1,69 +1,6 @@
 {
-  "home": "Accueil",
-  "homePage": {
-    "title": "Accueil"
-  },
-  "signUpPage": {
-    "createAnAccount": "Créer un compte",
-    "enterEmail": "Entrez votre adresse email pour créer un compte"
-  },
-  "signInPage": {
-    "loginToYourAccount": "Connectez-vous à votre compte",
-    "enterDetails": "Entrez vos détails pour vous connecter"
-  },
-  "profilePage": {
-    "serverSideData": "Les données ci-dessous ont été générée du serveur",
-    "profileDetails": {
-      "toggle": "Voir les détails",
-      "updateAccount": "Mettre à jour le compte",
-      "updateAccountDescription": "Vous pouvez mettre à jour votre compte ci-dessous",
-      "username": {
-        "label": "Nom d'utilisateur",
-        "placeholder": "Nom d'utilisateur"
-      },
-      "loggedDevices": "Appareils connectés",
-      "loggedDevicesDescription": "Vous pouvez voir les appareils connectés à votre compte ci-dessous",
-      "deleteLoggedDevice": {
-        "description": "Cette action va déconnecter l'appareil de votre compte"
-      },
-      "session": "la session",
-      "sessions": "les sessions",
-      "lastUsed": "Dernière utilisation",
-      "created": "Créé",
-      "expires": "Expire",
-      "in": "dans"
-    }
-  },
-  "auth": {
-    "orContinueWith": "Ou continuez avec",
-    "clickingAggreement": "En cliquant sur Inscription, vous acceptez nos",
-    "termsOfService": "Conditions d'utilisation",
-    "privacyPolicy": "Politique de confidentialité",
-    "demoMode": "Mode démo"
-  },
-  "and": "et",
-  "profile": "Profil",
-  "signUp": "Inscription",
-  "signIn": "Connexion",
-  "toSignUp": "S'inscrire",
-  "toSignIn": "Se connecter",
-  "signOut": "Déconnexion",
-  "deleteAccount": "Supprimer le compte",
-  "notFound": "Page introuvable",
-  "login": "Connexion",
-  "cancel": "Annuler",
-  "continue": "Confirmer",
-  "areYouAbsolutelySure": "Êtes-vous absolument sûr ?",
-  "error": "Erreur",
-  "couldNotMessage": "Impossible de {action} {subject}. Veuillez ressayer plus tard.",
-  "fetch": "récupérer",
-  "create": "créer",
-  "update": "mettre à jour",
-  "delete": "supprimer",
-  "needSavePopup": "Vous avez des modifications non enregistrées !",
-  "reset": "Réinitialiser",
-  "saveChanges": "Sauvegarder",
   "errors": {
+    "notImplemented": "Non implémenté.",
     "tooManyAttempts": "Trop de tentatives. Veuillez réessayer dans quelques minutes.",
     "otpInvalid": "Code OTP invalide.",
     "otpSecretAlreadyExists": "Un secret OTP existe déjà.",
@@ -120,6 +57,70 @@
     "registrationDisabled": "L'inscription est désactivée.",
     "fileTooLarge": "Le fichier est trop volumineux."
   },
+  "home": "Accueil",
+  "homePage": {
+    "title": "Accueil"
+  },
+  "signUpPage": {
+    "createAnAccount": "Créer un compte",
+    "enterEmail": "Entrez votre adresse email pour créer un compte"
+  },
+  "signInPage": {
+    "loginToYourAccount": "Connectez-vous à votre compte",
+    "enterDetails": "Entrez vos détails pour vous connecter"
+  },
+  "profilePage": {
+    "serverSideData": "Les données ci-dessous ont été générée du serveur",
+    "profileDetails": {
+      "toggle": "Voir les détails",
+      "updateAccount": "Mettre à jour le compte",
+      "updateAccountDescription": "Vous pouvez mettre à jour votre compte ci-dessous",
+      "username": {
+        "label": "Nom d'utilisateur",
+        "placeholder": "Nom d'utilisateur"
+      },
+      "loggedDevices": "Appareils connectés",
+      "loggedDevicesDescription": "Vous pouvez voir les appareils connectés à votre compte ci-dessous",
+      "deleteLoggedDevice": {
+        "description": "Cette action va déconnecter l'appareil de votre compte"
+      },
+      "session": "la session",
+      "sessions": "les sessions",
+      "lastUsed": "Dernière utilisation",
+      "created": "Créé",
+      "expires": "Expire",
+      "in": "dans"
+    }
+  },
+  "auth": {
+    "orContinueWith": "Ou continuez avec",
+    "clickingAggreement": "En cliquant sur Inscription, vous acceptez nos",
+    "termsOfService": "Conditions d'utilisation",
+    "privacyPolicy": "Politique de confidentialité",
+    "demoMode": "Mode démo"
+  },
+  "and": "et",
+  "profile": "Profil",
+  "signUp": "Inscription",
+  "signIn": "Connexion",
+  "toSignUp": "S'inscrire",
+  "toSignIn": "Se connecter",
+  "signOut": "Déconnexion",
+  "deleteAccount": "Supprimer le compte",
+  "notFound": "Page introuvable",
+  "login": "Connexion",
+  "cancel": "Annuler",
+  "continue": "Suivant",
+  "areYouAbsolutelySure": "Êtes-vous absolument sûr ?",
+  "error": "Erreur",
+  "couldNotMessage": "Impossible de {action} {subject}. Veuillez ressayer plus tard.",
+  "fetch": "récupérer",
+  "create": "créer",
+  "update": "mettre à jour",
+  "delete": "supprimer",
+  "needSavePopup": "Vous avez des modifications non enregistrées !",
+  "reset": "Réinitialiser",
+  "saveChanges": "Sauvegarder",
   "email": "Email",
   "emailPlaceholder": "nom@exemple.com",
   "password": "Mot de passe",

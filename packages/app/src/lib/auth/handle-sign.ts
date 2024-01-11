@@ -5,8 +5,9 @@ import { signIn } from "next-auth/react"
 import { toast } from "react-toastify"
 import * as z from "zod"
 
+import { logger } from "@lib/logger"
+
 import { TDictionary } from "../langs"
-import { logger } from "../logger"
 import { signInSchema } from "../schemas/auth"
 
 export const handleSignError = (error: string, dictionary: TDictionary) => {

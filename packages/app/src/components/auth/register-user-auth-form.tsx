@@ -6,22 +6,22 @@ import { useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
 
+import { useDictionary } from "@/contexts/dictionary/utils"
 import { authRoutes } from "@/lib/auth/constants"
 import { handleSignError, handleSignIn } from "@/lib/auth/handle-sign"
 import { TDictionary } from "@/lib/langs"
-import { logger } from "@/lib/logger"
 import { signUpSchema } from "@/lib/schemas/auth"
 import { trpc } from "@/lib/trpc/client"
 import { cn } from "@/lib/utils"
 import { handleMutationError } from "@/lib/utils/client-utils"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { logger } from "@lib/logger"
 import { Button } from "@nextui-org/react"
 
 import TotpVerificationModal from "../profile/totp/totp-verification-modal"
 import FormField from "../ui/form"
 
 type UserAuthFormProps = React.HTMLAttributes<HTMLFormElement> & {
-  dictionary: TDictionary
   isMinimized?: boolean
   searchParams?: { [key: string]: string | string[] | undefined }
   locale: string
@@ -54,7 +54,8 @@ export const getFormSchema = ({ dictionary, isMinimized }: { dictionary: TDictio
 export type IForm = z.infer<ReturnType<typeof formSchema>>
 export type IFormMinimized = z.infer<ReturnType<typeof formMinizedSchema>>
 
-export function RegisterUserAuthForm({ dictionary, isMinimized, searchParams, locale, ...props }: UserAuthFormProps) {
+export function RegisterUserAuthForm({ isMinimized, searchParams, locale, ...props }: UserAuthFormProps) {
+  const dictionary = useDictionary()
   const router = useRouter()
 
   const [isDesactivate2FAModalOpen, setDesactivate2FAModalOpen] = React.useState(false)

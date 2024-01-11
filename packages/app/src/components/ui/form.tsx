@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react"
 import { createPortal } from "react-dom"
 import { Controller, FieldPath, FieldValues, UseFormReturn } from "react-hook-form"
 
+import { useDictionary } from "@/contexts/dictionary/utils"
 import { TDictionary } from "@/lib/langs"
 import { cn } from "@/lib/utils"
 import { Checkbox, Input, InputProps, Skeleton, Tooltip } from "@nextui-org/react"
@@ -148,7 +149,6 @@ export type FormFieldProps<
   tooltip?: string
   type: InputProps["type"] | "password-eye-slash"
   skeleton?: boolean
-  dictionary?: TDictionary
 } & IWithPasswordStrenghProps
 
 const numberRegex = /[\d]/
@@ -159,16 +159,8 @@ const specialRegex = /[!@#$%^&*\.]/
 export default function FormField<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
->({
-  form,
-  name,
-  tooltip,
-  type,
-  skeleton,
-  passwordStrength,
-  dictionary,
-  ...props
-}: FormFieldProps<TFieldValues, TName>) {
+>({ form, name, tooltip, type, skeleton, passwordStrength, ...props }: FormFieldProps<TFieldValues, TName>) {
+  const dictionary = useDictionary()
   const [isVisible, setIsVisible] = useState(false)
   const [isFocused, setIsFocused] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)

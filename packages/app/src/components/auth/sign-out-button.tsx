@@ -3,8 +3,8 @@
 import { useState } from "react"
 import { signOut, useSession } from "next-auth/react"
 
-import { logger } from "@/lib/logger"
 import { trpc } from "@/lib/trpc/client"
+import { logger } from "@lib/logger"
 import { Button } from "@nextui-org/react"
 
 export default function SignoutButton({ children }: { children: React.ReactNode }) {

@@ -17,7 +17,7 @@ export default async function ProfileDetails({
           {dictionary.profilePage.profileDetails.updateAccountDescription}
         </p>
       </header>
-      <UpdateAccount dictionary={dictionary} sessionHasVerifiedEmail={hasVerifiedEmail} />
+      <UpdateAccount sessionHasVerifiedEmail={hasVerifiedEmail} />
     </section>
   )
 }

@@ -6,19 +6,18 @@ import { signIn } from "next-auth/react"
 import { toast } from "react-toastify"
 
 import GithubSignIn from "@/components/auth/github-sign-in"
+import { useDictionary } from "@/contexts/dictionary/utils"
 import { authRoutes } from "@/lib/auth/constants"
-import { TDictionary } from "@/lib/langs"
-import { logger } from "@/lib/logger"
+import { logger } from "@lib/logger"
 
 export default function Providers({
-  dictionary,
   searchParams,
   session,
 }: {
-  dictionary: TDictionary
   searchParams: { [key: string]: string | string[] | undefined }
   session: Session | null
 }) {
+  const dictionary = useDictionary()
   const callbackUrl = searchParams.callbackUrl ? searchParams.callbackUrl.toString() : undefined
 
   //? If session and callbackUrl, redirect to callbackUrl
