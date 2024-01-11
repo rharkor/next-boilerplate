@@ -4,6 +4,7 @@ import { z } from "zod"
 
 import { ValueOf } from "@/types"
 import { logger } from "@lib/logger"
+import { Prisma } from "@prisma/client"
 import { TRPCError } from "@trpc/server"
 import { TRPC_ERROR_CODE_KEY } from "@trpc/server/rpc"
 
@@ -27,7 +28,9 @@ export const handleApiError = (error: unknown) => {
     return ApiError(error.message as ValueOf<typeof throwableErrorsMessages>, error.code)
   } else {
     logger.error(error)
-    if (error instanceof Error)
+    if (error instanceof Prisma.PrismaClientValidationError || error instanceof Prisma.PrismaClientKnownRequestError)
+      ApiError(throwableErrorsMessages.unknownError, "INTERNAL_SERVER_ERROR")
+    else if (error instanceof Error)
       return ApiError(error.message as ValueOf<typeof throwableErrorsMessages>, "INTERNAL_SERVER_ERROR")
     return ApiError(throwableErrorsMessages.unknownError, "INTERNAL_SERVER_ERROR")
   }
