@@ -1,8 +1,7 @@
 import { Locale } from "i18n-config"
 
 import requireAuth from "@/components/auth/require-auth"
-import LocaleSwitcher from "@/components/locale-switcher"
-import { ThemeSwitch } from "@/components/theme/theme-switch"
+import NavSettings from "@/components/nav-settings"
 import { prisma } from "@/lib/prisma"
 import { redis } from "@/lib/redis"
 
@@ -51,10 +50,7 @@ export default async function ProtectedLayout({
   return (
     <>
       {children}
-      <div className="fixed right-2 top-2 z-10 flex flex-row gap-3">
-        <ThemeSwitch />
-        <LocaleSwitcher lang={lang} />
-      </div>
+      <NavSettings lang={lang} />
     </>
   )
 }

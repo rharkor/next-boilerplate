@@ -6,8 +6,6 @@ import { match as matchLocale } from "@formatjs/intl-localematcher"
 
 import { i18n } from "../i18n-config"
 
-import { logger } from "./lib/logger"
-
 const blackListedPaths = ["healthz", "api/healthz", "health", "ping", "api/ping"]
 
 function getLocale(request: NextRequest): string | undefined {
@@ -56,7 +54,6 @@ export function middleware(request: NextRequest) {
     const presentLocale = getLocale(request) || i18n.defaultLocale
     const response = NextResponse.next()
     if (localeInPathname !== presentLocale) {
-      logger.debug(`setting locale cookie: ${localeInPathname}`)
       response.cookies.set("saved-locale", localeInPathname, {
         path: "/",
         sameSite: "lax",

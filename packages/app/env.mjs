@@ -1,5 +1,11 @@
+import { logger } from "@lib/logger"
 import { createEnv } from "@t3-oss/env-nextjs"
+import { config } from "dotenv"
 import { z } from "zod"
+
+if (!process.env.ENV) {
+  config()
+}
 
 export const env = createEnv({
   server: {
@@ -28,7 +34,7 @@ export const env = createEnv({
       .optional()
       .transform((value) => value === "true"),
     ENV: z.enum(["development", "recette", "production"]).optional(),
-    BASE_URL: z.string().url().optional(),
+    NEXT_PUBLIC_BASE_URL: z.string().url().optional(),
     VERCEL_URL: z.string().optional(),
     SMTP_HOST: z.string().optional(),
     SMTP_PORT: z
@@ -40,7 +46,7 @@ export const env = createEnv({
     SMTP_FROM_NAME: z.string().optional(),
     SMTP_FROM_EMAIL: z.string().optional(),
     SUPPORT_EMAIL: z.string().optional(),
-    ENABLE_MAILING_SERVICE: z
+    NEXT_PUBLIC_ENABLE_MAILING_SERVICE: z
       .enum(["true", "false"])
       .optional()
       .transform((value) => value === "true"),
@@ -87,7 +93,7 @@ export const env = createEnv({
     NEXT_PUBLIC_DEMO_EMAIL: process.env.NEXT_PUBLIC_DEMO_EMAIL,
     NEXT_PUBLIC_DEMO_PASSWORD: process.env.NEXT_PUBLIC_DEMO_PASSWORD,
     ENV: process.env.ENV,
-    BASE_URL: process.env.BASE_URL,
+    NEXT_PUBLIC_BASE_URL: process.env.NEXT_PUBLIC_BASE_URL,
     VERCEL_URL: process.env.VERCEL_URL,
     SMTP_HOST: process.env.SMTP_HOST,
     SMTP_PORT: process.env.SMTP_PORT,
@@ -96,7 +102,7 @@ export const env = createEnv({
     SMTP_FROM_NAME: process.env.SMTP_FROM_NAME,
     SMTP_FROM_EMAIL: process.env.SMTP_FROM_EMAIL,
     SUPPORT_EMAIL: process.env.SUPPORT_EMAIL,
-    ENABLE_MAILING_SERVICE: process.env.ENABLE_MAILING_SERVICE,
+    NEXT_PUBLIC_ENABLE_MAILING_SERVICE: process.env.NEXT_PUBLIC_ENABLE_MAILING_SERVICE,
     AWS_REGION: process.env.AWS_REGION,
     NEXT_PUBLIC_AWS_BUCKET_NAME: process.env.NEXT_PUBLIC_AWS_BUCKET_NAME,
     AWS_ACCESS_KEY_ID: process.env.AWS_ACCESS_KEY_ID,
@@ -106,7 +112,7 @@ export const env = createEnv({
     ENABLE_REGISTRATION: process.env.ENABLE_REGISTRATION,
   },
   onValidationError: (error) => {
-    console.error(error)
-    throw error
+    logger.error(error)
+    throw "Invalid environment variables"
   },
 })

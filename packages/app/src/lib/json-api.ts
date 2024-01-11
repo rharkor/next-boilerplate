@@ -1,9 +1,9 @@
 import { z } from "zod"
 
 import { defaultMaxPerPage } from "@/types/constants"
+import { logger } from "@lib/logger"
 
 import { TDictionary } from "./langs"
-import { logger } from "./logger"
 
 export type IMeta = {
   total: number

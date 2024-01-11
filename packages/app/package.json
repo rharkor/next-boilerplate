@@ -1,18 +1,17 @@
 {
   "name": "@next-boilerplate/app",
-  "version": "1.0.0-rec.2",
   "scripts": {
-    "dev": "npm run is-initialized && npx prisma migrate dev && cross-env FORCE_COLOR=1 next dev",
+    "dev": "npm run is-initialized && prisma migrate dev && cross-env FORCE_COLOR=1 next dev",
     "build": "next build",
     "start": "npm run deploy-db:prod && next start",
     "start:with-cron": "npm run deploy-db:prod && concurrently \"next start\" \"npm run cron\"",
-    "deploy-db:prod": "npx prisma migrate deploy && npm run seed",
-    "cron": "npx tsx ./crons/index.ts",
+    "deploy-db:prod": "prisma migrate deploy && npm run seed",
+    "cron": "tsx ./crons/index.ts",
     "lint": "next lint && eslint . --ext .js,.jsx,.ts,.tsx",
     "lint:fix": "next lint --fix && eslint . --ext .js,.jsx,.ts,.tsx --fix",
     "test": "cross-env FORCE_COLOR=1 jest --passWithNoTests",
-    "postinstall": "npx patch-package && prisma generate",
-    "seed": "cross-env NODE_ENV=development prisma db seed",
+    "postinstall": "patch-package && prisma generate",
+    "seed": "cross-env NODE_ENV=development tsx prisma/seed.ts",
     "is-initialized": "cd ../scripts && npm run is-initialized"
   },
   "dependencies": {
@@ -43,6 +42,7 @@
     "base32-encode": "^2.0.0",
     "bcryptjs": "^2.4.3",
     "bip39": "^3.1.0",
+    "chalk": "^5.3.0",
     "cli-spinner": "^0.2.10",
     "client-only": "^0.0.1",
     "clsx": "^2.0.0",
@@ -59,7 +59,7 @@
     "eslint-plugin-unused-imports": "^3.0.0",
     "framer-motion": "^10.16.5",
     "ioredis": "^5.3.2",
-    "lucide-react": "^0.298.0",
+    "lucide-react": "^0.309.0",
     "negotiator": "^0.6.3",
     "next": "^14.0.0",
     "next-auth": "^4.24.5",
@@ -77,8 +77,10 @@
     "sharp": "^0.33.0",
     "superjson": "^2.0.0",
     "tailwind-merge": "^2.0.0",
+    "tsx": "^4.7.0",
     "ua-parser-js": "^1.0.35",
-    "zod": "^3.21.4"
+    "zod": "^3.21.4",
+    "prisma": "^5.8.0"
   },
   "devDependencies": {
     "@babel/core": "^7.22.17",
@@ -100,10 +102,8 @@
     "postinstall-postinstall": "^2.1.0",
     "prettier": "^3.1.0",
     "prettier-plugin-tailwindcss": "^0.5.7",
-    "prisma": "^5.6.0",
     "tailwindcss": "^3.3.3",
     "ts-jest": "^29.1.1",
-    "ts-node": "^10.9.1",
     "tsc": "^2.0.4",
     "typescript": "^5.3.2",
     "vitest": "^1.0.0"
@@ -113,6 +113,6 @@
   },
   "prisma": {
     "schema": "prisma/schema.prisma",
-    "seed": "npx ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
+    "seed": "tsx prisma/seed.ts"
   }
 }

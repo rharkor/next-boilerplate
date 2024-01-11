@@ -4,6 +4,8 @@ import inquirer from "inquirer"
 import * as path from "path"
 import * as url from "url"
 
+import { logger } from "@lib/logger"
+
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url))
 const root = path.join(__dirname, "..")
 
@@ -107,7 +109,7 @@ const processBasicFiles = async (currentRuntime: IRuntime, newRuntime: IRuntime)
     const fileContent = await fs.readFile(filePath, "utf8")
     const newFileContent = file.replace(currentRuntime, newRuntime, fileContent)
     await fs.writeFile(filePath, newFileContent, "utf8")
-    console.log(chalk.gray(`Done for ${filePath}`))
+    logger.log(chalk.gray(`Done for ${filePath}`))
   }
 }
 
@@ -127,7 +129,7 @@ export const runtime = async () => {
 
   //? If the runtime is the same, do nothing
   if (res.runtime === "node (npm)") {
-    console.log(chalk.gray(`No change`))
+    logger.log(chalk.gray(`No change`))
     return
   }
 
@@ -136,11 +138,11 @@ export const runtime = async () => {
   await processBasicFiles(currentRuntime, newRuntime)
 
   //? Delete old node_modules
-  console.log(chalk.blue(`Deleting old node_modules`))
+  logger.log(chalk.blue(`Deleting old node_modules`))
   await fs.rm(path.join(root, "../node_modules"), { recursive: true, force: true })
 
   //? Save the new runtime
   projectInfoJson.runtime = newRuntime
   await fs.writeFile(path.join(root, "scripts", ".pinfo.json"), JSON.stringify(projectInfoJson, null, 2) + "\n", "utf8")
-  console.log(chalk.gray(`Done for .pinfo.json`))
+  logger.log(chalk.gray(`Done for .pinfo.json`))
 }

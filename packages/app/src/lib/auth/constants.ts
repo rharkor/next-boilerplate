@@ -7,3 +7,6 @@ export const authRoutes = {
   redirectOnUnhauthorized: "/sign-in",
   otp: ["/sign-in?withOtp=true"],
 }
+
+export const minPasswordLength = 8
+export const maxPasswordLength = 25

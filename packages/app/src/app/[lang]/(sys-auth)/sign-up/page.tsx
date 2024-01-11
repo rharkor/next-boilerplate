@@ -42,7 +42,7 @@ export default async function SignUpPage({
             <p className="text-muted-foreground text-sm">{dictionary.signUpPage.enterEmail}</p>
           </div>
           <div className="grid gap-6">
-            <RegisterUserAuthForm isMinimized searchParams={searchParams} dictionary={dictionary} locale={lang} />
+            <RegisterUserAuthForm isMinimized searchParams={searchParams} locale={lang} />
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
                 <span className="w-full border-t" />
@@ -51,7 +51,7 @@ export default async function SignUpPage({
                 <span className="bg-background text-muted-foreground px-2">{dictionary.auth.orContinueWith}</span>
               </div>
             </div>
-            <Providers dictionary={dictionary} searchParams={searchParams} session={session} />
+            <Providers searchParams={searchParams} session={session} />
           </div>
           <PrivacyAcceptance dictionary={dictionary} />
         </div>

@@ -4,6 +4,8 @@ import * as fs from "fs"
 import * as path from "path"
 import * as url from "url"
 
+import { logger } from "@lib/logger"
+
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url))
 const rootPath = path.join(__dirname, "..")
 
@@ -19,7 +21,7 @@ const main = async () => {
   let message = ""
   let hasError = false
   for (const pkg of packagesPath) {
-    console.log(chalk.blue(`Checking ${pkg}...`))
+    logger.log(chalk.blue(`Checking ${pkg}...`))
     if (pkg === path.join(rootPath, "docs")) {
       options.ignoreMatches.push("@docusaurus/preset-classic", "@mdx-js/react", "clsx", "prism-react-renderer")
     } else if (pkg === path.join(rootPath, "app")) {
@@ -32,12 +34,15 @@ const main = async () => {
         "@react-aria/ssr",
         "@react-aria/visually-hidden",
         "cron",
-        "autoprefixer"
+        "autoprefixer",
+        "@lib/logger"
       )
     } else if (pkg === path.join(rootPath, "landing")) {
-      options.ignoreMatches.push("@types/react-dom")
+      options.ignoreMatches.push("@types/react-dom", "@lib/logger")
     } else if (pkg === path.join(rootPath, "scripts")) {
-      options.ignoreMatches.push("env-setup", "packages-selection", "replace-tokens", "runtime")
+      options.ignoreMatches.push("env-setup", "packages-selection", "replace-tokens", "runtime", "@lib/logger")
+    } else if (pkg === path.join(rootPath, "lib")) {
+      continue
     }
     await depcheck(pkg, options).then(async (unused) => {
       const beautify = (arr: string[]) => {
@@ -65,10 +70,10 @@ const main = async () => {
         hasError = true
       }
     })
-    console.log(chalk.gray(`Done ${pkg}`))
+    logger.log(chalk.gray(`Done ${pkg}`))
   }
   if (hasError) {
-    console.log(message)
+    logger.log(message)
     process.exit(1)
   }
 
@@ -78,7 +83,7 @@ const main = async () => {
 main()
 
 process.on("SIGINT", function () {
-  console.log("\n")
-  console.log("Bye!")
+  logger.log("\n")
+  logger.log("Bye!")
   process.exit()
 })

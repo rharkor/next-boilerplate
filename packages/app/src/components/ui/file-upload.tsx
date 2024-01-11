@@ -4,7 +4,7 @@ import { InputHTMLAttributes, useEffect, useState } from "react"
 import { Upload } from "lucide-react"
 import { Accept, useDropzone } from "react-dropzone"
 
-import { TDictionary } from "@/lib/langs"
+import { useDictionary } from "@/contexts/dictionary/utils"
 import { bytesToMegabytes, cn } from "@/lib/utils"
 import { Button } from "@nextui-org/react"
 
@@ -16,7 +16,6 @@ export type TFileUploadProps = Omit<
 > & {
   className?: string
   onFilesChange?: (files: File[]) => void
-  dictionary: TDictionary
   disabled?: boolean
   accept?: Accept //? See: https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types
   maxFiles?: number
@@ -25,12 +24,12 @@ export type TFileUploadProps = Omit<
 export default function FileUpload({
   className,
   onFilesChange,
-  dictionary,
   disabled,
   accept,
   maxFiles,
   ...props
 }: TFileUploadProps) {
+  const dictionary = useDictionary()
   const { acceptedFiles, getRootProps, getInputProps, isDragAccept, isDragReject } = useDropzone({
     accept,
     maxFiles,

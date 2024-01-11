@@ -8,20 +8,15 @@ import { Icons } from "@/components/icons"
 import { ModalHeader, ModalTitle } from "@/components/ui/modal"
 import OtpInput from "@/components/ui/otp-input"
 import { useAccount } from "@/contexts/account"
-import { TDictionary } from "@/lib/langs"
+import { useDictionary } from "@/contexts/dictionary/utils"
 import { trpc } from "@/lib/trpc/client"
 import { cn } from "@/lib/utils"
 import { Button, Modal, ModalBody, ModalContent, ModalFooter, Skeleton } from "@nextui-org/react"
 
 import TotpVerificationModal from "./totp-verification-modal"
 
-export default function GenerateTotp({
-  dictionary,
-  account,
-}: {
-  dictionary: TDictionary
-  account: ReturnType<typeof useAccount>
-}) {
+export default function GenerateTotp({ account }: { account: ReturnType<typeof useAccount> }) {
+  const dictionary = useDictionary()
   const hasOtpVerified = account.data?.user.otpVerified
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [modalIndex, setModalIndex] = useState(0)
@@ -90,11 +85,11 @@ export default function GenerateTotp({
 
   return (
     <div className="flex flex-col gap-2">
-      <div className="flex flex-col">
+      <div className="-mx-2 flex flex-col px-2">
         <h3 className="text-medium font-medium">{dictionary.totp.generateTitle}</h3>
         <p className="text-muted-foreground text-sm">{dictionary.totp.generateDescription}</p>
       </div>
-      <Skeleton isLoaded={account.isInitialLoading === false} className={cn("rounded-medium -m-1 p-1")}>
+      <Skeleton isLoaded={account.isInitialLoading === false} className={cn("rounded-medium -ml-2 p-2")}>
         {hasOtpVerified ? (
           <Button
             color="danger"
@@ -179,7 +174,7 @@ export default function GenerateTotp({
                         {totpSecretData?.mnemonic.split(" ").map((word, index) => (
                           <p
                             className={cn(
-                              "bg-muted rounded-medium hover:bg-primary-200/70 focus:bg-primary-200/70 group relative h-[34px] w-full min-w-[70px] p-1.5 text-sm transition-all",
+                              "bg-muted/20 rounded-medium hover:bg-primary/30 focus:bg-primary/30 group relative h-[34px] w-full min-w-[70px] p-1.5 text-sm transition-all",
                               {
                                 "bg-danger-50 hover:bg-danger-100":
                                   mnemonicVerif.split(" ")[index] && mnemonicVerif.split(" ")[index] !== word,
