@@ -5,6 +5,7 @@ import { env } from "env.mjs"
 const PASSWORD_HASHER_SECRET = env.PASSWORD_HASHER_SECRET
 
 export const hash = async (value: string, saltOrRounds: string | number) => {
+  if (value.length > 100) throw new Error("Password too long")
   const preHashed = crypto.HmacSHA256(value, PASSWORD_HASHER_SECRET).toString()
   return await bhash(preHashed, saltOrRounds)
 }

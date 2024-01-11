@@ -1,23 +1,18 @@
-import { hash as bhash } from "bcryptjs"
-import { Spinner } from "cli-spinner"
-import crypto from "crypto-js"
 import { config } from "dotenv"
+config()
+import chalk from "chalk"
+import { Spinner } from "cli-spinner"
 
+import { hash } from "@/lib/bcrypt"
 import { logger } from "@lib/logger"
 import { PrismaClient } from "@prisma/client"
 
 import { rolesAsObject } from "../src/types/constants"
-config()
 
 const env = {
   AUTH_ADMIN_EMAIL: process.env.AUTH_ADMIN_EMAIL,
   AUTH_ADMIN_PASSWORD: process.env.AUTH_ADMIN_PASSWORD,
   PASSWORD_HASHER_SECRET: process.env.PASSWORD_HASHER_SECRET,
-}
-
-const hash = async (value: string, saltOrRounds: string | number) => {
-  const preHashed = crypto.HmacSHA256(value, env.PASSWORD_HASHER_SECRET ?? "").toString()
-  return await bhash(preHashed, saltOrRounds)
 }
 
 if (!env.AUTH_ADMIN_EMAIL || !env.AUTH_ADMIN_PASSWORD || !env.PASSWORD_HASHER_SECRET) {
@@ -27,43 +22,46 @@ if (!env.AUTH_ADMIN_EMAIL || !env.AUTH_ADMIN_PASSWORD || !env.PASSWORD_HASHER_SE
 
 let spinner: Spinner | null = null
 
-const chalk = {
-  blue: (text: string) => `\x1b[34m${text}\x1b[0m`,
-  green: (text: string) => `\x1b[32m${text}\x1b[0m`,
-}
-
 const prisma = new PrismaClient()
+
+const handleAction = async (actionName: string, doneName: string, action: Promise<unknown>) => {
+  spinner = new Spinner(chalk.blue(` ${actionName}`))
+  spinner.setSpinnerString(18)
+  spinner.start()
+  await action
+  spinner.stop(true)
+  logger.log(doneName)
+}
 
 async function main() {
   try {
-    spinner = new Spinner(chalk.blue(" Creating admin.. %s"))
-    spinner.setSpinnerString(18)
-    spinner.start()
+    // ADMIN
     const adminExists = await prisma.user.findFirst({
       where: {
         email: env.AUTH_ADMIN_EMAIL,
       },
     })
     if (!adminExists) {
-      await prisma.user.create({
-        data: {
-          email: env.AUTH_ADMIN_EMAIL as string,
-          password: await hash(env.AUTH_ADMIN_PASSWORD ?? "", 12),
-          role: rolesAsObject.admin,
-          username: "admin",
-          emailVerified: new Date(),
-          hasPassword: true,
-        },
-      })
-      spinner.stop(true)
-      logger.log("Admin created")
-    } else {
-      spinner.stop(true)
+      await handleAction(
+        "Creating admin",
+        "Admin created",
+        prisma.user.create({
+          data: {
+            email: env.AUTH_ADMIN_EMAIL as string,
+            password: await hash(env.AUTH_ADMIN_PASSWORD ?? "", 12),
+            role: rolesAsObject.admin,
+            username: "admin",
+            emailVerified: new Date(),
+            hasPassword: true,
+          },
+        })
+      )
     }
   } catch (e) {
     logger.error(e)
     process.exit(1)
   } finally {
+    spinner?.stop(true)
     await prisma.$disconnect()
   }
 }
