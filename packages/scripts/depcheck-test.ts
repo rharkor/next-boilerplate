@@ -34,12 +34,15 @@ const main = async () => {
         "@react-aria/ssr",
         "@react-aria/visually-hidden",
         "cron",
-        "autoprefixer"
+        "autoprefixer",
+        "@lib/logger"
       )
     } else if (pkg === path.join(rootPath, "landing")) {
-      options.ignoreMatches.push("@types/react-dom")
+      options.ignoreMatches.push("@types/react-dom", "@lib/logger")
     } else if (pkg === path.join(rootPath, "scripts")) {
-      options.ignoreMatches.push("env-setup", "packages-selection", "replace-tokens", "runtime")
+      options.ignoreMatches.push("env-setup", "packages-selection", "replace-tokens", "runtime", "@lib/logger")
+    } else if (pkg === path.join(rootPath, "lib")) {
+      continue
     }
     await depcheck(pkg, options).then(async (unused) => {
       const beautify = (arr: string[]) => {
