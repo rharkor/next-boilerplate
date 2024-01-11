@@ -21,17 +21,6 @@ services:
       options:
         max-size: "50m"
 
-  landing:
-    image: DOCKER_DEPLOY_LANDING_IMAGE
-    container_name: #{PROJECT_NAME}#_landing
-    restart: unless-stopped
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "50m"
-    ports:
-      - "3001:3000"
-
   docs:
     image: DOCKER_DEPLOY_DOCS_IMAGE
     container_name: #{PROJECT_NAME}#_docs
@@ -41,10 +30,21 @@ services:
       options:
         max-size: "50m"
     ports:
-      - "3002:3000"
+      - "3001:3000"
     #? You can comment the volumes section if you are not using the static files
     volumes:
       - .:/docs/.docusaurus
+
+  landing:
+    image: DOCKER_DEPLOY_LANDING_IMAGE
+    container_name: #{PROJECT_NAME}#_landing
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+    ports:
+      - "3002:3000"
 
   db:
     image: postgres:latest
