@@ -3,7 +3,7 @@ import { createTransport } from "nodemailer"
 
 import { logger } from "@lib/logger"
 
-import { ApiError, throwableErrorsMessages } from "./utils/server-utils"
+import { ApiError } from "./utils/server-utils"
 
 import "server-only"
 
@@ -26,7 +26,7 @@ const transporter = createTransport({
 export const sendMail = async (...params: Parameters<typeof transporter.sendMail>) => {
   if (!env.NEXT_PUBLIC_ENABLE_MAILING_SERVICE) {
     logger.error("Email service is disabled, sending email is skipped.")
-    return ApiError(throwableErrorsMessages.emailServiceDisabled, "PRECONDITION_FAILED")
+    return ApiError("emailServiceDisabled", "PRECONDITION_FAILED")
   }
   try {
     const res = await transporter.sendMail(...params)

@@ -7,7 +7,7 @@ import { sendMail } from "@/lib/mailer"
 import { prisma } from "@/lib/prisma"
 import { forgotPasswordSchema, resetPasswordSchema } from "@/lib/schemas/user"
 import { html, plainText, subject } from "@/lib/templates/mail/reset-password"
-import { ApiError, handleApiError, throwableErrorsMessages } from "@/lib/utils/server-utils"
+import { ApiError, handleApiError } from "@/lib/utils/server-utils"
 import { apiInputFromSchema } from "@/types"
 import { resendResetPasswordExpiration, resetPasswordExpiration, rolesAsObject } from "@/types/constants"
 import { logger } from "@lib/logger"
@@ -21,12 +21,12 @@ export const forgotPassword = async ({ input }: apiInputFromSchema<typeof forgot
         email,
       },
     })
-    // if (!user) return ApiError(throwableErrorsMessages.userNotFound, "NOT_FOUND")
+    // if (!user) return ApiError("userNotFound", "NOT_FOUND")
     if (!user) {
       logger.debug("User not found")
       return { email }
     }
-    if (!user.hasPassword) return ApiError(throwableErrorsMessages.userDoesNotHaveAPassword, "BAD_REQUEST")
+    if (!user.hasPassword) return ApiError("userDoesNotHaveAPassword", "BAD_REQUEST")
 
     const resetPassordToken = await prisma.resetPassordToken.findFirst({
       where: {
@@ -36,7 +36,7 @@ export const forgotPassword = async ({ input }: apiInputFromSchema<typeof forgot
 
     //? Too recent
     if (resetPassordToken && resetPassordToken.createdAt > new Date(Date.now() - resendResetPasswordExpiration)) {
-      return ApiError(throwableErrorsMessages.emailAlreadySentPleaseTryAgainInFewMinutes, "BAD_REQUEST")
+      return ApiError("emailAlreadySentPleaseTryAgainInFewMinutes", "BAD_REQUEST")
     }
 
     if (resetPassordToken) {
@@ -93,16 +93,16 @@ export const resetPassword = async ({ input }: apiInputFromSchema<typeof resetPa
         user: true,
       },
     })
-    if (!resetPassordToken) return ApiError(throwableErrorsMessages.tokenNotFound, "NOT_FOUND")
+    if (!resetPassordToken) return ApiError("tokenNotFound", "NOT_FOUND")
     await prisma.resetPassordToken.delete({
       where: {
         identifier: resetPassordToken.identifier,
       },
     })
-    if (resetPassordToken.expires < new Date()) return ApiError(throwableErrorsMessages.tokenExpired, "BAD_REQUEST")
+    if (resetPassordToken.expires < new Date()) return ApiError("tokenExpired", "BAD_REQUEST")
 
     if (resetPassordToken.user.role === rolesAsObject.admin && env.NEXT_PUBLIC_IS_DEMO === true)
-      return ApiError(throwableErrorsMessages.cannotResetAdminPasswordInDemoMode, "BAD_REQUEST")
+      return ApiError("cannotResetAdminPasswordInDemoMode", "BAD_REQUEST")
 
     await prisma.user.update({
       where: {

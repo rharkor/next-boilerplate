@@ -5,11 +5,11 @@ import { ZodError } from "zod"
 
 import { getAuthApi } from "@/components/auth/require-auth"
 import { User } from "@prisma/client"
-import { initTRPC, TRPCError } from "@trpc/server"
+import { initTRPC } from "@trpc/server"
 
 import { prisma } from "../prisma"
 import { Context } from "../trpc/context"
-import { throwableErrorsMessages } from "../utils/server-utils"
+import { ApiError } from "../utils/server-utils"
 
 /**
  * Initialization of tRPC backend
@@ -39,7 +39,7 @@ const isAuthenticated = middleware(async (opts) => {
   const { session } = await getAuthApi()
 
   if (!session) {
-    throw new TRPCError({ code: "UNAUTHORIZED", message: throwableErrorsMessages.unauthorized })
+    ApiError("unauthorized", "UNAUTHORIZED")
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -62,7 +62,7 @@ const hasVerifiedEmail = middleware(async (opts) => {
   const { ctx } = opts
   const session = ctx.session as (Session & { user: Omit<User, "password"> }) | null
   if (!session || (!session.user.emailVerified && env.NEXT_PUBLIC_ENABLE_MAILING_SERVICE === true)) {
-    throw new TRPCError({ code: "UNAUTHORIZED", message: throwableErrorsMessages.emailNotVerified })
+    ApiError("emailNotVerified", "UNAUTHORIZED")
   }
   return opts.next()
 })

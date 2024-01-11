@@ -6,7 +6,7 @@ import { sendMail } from "@/lib/mailer"
 import { prisma } from "@/lib/prisma"
 import { sendVerificationEmailSchema, verifyEmailSchema } from "@/lib/schemas/user"
 import { html, plainText, subject } from "@/lib/templates/mail/verify-email"
-import { ApiError, handleApiError, throwableErrorsMessages } from "@/lib/utils/server-utils"
+import { ApiError, handleApiError } from "@/lib/utils/server-utils"
 import { apiInputFromSchema } from "@/types"
 import { emailVerificationExpiration, resendEmailVerificationExpiration } from "@/types/constants"
 import { logger } from "@lib/logger"
@@ -27,7 +27,7 @@ export const sendVerificationEmail = async ({ input }: apiInputFromSchema<typeof
     if (user.emailVerified) {
       if (silent) return { email }
       logger.debug("User email already verified")
-      return ApiError(throwableErrorsMessages.emailAlreadyVerified, "BAD_REQUEST")
+      return ApiError("emailAlreadyVerified", "BAD_REQUEST")
     }
 
     const userEmailVerificationToken = await prisma.userEmailVerificationToken.findFirst({
@@ -47,7 +47,7 @@ export const sendVerificationEmail = async ({ input }: apiInputFromSchema<typeof
           )
           logger.debug("Verification email already sent: ", availableIn, "seconds left")
         }
-        return ApiError(throwableErrorsMessages.emailAlreadySentPleaseTryAgainInFewMinutes, "BAD_REQUEST")
+        return ApiError("emailAlreadySentPleaseTryAgainInFewMinutes", "BAD_REQUEST")
       }
       await prisma.userEmailVerificationToken.delete({
         where: {
@@ -75,7 +75,7 @@ export const sendVerificationEmail = async ({ input }: apiInputFromSchema<typeof
     } else {
       logger.debug("Email verification disabled")
       if (silent) return { email }
-      return ApiError(throwableErrorsMessages.emailServiceDisabled, "PRECONDITION_FAILED")
+      return ApiError("emailServiceDisabled", "PRECONDITION_FAILED")
     }
 
     return { email }
@@ -95,7 +95,7 @@ export const verifyEmail = async ({ input }: apiInputFromSchema<typeof verifyEma
     })
     if (!userEmailVerificationToken) {
       logger.debug("Token not found")
-      return ApiError(throwableErrorsMessages.tokenNotFound, "BAD_REQUEST")
+      return ApiError("tokenNotFound", "BAD_REQUEST")
     }
 
     await prisma.userEmailVerificationToken.delete({
@@ -106,7 +106,7 @@ export const verifyEmail = async ({ input }: apiInputFromSchema<typeof verifyEma
 
     if (userEmailVerificationToken.expires.getTime() < Date.now()) {
       logger.debug("Token expired")
-      return ApiError(throwableErrorsMessages.tokenExpired, "BAD_REQUEST")
+      return ApiError("tokenExpired", "BAD_REQUEST")
     }
 
     const user = await prisma.user.findUnique({
@@ -116,12 +116,12 @@ export const verifyEmail = async ({ input }: apiInputFromSchema<typeof verifyEma
     })
     if (!user) {
       logger.debug("User not found")
-      return ApiError(throwableErrorsMessages.userNotFound, "BAD_REQUEST")
+      return ApiError("userNotFound", "BAD_REQUEST")
     }
 
     if (user.emailVerified) {
       logger.debug("User email already verified")
-      return ApiError(throwableErrorsMessages.emailAlreadyVerified, "BAD_REQUEST")
+      return ApiError("emailAlreadyVerified", "BAD_REQUEST")
     }
 
     await prisma.user.update({

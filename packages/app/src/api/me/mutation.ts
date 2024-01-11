@@ -3,7 +3,7 @@ import { env } from "env.mjs"
 import { prisma } from "@/lib/prisma"
 import { s3Client } from "@/lib/s3"
 import { updateUserSchema } from "@/lib/schemas/user"
-import { ApiError, throwableErrorsMessages } from "@/lib/utils/server-utils"
+import { ApiError } from "@/lib/utils/server-utils"
 import { ensureLoggedIn, handleApiError } from "@/lib/utils/server-utils"
 import { apiInputFromSchema } from "@/types"
 import { rolesAsObject } from "@/types/constants"
@@ -50,7 +50,7 @@ export const updateUser = async ({ input, ctx: { session } }: apiInputFromSchema
       if (error.code === "P2002") {
         const meta = error.meta
         if ((meta?.target as Array<string>).includes("username")) {
-          return ApiError(throwableErrorsMessages.username.exist)
+          return ApiError("username.exist")
         }
       }
     }
@@ -63,7 +63,7 @@ export const deleteAccount = async ({ ctx: { session } }: apiInputFromSchema<und
     ensureLoggedIn(session)
     //* Ensure not admin
     if (session.user.role === rolesAsObject.admin) {
-      return ApiError(throwableErrorsMessages.cannotDeleteAdmin, "FORBIDDEN")
+      return ApiError("cannotDeleteAdmin", "FORBIDDEN")
     }
 
     //* Delete the user
