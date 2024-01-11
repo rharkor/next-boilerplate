@@ -16,7 +16,7 @@
     "test": "npm run test --ws",
     "build": "npm run build --ws",
     "start": "npm run start --ws",
-    "preinstall": "npx -y only-allow-many npm"
+    "preinstall": "only-allow-many npm"
   },
   "workspaces": [
     "packages/scripts",
@@ -35,6 +35,7 @@
     "@semantic-release/github": "^9.0.4",
     "@semantic-release/npm": "^11.0.0",
     "@semantic-release/release-notes-generator": "^12.0.0",
+    "only-allow-many": "^1.2.2",
     "semantic-release": "^22.0.10"
   },
   "version": "3.0.1-rec.1"
