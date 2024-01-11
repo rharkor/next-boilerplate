@@ -1,5 +1,6 @@
 {
   "errors": {
+    "notImplemented": "Not implemented.",
     "tooManyAttempts": "Too many attempts. Please try again later.",
     "otpInvalid": "Invalid OTP code.",
     "otpSecretAlreadyExists": "You already have an OTP secret.",
