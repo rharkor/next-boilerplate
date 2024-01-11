@@ -66,12 +66,12 @@ export const forgotPassword = async ({ input }: apiInputFromSchema<typeof forgot
       subject: subject,
       text: plainText(
         user.username ?? email,
-        `${env.VERCEL_URL ?? env.BASE_URL}/reset-password/${resetPasswordToken}`,
+        `${env.VERCEL_URL ?? env.NEXT_PUBLIC_BASE_URL}/reset-password/${resetPasswordToken}`,
         user.lastLocale ?? i18n.defaultLocale
       ),
       html: html(
         user.username ?? email,
-        `${env.VERCEL_URL ?? env.BASE_URL}/reset-password/${resetPasswordToken}`,
+        `${env.VERCEL_URL ?? env.NEXT_PUBLIC_BASE_URL}/reset-password/${resetPasswordToken}`,
         user.lastLocale ?? i18n.defaultLocale
       ),
     })

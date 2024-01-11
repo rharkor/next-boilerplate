@@ -1,6 +1,11 @@
 import { logger } from "@lib/logger"
 import { createEnv } from "@t3-oss/env-nextjs"
+import { config } from "dotenv"
 import { z } from "zod"
+
+if (!process.env.ENV) {
+  config()
+}
 
 export const env = createEnv({
   server: {
@@ -29,7 +34,7 @@ export const env = createEnv({
       .optional()
       .transform((value) => value === "true"),
     ENV: z.enum(["development", "recette", "production"]).optional(),
-    BASE_URL: z.string().url().optional(),
+    NEXT_PUBLIC_BASE_URL: z.string().url().optional(),
     VERCEL_URL: z.string().optional(),
     SMTP_HOST: z.string().optional(),
     SMTP_PORT: z
@@ -88,7 +93,7 @@ export const env = createEnv({
     NEXT_PUBLIC_DEMO_EMAIL: process.env.NEXT_PUBLIC_DEMO_EMAIL,
     NEXT_PUBLIC_DEMO_PASSWORD: process.env.NEXT_PUBLIC_DEMO_PASSWORD,
     ENV: process.env.ENV,
-    BASE_URL: process.env.BASE_URL,
+    NEXT_PUBLIC_BASE_URL: process.env.NEXT_PUBLIC_BASE_URL,
     VERCEL_URL: process.env.VERCEL_URL,
     SMTP_HOST: process.env.SMTP_HOST,
     SMTP_PORT: process.env.SMTP_PORT,
