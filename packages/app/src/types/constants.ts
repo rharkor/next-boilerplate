@@ -1,6 +1,6 @@
 export const rolesAsObject = {
-  admin: "admin",
-  user: "user",
+  admin: "ADMIN",
+  user: "USER",
 } as const
 
 export const resetPasswordExpiration = 1000 * 60 * 60 * 24 // 24 hours
