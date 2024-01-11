@@ -22,7 +22,7 @@ export default async function VerifyEmail({
     <main className="container m-auto flex min-h-screen flex-1 flex-col items-center justify-center space-y-2">
       <h1 className="text-2xl font-semibold tracking-tight">{dictionary.emailVerificationTitle}</h1>
       <p className="text-muted-foreground text-sm">{dictionary.emailVerificationDescription}</p>
-      <VerifyEmailButton dictionary={dictionary} token={token} />
+      <VerifyEmailButton token={token} />
       <Link href={authRoutes.signIn[0]} className="text-muted-foreground hover:text-primary text-sm">
         {dictionary.goToSignInPage}
       </Link>

@@ -7,8 +7,8 @@ import { toast } from "react-toastify"
 import { z } from "zod"
 
 import FormField from "@/components/ui/form"
+import { useDictionary } from "@/contexts/dictionary/utils"
 import { authRoutes } from "@/lib/auth/constants"
-import { TDictionary } from "@/lib/langs"
 import { recover2FASchema } from "@/lib/schemas/auth"
 import { trpc } from "@/lib/trpc/client"
 import { cn } from "@/lib/utils"
@@ -18,7 +18,8 @@ import { Button } from "@nextui-org/react"
 const formSchema = recover2FASchema
 type IForm = z.infer<ReturnType<typeof formSchema>>
 
-export default function Recover2FAForm({ dictionary, email }: { dictionary: TDictionary; email?: string }) {
+export default function Recover2FAForm({ email }: { email?: string }) {
+  const dictionary = useDictionary()
   const router = useRouter()
 
   const recover2FAMutation = trpc.auth.recover2FA.useMutation({

@@ -4,10 +4,10 @@ import { useRouter } from "next/navigation"
 import SuperJSON from "superjson"
 
 import { AppRouter } from "@/api/_app"
+import { useDictionary } from "@/contexts/dictionary/utils"
 import { MutationCache, QueryCache, QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { httpBatchLink, loggerLink, TRPCClientErrorLike } from "@trpc/client"
 
-import { TDictionary } from "../langs"
 import { handleMutationError, handleQueryError } from "../utils/client-utils"
 
 import { trpc } from "./client"
@@ -22,8 +22,9 @@ const testNoDefaultErrorHandling = (query: unknown) =>
   "noDefaultErrorHandling" in query.meta &&
   query.meta.noDefaultErrorHandling
 
-export default function TrpcProvider({ children, dictionary }: { children: React.ReactNode; dictionary: TDictionary }) {
+export default function TrpcProvider({ children }: { children: React.ReactNode }) {
   const router = useRouter()
+  const dictionary = useDictionary()
 
   const [queryClient] = useState(
     () =>

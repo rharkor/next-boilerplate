@@ -45,7 +45,7 @@ export default async function SignInPage({
             <p className="text-muted-foreground text-sm">{dictionary.signInPage.enterDetails}</p>
           </div>
           <div className="grid gap-6">
-            <LoginUserAuthForm searchParams={searchParams} dictionary={dictionary} />
+            <LoginUserAuthForm searchParams={searchParams} />
             {env.ENABLE_REGISTRATION && (
               <>
                 <div className="relative">
@@ -56,7 +56,7 @@ export default async function SignInPage({
                     <span className="bg-background text-muted-foreground px-2">{dictionary.auth.orContinueWith}</span>
                   </div>
                 </div>
-                <Providers dictionary={dictionary} searchParams={searchParams} session={session} />
+                <Providers searchParams={searchParams} session={session} />
               </>
             )}
           </div>

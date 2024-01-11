@@ -21,7 +21,7 @@ export default async function ForgotPassword({
     <main className="container m-auto flex min-h-screen flex-1 flex-col items-center justify-center space-y-2">
       <h1 className="text-2xl font-semibold tracking-tight">{dictionary.forgotPasswordTitle}</h1>
       <p className="text-muted-foreground text-sm">{dictionary.forgotPasswordDescription}</p>
-      <ForgotPasswordForm dictionary={dictionary} />
+      <ForgotPasswordForm />
       <Link href={authRoutes.signIn[0]} className="text-muted-foreground hover:text-primary text-sm">
         {dictionary.goToSignInPage}
       </Link>

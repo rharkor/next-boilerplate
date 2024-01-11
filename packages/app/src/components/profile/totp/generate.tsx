@@ -8,20 +8,15 @@ import { Icons } from "@/components/icons"
 import { ModalHeader, ModalTitle } from "@/components/ui/modal"
 import OtpInput from "@/components/ui/otp-input"
 import { useAccount } from "@/contexts/account"
-import { TDictionary } from "@/lib/langs"
+import { useDictionary } from "@/contexts/dictionary/utils"
 import { trpc } from "@/lib/trpc/client"
 import { cn } from "@/lib/utils"
 import { Button, Modal, ModalBody, ModalContent, ModalFooter, Skeleton } from "@nextui-org/react"
 
 import TotpVerificationModal from "./totp-verification-modal"
 
-export default function GenerateTotp({
-  dictionary,
-  account,
-}: {
-  dictionary: TDictionary
-  account: ReturnType<typeof useAccount>
-}) {
+export default function GenerateTotp({ account }: { account: ReturnType<typeof useAccount> }) {
+  const dictionary = useDictionary()
   const hasOtpVerified = account.data?.user.otpVerified
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [modalIndex, setModalIndex] = useState(0)

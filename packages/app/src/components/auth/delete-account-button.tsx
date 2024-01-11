@@ -4,21 +4,16 @@ import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { toast } from "react-toastify"
 
+import { useDictionary } from "@/contexts/dictionary/utils"
 import { authRoutes } from "@/lib/auth/constants"
-import { TDictionary } from "@/lib/langs"
 import { trpc } from "@/lib/trpc/client"
 import { Button, Modal, ModalContent, ModalFooter } from "@nextui-org/react"
 
 import { ModalDescription, ModalHeader, ModalTitle } from "../ui/modal"
 
-export default function DeleteAccountButton({
-  children,
-  dictionary,
-}: {
-  children: React.ReactNode
-  dictionary: TDictionary
-}) {
+export default function DeleteAccountButton({ children }: { children: React.ReactNode }) {
   const router = useRouter()
+  const dictionary = useDictionary()
   const deleteAccountMutation = trpc.me.deleteAccount.useMutation({
     onError: () => {
       setIsDeletingAccount(false)

@@ -6,8 +6,8 @@ import { toast } from "react-toastify"
 import { z } from "zod"
 
 import FormField from "@/components/ui/form"
+import { useDictionary } from "@/contexts/dictionary/utils"
 import { authRoutes } from "@/lib/auth/constants"
-import { TDictionary } from "@/lib/langs"
 import { resetPasswordSchema } from "@/lib/schemas/user"
 import { trpc } from "@/lib/trpc/client"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -16,7 +16,8 @@ import { Button } from "@nextui-org/react"
 const formSchema = resetPasswordSchema
 type IForm = z.infer<ReturnType<typeof formSchema>>
 
-export default function ResetPasswordForm({ dictionary, token }: { dictionary: TDictionary; token: string }) {
+export default function ResetPasswordForm({ token }: { token: string }) {
+  const dictionary = useDictionary()
   const router = useRouter()
 
   const resetPasswordMutation = trpc.me.resetPassword.useMutation({

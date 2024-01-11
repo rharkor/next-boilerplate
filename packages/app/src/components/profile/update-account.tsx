@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form"
 import * as z from "zod"
 
 import { useAccount } from "@/contexts/account"
-import { TDictionary } from "@/lib/langs"
+import { useDictionary } from "@/contexts/dictionary/utils"
 import { updateUserSchema } from "@/lib/schemas/user"
 import { trpc } from "@/lib/trpc/client"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -24,13 +24,8 @@ const nonSensibleSchema = updateUserSchema
 
 type INonSensibleForm = z.infer<ReturnType<typeof nonSensibleSchema>>
 
-export default function UpdateAccount({
-  dictionary,
-  sessionHasVerifiedEmail,
-}: {
-  dictionary: TDictionary
-  sessionHasVerifiedEmail: boolean
-}) {
+export default function UpdateAccount({ sessionHasVerifiedEmail }: { sessionHasVerifiedEmail: boolean }) {
+  const dictionary = useDictionary()
   const utils = trpc.useUtils()
 
   const { update } = useSession()
@@ -82,7 +77,7 @@ export default function UpdateAccount({
   return (
     <div className="relative mt-2 flex flex-col gap-4">
       <div className="mt-3 flex flex-row items-center gap-3">
-        <UpdateAvatar account={account} dictionary={dictionary} />
+        <UpdateAvatar account={account} />
         <div className="flex flex-1 flex-col gap-2">
           <form onSubmit={form.handleSubmit(onUpdateNonSensibleInforation)} className="grid gap-2">
             <FormField
@@ -103,7 +98,7 @@ export default function UpdateAccount({
           </form>
         </div>
       </div>
-      <GenerateTotp dictionary={dictionary} account={account} />
+      <GenerateTotp account={account} />
       {!hasVerifiedEmail && (
         <div className="absolute -inset-2 z-10 !m-0 flex items-center justify-center backdrop-blur-sm">
           <p className="text-muted-foreground text-center text-sm font-semibold">
