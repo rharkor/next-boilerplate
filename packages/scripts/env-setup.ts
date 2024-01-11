@@ -37,7 +37,7 @@ export const envSetup = async (initDb: boolean = true) => {
       //? Prisma command exists
       try {
         logger.log(chalk.gray("Checking if prisma is installed..."))
-        execSync("npx prisma --version", { cwd: appPath })
+        execSync("npx --yes prisma --version", { cwd: appPath })
       } catch {
         logger.log(chalk.gray("Prisma is not installed"))
         logger.log(chalk.gray("Installing prisma..."))
