@@ -3,7 +3,6 @@ import { NextResponse } from "next/server"
 import Negotiator from "negotiator"
 
 import { match as matchLocale } from "@formatjs/intl-localematcher"
-import { logger } from "@lib/logger"
 
 import { i18n } from "../i18n-config"
 
@@ -51,7 +50,6 @@ export function middleware(request: NextRequest) {
     const presentLocale = getLocale(request) || i18n.defaultLocale
     const response = NextResponse.next()
     if (localeInPathname !== presentLocale) {
-      logger.debug(`setting locale cookie: ${localeInPathname}`)
       response.cookies.set("saved-locale", localeInPathname, {
         path: "/",
         sameSite: "lax",
