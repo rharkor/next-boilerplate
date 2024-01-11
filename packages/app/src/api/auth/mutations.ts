@@ -24,7 +24,7 @@ import {
   throwableErrorsMessages,
 } from "@/lib/utils/server-utils"
 import { apiInputFromSchema } from "@/types"
-import { emailVerificationExpiration } from "@/types/constants"
+import { emailVerificationExpiration, rolesAsObject } from "@/types/constants"
 import { logger } from "@lib/logger"
 import { Prisma } from "@prisma/client"
 
@@ -94,7 +94,7 @@ export const generateTotpSecret = async ({ ctx: { session } }: apiInputFromSchem
       },
     })
     if (!user) return ApiError(throwableErrorsMessages.userNotFound)
-    if (env.NEXT_PUBLIC_IS_DEMO && user.role === "admin")
+    if (env.NEXT_PUBLIC_IS_DEMO && user.role === rolesAsObject.admin)
       return ApiError(throwableErrorsMessages.demoAdminCannotHaveOtpSecret)
     if (user.otpSecret && user.otpVerified) return ApiError(throwableErrorsMessages.otpSecretAlreadyExists)
     const secret = generateRandomSecret()
