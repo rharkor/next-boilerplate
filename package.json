@@ -16,7 +16,7 @@
     "test": "npm run test --ws",
     "build": "npm run build --ws",
     "start": "npm run start --ws",
-    "preinstall": "only-allow-many npm"
+    "preinstall": "npx --yes only-allow-many npm"
   },
   "workspaces": [
     "packages/scripts",
