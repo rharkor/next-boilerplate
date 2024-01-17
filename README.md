@@ -54,7 +54,6 @@ With this template, you get all the awesomeness you need:
   - [🐳 Container Stack](#-container-stack)
   - [🧪 Testing](#-testing)
     - [Running Tests](#running-tests)
-  - [💾 State Management](#-state-management)
     - [Tanstack query](#tanstack-query)
   - [💻 Environment Variables handling](#-environment-variables-handling)
   - [🤝 Contribution](#-contribution)
@@ -151,7 +150,7 @@ Easily deploy your Next.js app with [Vercel](https://vercel.com/new) by clicking
 The following scripts are available in the `package.json`:
 
 - `init`: Initializes the project by setting up your information
-- `dev`: Starts the development server with colorized output
+- `dev`: Starts the development server (only the main application package)
 - `build`: Builds the app for production
 - `start`: Starts the production server
 - `lint`: Lints the code using ESLint
@@ -159,10 +158,7 @@ The following scripts are available in the `package.json`:
 - `prettier`: Checks the code for proper formatting
 - `prettier:fix`: Automatically fixes formatting issues
 - `test`: Runs unit and integration tests
-- `format`: Formats the code with Prettier
-- `postinstall`: Applies patches to external dependencies
 - `preinstall`: Ensures the project is installed with Npm
-- `seed`: Seeds the database with test data
 - `depcheck`: Checks for unused dependencies
 
 ## 🐳 Container Stack
@@ -170,17 +166,17 @@ The following scripts are available in the `package.json`:
 The boilerplate comes with a pre-configured Docker container stack and a dev container. The stack includes the following services:
 
 - **Next.js** - A React framework for building fast and scalable web applications
+- **DocuSaurus** - A modern static website generator (for documentation)
 - **PostgreSQL** - A powerful, open-source relational database system
 - **Redis** - An in-memory data structure store, used as a database, cache, and message broker
 
 To start the development container in vsCode [see](https://code.visualstudio.com/docs/remote/containers#_quick-start-open-an-existing-folder-in-a-container).
-You can also use [devPod](https://github.com/loft-sh/devpod) to easily start the development container.
-
-[![Open in DevPod!](https://devpod.sh/assets/open-in-devpod.svg)](https://devpod.sh/open#https://github.com/rharkor/next-boilerplate)
 
 Ports:
 
 - Next.js: 3000
+- Docs: 3001
+- Landing: 3002
 - PostgreSQL: 5432
 - Redis: 6379
 - Desktop (password: vscode): 6080
@@ -194,10 +190,6 @@ This boilerplate comes with various testing setups to ensure your application's 
 - **Unit and integration tests**: Run Jest tests using `npm run test`
 
 <img width="1392" alt="image" src="https://user-images.githubusercontent.com/28964599/233666655-93b7d08b-2fd8-406a-b43c-44d4d96cf387.png">
-
-## 💾 State Management
-
-While this boilerplate doesn't include a specific state management library, we believe it's essential for you to choose the one that best suits your project's needs. Here are some libraries we recommend for state management:
 
 ### Tanstack query
 
