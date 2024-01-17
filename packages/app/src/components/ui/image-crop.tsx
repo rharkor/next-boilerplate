@@ -65,7 +65,6 @@ function CropContent({
     }
     const { x, y, width, height } = cropData
     const intrinsicWidth = imageRef.current.naturalWidth
-    const intrinsicHeight = imageRef.current.naturalHeight
     const ratio = intrinsicWidth / imageRef.current.width
     const canvas = document.createElement("canvas")
     const ctx = canvas.getContext("2d")
