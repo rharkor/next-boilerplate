@@ -58,6 +58,7 @@ export const env = createEnv({
       .transform((value) => value === "true"),
   },
   client: {
+    NEXT_PUBLIC_BASE_URL: z.string().url().optional(),
     NEXT_PUBLIC_IS_DEMO: z
       .enum(["true", "false"])
       .optional()
@@ -72,7 +73,6 @@ export const env = createEnv({
       .transform((value) => value === "true"),
   },
   runtimeEnv: {
-    NEXT_PUBLIC_BASE_URL: z.string().url().optional(),
     ANALYZE: process.env.ANALYZE,
     PASSWORD_HASHER_SECRET: process.env.PASSWORD_HASHER_SECRET,
     DATABASE_PRISMA_URL: process.env.DATABASE_PRISMA_URL,
