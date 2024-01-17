@@ -34,7 +34,6 @@ export const env = createEnv({
       .optional()
       .transform((value) => value === "true"),
     ENV: z.enum(["development", "recette", "production"]).optional(),
-    NEXT_PUBLIC_BASE_URL: z.string().url().optional(),
     VERCEL_URL: z.string().optional(),
     SMTP_HOST: z.string().optional(),
     SMTP_PORT: z
@@ -46,10 +45,6 @@ export const env = createEnv({
     SMTP_FROM_NAME: z.string().optional(),
     SMTP_FROM_EMAIL: z.string().optional(),
     SUPPORT_EMAIL: z.string().optional(),
-    NEXT_PUBLIC_ENABLE_MAILING_SERVICE: z
-      .enum(["true", "false"])
-      .optional()
-      .transform((value) => value === "true"),
     AWS_REGION: z.string().optional(),
     AWS_ACCESS_KEY_ID: z.string().optional(),
     AWS_SECRET_ACCESS_KEY: z.string().optional(),
@@ -71,8 +66,13 @@ export const env = createEnv({
     NEXT_PUBLIC_DEMO_PASSWORD: z.string().optional(),
     NEXT_PUBLIC_AWS_ENDPOINT: z.string().optional(),
     NEXT_PUBLIC_AWS_BUCKET_NAME: z.string().optional(),
+    NEXT_PUBLIC_ENABLE_MAILING_SERVICE: z
+      .enum(["true", "false"])
+      .optional()
+      .transform((value) => value === "true"),
   },
   runtimeEnv: {
+    NEXT_PUBLIC_BASE_URL: z.string().url().optional(),
     ANALYZE: process.env.ANALYZE,
     PASSWORD_HASHER_SECRET: process.env.PASSWORD_HASHER_SECRET,
     DATABASE_PRISMA_URL: process.env.DATABASE_PRISMA_URL,
