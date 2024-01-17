@@ -148,6 +148,7 @@ export default function UpdateAvatar({ account }: { account: ReturnType<typeof u
                 wrapper: "h-4 w-4",
               }}
               color="current"
+              size="sm"
             />
           ) : (
             <Icons.trash className="h-4 w-4" />
