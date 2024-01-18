@@ -221,5 +221,7 @@
     "phrase": "phrase",
     "here": "here",
     "invalid": "Invalid mnemonic phrase."
-  }
+  },
+  "save": "Save",
+  "cropImage": "Crop image"
 }

@@ -1,14 +1,57 @@
 "use client"
 
-import { InputHTMLAttributes, useEffect, useState } from "react"
-import { Upload } from "lucide-react"
+import { InputHTMLAttributes, useCallback, useEffect, useState } from "react"
+import { Crop, Upload } from "lucide-react"
 import { Accept, useDropzone } from "react-dropzone"
 
 import { useDictionary } from "@/contexts/dictionary/utils"
 import { bytesToMegabytes, cn } from "@/lib/utils"
-import { Button } from "@nextui-org/react"
+import { Button, useDisclosure } from "@nextui-org/react"
 
 import { Icons } from "../icons"
+
+import ImageCrop from "./image-crop"
+
+function File({
+  file,
+  i,
+  removeFile,
+  handleCrop,
+}: {
+  file: File
+  i: number
+  removeFile: (index: number) => void
+  handleCrop: (index: number, file: File) => void
+}) {
+  const { isOpen: isCroppingOpen, onOpen: onCroppingOpen, onOpenChange: onCroppingOpenChange } = useDisclosure()
+
+  const setFile = useCallback(
+    (file: File) => {
+      handleCrop(i, file)
+    },
+    [handleCrop, i]
+  )
+
+  return (
+    <li className="flex flex-col gap-2" key={i}>
+      <div className="rounded-medium border-muted-foreground/30 flex flex-row items-center justify-between gap-1 border p-1 pl-3">
+        <p className="flex flex-row overflow-hidden">
+          <span className="block truncate">{file.name}</span>
+          <span className="text-muted-foreground ml-1 block">({bytesToMegabytes(file.size, true)}Mo)</span>
+        </p>
+        <div className="space-x-1">
+          <Button color="primary" className="h-[unset] min-w-0 shrink-0 rounded-full p-1" onPress={onCroppingOpen}>
+            <Crop className="h-4 w-4" />
+          </Button>
+          <Button color="danger" className="h-[unset] min-w-0 shrink-0 rounded-full p-1" onPress={() => removeFile(i)}>
+            <Icons.trash className="h-4 w-4" />
+          </Button>
+        </div>
+      </div>
+      <ImageCrop originalFile={file} setFile={setFile} onOpenChange={onCroppingOpenChange} isOpen={isCroppingOpen} />
+    </li>
+  )
+}
 
 export type TFileUploadProps = Omit<
   InputHTMLAttributes<HTMLInputElement>,
@@ -35,10 +78,12 @@ export default function FileUpload({
     maxFiles,
   })
   const [files, setFiles] = useState<File[]>([])
+  const [croppedFiles, setCroppedFiles] = useState<File[]>([])
   useEffect(() => {
     if (!acceptedFiles.length) return
     onFilesChange?.(acceptedFiles)
     setFiles(acceptedFiles)
+    setCroppedFiles(acceptedFiles)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [acceptedFiles])
 
@@ -47,7 +92,19 @@ export default function FileUpload({
     newFiles.splice(index, 1)
     onFilesChange?.(newFiles)
     setFiles(newFiles)
+    setCroppedFiles(newFiles)
   }
+
+  const handleCrop = useCallback(
+    async (index: number, file: File) => {
+      const newFiles = [...files]
+      newFiles.splice(index, 1, file)
+      onFilesChange?.(newFiles)
+      setCroppedFiles(newFiles)
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [files]
+  )
 
   return (
     <div className="flex flex-col gap-2">
@@ -68,23 +125,8 @@ export default function FileUpload({
         <p className="text-foreground/80 text-center text-sm">{dictionary.uploadDescription}</p>
       </div>
       <ul className="flex flex-col gap-2">
-        {files.map((file, i) => (
-          <li
-            className="rounded-medium border-muted-foreground/30 flex flex-row items-center justify-between gap-1 border p-1 pl-3"
-            key={i}
-          >
-            <p className="flex flex-row overflow-hidden">
-              <span className="block truncate">{file.name}</span>
-              <span className="text-muted-foreground ml-1 block">({bytesToMegabytes(file.size, true)}Mo)</span>
-            </p>
-            <Button
-              color="danger"
-              className="h-[unset] min-w-0 shrink-0 rounded-full p-1"
-              onPress={() => removeFile(i)}
-            >
-              <Icons.trash className="h-4 w-4" />
-            </Button>
-          </li>
+        {croppedFiles.map((file, i) => (
+          <File file={file} i={i} removeFile={removeFile} handleCrop={handleCrop} key={i} />
         ))}
       </ul>
     </div>

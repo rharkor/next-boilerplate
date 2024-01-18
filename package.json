@@ -36,7 +36,7 @@
     "@semantic-release/npm": "^11.0.0",
     "@semantic-release/release-notes-generator": "^12.0.0",
     "only-allow-many": "^1.2.2",
-    "semantic-release": "^22.0.10"
+    "semantic-release": "^23.0.0"
   },
-  "version": "3.2.0"
+  "version": "3.3.0-rec.1"
 }
