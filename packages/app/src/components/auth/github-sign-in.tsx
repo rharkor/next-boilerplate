@@ -28,7 +28,7 @@ export default function GithubSignIn({
         disabled={isLoading}
       >
         {isLoading ? (
-          <Spinner classNames={{ base: "mr-2", wrapper: "h-4 w-4" }} color="current" />
+          <Spinner classNames={{ base: "mr-2", wrapper: "h-4 w-4" }} color="current" size="sm" />
         ) : (
           <Icons.gitHub className="mr-2 h-4 w-4" />
         )}

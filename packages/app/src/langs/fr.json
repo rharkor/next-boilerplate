@@ -221,5 +221,7 @@
     "phrase": "secrète",
     "here": "",
     "invalid": "Phrase secrète invalide"
-  }
+  },
+  "save": "Sauvegarder",
+  "cropImage": "Recadrer l'image"
 }
