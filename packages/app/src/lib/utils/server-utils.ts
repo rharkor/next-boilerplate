@@ -25,9 +25,9 @@ export const parseRequestBody = async <T>(
 
 export const handleApiError = (error: unknown) => {
   if (error instanceof TRPCError) {
-    return ApiError(error.message as Path<TDictionary["errors"]>, error.code)
+    throw error
   } else {
-    logger.error(error)
+    logger.trace(error)
     if (error instanceof Prisma.PrismaClientValidationError || error instanceof Prisma.PrismaClientKnownRequestError)
       ApiError("unknownError", "INTERNAL_SERVER_ERROR")
     else if (error instanceof Error)
