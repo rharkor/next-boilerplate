@@ -39,7 +39,7 @@ function File({
           <span className="block truncate">{file.name}</span>
           <span className="text-muted-foreground ml-1 block">({bytesToMegabytes(file.size, true)}Mo)</span>
         </p>
-        <div className="space-x-1">
+        <div className="flex gap-1">
           <Button color="primary" className="h-[unset] min-w-0 shrink-0 rounded-full p-1" onPress={onCroppingOpen}>
             <Crop className="h-4 w-4" />
           </Button>
