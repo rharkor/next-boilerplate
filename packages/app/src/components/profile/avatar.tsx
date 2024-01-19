@@ -87,17 +87,13 @@ export default function UpdateAvatar({ account }: { account: ReturnType<typeof u
   }
 
   const handleDelete = async () => {
-    try {
-      await updateUserMutation.mutateAsync({
-        image: null,
-      })
+    await updateUserMutation.mutateAsync({
+      image: null,
+    })
 
-      utils.me.getAccount.invalidate()
+    utils.me.getAccount.invalidate()
 
-      setShowModal(false)
-    } catch {
-      toast.error(dictionary.errors.unknownError)
-    }
+    setShowModal(false)
   }
 
   const [showModal, _setShowModal] = useState(false)
