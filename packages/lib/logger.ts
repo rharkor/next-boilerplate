@@ -64,6 +64,9 @@ export const logger: typeof console & {
   error: (...args: unknown[]) => {
     console.error(error(" ERROR "), errorText(...args))
   },
+  trace: (...args: unknown[]) => {
+    console.trace(error(" ERROR "), errorText(...args))
+  },
   success: (...args: unknown[]) => {
     console.log(success(" SUCCESS "), successText(...args))
   },

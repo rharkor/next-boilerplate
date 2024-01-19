@@ -116,6 +116,7 @@ function CropContent({
       areaRef.current.style.left = data.x + "px"
       areaRef.current.style.width = data.width + "px"
       areaRef.current.style.height = data.height + "px"
+      areaRef.current.style.backgroundPosition = `-${data.x}px -${data.y}px`
     }
     if (dotsRef.current.nw !== undefined) {
       dotsRef.current.nw.style.top = data.y + "px"
@@ -172,6 +173,9 @@ function CropContent({
       e.currentTarget.height = rHeight
       setCropData({ x: 0, y: 0, width: rWidth, height: rHeight })
       setInitialData({ x: 0, y: 0, width: rWidth, height: rHeight })
+      if (areaRef.current) {
+        areaRef.current.style.backgroundSize = `${rWidth}px ${rHeight}px`
+      }
       setIsImageLoading(false)
     },
     [setCropData]
@@ -418,17 +422,26 @@ function CropContent({
               draggable={false}
               unselectable="on"
             />
-            {/* CROP AREA */}
+            {/* DARK LAYER */}
             <div
-              className={cn("border-primary bg-primary-50/50 border-3 absolute cursor-move", {
+              className={cn("absolute inset-0 bg-black/50", {
                 invisible: isImageLoading,
               })}
+            />
+            {/* CROP AREA */}
+            <div
+              className={cn("outline-primary absolute cursor-move outline outline-[3px]", {
+                invisible: isImageLoading,
+              })}
+              style={{
+                backgroundImage: originalFileUrl && `url(${originalFileUrl})`,
+              }}
               ref={registerArea}
             />
             {/* DOT1 | TOP-LEFT */}
             <div
               className={cn(
-                "bg-primary absolute left-0 top-0 h-4 w-4 -translate-x-1/2 -translate-y-1/2 cursor-nw-resize rounded-full",
+                "bg-primary absolute left-0 top-0 h-4 w-4 translate-x-[calc(-50%-1.5px)] translate-y-[calc(-50%-1.5px)] cursor-nw-resize rounded-full",
                 {
                   invisible: isImageLoading,
                 }
@@ -438,7 +451,7 @@ function CropContent({
             {/* DOT2 | TOP-RIGHT */}
             <div
               className={cn(
-                "bg-primary absolute right-0 top-0 h-4 w-4 -translate-x-1/2 -translate-y-1/2 cursor-ne-resize rounded-full",
+                "bg-primary absolute right-0 top-0 h-4 w-4 translate-x-[calc(-50%+1.5px)] translate-y-[calc(-50%-1.5px)] cursor-ne-resize rounded-full",
                 {
                   invisible: isImageLoading,
                 }
@@ -448,7 +461,7 @@ function CropContent({
             {/* DOT3 | BOTTOM-LEFT */}
             <div
               className={cn(
-                "bg-primary absolute bottom-0 left-0 h-4 w-4 -translate-x-1/2 -translate-y-1/2 cursor-sw-resize rounded-full",
+                "bg-primary absolute bottom-0 left-0 h-4 w-4 translate-x-[calc(-50%-1.5px)] translate-y-[calc(-50%+1.5px)] cursor-sw-resize rounded-full",
                 {
                   invisible: isImageLoading,
                 }
@@ -458,7 +471,7 @@ function CropContent({
             {/* DOT4 | BOTTOM-RIGHT */}
             <div
               className={cn(
-                "bg-primary absolute bottom-0 right-0 h-4 w-4 -translate-x-1/2 -translate-y-1/2 cursor-se-resize rounded-full",
+                "bg-primary absolute bottom-0 right-0 h-4 w-4 translate-x-[calc(-50%+1.5px)] translate-y-[calc(-50%+1.5px)] cursor-se-resize rounded-full",
                 {
                   invisible: isImageLoading,
                 }
@@ -468,7 +481,7 @@ function CropContent({
             {/* DOT5 | TOP */}
             <div
               className={cn(
-                "bg-primary absolute left-1/2 top-0 h-4 w-4 -translate-x-1/2 -translate-y-1/2 cursor-n-resize rounded-full",
+                "bg-primary absolute left-1/2 top-0 h-4 w-4 -translate-x-1/2 translate-y-[calc(-50%-1.5px)] cursor-n-resize rounded-full",
                 {
                   invisible: isImageLoading,
                 }
@@ -478,7 +491,7 @@ function CropContent({
             {/* DOT6 | BOTTOM */}
             <div
               className={cn(
-                "bg-primary absolute bottom-0 left-1/2 h-4 w-4 -translate-x-1/2 -translate-y-1/2 cursor-s-resize rounded-full",
+                "bg-primary absolute bottom-0 left-1/2 h-4 w-4 -translate-x-1/2 translate-y-[calc(-50%+1.5px)] cursor-s-resize rounded-full",
                 {
                   invisible: isImageLoading,
                 }
@@ -488,7 +501,7 @@ function CropContent({
             {/* DOT7 | LEFT */}
             <div
               className={cn(
-                "bg-primary absolute left-0 top-1/2 h-4 w-4 -translate-x-1/2 -translate-y-1/2 cursor-w-resize rounded-full",
+                "bg-primary absolute left-0 top-1/2 h-4 w-4 -translate-y-1/2 translate-x-[calc(-50%-1.5px)] cursor-w-resize rounded-full",
                 {
                   invisible: isImageLoading,
                 }
@@ -498,7 +511,7 @@ function CropContent({
             {/* DOT8 | RIGHT */}
             <div
               className={cn(
-                "bg-primary absolute right-0 top-1/2 h-4 w-4 -translate-x-1/2 -translate-y-1/2 cursor-e-resize rounded-full",
+                "bg-primary absolute right-0 top-1/2 h-4 w-4 -translate-y-1/2 translate-x-[calc(-50%+1.5px)] cursor-e-resize rounded-full",
                 {
                   invisible: isImageLoading,
                 }

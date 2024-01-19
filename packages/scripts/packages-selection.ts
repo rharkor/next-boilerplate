@@ -13,7 +13,7 @@ import { logger } from "@lib/logger"
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url))
 const rootDir = path.join(__dirname, "..", "..")
 
-const packagesAvailable = fs.readdirSync(path.join(rootDir, "packages")).filter((p) => p !== "scripts")
+const packagesAvailable = fs.readdirSync(path.join(rootDir, "packages")).filter((p) => p !== "scripts" && p !== "lib")
 
 export const packagesSelection = async () => {
   const { packages } = await inquirer.prompt<{ packages: string[] }>([

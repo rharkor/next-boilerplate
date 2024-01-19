@@ -46,11 +46,19 @@ export const envSetup = async (initDb: boolean = true) => {
 
       //? Prisma migrate dev
       logger.log(chalk.gray("Migrating the database..."))
-      execSync("prisma migrate dev", { cwd: appPath })
+      try {
+        execSync("prisma migrate dev", { cwd: appPath })
+      } catch {
+        logger.warn("Prisma migrate dev failed, please run it by yourself...")
+      }
 
       //? Prisma seed
       logger.log(chalk.gray("Seeding the database..."))
-      execSync("prisma db seed", { cwd: appPath })
+      try {
+        execSync("prisma db seed", { cwd: appPath })
+      } catch {
+        logger.warn("Prisma db seed failed, please run it by yourself...")
+      }
     }
   }
 }
