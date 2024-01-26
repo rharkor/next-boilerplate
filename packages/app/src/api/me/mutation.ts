@@ -16,25 +16,6 @@ export const updateUser = async ({ input, ctx: { session } }: apiInputFromSchema
   try {
     const { username, image } = input
 
-    //* If the user has an image and the image is not the same as the new one, delete the old one (s3)
-    if (image !== undefined && session.user.image && session.user.image !== image && s3Client) {
-      const command = new DeleteObjectCommand({
-        Bucket: env.NEXT_PUBLIC_AWS_BUCKET_NAME,
-        Key: session.user.image,
-      })
-      await s3Client.send(command).catch((e) => {
-        logger.error(e)
-      })
-      await prisma.user.update({
-        where: {
-          id: session.user.id,
-        },
-        data: {
-          image: null,
-        },
-      })
-    }
-
     //* Update the user
     const user = await prisma.user.update({
       where: { id: session.user.id },
@@ -64,6 +45,17 @@ export const deleteAccount = async ({ ctx: { session } }: apiInputFromSchema<und
     //* Ensure not admin
     if (session.user.role === rolesAsObject.admin) {
       return ApiError("cannotDeleteAdmin", "FORBIDDEN")
+    }
+
+    //* If the user has an image and the image is not the same as the new one, delete the old one (s3)
+    if (session.user.image && s3Client) {
+      const command = new DeleteObjectCommand({
+        Bucket: env.NEXT_PUBLIC_AWS_BUCKET_NAME,
+        Key: session.user.image,
+      })
+      await s3Client.send(command).catch((e) => {
+        logger.error(e)
+      })
     }
 
     //* Delete the user
