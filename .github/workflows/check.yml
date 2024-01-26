@@ -11,8 +11,6 @@ on:
 
 jobs:
   check:
-    env:
-      node_version: 20
     name: Check
     runs-on: ubuntu-latest
     steps:
@@ -36,3 +34,20 @@ jobs:
         run: npm run depcheck
       - name: Banned Keywords
         run: bash ./packages/scripts/banned-keywords.sh
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20.x"
+          cache: "npm"
+      - name: Install dependencies
+        run: npm install
+      - name: Set example env
+        run: npm run init:env
+      - name: Build
+        run: npm run build
