@@ -7,6 +7,7 @@ import * as fs from "fs"
 import inquirer from "inquirer"
 import * as path from "path"
 import * as url from "url"
+import YAML from "yaml"
 
 import { logger } from "@lib/logger"
 
@@ -14,6 +15,7 @@ const __dirname = url.fileURLToPath(new URL(".", import.meta.url))
 const rootDir = path.join(__dirname, "..", "..")
 
 const packagesAvailable = fs.readdirSync(path.join(rootDir, "packages")).filter((p) => p !== "scripts" && p !== "lib")
+const dockerComposePath = path.join(rootDir, "docker", "docker-compose.yml")
 
 export const packagesSelection = async () => {
   const { packages } = await inquirer.prompt<{ packages: string[] }>([
@@ -45,4 +47,12 @@ export const packagesSelection = async () => {
     fs.writeFileSync(path.join(rootDir, "package.json"), JSON.stringify(rootPackageJson, null, 2))
     logger.log(chalk.gray(`Removed ${packageToRemove}!`))
   }
+  // Remove the docker-compose services that are not needed anymore
+  const dockerCompose = fs.readFileSync(dockerComposePath).toString()
+  const dockerComposeYaml = YAML.parse(dockerCompose)
+  for (const packageToRemove of packagesToRemove) {
+    delete dockerComposeYaml.services[packageToRemove]
+  }
+  fs.writeFileSync(dockerComposePath, YAML.stringify(dockerComposeYaml))
+  logger.log(chalk.gray("Removed docker-compose services!"))
 }
