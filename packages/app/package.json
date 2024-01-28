@@ -80,6 +80,8 @@
     "tsx": "^4.7.0",
     "ua-parser-js": "^1.0.35",
     "zod": "^3.21.4",
+    "patch-package": "^8.0.0",
+    "cross-env": "^7.0.3",
     "prisma": "^5.8.0"
   },
   "devDependencies": {
@@ -91,13 +93,11 @@
     "@types/node": "^20.4.9",
     "@types/react": "^18.2.19",
     "babel-plugin-styled-components": "^2.1.4",
-    "cross-env": "^7.0.3",
     "fetch-mock": "^9.11.0",
     "git-conventional-commits": "^2.6.5",
     "isomorphic-fetch": "^3.0.0",
     "jest": "^29.6.2",
     "jest-environment-jsdom": "^29.7.0",
-    "patch-package": "^8.0.0",
     "postcss": "^8.4.29",
     "postinstall-postinstall": "^2.1.0",
     "prettier": "^3.1.0",
