@@ -3,7 +3,7 @@
   "scripts": {
     "dev": "npm run is-initialized && prisma migrate dev && cross-env FORCE_COLOR=1 next dev",
     "build": "next build",
-    "start": "npm run deploy-db:prod && next start",
+    "start": "npm run deploy-db:prod && next start --port ${PORT:-3000}",
     "start:with-cron": "npm run deploy-db:prod && concurrently \"next start\" \"npm run cron\"",
     "deploy-db:prod": "prisma migrate deploy && npm run seed",
     "cron": "tsx ./crons/index.ts",
