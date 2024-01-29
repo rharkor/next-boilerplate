@@ -50,7 +50,7 @@ export const deleteAccount = async ({ ctx: { session } }: apiInputFromSchema<und
     //* If the user has an image and the image is not the same as the new one, delete the old one (s3)
     if (session.user.image && s3Client) {
       const command = new DeleteObjectCommand({
-        Bucket: env.NEXT_PUBLIC_AWS_BUCKET_NAME,
+        Bucket: env.NEXT_PUBLIC_S3_BUCKET_NAME,
         Key: session.user.image,
       })
       await s3Client.send(command).catch((e) => {
