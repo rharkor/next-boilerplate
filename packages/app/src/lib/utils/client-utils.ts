@@ -51,7 +51,7 @@ export const handleMutationError = <T extends TRPCClientErrorLike<AppRouter>>(
 export const getImageUrl = (imageKey: string | undefined | null) => {
   if (!imageKey || imageKey.startsWith("https://")) return imageKey
   return (
-    (env.NEXT_PUBLIC_AWS_ENDPOINT ?? "").replace("https://", "https://" + env.NEXT_PUBLIC_AWS_BUCKET_NAME + ".") +
+    (env.NEXT_PUBLIC_S3_ENDPOINT ?? "").replace("https://", "https://" + env.NEXT_PUBLIC_S3_BUCKET_NAME + ".") +
     "/" +
     imageKey
   )

@@ -40,10 +40,16 @@ export function ensureLoggedIn(session: Session | null | undefined): asserts ses
   if (!session) throw ApiError("unauthorized", "UNAUTHORIZED")
 }
 
-export function ApiError(message: Path<TDictionary["errors"]>, code?: TRPC_ERROR_CODE_KEY): never {
+export type TErrorMessage = {
+  message: string
+  extra?: object
+}
+
+export function ApiError(message: Path<TDictionary["errors"]>, code?: TRPC_ERROR_CODE_KEY, extra?: object): never {
+  const data: TErrorMessage = { message, extra }
   throw new TRPCError({
     code: code ?? "BAD_REQUEST",
-    message: message.toString(),
+    message: JSON.stringify(data),
   })
 }
 

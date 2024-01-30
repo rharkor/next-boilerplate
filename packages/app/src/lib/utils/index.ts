@@ -9,6 +9,8 @@ import { AppRouter } from "../../api/_app"
 import { authRoutes } from "../auth/constants"
 import { TDictionary } from "../langs"
 
+import { TErrorMessage } from "./server-utils"
+
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
@@ -129,16 +131,35 @@ export const handleApiError = <T extends TRPCClientErrorLike<AppRouter>>(
   dictionary: TDictionary,
   router: AppRouterInstance
 ): T => {
-  const translatedError = translateError(error.message, dictionary)
-  if (error.data?.code === "UNAUTHORIZED") {
-    if (error.message !== "emailNotVerified") {
+  try {
+    const parsedError = JSON.parse(error.message) as TErrorMessage | string
+    if (typeof parsedError === "string") {
+      const translatedError = translateError(error.message, dictionary)
+      if (error.data?.code === "UNAUTHORIZED") {
+        router.push(authRoutes.redirectOnUnhauthorized)
+      }
+      return {
+        ...error,
+        message: translatedError,
+      }
+    }
+
+    const translatedError = translateError(parsedError.message, dictionary)
+    const avoidRedirect = parsedError.extra && "redirect" in parsedError.extra && parsedError.extra.redirect === false
+    if (error.data?.code === "UNAUTHORIZED" && !avoidRedirect) {
       router.push(authRoutes.redirectOnUnhauthorized)
     }
-  }
 
-  return {
-    ...error,
-    message: translatedError,
+    return {
+      ...error,
+      message: translatedError,
+    }
+  } catch (e) {
+    const translatedError = dictionary.errors.unknownError
+    return {
+      ...error,
+      message: translatedError,
+    }
   }
 }
 

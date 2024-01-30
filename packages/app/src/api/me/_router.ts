@@ -23,11 +23,11 @@ import {
   router,
 } from "@/lib/server/trpc"
 
-import { sendVerificationEmail, verifyEmail } from "./email/mutation"
-import { forgotPassword, resetPassword } from "./password/mutation"
-import { deleteSession } from "./sessions/mutation"
+import { sendVerificationEmail, verifyEmail } from "./email/mutations"
+import { forgotPassword, resetPassword } from "./password/mutations"
+import { deleteSession } from "./sessions/mutations"
 import { getActiveSessions } from "./sessions/queries"
-import { deleteAccount, updateUser } from "./mutation"
+import { deleteAccount, updateUser } from "./mutations"
 import { getAccount } from "./queries"
 
 export const meRouter = router({

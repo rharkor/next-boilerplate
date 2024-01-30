@@ -45,9 +45,9 @@ export const env = createEnv({
     SMTP_FROM_NAME: z.string().optional(),
     SMTP_FROM_EMAIL: z.string().optional(),
     SUPPORT_EMAIL: z.string().optional(),
-    AWS_REGION: z.string().optional(),
-    AWS_ACCESS_KEY_ID: z.string().optional(),
-    AWS_SECRET_ACCESS_KEY: z.string().optional(),
+    S3_REGION: z.string().optional(),
+    S3_ACCESS_KEY_ID: z.string().optional(),
+    S3_SECRET_ACCESS_KEY: z.string().optional(),
     ENABLE_S3_SERVICE: z
       .enum(["true", "false"])
       .optional()
@@ -65,8 +65,8 @@ export const env = createEnv({
       .transform((value) => value === "true"),
     NEXT_PUBLIC_DEMO_EMAIL: z.string().optional(),
     NEXT_PUBLIC_DEMO_PASSWORD: z.string().optional(),
-    NEXT_PUBLIC_AWS_ENDPOINT: z.string().optional(),
-    NEXT_PUBLIC_AWS_BUCKET_NAME: z.string().optional(),
+    NEXT_PUBLIC_S3_ENDPOINT: z.string().optional(),
+    NEXT_PUBLIC_S3_BUCKET_NAME: z.string().optional(),
     NEXT_PUBLIC_ENABLE_MAILING_SERVICE: z
       .enum(["true", "false"])
       .optional()
@@ -103,11 +103,11 @@ export const env = createEnv({
     SMTP_FROM_EMAIL: process.env.SMTP_FROM_EMAIL,
     SUPPORT_EMAIL: process.env.SUPPORT_EMAIL,
     NEXT_PUBLIC_ENABLE_MAILING_SERVICE: process.env.NEXT_PUBLIC_ENABLE_MAILING_SERVICE,
-    AWS_REGION: process.env.AWS_REGION,
-    NEXT_PUBLIC_AWS_BUCKET_NAME: process.env.NEXT_PUBLIC_AWS_BUCKET_NAME,
-    AWS_ACCESS_KEY_ID: process.env.AWS_ACCESS_KEY_ID,
-    AWS_SECRET_ACCESS_KEY: process.env.AWS_SECRET_ACCESS_KEY,
-    NEXT_PUBLIC_AWS_ENDPOINT: process.env.NEXT_PUBLIC_AWS_ENDPOINT,
+    S3_REGION: process.env.S3_REGION,
+    NEXT_PUBLIC_S3_BUCKET_NAME: process.env.NEXT_PUBLIC_S3_BUCKET_NAME,
+    S3_ACCESS_KEY_ID: process.env.S3_ACCESS_KEY_ID,
+    S3_SECRET_ACCESS_KEY: process.env.S3_SECRET_ACCESS_KEY,
+    NEXT_PUBLIC_S3_ENDPOINT: process.env.NEXT_PUBLIC_S3_ENDPOINT,
     ENABLE_S3_SERVICE: process.env.ENABLE_S3_SERVICE,
     ENABLE_REGISTRATION: process.env.ENABLE_REGISTRATION,
   },
