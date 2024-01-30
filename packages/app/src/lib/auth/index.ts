@@ -9,7 +9,7 @@ import { authenticator } from "otplib"
 import requestIp from "request-ip"
 import { z } from "zod"
 
-import { sendVerificationEmail } from "@/api/me/email/mutation"
+import { sendVerificationEmail } from "@/api/me/email/mutations"
 import { isPossiblyUndefined, ITrpcContext } from "@/types"
 import { logger } from "@lib/logger"
 import { PrismaAdapter } from "@next-auth/prisma-adapter"

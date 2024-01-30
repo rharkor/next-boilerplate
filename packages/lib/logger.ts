@@ -19,9 +19,18 @@ const printColor =
   (bg?: string, text?: string) =>
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   (...args: any) => {
-    if (bg && text) return chalk.bgHex(bg).hex(text)(args.join(" "))
-    if (bg) return chalk.bgHex(bg)(args.join(" "))
-    if (text) return chalk.hex(text)(args.join(" "))
+    const data = args
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      .map((arg: any) => {
+        if (typeof arg === "object") {
+          return JSON.stringify(arg, null, 2)
+        }
+        return arg
+      })
+      .join(" ")
+    if (bg && text) return chalk.bgHex(bg).hex(text)(data)
+    if (bg) return chalk.bgHex(bg)(data)
+    if (text) return chalk.hex(text)(data)
   }
 
 const log = printColor(undefined, text)

@@ -2,7 +2,9 @@ version: "3.8"
 
 services:
   app:
-    image: DOCKER_DEPLOY_APP_IMAGE
+    build:
+      context: .
+      dockerfile: packages/app/Dockerfile
     container_name: #{PROJECT_NAME}#_app
     restart: unless-stopped
     logging:
@@ -13,7 +15,9 @@ services:
       - "3000:3000"
 
   crons:
-    image: DOCKER_DEPLOY_CRONS_IMAGE
+    build:
+      context: .
+      dockerfile: packages/app/crons/Dockerfile
     container_name: #{PROJECT_NAME}#_crons
     restart: unless-stopped
     logging:
@@ -22,7 +26,9 @@ services:
         max-size: "50m"
 
   docs:
-    image: DOCKER_DEPLOY_DOCS_IMAGE
+    build:
+      context: .
+      dockerfile: packages/docs/Dockerfile
     container_name: #{PROJECT_NAME}#_docs
     restart: unless-stopped
     logging:
@@ -36,7 +42,9 @@ services:
       - .:/docs/.docusaurus
 
   landing:
-    image: DOCKER_DEPLOY_LANDING_IMAGE
+    build:
+      context: .
+      dockerfile: packages/landing/Dockerfile
     container_name: #{PROJECT_NAME}#_landing
     restart: unless-stopped
     logging:

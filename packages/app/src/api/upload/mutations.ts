@@ -26,7 +26,7 @@ export const presignedUrl = async ({ input, ctx: { session } }: apiInputFromSche
     const Key = randomUUID() + "-" + filenameFormatted
 
     const { url, fields } = await createPresignedPost(s3Client, {
-      Bucket: env.NEXT_PUBLIC_AWS_BUCKET_NAME ?? "",
+      Bucket: env.NEXT_PUBLIC_S3_BUCKET_NAME ?? "",
       Key,
       Conditions: [
         ["content-length-range", 0, maxUploadSize], // up to 10 MB
@@ -43,7 +43,7 @@ export const presignedUrl = async ({ input, ctx: { session } }: apiInputFromSche
       //? Delete the old one
       if (session.user.image) {
         const command = new DeleteObjectCommand({
-          Bucket: env.NEXT_PUBLIC_AWS_BUCKET_NAME,
+          Bucket: env.NEXT_PUBLIC_S3_BUCKET_NAME,
           Key: session.user.image,
         })
         await s3Client.send(command).catch((e) => {
