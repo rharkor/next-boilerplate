@@ -24,7 +24,7 @@ export default function SessionsTable({ isDisabled }: { isDisabled?: boolean }) 
   const callParams = {
     page: currentPage,
   }
-  const activeSessions = useActiveSessions(dictionary, callParams, {
+  const activeSessions = useActiveSessions(callParams, {
     disabled: isDisabled,
   })
   const [meta, setMeta] = useState<IMeta | undefined>(activeSessions.data?.meta)
