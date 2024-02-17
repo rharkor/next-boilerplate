@@ -107,7 +107,7 @@ export function LoginUserAuthForm({ searchParams, ...props }: UserAuthFormProps)
           label={dictionary.email}
           type="email"
           autoCapitalize="none"
-          autoComplete="email"
+          autoComplete="username"
           autoCorrect="off"
           isDisabled={isLoading}
         />
@@ -116,7 +116,7 @@ export function LoginUserAuthForm({ searchParams, ...props }: UserAuthFormProps)
           name={"password"}
           label={dictionary.password}
           type="password-eye-slash"
-          autoComplete="new-password"
+          autoComplete="current-password"
           autoCorrect="off"
           isDisabled={isLoading}
         />
