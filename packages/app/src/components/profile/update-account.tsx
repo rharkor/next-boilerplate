@@ -85,7 +85,7 @@ export default function UpdateAccount({ sessionHasVerifiedEmail }: { sessionHasV
               name="username"
               label={dictionary.profilePage.profileDetails.username.label}
               type="text"
-              disabled={updateUserMutation.isLoading || account.isInitialLoading || !hasVerifiedEmail}
+              isDisabled={updateUserMutation.isLoading || account.isInitialLoading || !hasVerifiedEmail}
               skeleton={account.isInitialLoading}
             />
             <NeedSavePopup

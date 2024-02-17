@@ -185,3 +185,7 @@ export function stringToSlug(string: string): string {
     .replace(/[^\w -]+/g, "")
     .replace(/ +/g, "-")
 }
+
+export function sleep(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms))
+}

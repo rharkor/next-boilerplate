@@ -16,7 +16,7 @@ export default async function Home({
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center p-6 md:p-24">
-      <div className="pointer-events-none absolute left-0 top-0 h-full w-full overflow-hidden">
+      <div className="pointer-events-none absolute left-0 top-0 size-full overflow-hidden">
         <Blob />
       </div>
       <h1 className="animate-fade-in-scale text-foreground/80 relative rounded-lg p-5 text-center text-4xl font-bold md:text-6xl lg:text-8xl">

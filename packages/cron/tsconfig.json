@@ -7,16 +7,22 @@
     "skipLibCheck": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
-    "noEmit": true,
     "esModuleInterop": true,
     "module": "esnext",
-    "moduleResolution": "node",
+    "moduleResolution": "Bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "incremental": true,
     "baseUrl": ".",
-    "rootDir": "."
+    "paths": {
+      "@/*": ["./src/*"],
+      "@lib/*": ["../lib/*"]
+    },
+    "outDir": "dist"
   },
-  "include": ["**/*.ts", "**/*.d.ts", ".eslintrc.js"],
-  "exclude": ["node_modules"]
+  "include": ["**/*.ts", "**/*.d.ts", ".eslintrc.cjs"],
+  "exclude": ["node_modules"],
+  "tsc-alias": {
+    "resolveFullPaths": true
+  }
 }

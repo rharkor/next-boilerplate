@@ -15,9 +15,17 @@ export const getActiveSessions = async ({
 
     const skip = getJsonApiSkip(input)
     const take = getJsonApiTake(input)
-    const activeSessions = (await redis.getSessionWithPagination(session.user.id, take, skip)).map(
-      (s) => JSON.parse(s) as z.infer<ReturnType<typeof sessionsSchema>>
-    )
+    const allSessionsKeys = await redis.keys(`session:${session.user.id}:*`)
+    const allSessions = await redis.mget(allSessionsKeys)
+    const activeSessions = allSessions
+      .filter((s) => s)
+      .map((s) => JSON.parse(s as string) as z.infer<ReturnType<typeof sessionsSchema>>)
+      .sort((a, b) => {
+        if (!a.lastUsedAt) return -1
+        if (!b.lastUsedAt) return 1
+        return a.lastUsedAt > b.lastUsedAt ? -1 : 1
+      })
+      .slice(skip, skip + take)
 
     const total = (await redis.keys(`session:${session.user.id}:*`)).length
 

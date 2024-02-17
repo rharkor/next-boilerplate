@@ -70,8 +70,7 @@
         "adamhartford.vscode-base64",
         "ChakrounAnas.turbo-console-log",
         "yoavbls.pretty-ts-errors",
-        "humao.rest-client",
-        "ambar.bundle-size"
+        "humao.rest-client"
       ]
     }
   },

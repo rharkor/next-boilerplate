@@ -1,0 +1,6 @@
+# Log rotation
+@daily /usr/sbin/logrotate /etc/logrotate.d/app
+
+
+# Sample (every minute)
+* * * * * cd /usr/src/app && npm run sample >> /var/log/cron.log 2>&1

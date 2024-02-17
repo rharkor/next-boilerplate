@@ -36,13 +36,14 @@ export default function TrpcProvider({ children }: { children: React.ReactNode }
           },
         }),
         mutationCache: new MutationCache({
-          onError: (error, query) => {
-            if (testNoDefaultErrorHandling(query)) return
+          onError: (error, _v, _c, mutation) => {
+            if (testNoDefaultErrorHandling(mutation)) return
             handleMutationError(error as TRPCClientErrorLike<AppRouter>, dictionary, router)
           },
         }),
       })
   )
+
   const [trpcClient] = useState(() =>
     trpc.createClient({
       transformer: SuperJSON,

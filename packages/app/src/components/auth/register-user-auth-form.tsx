@@ -167,7 +167,7 @@ export function RegisterUserAuthForm({ isMinimized, searchParams, locale, ...pro
             label={dictionary.email}
             type="email"
             autoCapitalize="none"
-            autoComplete="email"
+            autoComplete="username"
             autoCorrect="off"
             isDisabled={isLoading || !isMinimized}
           />
@@ -190,9 +190,9 @@ export function RegisterUserAuthForm({ isMinimized, searchParams, locale, ...pro
               label={dictionary.username}
               type="text"
               autoCapitalize="none"
-              autoComplete="username"
+              autoComplete="none"
               autoCorrect="off"
-              disabled={isLoading}
+              isDisabled={isLoading}
             />
             <FormField
               form={form}
@@ -201,9 +201,8 @@ export function RegisterUserAuthForm({ isMinimized, searchParams, locale, ...pro
               type="password-eye-slash"
               autoComplete="new-password"
               autoCorrect="off"
-              disabled={isLoading}
+              isDisabled={isLoading}
               passwordStrength
-              dictionary={dictionary}
             />
             <FormField
               form={form}
@@ -212,7 +211,7 @@ export function RegisterUserAuthForm({ isMinimized, searchParams, locale, ...pro
               type="password"
               autoComplete="new-password"
               autoCorrect="off"
-              disabled={isLoading}
+              isDisabled={isLoading}
             />
           </>
         )}

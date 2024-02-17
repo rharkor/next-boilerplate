@@ -157,12 +157,14 @@ export const jsonApiQuerySchema = (
       .optional(),
   })
 
+const defaultPerPage = 10
+
 export const getJsonApiSkip = (opts?: Pick<IJsonApiQuery, "page" | "perPage">) => {
-  return (opts?.perPage ?? 10) * ((opts?.page ?? 1) - 1)
+  return (opts?.perPage ?? defaultPerPage) * ((opts?.page ?? 1) - 1)
 }
 
 export const getJsonApiTake = (opts?: Pick<IJsonApiQuery, "perPage">) => {
-  return opts?.perPage ?? 10
+  return opts?.perPage ?? defaultPerPage
 }
 
 export const getJsonApiSort = (opts?: Pick<IJsonApiQuery, "sort">) => {

@@ -110,7 +110,7 @@ export default function UpdateAvatar({ account }: { account: ReturnType<typeof u
       <div className={cn("group relative h-20 w-20 rounded-full")}>
         <Skeleton isLoaded={!account.isInitialLoading} className={cn("rounded-full")}>
           <Avatar
-            className="text-large h-20 w-20"
+            className="text-large !size-20"
             src={getImageUrl(account.data?.user.image) || undefined}
             name={account.data?.user.username || undefined}
             onClick={() => setShowModal(true)}
@@ -126,7 +126,7 @@ export default function UpdateAvatar({ account }: { account: ReturnType<typeof u
           )}
           onPress={() => setShowModal(true)}
         >
-          <Camera className="duration-250 h-8 w-8 transition-all group-[.upload-group]:active:scale-95" />
+          <Camera className="duration-250 size-8 transition-all group-[.upload-group]:active:scale-95" />
         </Button>
         <Button
           color="danger"
@@ -147,7 +147,7 @@ export default function UpdateAvatar({ account }: { account: ReturnType<typeof u
               size="sm"
             />
           ) : (
-            <Icons.trash className="h-4 w-4" />
+            <Icons.trash className="size-4" />
           )}
         </Button>
       </div>
