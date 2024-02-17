@@ -110,7 +110,7 @@ export default function UpdateAvatar({ account }: { account: ReturnType<typeof u
       <div className={cn("group relative h-20 w-20 rounded-full")}>
         <Skeleton isLoaded={!account.isInitialLoading} className={cn("rounded-full")}>
           <Avatar
-            className="text-large size-20"
+            className="text-large !size-20"
             src={getImageUrl(account.data?.user.image) || undefined}
             name={account.data?.user.username || undefined}
             onClick={() => setShowModal(true)}
