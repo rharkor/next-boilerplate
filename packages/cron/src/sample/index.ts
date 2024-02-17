@@ -1,6 +1,6 @@
+import { env } from "@/lib/env"
 import { prisma } from "@/lib/prisma"
 import { logger } from "@lib/logger"
-import { env } from "@/lib/env"
 
 const main = async () => {
   const maxDurationWarning = 1000 * 60 * 5 // 5 minutes

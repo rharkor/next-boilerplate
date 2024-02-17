@@ -20,7 +20,7 @@
     },
     "outDir": "dist"
   },
-  "include": ["**/*.ts", "**/*.d.ts", ".eslintrc.js"],
+  "include": ["**/*.ts", "**/*.d.ts", ".eslintrc.cjs"],
   "exclude": ["node_modules"],
   "tsc-alias": {
     "resolveFullPaths": true
