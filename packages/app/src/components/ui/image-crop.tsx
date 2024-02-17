@@ -410,13 +410,13 @@ function CropContent({
   return (
     <>
       <ModalBody className="flex items-center justify-center">
-        <div className="relative flex h-[500px] max-h-[100%] w-[500px] max-w-[100%] items-center justify-center overflow-hidden">
+        <div className="relative flex size-[500px] max-h-[100%] max-w-[100%] items-center justify-center overflow-hidden">
           <div className="relative flex select-none">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={originalFileUrl}
               alt="Original file"
-              className="pointer-events-none h-max max-h-[478px] w-max max-w-[478px] select-none object-contain"
+              className="pointer-events-none size-max max-h-[478px] max-w-[478px] select-none object-contain"
               ref={handleMountImage}
               onLoad={handleImageLoaded}
               draggable={false}

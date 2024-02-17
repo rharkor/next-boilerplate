@@ -29,7 +29,7 @@ export default async function SignupByCredentials({
     <main className="container relative m-auto flex min-h-screen flex-1 flex-col items-center justify-center px-2 lg:max-w-none lg:grid-cols-2 lg:px-0">
       <Link href={{ pathname: authRoutes.signUp[0], query: { email: searchParams.email } }}>
         <Button className="absolute left-2 top-2 min-w-0 p-2" size={"sm"}>
-          <ChevronRight className="h-4 w-4 rotate-180" />
+          <ChevronRight className="size-4 rotate-180" />
         </Button>
       </Link>
       <Card className="w-[500px] max-w-full">

@@ -5,7 +5,6 @@
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/rharkor/next-boilerplate/blob/main/LICENSE)
 
 Welcome to the _Next.js Boilerplate_, an open-source template for all your nextjs projects! It's loaded with features that'll help you build a high-performance, maintainable, and enjoyable app. We've done all the heavy lifting for you, so sit back, relax, and get ready to conquer the world with your incredible app! 🌍
-_Inspired by [Next enterprise](https://github.com/Blazity/next-enterprise/)_
 <br />
 <br />
 You can test the demo [here](https://next-boilerplate-rharkor.vercel.app/).
@@ -99,6 +98,7 @@ This boilerplate uses [npm workspaces](https://docs.npmjs.com/cli/v7/using-npm/w
 The following packages are available:
 
 - `packages/app`: The main application
+- `packages/cron`: The cron jobs
 - `packages/docs`: The documentation website
 - `packages/landing`: The landing page
 - `packages/scripts`: Scripts to help you manage your project

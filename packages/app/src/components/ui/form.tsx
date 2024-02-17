@@ -1,12 +1,11 @@
 "use client"
 
-import { useCallback, useEffect, useRef, useState } from "react"
+import { Ref, useCallback, useEffect, useRef, useState } from "react"
 import { createPortal } from "react-dom"
 import { Controller, FieldPath, FieldValues, UseFormReturn } from "react-hook-form"
 
 import { useDictionary } from "@/contexts/dictionary/utils"
-import { TDictionary } from "@/lib/langs"
-import { cn } from "@/lib/utils"
+import { cn, stringToSlug } from "@/lib/utils"
 import { Checkbox, Input, InputProps, Skeleton, Tooltip } from "@nextui-org/react"
 
 import { Icons } from "../icons"
@@ -16,19 +15,17 @@ const WithPasswordStrenghPopover = <
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >({
   children,
-  dictionary,
   form,
   name,
-  inputRef,
   isFocused,
 }: {
   children: React.ReactNode
-  dictionary: TDictionary
   form: UseFormReturn<TFieldValues>
   name: TName
-  inputRef: React.RefObject<HTMLInputElement>
   isFocused: boolean
 }) => {
+  const inputRef = useRef<HTMLInputElement>(null)
+  const dictionary = useDictionary()
   const popoverRef = useRef<HTMLDivElement>(null)
 
   const passwordValue = form.watch(name)
@@ -137,7 +134,6 @@ type IWithPasswordStrenghProps =
     }
   | {
       passwordStrength: true
-      dictionary: TDictionary
     }
 
 export type FormFieldProps<
@@ -147,7 +143,7 @@ export type FormFieldProps<
   form: UseFormReturn<TFieldValues>
   name: TName //? Required
   tooltip?: string
-  type: InputProps["type"] | "password-eye-slash"
+  type: InputProps["type"] | "password-eye-slash" | "slug"
   skeleton?: boolean
 } & IWithPasswordStrenghProps
 
@@ -159,13 +155,31 @@ const specialRegex = /[!@#$%^&*\.]/
 export default function FormField<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
->({ form, name, tooltip, type, skeleton, passwordStrength, ...props }: FormFieldProps<TFieldValues, TName>) {
-  const dictionary = useDictionary()
+>({
+  form,
+  name,
+  tooltip,
+  type,
+  skeleton,
+  passwordStrength,
+  inputRef,
+  ...props
+}: FormFieldProps<TFieldValues, TName> & { inputRef?: Ref<HTMLInputElement> }) {
   const [isVisible, setIsVisible] = useState(false)
   const [isFocused, setIsFocused] = useState(false)
-  const inputRef = useRef<HTMLInputElement>(null)
 
   const toggleVisibility = () => setIsVisible(!isVisible)
+
+  const typeToRealType = (type: FormFieldProps["type"]) => {
+    switch (type) {
+      case "password-eye-slash":
+        return isVisible ? "text" : "password"
+      case "slug":
+        return "text"
+      default:
+        return type
+    }
+  }
 
   let input = (
     <Controller
@@ -181,8 +195,9 @@ export default function FormField<
             },
             props.className
           )}
+          ref={inputRef}
           onFocusChange={setIsFocused}
-          type={type === "password-eye-slash" ? (isVisible ? "text" : "password") : type}
+          type={typeToRealType(type)}
           isInvalid={!!form.formState.errors[name]}
           errorMessage={form.formState.errors[name]?.message?.toString()}
           endContent={
@@ -201,6 +216,7 @@ export default function FormField<
               </button>
             ) : undefined)
           }
+          onChange={type === "slug" ? (e) => field.onChange(stringToSlug(e.target.value)) : field.onChange}
         />
       )}
     />
@@ -208,13 +224,7 @@ export default function FormField<
 
   if (passwordStrength) {
     input = (
-      <WithPasswordStrenghPopover
-        dictionary={dictionary}
-        form={form}
-        name={name}
-        inputRef={inputRef}
-        isFocused={isFocused}
-      >
+      <WithPasswordStrenghPopover form={form} name={name} isFocused={isFocused}>
         {input}
       </WithPasswordStrenghPopover>
     )

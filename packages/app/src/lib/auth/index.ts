@@ -190,25 +190,42 @@ export const nextAuthOptions: NextAuthOptions = {
         return {} as Session
       }
       if (token.uuid) {
-        new Promise(async () => {
+        const getRedisSession = async () => {
           const key = `session:${dbUser.id}:${token.uuid}`
           const loginSession = await redis.get(key)
           if (!loginSession) {
             logger.debug("Session not found", token.uuid)
             return {} as Session
-          } else {
-            //? Update session lastUsed
-            const remainingTtl = await redis.ttl(key)
-            await redis.setex(
-              key,
-              remainingTtl,
-              JSON.stringify({
-                ...(JSON.parse(loginSession) as object),
-                lastUsedAt: new Date(),
-              })
-            )
           }
-        })
+
+          //? Only if lastUsedAt is older than 1 minute (avoid spamming the redis server)
+          const data = JSON.parse(loginSession) as z.infer<ReturnType<typeof sessionsSchema>>
+          if (data.lastUsedAt) {
+            const lastUsedAt = new Date(data.lastUsedAt)
+            const now = new Date()
+            const diff = now.getTime() - lastUsedAt.getTime()
+            if (diff > 1000 * 60) {
+              return
+            }
+          }
+          //? Update session lastUsed
+          const remainingTtl = await redis.ttl(key)
+          //! Do not await to make the requests faster
+          redis.setex(
+            key,
+            remainingTtl,
+            JSON.stringify({
+              ...(JSON.parse(loginSession) as object),
+              lastUsedAt: new Date(),
+            })
+          )
+          return
+        }
+        const res = await getRedisSession()
+
+        if (res !== undefined) {
+          return res
+        }
       }
       //* Fill session with user data
       const username = dbUser.username

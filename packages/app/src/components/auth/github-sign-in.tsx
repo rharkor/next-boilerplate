@@ -25,12 +25,12 @@ export default function GithubSignIn({
           setIsLoading(true)
           handleSignIn({ providerId }).finally(() => setIsLoading(false))
         }}
-        disabled={isLoading}
+        isDisabled={isLoading}
       >
         {isLoading ? (
           <Spinner classNames={{ base: "mr-2", wrapper: "h-4 w-4" }} color="current" size="sm" />
         ) : (
-          <Icons.gitHub className="mr-2 h-4 w-4" />
+          <Icons.gitHub className="mr-2 size-4" />
         )}
         Github
       </Button>

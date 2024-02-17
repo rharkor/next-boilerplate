@@ -1,5 +1,4 @@
-import Redis, { Callback, ChainableCommander, RedisOptions } from "ioredis"
-import { Result } from "ioredis"
+import Redis, { ChainableCommander, RedisOptions } from "ioredis"
 
 import { logger } from "@lib/logger"
 
@@ -8,44 +7,10 @@ const options: RedisOptions = {
   port: process.env.REDIS_PORT ? parseInt(process.env.REDIS_PORT) : undefined,
   username: process.env.REDIS_USERNAME,
   password: process.env.REDIS_PASSWORD,
-  scripts: {
-    getSessionWithPagination: {
-      lua: `
-        local userId = KEYS[1]
-        local pattern = "session:" .. userId .. ":*"
-        local sessions = redis.call("KEYS", pattern)
-        
-        local take = tonumber(ARGV[1])
-        local skip = tonumber(ARGV[2])
-        local result = {}
-
-        for i, sessionKey in ipairs(sessions) do
-          if i > skip and #result < take then
-            table.insert(result, redis.call('GET', sessionKey))
-          end
-        end
-
-        return result
-      `,
-      numberOfKeys: 1,
-    },
-  },
   tls: process.env.REDIS_USE_TLS === "true" ? {} : undefined,
 }
 
 export const redis = new Redis(options)
-
-// Add declarations
-declare module "ioredis" {
-  interface RedisCommander<Context> {
-    getSessionWithPagination(
-      key: string,
-      take: number,
-      skip: number,
-      callback?: Callback<string>
-    ): Result<string[], Context>
-  }
-}
 
 export const redisKeyUtils = {}
 
