@@ -98,6 +98,7 @@ This boilerplate uses [npm workspaces](https://docs.npmjs.com/cli/v7/using-npm/w
 The following packages are available:
 
 - `packages/app`: The main application
+- `packages/cron`: The cron jobs
 - `packages/docs`: The documentation website
 - `packages/landing`: The landing page
 - `packages/scripts`: Scripts to help you manage your project

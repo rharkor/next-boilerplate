@@ -26,6 +26,12 @@ export const envSetup = async (initDb: boolean = true) => {
     fs.copyFileSync(path.join(rootDir, "packages", "landing", ".env.example"), landingEnvPath)
     logger.log(chalk.gray("Created .env for landing"))
   } else logger.log(chalk.gray("Skipping .env for landing"))
+  // Cron
+  const cronEnvPath = path.join(rootDir, "packages", "cron", ".env")
+  if (!fs.existsSync(cronEnvPath) && fs.existsSync(path.join(rootDir, "packages", "cron", ".env.example"))) {
+    fs.copyFileSync(path.join(rootDir, "packages", "cron", ".env.example"), cronEnvPath)
+    logger.log(chalk.gray("Created .env for cron"))
+  } else logger.log(chalk.gray("Skipping .env for cron"))
 
   if (initDb) {
     //* Initialize the database
