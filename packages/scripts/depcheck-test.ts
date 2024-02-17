@@ -41,6 +41,8 @@ const main = async () => {
       options.ignoreMatches.push("@types/react-dom", "@lib/logger")
     } else if (pkg === path.join(rootPath, "scripts")) {
       options.ignoreMatches.push("env-setup", "packages-selection", "replace-tokens", "runtime", "@lib/logger")
+    } else if (pkg === path.join(rootPath, "cron")) {
+      options.ignoreMatches.push("chalk", "@types/node")
     } else if (pkg === path.join(rootPath, "lib")) {
       continue
     }

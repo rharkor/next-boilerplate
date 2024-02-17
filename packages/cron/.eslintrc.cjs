@@ -2,24 +2,14 @@
 const path = require("path")
 
 module.exports = {
-  extends: [
-    "next",
-    "prettier",
-    "react-app/jest",
-    "plugin:@typescript-eslint/recommended",
-    "plugin:tailwindcss/recommended",
-  ],
+  extends: ["prettier", "plugin:@typescript-eslint/recommended", "plugin:tailwindcss/recommended"],
   parser: "@typescript-eslint/parser",
   parserOptions: {
-    babelOptions: {
-      presets: [require.resolve("next/babel")],
-    },
     project: path.join(__dirname, "/tsconfig.json"),
   },
   plugins: ["@typescript-eslint", "unused-imports", "simple-import-sort"],
   rules: {
     "testing-library/prefer-screen-queries": "off",
-    "@next/next/no-html-link-for-pages": "off",
     "unused-imports/no-unused-imports": "error",
     "@typescript-eslint/no-unused-vars": [
       "warn",
@@ -42,8 +32,7 @@ module.exports = {
           "error",
           {
             groups: [
-              // `react` first, `next` second, then packages starting with a character
-              ["^react$", "^next", "^[a-z]"],
+              ["^[a-z]"],
               // Packages starting with `@`
               ["^@"],
               // Packages starting with `~`
