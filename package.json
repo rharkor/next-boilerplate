@@ -39,5 +39,5 @@
     "only-allow-many": "^1.2.2",
     "semantic-release": "^23.0.0"
   },
-  "version": "3.6.0-rec.1"
+  "version": "3.6.0"
 }
