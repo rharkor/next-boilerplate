@@ -1,7 +1,7 @@
 {
   "name": "@next-boilerplate/cron",
   "scripts": {
-    "build": "rm -rf dist && tsc && tsc-alias",
+    "build": "rm -rf dist && npx --package typescript -y tsc && tsc-alias",
     "sample": "node dist/cron/src/sample/index.js",
     "dev:sample": "nodemon --watch './src/*' -e ts,json,d.ts --exec 'npm run build && npm run sample'",
     "lint": "eslint --ext .ts,.tsx .",
