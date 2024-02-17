@@ -51,7 +51,7 @@ export default function SessionRow({ session, setSelectedSession, skeleton, skel
           <div className="flex flex-col space-y-1">
             <div className="flex flex-row items-center space-x-2">
               {skeleton ? (
-                <Skeleton className="h-5 w-5 rounded-full" disableAnimation={!skeletonAnimation} />
+                <Skeleton className="size-5 rounded-full" disableAnimation={!skeletonAnimation} />
               ) : (
                 <GetDeviceIcon name={userAgents?.os.name} />
               )}

@@ -38,7 +38,7 @@ export default function LocaleSwitcher({ lang }: { lang: Locale }) {
       }}
       className="w-[150px]"
       aria-label={localesDetailed[lang].nativeName}
-      startContent={<Avatar alt={lang} className="h-4 w-4 shrink-0" src={localesDetailed[lang].flag} />}
+      startContent={<Avatar alt={lang} className="size-4 shrink-0" src={localesDetailed[lang].flag} />}
       size="sm"
       selectionMode="single"
     >
@@ -46,7 +46,7 @@ export default function LocaleSwitcher({ lang }: { lang: Locale }) {
         <SelectItem
           key={locale}
           value={locale}
-          startContent={<Avatar alt={locale} className="h-6 w-6" src={details.flag} />}
+          startContent={<Avatar alt={locale} className="size-6" src={details.flag} />}
         >
           {details.nativeName}
         </SelectItem>

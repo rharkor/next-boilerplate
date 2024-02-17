@@ -57,9 +57,9 @@ export default function ForgotPasswordForm() {
         autoCapitalize="none"
         autoComplete="email"
         autoCorrect="off"
-        disabled={isDisabled}
+        isDisabled={isDisabled}
       />
-      <Button type="submit" isLoading={isLoading} disabled={isDisabled} color="primary">
+      <Button type="submit" isLoading={isLoading} isDisabled={isDisabled} color="primary">
         {dictionary.send}
       </Button>
       {latestEmailSentAt !== null && (
@@ -75,7 +75,7 @@ export default function ForgotPasswordForm() {
                   : null
               return (
                 <div className="ml-auto flex flex-row items-center text-sm text-gray-500">
-                  <Clock className="mr-1 inline-block h-4 w-4" />
+                  <Clock className="mr-1 inline-block size-4" />
                   {retryInFormatted}
                 </div>
               )

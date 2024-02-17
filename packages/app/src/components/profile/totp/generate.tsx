@@ -146,7 +146,7 @@ export default function GenerateTotp({ account }: { account: ReturnType<typeof u
                         value={totpSecretData?.url ?? ""}
                         size={256}
                         includeMargin
-                        className="h-48 w-48 lg:h-64 lg:w-64"
+                        className="size-48 lg:size-64"
                       />
                     </Skeleton>
                     <Skeleton isLoaded={!!totpSecretData} className="rounded-medium shrink-0">
@@ -200,7 +200,7 @@ export default function GenerateTotp({ account }: { account: ReturnType<typeof u
                                 setMnemonicVerif(newMnemonicVerif.join(" "))
                               }}
                             >
-                              <Icons.trash className="h-4 w-4" />
+                              <Icons.trash className="size-4" />
                             </Button>
                           </p>
                         ))}

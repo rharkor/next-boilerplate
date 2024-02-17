@@ -78,7 +78,7 @@ export function LoginUserAuthForm({ searchParams, ...props }: UserAuthFormProps)
           <Card className="relative">
             <CardBody>
               <h3 className="flex flex-row items-center gap-1">
-                <BadgeInfo className="h-4 w-4" />
+                <BadgeInfo className="size-4" />
                 {dictionary.auth.demoMode}
               </h3>
               <div className="flex flex-col">
@@ -95,7 +95,7 @@ export function LoginUserAuthForm({ searchParams, ...props }: UserAuthFormProps)
                     form.setValue("password", env.NEXT_PUBLIC_DEMO_PASSWORD ?? "")
                   }}
                 >
-                  <ArrowBigDown className="h-5 w-5" />
+                  <ArrowBigDown className="size-5" />
                 </div>
               </div>
             </CardBody>
@@ -109,7 +109,7 @@ export function LoginUserAuthForm({ searchParams, ...props }: UserAuthFormProps)
           autoCapitalize="none"
           autoComplete="email"
           autoCorrect="off"
-          disabled={isLoading}
+          isDisabled={isLoading}
         />
         <FormField
           form={form}
@@ -118,7 +118,7 @@ export function LoginUserAuthForm({ searchParams, ...props }: UserAuthFormProps)
           type="password-eye-slash"
           autoComplete="new-password"
           autoCorrect="off"
-          disabled={isLoading}
+          isDisabled={isLoading}
         />
         <Link className="text-muted-foreground hover:text-primary ml-auto text-sm" href={"/forgot-password"}>
           {dictionary.forgotPassword}

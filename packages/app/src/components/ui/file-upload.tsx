@@ -41,10 +41,10 @@ function File({
         </p>
         <div className="flex gap-1">
           <Button color="primary" className="h-[unset] min-w-0 shrink-0 rounded-full p-1" onPress={onCroppingOpen}>
-            <Crop className="h-4 w-4" />
+            <Crop className="size-4" />
           </Button>
           <Button color="danger" className="h-[unset] min-w-0 shrink-0 rounded-full p-1" onPress={() => removeFile(i)}>
-            <Icons.trash className="h-4 w-4" />
+            <Icons.trash className="size-4" />
           </Button>
         </div>
       </div>
@@ -121,7 +121,7 @@ export default function FileUpload({
         )}
       >
         <input type="file" {...getInputProps()} disabled={disabled} {...props} />
-        <Upload className="h-12 w-12" />
+        <Upload className="size-12" />
         <p className="text-foreground/80 text-center text-sm">{dictionary.uploadDescription}</p>
       </div>
       <ul className="flex flex-col gap-2">
