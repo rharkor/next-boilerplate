@@ -1,0 +1,32 @@
+{
+  "name": "@next-boilerplate/cron",
+  "scripts": {
+    "build": "rm -rf dist && tsc && tsc-alias",
+    "sample": "node dist/cron/src/sample/index.js",
+    "dev:sample": "nodemon --watch './src/*' -e ts,json,d.ts --exec 'npm run build && npm run sample'",
+    "lint": "eslint --ext .ts,.tsx .",
+    "lint:fix": "eslint --fix --ext .ts,.tsx .",
+    "test": "exit 0",
+    "start": "exit 0",
+    "dev": "exit 0"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "@prisma/client": "^5.9.1",
+    "@t3-oss/env-core": "^0.9.2",
+    "@types/node": "^20.11.19",
+    "chalk": "^5.3.0",
+    "dotenv": "^16.4.4",
+    "nodemon": "^3.0.3",
+    "tsc-alias": "^1.8.8",
+    "tsx": "^4.7.1",
+    "typescript": "^5.3.3",
+    "zod": "^3.22.4"
+  },
+  "prisma": {
+    "schema": "../app/prisma/schema.prisma"
+  }
+}

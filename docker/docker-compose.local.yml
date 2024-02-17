@@ -3,7 +3,7 @@ version: "3.8"
 services:
   app:
     build:
-      context: .
+      context: ..
       dockerfile: packages/app/Dockerfile
     container_name: #{PROJECT_NAME}#_app
     restart: unless-stopped
@@ -14,22 +14,22 @@ services:
     ports:
       - "3000:3000"
 
-  crons:
+  cron:
     build:
-      context: .
-      dockerfile: packages/app/crons/Dockerfile
-    container_name: #{PROJECT_NAME}#_crons
+      context: ..
+      dockerfile: packages/cron/Dockerfile
+    container_name: #{PROJECT_NAME}#_cron
     restart: unless-stopped
     logging:
       driver: "json-file"
       options:
         max-size: "50m"
 
-  docs:
+  doc:
     build:
-      context: .
+      context: ..
       dockerfile: packages/docs/Dockerfile
-    container_name: #{PROJECT_NAME}#_docs
+    container_name: #{PROJECT_NAME}#_doc
     restart: unless-stopped
     logging:
       driver: "json-file"
@@ -43,7 +43,7 @@ services:
 
   landing:
     build:
-      context: .
+      context: ..
       dockerfile: packages/landing/Dockerfile
     container_name: #{PROJECT_NAME}#_landing
     restart: unless-stopped

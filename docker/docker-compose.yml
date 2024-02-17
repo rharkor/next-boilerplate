@@ -12,7 +12,7 @@ services:
     ports:
       - "3000:3000"
 
-  crons:
+  cron:
     image: DOCKER_DEPLOY_CRONS_IMAGE
     container_name: #{PROJECT_NAME}#_crons
     restart: unless-stopped
@@ -21,9 +21,9 @@ services:
       options:
         max-size: "50m"
 
-  docs:
+  doc:
     image: DOCKER_DEPLOY_DOCS_IMAGE
-    container_name: #{PROJECT_NAME}#_docs
+    container_name: #{PROJECT_NAME}#_doc
     restart: unless-stopped
     logging:
       driver: "json-file"

@@ -23,7 +23,8 @@
     "packages/app",
     "packages/docs",
     "packages/landing",
-    "packages/lib"
+    "packages/lib",
+    "packages/cron"
   ],
   "dependencies": {
     "concurrently": "^8.2.2"
