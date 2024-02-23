@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import { useSession } from "next-auth/react"
 
 import { ModalDescription, ModalHeader, ModalTitle } from "@/components/ui/modal"
 import { useActiveSessions } from "@/contexts/active-sessions"
@@ -14,9 +15,12 @@ import SessionRow from "./session-row"
 
 const itemsPerPageInitial = 5
 
-export default function SessionsTable({ isDisabled }: { isDisabled?: boolean }) {
+export default function SessionsTable() {
+  const session = useSession()
   const dictionary = useDictionary()
   const utils = trpc.useUtils()
+
+  const isDisabled = !session.data || session.data.user.hasPassword === false
 
   const [selectedSession, setSelectedSession] = useState<string | null>(null)
   const [currentPage, setCurrentPage] = useState(1)
