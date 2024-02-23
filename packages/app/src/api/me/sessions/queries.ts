@@ -1,8 +1,7 @@
 import { z } from "zod"
 
-import { getJsonApiSkip, getJsonApiTake } from "@/lib/json-api"
+import { getActiveSessionsResponseSchema, getActiveSessionsSchema, sessionsSchema } from "@/api/me/schemas"
 import { redis } from "@/lib/redis"
-import { getActiveSessionsResponseSchema, getActiveSessionsSchema, sessionsSchema } from "@/lib/schemas/user"
 import { ensureLoggedIn, handleApiError } from "@/lib/utils/server-utils"
 import { apiInputFromSchema } from "@/types"
 
@@ -13,8 +12,10 @@ export const getActiveSessions = async ({
   try {
     ensureLoggedIn(session)
 
-    const skip = getJsonApiSkip(input)
-    const take = getJsonApiTake(input)
+    const { page, perPage } = input
+
+    const skip = (page - 1) * perPage
+    const take = perPage
     const allSessionsKeys = await redis.keys(`session:${session.user.id}:*`)
     const allSessions = await redis.mget(allSessionsKeys)
     const activeSessions = allSessions

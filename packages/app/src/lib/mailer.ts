@@ -5,8 +5,6 @@ import { logger } from "@lib/logger"
 
 import { ApiError } from "./utils/server-utils"
 
-import "server-only"
-
 export const configOptions = {
   port: env.SMTP_PORT,
   host: env.SMTP_HOST,
