@@ -3,7 +3,7 @@ import * as z from "zod"
 import { maxPasswordLength, minPasswordLength } from "@/lib/auth/constants"
 import { TDictionary } from "@/lib/langs"
 
-import { userSchema } from "./user"
+import { userSchema } from "../me/schemas"
 
 export const passwordSchema = (dictionary?: TDictionary) =>
   z

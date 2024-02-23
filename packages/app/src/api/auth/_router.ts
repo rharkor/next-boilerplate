@@ -8,7 +8,7 @@ import {
   signUpSchema,
   verifyTotpResponseSchema,
   verifyTotpSchema,
-} from "@/lib/schemas/auth"
+} from "@/api/auth/schemas"
 import { authenticatedProcedure, publicProcedure, router } from "@/lib/server/trpc"
 
 import { desactivateTotp, generateTotpSecret, recover2FA, register, verifyTotp } from "./mutations"

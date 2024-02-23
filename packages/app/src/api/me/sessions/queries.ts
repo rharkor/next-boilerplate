@@ -1,8 +1,8 @@
 import { z } from "zod"
 
+import { getActiveSessionsResponseSchema, getActiveSessionsSchema, sessionsSchema } from "@/api/me/schemas"
 import { getJsonApiSkip, getJsonApiTake } from "@/lib/json-api"
 import { redis } from "@/lib/redis"
-import { getActiveSessionsResponseSchema, getActiveSessionsSchema, sessionsSchema } from "@/lib/schemas/user"
 import { ensureLoggedIn, handleApiError } from "@/lib/utils/server-utils"
 import { apiInputFromSchema } from "@/types"
 

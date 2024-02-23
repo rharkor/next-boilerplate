@@ -1,5 +1,5 @@
+import { deleteSessionSchema } from "@/api/me/schemas"
 import { redis } from "@/lib/redis"
-import { deleteSessionSchema } from "@/lib/schemas/user"
 import { ensureLoggedIn, handleApiError } from "@/lib/utils/server-utils"
 import { apiInputFromSchema } from "@/types"
 

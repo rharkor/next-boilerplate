@@ -4,18 +4,18 @@ import { env } from "env.mjs"
 import { authenticator } from "otplib"
 import { z } from "zod"
 
-import { emailVerificationExpiration, rolesAsObject } from "@/constants"
-import { hash } from "@/lib/bcrypt"
-import { sendMail } from "@/lib/mailer"
-import { prisma } from "@/lib/prisma"
-import { redis } from "@/lib/redis"
 import {
   desactivateTotpSchema,
   generateTotpSecretResponseSchema,
   recover2FASchema,
   signUpSchema,
   verifyTotpSchema,
-} from "@/lib/schemas/auth"
+} from "@/api/auth/schemas"
+import { emailVerificationExpiration, rolesAsObject } from "@/constants"
+import { hash } from "@/lib/bcrypt"
+import { sendMail } from "@/lib/mailer"
+import { prisma } from "@/lib/prisma"
+import { redis } from "@/lib/redis"
 import { html, plainText, subject } from "@/lib/templates/mail/verify-email"
 import { ApiError, ensureLoggedIn, generateRandomSecret, handleApiError } from "@/lib/utils/server-utils"
 import { apiInputFromSchema } from "@/types"

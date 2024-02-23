@@ -1,6 +1,6 @@
 import { z } from "zod"
 
-import { getActiveSessionsResponseSchema } from "@/lib/schemas/user"
+import { getActiveSessionsResponseSchema } from "@/api/me/schemas"
 import { trpc } from "@/lib/trpc/client"
 
 export function useActiveSessions(

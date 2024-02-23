@@ -7,8 +7,8 @@ import * as z from "zod"
 
 import { logger } from "@lib/logger"
 
+import { signInSchema } from "../../api/auth/schemas"
 import { TDictionary } from "../langs"
-import { signInSchema } from "../schemas/auth"
 
 export const handleSignError = (error: string, dictionary: TDictionary) => {
   if (error == "OAuthAccountNotLinked") {
