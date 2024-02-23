@@ -141,7 +141,7 @@ export default function UpdateAvatar({ account }: { account: ReturnType<typeof u
           {updateUserMutation.isLoading ? (
             <Spinner
               classNames={{
-                wrapper: "h-4 w-4",
+                wrapper: "size-4",
               }}
               color="current"
               size="sm"
