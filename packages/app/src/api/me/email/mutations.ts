@@ -2,13 +2,13 @@ import { randomUUID } from "crypto"
 import { env } from "env.mjs"
 import { i18n } from "i18n-config"
 
+import { emailVerificationExpiration, resendEmailVerificationExpiration } from "@/constants"
 import { sendMail } from "@/lib/mailer"
 import { prisma } from "@/lib/prisma"
 import { sendVerificationEmailSchema, verifyEmailSchema } from "@/lib/schemas/user"
 import { html, plainText, subject } from "@/lib/templates/mail/verify-email"
 import { ApiError, handleApiError } from "@/lib/utils/server-utils"
 import { apiInputFromSchema } from "@/types"
-import { emailVerificationExpiration, resendEmailVerificationExpiration } from "@/types/constants"
 import { logger } from "@lib/logger"
 
 export const sendVerificationEmail = async ({ input }: apiInputFromSchema<typeof sendVerificationEmailSchema>) => {

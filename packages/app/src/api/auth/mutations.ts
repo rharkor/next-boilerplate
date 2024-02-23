@@ -4,6 +4,7 @@ import { env } from "env.mjs"
 import { authenticator } from "otplib"
 import { z } from "zod"
 
+import { emailVerificationExpiration, rolesAsObject } from "@/constants"
 import { hash } from "@/lib/bcrypt"
 import { sendMail } from "@/lib/mailer"
 import { prisma } from "@/lib/prisma"
@@ -18,7 +19,6 @@ import {
 import { html, plainText, subject } from "@/lib/templates/mail/verify-email"
 import { ApiError, ensureLoggedIn, generateRandomSecret, handleApiError } from "@/lib/utils/server-utils"
 import { apiInputFromSchema } from "@/types"
-import { emailVerificationExpiration, rolesAsObject } from "@/types/constants"
 import { logger } from "@lib/logger"
 import { Prisma } from "@prisma/client"
 

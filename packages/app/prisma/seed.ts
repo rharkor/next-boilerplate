@@ -3,11 +3,10 @@ config()
 import chalk from "chalk"
 import { Spinner } from "cli-spinner"
 
+import { rolesAsObject } from "@/constants"
 import { hash } from "@/lib/bcrypt"
 import { logger } from "@lib/logger"
 import { PrismaClient } from "@prisma/client"
-
-import { rolesAsObject } from "../src/types/constants"
 
 const env = {
   AUTH_ADMIN_EMAIL: process.env.AUTH_ADMIN_EMAIL,

@@ -2,6 +2,7 @@ import { randomUUID } from "crypto"
 import { env } from "env.mjs"
 import { i18n } from "i18n-config"
 
+import { resendResetPasswordExpiration, resetPasswordExpiration, rolesAsObject } from "@/constants"
 import { hash } from "@/lib/bcrypt"
 import { sendMail } from "@/lib/mailer"
 import { prisma } from "@/lib/prisma"
@@ -9,7 +10,6 @@ import { forgotPasswordSchema, resetPasswordSchema } from "@/lib/schemas/user"
 import { html, plainText, subject } from "@/lib/templates/mail/reset-password"
 import { ApiError, handleApiError } from "@/lib/utils/server-utils"
 import { apiInputFromSchema } from "@/types"
-import { resendResetPasswordExpiration, resetPasswordExpiration, rolesAsObject } from "@/types/constants"
 import { logger } from "@lib/logger"
 
 export const forgotPassword = async ({ input }: apiInputFromSchema<typeof forgotPasswordSchema>) => {

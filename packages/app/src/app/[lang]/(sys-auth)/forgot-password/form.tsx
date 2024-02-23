@@ -8,10 +8,10 @@ import { z } from "zod"
 
 import AutoRefresh from "@/components/auto-refresh"
 import FormField from "@/components/ui/form"
+import { resendResetPasswordExpiration } from "@/constants"
 import { useDictionary } from "@/contexts/dictionary/utils"
 import { forgotPasswordSchema } from "@/lib/schemas/user"
 import { trpc } from "@/lib/trpc/client"
-import { resendResetPasswordExpiration } from "@/types/constants"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Button, Tooltip } from "@nextui-org/react"
 

@@ -1,6 +1,6 @@
 import { z } from "zod"
 
-import { defaultMaxPerPage } from "@/types/constants"
+import { defaultMaxPerPage } from "@/constants"
 import { logger } from "@lib/logger"
 
 import { TDictionary } from "./langs"

@@ -4,12 +4,12 @@ import { useState } from "react"
 import { Camera } from "lucide-react"
 import { toast } from "react-toastify"
 
+import { maxUploadSize } from "@/constants"
 import { useAccount } from "@/contexts/account"
 import { useDictionary } from "@/contexts/dictionary/utils"
 import { trpc } from "@/lib/trpc/client"
 import { cn } from "@/lib/utils"
 import { getImageUrl } from "@/lib/utils/client-utils"
-import { maxUploadSize } from "@/types/constants"
 import { logger } from "@lib/logger"
 import { Avatar, Button, Modal, ModalBody, ModalContent, Skeleton, Spinner } from "@nextui-org/react"
 
