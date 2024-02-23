@@ -46,8 +46,10 @@ export const handleSignIn = async ({
       if (!res?.error) {
         logger.debug("Sign in successful pushing to", callbackUrl)
         router.push(callbackUrl)
+        /*
         //? Refreshing the router is necessary due to next.js client cache, see: https://nextjs.org/docs/app/building-your-application/caching
-        router.refresh()
+        // router.refresh()
+        */
         resolve()
       } else {
         if (res.error === "OTP_REQUIRED") {
