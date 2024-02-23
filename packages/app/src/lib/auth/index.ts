@@ -1,7 +1,7 @@
 import { NextAuthOptions, Session } from "next-auth"
-import { Provider } from "next-auth/providers"
 import Credentials from "next-auth/providers/credentials"
 import GithubProvider from "next-auth/providers/github"
+import { Provider } from "next-auth/providers/index"
 import { randomUUID } from "crypto"
 import { env } from "env.mjs"
 import { i18n, Locale } from "i18n-config"
