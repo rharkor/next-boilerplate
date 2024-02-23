@@ -10,8 +10,6 @@ import { TRPC_ERROR_CODE_KEY } from "@trpc/server/rpc"
 
 import { TDictionary } from "../langs"
 
-import "server-only"
-
 export const parseRequestBody = async <T>(
   req: Request,
   schema: z.Schema<T>
