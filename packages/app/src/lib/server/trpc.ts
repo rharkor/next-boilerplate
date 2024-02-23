@@ -7,7 +7,6 @@ import { getAuthApi } from "@/components/auth/require-auth"
 import { User } from "@prisma/client"
 import { initTRPC } from "@trpc/server"
 
-import { prisma } from "../prisma"
 import { Context } from "../trpc/context"
 import { ApiError } from "../utils/server-utils"
 
@@ -43,19 +42,10 @@ const isAuthenticated = middleware(async (opts) => {
     ApiError("unauthorized", "UNAUTHORIZED")
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { password, ...user } = await prisma.user.findFirstOrThrow({
-    where: {
-      email: session.user.email,
-    },
-  })
   return opts.next({
     ctx: {
       ...opts.ctx,
-      session: {
-        ...session,
-        user,
-      } as Session & { user: Omit<User, "password"> },
+      session,
     },
   })
 })
