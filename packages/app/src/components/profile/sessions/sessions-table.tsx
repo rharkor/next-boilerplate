@@ -1,12 +1,11 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { useSession } from "next-auth/react"
 
 import { ModalDescription, ModalHeader, ModalTitle } from "@/components/ui/modal"
 import { useActiveSessions } from "@/contexts/active-sessions"
 import { useDictionary } from "@/contexts/dictionary/utils"
-import { IMeta } from "@/lib/json-api"
 import { trpc } from "@/lib/trpc/client"
 import { cn } from "@/lib/utils"
 import { Button, Modal, ModalContent, ModalFooter, Pagination } from "@nextui-org/react"
@@ -27,16 +26,12 @@ export default function SessionsTable() {
 
   const callParams = {
     page: currentPage,
+    perPage: itemsPerPageInitial,
   }
   const activeSessions = useActiveSessions(callParams, {
     disabled: isDisabled,
   })
-  const [meta, setMeta] = useState<IMeta | undefined>(activeSessions.data?.meta)
-
-  useEffect(() => {
-    if (activeSessions.isLoading) return
-    setMeta(activeSessions.data?.meta)
-  }, [activeSessions])
+  const meta = activeSessions.data?.meta
 
   const deleteSessionMutation = trpc.me.deleteSession.useMutation({
     onSettled: () => {

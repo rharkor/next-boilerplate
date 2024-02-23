@@ -1,6 +1,7 @@
 import { z } from "zod"
 
-import { jsonApiQuerySchema, jsonApiResponseSchema } from "../../lib/json-api"
+import { queriesOptionPage, queriesOptionPerPage } from "@/lib/queries-options"
+
 import { TDictionary } from "../../lib/langs"
 import { emailSchema, passwordSchemaWithRegex, usernameSchema } from "../auth/schemas"
 
@@ -42,17 +43,20 @@ export const sessionsSchema = () =>
   })
 
 export const getActiveSessionsSchema = (dictionary?: TDictionary) =>
-  jsonApiQuerySchema(dictionary)
-    .pick({
-      page: true,
-      perPage: true,
-      sort: true,
-    })
-    .optional()
+  z.object({
+    page: queriesOptionPage(dictionary),
+    perPage: queriesOptionPerPage(dictionary),
+  })
 
 export const getActiveSessionsResponseSchema = () =>
-  jsonApiResponseSchema().extend({
+  z.object({
     data: z.array(sessionsSchema()).optional(),
+    meta: z.object({
+      total: z.number(),
+      page: z.number(),
+      perPage: z.number(),
+      totalPages: z.number(),
+    }),
   })
 
 export const deleteSessionSchema = () =>
