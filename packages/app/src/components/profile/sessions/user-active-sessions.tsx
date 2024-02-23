@@ -1,16 +1,8 @@
-import { Session } from "next-auth"
-
 import { TDictionary } from "@/lib/langs"
 
 import SessionsTable from "./sessions-table"
 
-export default async function UserActiveSessions({
-  dictionary,
-  session,
-}: {
-  dictionary: TDictionary
-  session: Session | null
-}) {
+export default async function UserActiveSessions({ dictionary }: { dictionary: TDictionary }) {
   return (
     <section className="text-foreground p-2">
       <header>
@@ -19,7 +11,7 @@ export default async function UserActiveSessions({
           {dictionary.profilePage.profileDetails.loggedDevicesDescription}
         </p>
       </header>
-      <SessionsTable isDisabled={session?.user.hasPassword === false} />
+      <SessionsTable />
     </section>
   )
 }

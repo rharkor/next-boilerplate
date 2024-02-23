@@ -19,14 +19,14 @@ module.exports = {
       themes: {
         light: {
           colors: {
-            muted: "#f1f5f9",
-            "muted-foreground": "#64748b",
+            muted: "#f4f4f5",
+            "muted-foreground": "#71717a",
           },
         },
         dark: {
           colors: {
-            muted: "#1e293b",
-            "muted-foreground": "#94a3b8",
+            muted: "#27272a",
+            "muted-foreground": "#a1a1aa",
           },
         },
       },

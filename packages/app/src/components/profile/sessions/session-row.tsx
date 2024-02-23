@@ -2,9 +2,9 @@ import { Dispatch, SetStateAction } from "react"
 import { UAParser } from "ua-parser-js"
 import { z } from "zod"
 
+import { sessionsSchema } from "@/api/me/schemas"
 import { Icons } from "@/components/icons"
 import { TDictionary } from "@/lib/langs"
-import { sessionsSchema } from "@/lib/schemas/user"
 import { cn, getTimeBetween } from "@/lib/utils"
 import { Button, Skeleton as NSkeleton } from "@nextui-org/react"
 

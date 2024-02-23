@@ -2,11 +2,11 @@ import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.share
 import { type ClassValue, clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
 
+import { authRoutes } from "@/lib/auth/constants"
 import { logger } from "@lib/logger"
 import { TRPCClientErrorLike } from "@trpc/client"
 
 import { AppRouter } from "../../api/_app"
-import { authRoutes } from "../auth/constants"
 import { TDictionary } from "../langs"
 
 import { TErrorMessage } from "./server-utils"

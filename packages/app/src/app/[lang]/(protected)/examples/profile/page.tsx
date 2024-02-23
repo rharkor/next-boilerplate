@@ -41,7 +41,7 @@ export default async function Profile({
               <SignoutButton>{dictionary.signOut}</SignoutButton>
             </div>
             <ProfileDetails dictionary={dictionary} hasVerifiedEmail={hasVerifiedEmail} />
-            <UserActiveSessions dictionary={dictionary} session={session} />
+            <UserActiveSessions dictionary={dictionary} />
           </CardBody>
         </Card>
       </div>

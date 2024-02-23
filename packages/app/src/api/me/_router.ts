@@ -15,7 +15,7 @@ import {
   updateUserSchema,
   verifyEmailResponseSchema,
   verifyEmailSchema,
-} from "@/lib/schemas/user"
+} from "@/api/me/schemas"
 import {
   authenticatedNoEmailVerificationProcedure,
   authenticatedProcedure,

@@ -4,12 +4,12 @@ import { useState } from "react"
 import { Camera } from "lucide-react"
 import { toast } from "react-toastify"
 
+import { maxUploadSize } from "@/constants"
 import { useAccount } from "@/contexts/account"
 import { useDictionary } from "@/contexts/dictionary/utils"
 import { trpc } from "@/lib/trpc/client"
 import { cn } from "@/lib/utils"
 import { getImageUrl } from "@/lib/utils/client-utils"
-import { maxUploadSize } from "@/types/constants"
 import { logger } from "@lib/logger"
 import { Avatar, Button, Modal, ModalBody, ModalContent, Skeleton, Spinner } from "@nextui-org/react"
 
@@ -141,7 +141,7 @@ export default function UpdateAvatar({ account }: { account: ReturnType<typeof u
           {updateUserMutation.isLoading ? (
             <Spinner
               classNames={{
-                wrapper: "h-4 w-4",
+                wrapper: "size-4",
               }}
               color="current"
               size="sm"

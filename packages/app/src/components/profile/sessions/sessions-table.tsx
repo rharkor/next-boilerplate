@@ -1,11 +1,11 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useState } from "react"
+import { useSession } from "next-auth/react"
 
 import { ModalDescription, ModalHeader, ModalTitle } from "@/components/ui/modal"
 import { useActiveSessions } from "@/contexts/active-sessions"
 import { useDictionary } from "@/contexts/dictionary/utils"
-import { IMeta } from "@/lib/json-api"
 import { trpc } from "@/lib/trpc/client"
 import { cn } from "@/lib/utils"
 import { Button, Modal, ModalContent, ModalFooter, Pagination } from "@nextui-org/react"
@@ -14,25 +14,24 @@ import SessionRow from "./session-row"
 
 const itemsPerPageInitial = 5
 
-export default function SessionsTable({ isDisabled }: { isDisabled?: boolean }) {
+export default function SessionsTable() {
+  const session = useSession()
   const dictionary = useDictionary()
   const utils = trpc.useUtils()
+
+  const isDisabled = !session.data || session.data.user.hasPassword === false
 
   const [selectedSession, setSelectedSession] = useState<string | null>(null)
   const [currentPage, setCurrentPage] = useState(1)
 
   const callParams = {
     page: currentPage,
+    perPage: itemsPerPageInitial,
   }
   const activeSessions = useActiveSessions(callParams, {
     disabled: isDisabled,
   })
-  const [meta, setMeta] = useState<IMeta | undefined>(activeSessions.data?.meta)
-
-  useEffect(() => {
-    if (activeSessions.isLoading) return
-    setMeta(activeSessions.data?.meta)
-  }, [activeSessions])
+  const meta = activeSessions.data?.meta
 
   const deleteSessionMutation = trpc.me.deleteSession.useMutation({
     onSettled: () => {
