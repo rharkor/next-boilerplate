@@ -181,7 +181,7 @@ export const nextAuthOptions: NextAuthOptions = {
         },
       })
       if (!dbUser) {
-        logger.debug("User not found", token.id)
+        // logger.debug("User not found", token.id)
         return {} as Session
       }
       //* Verify that the session still exists
