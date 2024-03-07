@@ -1,5 +1,6 @@
 import React from "react"
 import { Metadata } from "next"
+import { cookies } from "next/headers"
 import { redirect } from "next/navigation"
 import { i18n, Locale } from "i18n-config"
 
@@ -32,10 +33,15 @@ export default async function RootLayout({
 
   const dictionary = await getDictionary(params.lang as Locale)
 
+  const cookiesStore = cookies()
+  const hasDictLoaded = cookiesStore.get("i18n-loaded")
+
   return (
     <html lang={params.lang}>
       <body className={cn("antialiaseds bg-background min-h-screen font-sans", fontSans.variable)}>
-        <RootProviders dictionary={dictionary}>{children}</RootProviders>
+        <RootProviders dictionary={hasDictLoaded ? undefined : dictionary} lang={params.lang as Locale}>
+          {children}
+        </RootProviders>
       </body>
     </html>
   )
