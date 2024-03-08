@@ -19,7 +19,7 @@ export default function SessionsTable() {
   const dictionary = useDictionary()
   const utils = trpc.useUtils()
 
-  const isDisabled = !session.data || session.data.user.hasPassword === false
+  const isDisabled = !!session.data && session.data.user.hasPassword === false
 
   const [selectedSession, setSelectedSession] = useState<string | null>(null)
   const [currentPage, setCurrentPage] = useState(1)
@@ -29,7 +29,7 @@ export default function SessionsTable() {
     perPage: itemsPerPageInitial,
   }
   const activeSessions = useActiveSessions(callParams, {
-    disabled: isDisabled,
+    disabled: !session.data || session.data.user.hasPassword === false,
   })
   const meta = activeSessions.data?.meta
 
