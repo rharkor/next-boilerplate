@@ -1,6 +1,8 @@
 import React from "react"
 import { Metadata } from "next"
+import { cookies } from "next/headers"
 import { redirect } from "next/navigation"
+import { createHash } from "crypto"
 import { i18n, Locale } from "i18n-config"
 
 import { fontSans } from "@/lib/fonts"
@@ -31,11 +33,22 @@ export default async function RootLayout({
   if (!i18n.locales.includes(params.lang)) return redirect(`/${i18n.defaultLocale}/${params.lang}`)
 
   const dictionary = await getDictionary(params.lang as Locale)
+  const dictionaryHash = createHash("sha256").update(JSON.stringify(dictionary)).digest("hex")
+
+  const cookiesStore = cookies()
+  const loadedDicts = cookiesStore.get("i18n-l")
+  const hasDictLoaded = loadedDicts ? loadedDicts.value.split(",").includes(params.lang) : false
 
   return (
     <html lang={params.lang}>
       <body className={cn("antialiaseds bg-background min-h-screen font-sans", fontSans.variable)}>
-        <RootProviders dictionary={dictionary}>{children}</RootProviders>
+        <RootProviders
+          dictionary={hasDictLoaded ? undefined : dictionary}
+          lang={params.lang as Locale}
+          dictionaryHash={dictionaryHash}
+        >
+          {children}
+        </RootProviders>
       </body>
     </html>
   )
