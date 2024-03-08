@@ -14,13 +14,15 @@ export default function RootProviders({
   children,
   dictionary,
   lang,
+  dictionaryHash
 }: {
   children: ReactNode
   dictionary: TDictionary | undefined
   lang: Locale
+  dictionaryHash: string
 }) {
   return (
-    <DictionaryProvider dictionary={dictionary} lang={lang}>
+    <DictionaryProvider dictionary={dictionary} lang={lang} dictionaryHash={dictionaryHash}>
       <UIProvider>
         <NextAuthProvider>
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
