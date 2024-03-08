@@ -33,7 +33,7 @@ export const env = createEnv({
       .enum(["true", "false"])
       .optional()
       .transform((value) => value === "true"),
-    ENV: z.enum(["development", "staging", "preproduction", "production"]).optional(),
+    ENV: z.enum(["development", "staging", "preproduction", "production"]),
     VERCEL_URL: z.string().optional(),
     SMTP_HOST: z.string().optional(),
     SMTP_PORT: z

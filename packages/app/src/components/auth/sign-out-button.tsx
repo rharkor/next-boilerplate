@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { signOut, useSession } from "next-auth/react"
 
+import { authRoutes } from "@/constants/auth"
 import { trpc } from "@/lib/trpc/client"
 import { logger } from "@lib/logger"
 import { Button } from "@nextui-org/react"
@@ -31,12 +32,12 @@ export default function SignoutButton({ children }: { children: React.ReactNode 
     } catch (e) {
       logger.error(e)
     }
-    await signOut()
+    await signOut({ callbackUrl: authRoutes.signIn[0] })
     setSignOutLoading(false)
   }
 
   return (
-    <Button variant="ghost" onClick={handleSignOut} isLoading={signOutLoading}>
+    <Button variant="ghost" onPress={handleSignOut} isLoading={signOutLoading}>
       {children}
     </Button>
   )

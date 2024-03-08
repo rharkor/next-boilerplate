@@ -2,8 +2,8 @@ import { redirect } from "next/navigation"
 import { NextResponse } from "next/server"
 import { getServerSession } from "next-auth"
 
+import { authRoutes } from "@/constants/auth"
 import { nextAuthOptions } from "@/lib/auth"
-import { authRoutes } from "@/lib/auth/constants"
 
 export default async function requireAuth(callbackUrl?: string) {
   const session = await getServerSession(nextAuthOptions)

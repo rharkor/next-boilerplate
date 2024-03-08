@@ -1,5 +1,7 @@
 {
   "errors": {
+    "couldNotIdentifyIp": "Could not identify your IP address.",
+    "tooManyRequests": "Too many requests. Please try again in a few minutes.",
     "notImplemented": "Not implemented.",
     "tooManyAttempts": "Too many attempts. Please try again later.",
     "otpInvalid": "Invalid OTP code.",
@@ -225,5 +227,9 @@
     "invalid": "Invalid mnemonic phrase."
   },
   "save": "Save",
-  "cropImage": "Crop image"
+  "cropImage": "Crop image",
+  "copyToClipboard": "Copy to clipboard",
+  "somethingWentWrong": "Something went wrong",
+  "tryAgain": "Try again",
+  "goHome": "Go home"
 }

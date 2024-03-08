@@ -1,0 +1,2 @@
+export const RATE_LIMIT_PER_INTERVAL = 20
+export const RATE_LIMIT_DURATION = 30

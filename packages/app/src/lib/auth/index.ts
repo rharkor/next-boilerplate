@@ -5,12 +5,14 @@ import { Provider } from "next-auth/providers/index"
 import { randomUUID } from "crypto"
 import { env } from "env.mjs"
 import { i18n, Locale } from "i18n-config"
-import { authenticator } from "otplib"
+import * as OTPAuth from "otpauth"
 import requestIp from "request-ip"
 import { z } from "zod"
 
 import { sendVerificationEmail } from "@/api/me/email/mutations"
-import { isPossiblyUndefined, ITrpcContext } from "@/types"
+import { otpWindow } from "@/constants"
+import { authRoutes, JWT_MAX_AGE } from "@/constants/auth"
+import { ITrpcContext } from "@/types"
 import { logger } from "@lib/logger"
 import { PrismaAdapter } from "@next-auth/prisma-adapter"
 
@@ -21,8 +23,6 @@ import { getDictionary, TDictionary } from "../langs"
 import { prisma } from "../prisma"
 import { redis } from "../redis"
 import { ensureRelativeUrl } from "../utils"
-
-import { authRoutes, JWT_MAX_AGE } from "./constants"
 
 const loadedDictionary: Map<Locale, TDictionary> = new Map()
 
@@ -108,7 +108,7 @@ export const providers: Provider[] = [
         logger.error("Error creating session", error)
       }
 
-      logger.debug("User logged in", user.id)
+      // logger.debug("User logged in", user.id)
       return {
         id: user.id.toString(),
         email: user.email,
@@ -147,7 +147,7 @@ export const nextAuthOptions: NextAuthOptions = {
   callbacks: {
     jwt: async ({ token, user }) => {
       // logger.debug("JWT token", token)
-      if (isPossiblyUndefined(user)) {
+      if (user) {
         token.id = user.id
         token.email = user.email
         if ("hasPassword" in user) token.hasPassword = user.hasPassword as boolean
@@ -181,7 +181,7 @@ export const nextAuthOptions: NextAuthOptions = {
         },
       })
       if (!dbUser) {
-        logger.debug("User not found", token.id)
+        // logger.debug("User not found", token.id)
         return {} as Session
       }
       //* Verify that the session still exists
@@ -269,7 +269,17 @@ export const nextAuthOptions: NextAuthOptions = {
           throw new Error("OTP_REQUIRED")
         } else if (userHasOtp && credentials?.otp) {
           //? Check the otp
-          const isValid = authenticator.check(credentials.otp as string, dbUser.otpSecret)
+          const totp = new OTPAuth.TOTP({
+            algorithm: "SHA1",
+            digits: 6,
+            period: 30,
+            secret: dbUser.otpSecret,
+          })
+          const isValid =
+            totp.validate({
+              token: credentials.otp as string,
+              window: otpWindow,
+            }) !== null
           if (!isValid) {
             throw new Error("OTP_INVALID")
           }

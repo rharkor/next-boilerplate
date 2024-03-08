@@ -40,6 +40,11 @@ With this template, you get all the awesomeness you need:
 - 🔗 **[Trpc](https://trpc.io/)** - Move Fast and Break Nothing. End-to-end typesafe APIs made easy.
 - 🎨 **[Next ui](https://nextui.org/)** - Beautifully designed components
 - 🗄️ **[Monorepo](https://docs.npmjs.com/cli/v7/using-npm/workspaces)** - Manage multiple packages in one repository
+- 🌐 **Translation** - Translation module built in for intertionalization
+- 🌈 **Theme** - Dark and light mode theme
+- 📖 **[Documentation](https://docusaurus.io/)** - A modern static website generator
+- 📅 **Cron jobs** - Schedule jobs to run at specific times
+- 📄 **Landing Page** - A simple landing page to showcase your app
 
 ## Table of Contents
 
@@ -55,6 +60,11 @@ With this template, you get all the awesomeness you need:
     - [Running Tests](#running-tests)
     - [Tanstack query](#tanstack-query)
   - [💻 Environment Variables handling](#-environment-variables-handling)
+  - [📝 Development tips](#-development-tips)
+    - [Internationalization](#internationalization)
+      - [Client-side](#client-side)
+      - [Server side](#server-side)
+      - [Traduction file](#traduction-file)
   - [🤝 Contribution](#-contribution)
   - [Support](#support)
   - [📜 License](#-license)
@@ -224,6 +234,54 @@ If the required environment variables are not set, you'll get an error message:
 ```sh
   ❌ Invalid environment variables: { SECRET_KEY: [ 'Required' ] }
 ```
+
+## 📝 Development tips
+
+### Internationalization
+
+#### Client-side
+
+```tsx
+import { useDictionary } from "@/contexts/dictionary/utils"
+
+export default function Home() {
+  const dictionary = useDictionary()
+  return (
+    <div>
+      <h1>{dictionary.hello}</h1>
+    </div>
+  )
+}
+```
+
+#### Server side
+
+```tsx
+import { Locale } from "i18n-config"
+
+import { getDictionary } from "@/lib/langs"
+
+export default async function Home({
+  params: { lang },
+}: {
+  params: {
+    lang: Locale
+  }
+}) {
+  const dictionary = await getDictionary(lang)
+
+  return (
+    <div>
+      <h1>{dictionary.hello}</h1>
+    </div>
+  )
+}
+```
+
+#### Traduction file
+
+The files for traduction are located in `packages/app/src/langs` or `packages/landing/src/langs` depending on the package you want to use it in.
+If you want to add a new language, you can add a new file in the `langs` folder then modify the file `i18n-config.ts` and `langs.ts`.
 
 ## 🤝 Contribution
 

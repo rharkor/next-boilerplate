@@ -3,7 +3,9 @@ on:
   push:
     branches:
       - main
+      - main-release
       - rec
+      - rec-release
 
   workflow_dispatch:
 
@@ -11,6 +13,32 @@ permissions:
   contents: read # for checkout
 
 jobs:
+  # This job is used to sync the main branch to the main:release branch and the rec branch to the rec:release branch
+  sync:
+    name: Sync
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # to be able to push to the main:release and rec:release branches
+      id-token: write # to enable use of OIDC for npm provenance
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main' || github.ref == 'refs/heads/rec'
+    steps:
+      - name: Generate token
+        id: generate_token
+        uses: tibdex/github-app-token@v2
+        with:
+          app_id: ${{ secrets.MYBOT_APP_ID }}
+          private_key: ${{ secrets.MYBOT_PRIVATE_KEY }}
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ steps.generate_token.outputs.token }}
+      - name: Sync
+        run: |
+          echo "Syncing ${{ github.ref_name }} to ${{ github.ref_name }}-release"
+          git checkout -B ${{ github.ref_name }}-release
+          git push -f origin ${{ github.ref_name }}-release
+
   release:
     name: Release
     runs-on: ubuntu-latest
@@ -19,6 +47,7 @@ jobs:
       issues: write # to be able to comment on released issues
       pull-requests: write # to be able to comment on released pull requests
       id-token: write # to enable use of OIDC for npm provenance
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main-release' || github.ref == 'refs/heads/rec-release')
     steps:
       - name: Generate token
         id: generate_token

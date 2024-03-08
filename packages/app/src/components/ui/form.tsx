@@ -6,7 +6,7 @@ import { Controller, FieldPath, FieldValues, UseFormReturn } from "react-hook-fo
 
 import { useDictionary } from "@/contexts/dictionary/utils"
 import { cn, stringToSlug } from "@/lib/utils"
-import { Checkbox, Input, InputProps, Skeleton, Tooltip } from "@nextui-org/react"
+import { Checkbox, Input, InputProps, Tooltip } from "@nextui-org/react"
 
 import { Icons } from "../icons"
 
@@ -139,12 +139,11 @@ type IWithPasswordStrenghProps =
 export type FormFieldProps<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-> = Omit<InputProps, "form" | "name" | "tooltip" | "type" | "skeleton"> & {
+> = Omit<InputProps, "form" | "name" | "tooltip" | "type"> & {
   form: UseFormReturn<TFieldValues>
   name: TName //? Required
   tooltip?: string
   type: InputProps["type"] | "password-eye-slash" | "slug"
-  skeleton?: boolean
 } & IWithPasswordStrenghProps
 
 const numberRegex = /[\d]/
@@ -160,7 +159,6 @@ export default function FormField<
   name,
   tooltip,
   type,
-  skeleton,
   passwordStrength,
   inputRef,
   ...props
@@ -204,7 +202,7 @@ export default function FormField<
             props.endContent ||
             (type === "password-eye-slash" ? (
               <button
-                className="text-default-400 hover:text-primary text-2xl focus:outline-none"
+                className="text-default-400 hover:text-primary focus:text-primary text-2xl focus:outline-none"
                 type="button"
                 onClick={toggleVisibility}
               >
@@ -227,14 +225,6 @@ export default function FormField<
       <WithPasswordStrenghPopover form={form} name={name} isFocused={isFocused}>
         {input}
       </WithPasswordStrenghPopover>
-    )
-  }
-
-  if (skeleton !== undefined) {
-    input = (
-      <Skeleton isLoaded={!skeleton} className="rounded-medium">
-        {input}
-      </Skeleton>
     )
   }
 

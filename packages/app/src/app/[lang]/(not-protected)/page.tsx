@@ -1,7 +1,7 @@
 import { Locale } from "i18n-config"
 
 import NavSettings from "@/components/nav-settings"
-import { authRoutes } from "@/lib/auth/constants"
+import { authRoutes } from "@/constants/auth"
 import { getDictionary } from "@/lib/langs"
 import { Button, Link } from "@nextui-org/react"
 

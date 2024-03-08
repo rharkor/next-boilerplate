@@ -8,8 +8,8 @@ import { useForm } from "react-hook-form"
 import * as z from "zod"
 
 import { signInSchema } from "@/api/auth/schemas"
+import { authRoutes } from "@/constants/auth"
 import { useDictionary } from "@/contexts/dictionary/utils"
-import { authRoutes } from "@/lib/auth/constants"
 import { handleSignError, handleSignIn } from "@/lib/auth/handle-sign"
 import { cn, ensureRelativeUrl } from "@/lib/utils"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -82,12 +82,12 @@ export function LoginUserAuthForm({ searchParams, ...props }: UserAuthFormProps)
                 {dictionary.auth.demoMode}
               </h3>
               <div className="flex flex-col">
-                <p className="m-1">
-                  {dictionary.email}: <Copiable text={env.NEXT_PUBLIC_DEMO_EMAIL} dictionary={dictionary} />
-                </p>
-                <p className="m-1">
-                  {dictionary.password}: <Copiable text={env.NEXT_PUBLIC_DEMO_PASSWORD} dictionary={dictionary} />
-                </p>
+                <div className="m-1 flex flex-row items-center gap-1">
+                  <p>{dictionary.email}:</p> <Copiable text={env.NEXT_PUBLIC_DEMO_EMAIL} dictionary={dictionary} />
+                </div>
+                <div className="m-1 flex flex-row items-center gap-1">
+                  <p>{dictionary.password}</p> <Copiable text={env.NEXT_PUBLIC_DEMO_PASSWORD} dictionary={dictionary} />
+                </div>
                 <div
                   className="absolute bottom-2 right-2 cursor-pointer"
                   onClick={() => {

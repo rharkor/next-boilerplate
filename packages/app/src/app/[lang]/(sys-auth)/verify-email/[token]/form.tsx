@@ -3,8 +3,8 @@
 import { useRouter } from "next/navigation"
 import { toast } from "react-toastify"
 
+import { authRoutes } from "@/constants/auth"
 import { useDictionary } from "@/contexts/dictionary/utils"
-import { authRoutes } from "@/lib/auth/constants"
 import { trpc } from "@/lib/trpc/client"
 import { Button } from "@nextui-org/react"
 
