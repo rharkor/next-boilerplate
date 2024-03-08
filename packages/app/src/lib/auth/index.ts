@@ -11,7 +11,7 @@ import { z } from "zod"
 
 import { sendVerificationEmail } from "@/api/me/email/mutations"
 import { otpWindow } from "@/constants"
-import { isPossiblyUndefined, ITrpcContext } from "@/types"
+import { ITrpcContext } from "@/types"
 import { logger } from "@lib/logger"
 import { PrismaAdapter } from "@next-auth/prisma-adapter"
 
@@ -148,7 +148,7 @@ export const nextAuthOptions: NextAuthOptions = {
   callbacks: {
     jwt: async ({ token, user }) => {
       // logger.debug("JWT token", token)
-      if (isPossiblyUndefined(user)) {
+      if (user) {
         token.id = user.id
         token.email = user.email
         if ("hasPassword" in user) token.hasPassword = user.hasPassword as boolean
