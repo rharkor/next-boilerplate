@@ -202,7 +202,7 @@ export default function FormField<
             props.endContent ||
             (type === "password-eye-slash" ? (
               <button
-                className="text-default-400 hover:text-primary text-2xl focus:outline-none"
+                className="text-default-400 hover:text-primary focus:text-primary text-2xl focus:outline-none"
                 type="button"
                 onClick={toggleVisibility}
               >
