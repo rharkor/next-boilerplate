@@ -35,9 +35,9 @@ jobs:
           token: ${{ steps.generate_token.outputs.token }}
       - name: Sync
         run: |
-          echo "Syncing ${{ github.ref }} to ${{ github.ref }}-release"
-          git checkout -B ${{ github.ref }}-release
-          git push origin ${{ github.ref }}-release
+          echo "Syncing ${{ github.ref_name }} to ${{ github.ref_name }}-release"
+          git checkout -B ${{ github.ref_name }}-release
+          git push origin ${{ github.ref_name }}-release
 
   release:
     name: Release
