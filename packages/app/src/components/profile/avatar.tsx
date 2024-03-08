@@ -108,7 +108,7 @@ export default function UpdateAvatar({ account }: { account: ReturnType<typeof u
   return (
     <>
       <div className={cn("group relative h-20 w-20 rounded-full")}>
-        <Skeleton isLoaded={!account.isInitialLoading} className={cn("rounded-full")}>
+        <Skeleton isLoaded={!account.isLoading} className={cn("rounded-full")}>
           <Avatar
             className="text-large !size-20"
             src={getImageUrl(account.data?.user.image) || undefined}
@@ -121,7 +121,7 @@ export default function UpdateAvatar({ account }: { account: ReturnType<typeof u
             "upload-group bg-muted/10 group absolute inset-0 flex h-[unset] cursor-pointer items-center justify-center overflow-hidden rounded-full opacity-0 backdrop-blur-sm transition-all duration-200",
             "focus:opacity-100 group-hover:opacity-100 group-focus:opacity-100",
             {
-              hidden: account.isInitialLoading,
+              hidden: account.isLoading,
             }
           )}
           onPress={() => setShowModal(true)}
@@ -133,7 +133,7 @@ export default function UpdateAvatar({ account }: { account: ReturnType<typeof u
           className={cn(
             "text-foreground absolute right-0 top-0 h-[unset] min-w-0 rounded-full p-1.5 opacity-0 transition-all duration-200 focus:opacity-100 group-hover:opacity-100 group-focus:opacity-100",
             {
-              hidden: account.isInitialLoading || !account.data?.user.image,
+              hidden: account.isLoading || !account.data?.user.image,
             }
           )}
           onPress={() => handleDelete()}

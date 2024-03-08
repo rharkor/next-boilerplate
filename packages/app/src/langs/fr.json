@@ -1,5 +1,7 @@
 {
   "errors": {
+    "couldNotIdentifyIp": "Impossible d'identifier votre adresse IP.",
+    "tooManyRequests": "Trop de requêtes. Veuillez réessayer dans quelques minutes.",
     "notImplemented": "Non implémenté.",
     "tooManyAttempts": "Trop de tentatives. Veuillez réessayer dans quelques minutes.",
     "otpInvalid": "Code OTP invalide.",
@@ -225,5 +227,9 @@
     "invalid": "Phrase secrète invalide"
   },
   "save": "Sauvegarder",
-  "cropImage": "Recadrer l'image"
+  "cropImage": "Recadrer l'image",
+  "copyToClipboard": "Copier dans le presse-papier",
+  "somethingWentWrong": "Quelque chose s'est mal passé",
+  "tryAgain": "Ressayer",
+  "goHome": "Aller à l'accueil"
 }

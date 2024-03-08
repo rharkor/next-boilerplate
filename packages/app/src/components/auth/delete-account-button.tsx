@@ -4,8 +4,8 @@ import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { toast } from "react-toastify"
 
+import { authRoutes } from "@/constants/auth"
 import { useDictionary } from "@/contexts/dictionary/utils"
-import { authRoutes } from "@/lib/auth/constants"
 import { trpc } from "@/lib/trpc/client"
 import { Button, Modal, ModalContent, ModalFooter } from "@nextui-org/react"
 
@@ -15,18 +15,13 @@ export default function DeleteAccountButton({ children }: { children: React.Reac
   const router = useRouter()
   const dictionary = useDictionary()
   const deleteAccountMutation = trpc.me.deleteAccount.useMutation({
-    onError: () => {
-      setIsDeletingAccount(false)
-    },
     onSuccess: () => {
       toast.success(dictionary.deleteAccountSuccessDescription)
       router.push(authRoutes.signIn[0])
     },
   })
 
-  const [isDeletingAccount, setIsDeletingAccount] = useState(false)
   const handleDeleteAccount = () => {
-    setIsDeletingAccount(true)
     deleteAccountMutation.mutate()
   }
 
@@ -34,7 +29,7 @@ export default function DeleteAccountButton({ children }: { children: React.Reac
 
   return (
     <>
-      <Button color="danger" isLoading={isDeletingAccount} onClick={() => setShowModal(true)}>
+      <Button color="danger" isLoading={deleteAccountMutation.isLoading} onClick={() => setShowModal(true)}>
         {children}
       </Button>
       <Modal isOpen={showModal} onOpenChange={(open) => setShowModal(open)}>
@@ -49,7 +44,7 @@ export default function DeleteAccountButton({ children }: { children: React.Reac
                 <Button onPress={onClose} variant="flat">
                   {dictionary.cancel}
                 </Button>
-                <Button color="danger" onPress={handleDeleteAccount} isLoading={isDeletingAccount}>
+                <Button color="danger" onPress={handleDeleteAccount} isLoading={deleteAccountMutation.isLoading}>
                   {dictionary.deleteAccountConfirm}
                 </Button>
               </ModalFooter>

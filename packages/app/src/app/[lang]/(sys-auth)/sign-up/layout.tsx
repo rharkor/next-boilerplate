@@ -2,7 +2,7 @@ import { Metadata } from "next"
 import { redirect } from "next/navigation"
 import { env } from "env.mjs"
 
-import { authRoutes } from "@/lib/auth/constants"
+import { authRoutes } from "@/constants/auth"
 
 export const metadata: Metadata = {
   title: "Sign-up",

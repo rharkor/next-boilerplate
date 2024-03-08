@@ -11,23 +11,22 @@ module.exports = {
     path.join(__dirname, "../..", "node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}"),
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        muted: "hsl(var(--nextui-default-100))",
+        "muted-foreground": "hsl(var(--nextui-default-500))",
+      },
+    },
   },
   darkMode: "class",
   plugins: [
     nextui({
       themes: {
         light: {
-          colors: {
-            muted: "#f4f4f5",
-            "muted-foreground": "#71717a",
-          },
+          colors: {},
         },
         dark: {
-          colors: {
-            muted: "#27272a",
-            "muted-foreground": "#a1a1aa",
-          },
+          colors: {},
         },
       },
     }),

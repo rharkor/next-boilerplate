@@ -5,7 +5,7 @@ import { ChevronRight } from "lucide-react"
 
 import { RegisterUserAuthForm } from "@/components/auth/register-user-auth-form"
 import CardTitle from "@/components/ui/card"
-import { authRoutes } from "@/lib/auth/constants"
+import { authRoutes } from "@/constants/auth"
 import { getDictionary } from "@/lib/langs"
 import { Button, Card, CardBody, CardHeader } from "@nextui-org/react"
 

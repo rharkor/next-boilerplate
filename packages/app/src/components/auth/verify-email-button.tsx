@@ -12,7 +12,7 @@ import { Button } from "@nextui-org/react"
 
 export default function VerifyEmailButton({ session }: { session: Session }) {
   const dictionary = useDictionary()
-  const account = useAccount(dictionary)
+  const account = useAccount()
   const hasVerifiedEmail = session.user.emailVerified || !!account.data?.user.emailVerified
 
   const resendVerificationEmailMutation = trpc.me.sendVerificationEmail.useMutation({

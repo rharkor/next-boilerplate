@@ -7,9 +7,10 @@ export type OtpInputProps = {
   otp: string[]
   setOtp: React.Dispatch<React.SetStateAction<string[]>>
   withAutoFocus?: boolean
+  isFocusable?: boolean
 }
 
-export default function OtpInput({ otp, setOtp, withAutoFocus }: OtpInputProps) {
+export default function OtpInput({ otp, setOtp, withAutoFocus, isFocusable }: OtpInputProps) {
   const handleChange = (element: HTMLInputElement, index: number) => {
     const value = element.value
     if (value === "") {
@@ -57,12 +58,13 @@ export default function OtpInput({ otp, setOtp, withAutoFocus }: OtpInputProps) 
         return (
           <input
             className={cn(
-              "border-muted-foreground/50 rounded-medium focus:border-primary h-12 w-12 border-2 text-center text-xl !outline-none transition-all duration-200 ease-in-out",
+              "border-muted-foreground/50 rounded-medium focus:border-primary h-16 w-12 border-2 text-center text-xl !outline-none transition-all duration-200 ease-in-out",
               {
                 "border-primary-400/50": data,
                 "!ml-4": index === 3 && otp.length === 6,
               }
             )}
+            tabIndex={isFocusable ? 0 : -1}
             autoFocus={withAutoFocus && index === 0}
             key={index}
             type="text"

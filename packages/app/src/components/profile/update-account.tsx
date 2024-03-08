@@ -29,7 +29,7 @@ export default function UpdateAccount({ sessionHasVerifiedEmail }: { sessionHasV
   const utils = trpc.useUtils()
 
   const { update } = useSession()
-  const account = useAccount(dictionary)
+  const account = useAccount()
 
   const hasVerifiedEmail = env.NEXT_PUBLIC_ENABLE_MAILING_SERVICE
     ? account.data?.user.emailVerified === undefined
@@ -85,8 +85,7 @@ export default function UpdateAccount({ sessionHasVerifiedEmail }: { sessionHasV
               name="username"
               label={dictionary.profilePage.profileDetails.username.label}
               type="text"
-              isDisabled={updateUserMutation.isLoading || account.isInitialLoading || !hasVerifiedEmail}
-              skeleton={account.isInitialLoading}
+              isDisabled={updateUserMutation.isLoading || account.isLoading || !hasVerifiedEmail}
             />
             <NeedSavePopup
               show={isNotSensibleInformationsUpdated}

@@ -6,7 +6,6 @@ import { exit } from "node:process"
 import { packagesSelection } from "packages-selection"
 import * as path from "path"
 import { replaceTokens } from "replace-tokens"
-import { runtime } from "runtime"
 import * as url from "url"
 
 import { logger } from "@lib/logger"
@@ -31,14 +30,6 @@ async function main() {
     logger.log(chalk.green("Done!"))
   } else {
     logger.log(chalk.yellow("Skipping replaceTokens()"))
-  }
-
-  if (!alreadyInitialized) {
-    logger.log(chalk.blue('Starting the "runtime" script...'))
-    await runtime()
-    logger.log(chalk.green("Done!"))
-  } else {
-    logger.log(chalk.gray("Skipping runtime()"))
   }
 
   if (!alreadyInitialized) {
