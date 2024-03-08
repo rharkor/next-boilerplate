@@ -15,6 +15,8 @@ const green = "#7EE081"
 const blue = "#7DCFEA"
 const gray = "#686868"
 
+const isBrowser = typeof window !== "undefined"
+
 const printColor =
   (bg?: string, text?: string) =>
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -60,29 +62,37 @@ export const logger: typeof console & {
   ...console,
   allowDebug,
   log: (...args: Parameters<(typeof console)["log"]>) => {
+    if (isBrowser) return console.log(...args)
     console.log(log(...args))
   },
   debug: (...args: unknown[]) => {
     if (allowDebug) {
+      if (isBrowser) return console.debug(" DEBUG ", ...args)
       console.debug(debug(" DEBUG "), debugText(...args))
     }
   },
   warn: (...args: unknown[]) => {
+    if (isBrowser) return console.warn(" WARN ", ...args)
     console.warn(warn(" WARN "), warnText(...args))
   },
   error: (...args: unknown[]) => {
+    if (isBrowser) return console.error(" ERROR ", ...args)
     console.error(error(" ERROR "), errorText(...args))
   },
   trace: (...args: unknown[]) => {
+    if (isBrowser) return console.trace(" ERROR ", ...args)
     console.trace(error(" ERROR "), errorText(...args))
   },
   success: (...args: unknown[]) => {
+    if (isBrowser) return console.log(" SUCCESS ", ...args)
     console.log(success(" SUCCESS "), successText(...args))
   },
   info: (...args: unknown[]) => {
+    if (isBrowser) return console.log(" INFO ", ...args)
     console.log(info(" INFO "), infoText(...args))
   },
   subLog: (...args: unknown[]) => {
+    if (isBrowser) return console.log(...args)
     console.log(subLog(...args))
   },
 }
