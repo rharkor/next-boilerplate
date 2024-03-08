@@ -14,7 +14,7 @@ export default function RootProviders({
   children,
   dictionary,
   lang,
-  dictionaryHash
+  dictionaryHash,
 }: {
   children: ReactNode
   dictionary: TDictionary | undefined
