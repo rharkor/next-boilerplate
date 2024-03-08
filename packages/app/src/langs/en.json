@@ -225,5 +225,6 @@
     "invalid": "Invalid mnemonic phrase."
   },
   "save": "Save",
-  "cropImage": "Crop image"
+  "cropImage": "Crop image",
+  "copyToClipboard": "Copy to clipboard"
 }

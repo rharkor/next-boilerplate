@@ -225,5 +225,6 @@
     "invalid": "Phrase secrète invalide"
   },
   "save": "Sauvegarder",
-  "cropImage": "Recadrer l'image"
+  "cropImage": "Recadrer l'image",
+  "copyToClipboard": "Copier dans le presse-papier"
 }
