@@ -36,6 +36,8 @@ jobs:
       - name: Sync
         run: |
           echo "Syncing ${{ github.ref_name }} to ${{ github.ref_name }}-release"
+          git config user.name "GitHub Actions"
+          git config user.email "louis@huort.com"
           git checkout -b ${{ github.ref_name }}-release
           git config pull.rebase false
           git pull origin ${{ github.ref_name }}-release
