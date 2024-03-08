@@ -11,6 +11,7 @@ import { z } from "zod"
 
 import { sendVerificationEmail } from "@/api/me/email/mutations"
 import { otpWindow } from "@/constants"
+import { authRoutes, JWT_MAX_AGE } from "@/constants/auth"
 import { ITrpcContext } from "@/types"
 import { logger } from "@lib/logger"
 import { PrismaAdapter } from "@next-auth/prisma-adapter"
@@ -22,8 +23,6 @@ import { getDictionary, TDictionary } from "../langs"
 import { prisma } from "../prisma"
 import { redis } from "../redis"
 import { ensureRelativeUrl } from "../utils"
-
-import { authRoutes, JWT_MAX_AGE } from "./constants"
 
 const loadedDictionary: Map<Locale, TDictionary> = new Map()
 

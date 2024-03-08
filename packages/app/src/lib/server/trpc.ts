@@ -7,6 +7,7 @@ import { getAuthApi } from "@/components/auth/require-auth"
 import { User } from "@prisma/client"
 import { initTRPC } from "@trpc/server"
 
+import { apiRateLimiter } from "../rate-limit"
 import { Context } from "../trpc/context"
 import { ApiError } from "../utils/server-utils"
 
@@ -34,7 +35,18 @@ const t = initTRPC.context<Context>().create({
 export const createCallerFactory = t.createCallerFactory
 export const router = t.router
 export const middleware = t.middleware
-export const publicProcedure = t.procedure
+const hasRateLimit = middleware(async (opts) => {
+  if (opts.ctx.req) {
+    const { headers } = await apiRateLimiter(opts.ctx.req)
+    return opts.next({
+      ctx: {
+        Headers: headers,
+      },
+    })
+  }
+  return opts.next()
+})
+export const publicProcedure = t.procedure.use(hasRateLimit)
 const isAuthenticated = middleware(async (opts) => {
   const { session } = await getAuthApi()
 

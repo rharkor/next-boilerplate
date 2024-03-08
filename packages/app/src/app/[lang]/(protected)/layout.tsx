@@ -2,6 +2,7 @@ import { Locale } from "i18n-config"
 
 import requireAuth from "@/components/auth/require-auth"
 import NavSettings from "@/components/nav-settings"
+import { lastLocaleExpirationInSeconds } from "@/constants"
 import { prisma } from "@/lib/prisma"
 import { redis } from "@/lib/redis"
 
@@ -28,14 +29,14 @@ export default async function ProtectedLayout({
       select: { lastLocale: true },
     })
     if (lastLocaleFromDb && lastLocaleFromDb.lastLocale) {
-      await redis.set(`lastLocale:${session.user.id}`, lastLocaleFromDb.lastLocale)
+      await redis.setex(`lastLocale:${session.user.id}`, lastLocaleExpirationInSeconds, lastLocaleFromDb.lastLocale)
       return lastLocaleFromDb.lastLocale
     }
     return null
   }
   // Set last locale in redis and db
   const setLastLocale = async (locale: Locale) => {
-    await redis.set(`lastLocale:${session.user.id}`, locale)
+    await redis.setex(`lastLocale:${session.user.id}`, lastLocaleExpirationInSeconds, locale)
     await prisma.user.update({
       where: { id: session.user.id },
       data: { lastLocale: locale },

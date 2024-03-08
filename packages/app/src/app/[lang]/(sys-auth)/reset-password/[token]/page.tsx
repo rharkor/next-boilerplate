@@ -2,7 +2,7 @@ import Link from "next/link"
 import { Locale } from "i18n-config"
 
 import NavSettings from "@/components/nav-settings"
-import { authRoutes } from "@/lib/auth/constants"
+import { authRoutes } from "@/constants/auth"
 import { getDictionary } from "@/lib/langs"
 
 import ResetPasswordForm from "./form"

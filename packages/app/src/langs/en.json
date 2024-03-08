@@ -1,5 +1,7 @@
 {
   "errors": {
+    "couldNotIdentifyIp": "Could not identify your IP address.",
+    "tooManyRequests": "Too many requests. Please try again in a few minutes.",
     "notImplemented": "Not implemented.",
     "tooManyAttempts": "Too many attempts. Please try again later.",
     "otpInvalid": "Invalid OTP code.",

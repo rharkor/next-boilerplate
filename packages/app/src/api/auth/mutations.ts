@@ -11,7 +11,7 @@ import {
   signUpSchema,
   verifyTotpSchema,
 } from "@/api/auth/schemas"
-import { emailVerificationExpiration, otpWindow, rolesAsObject } from "@/constants"
+import { emailVerificationExpiration, lastLocaleExpirationInSeconds, otpWindow, rolesAsObject } from "@/constants"
 import { hash } from "@/lib/bcrypt"
 import { sendMail } from "@/lib/mailer"
 import { prisma } from "@/lib/prisma"
@@ -38,7 +38,7 @@ export const register = async ({ input }: apiInputFromSchema<typeof signUpSchema
         lastLocale: input.locale,
       },
     })
-    await redis.set(`lastLocale:${user.id}`, input.locale)
+    await redis.setex(`lastLocale:${user.id}`, lastLocaleExpirationInSeconds, input.locale)
 
     //* Send verification email
     if (env.NEXT_PUBLIC_ENABLE_MAILING_SERVICE === true) {

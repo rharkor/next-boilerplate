@@ -6,8 +6,8 @@ import { signIn } from "next-auth/react"
 import { toast } from "react-toastify"
 
 import GithubSignIn from "@/components/auth/github-sign-in"
+import { authRoutes } from "@/constants/auth"
 import { useDictionary } from "@/contexts/dictionary/utils"
-import { authRoutes } from "@/lib/auth/constants"
 import { logger } from "@lib/logger"
 
 export default function Providers({
