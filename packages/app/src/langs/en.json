@@ -226,5 +226,8 @@
   },
   "save": "Save",
   "cropImage": "Crop image",
-  "copyToClipboard": "Copy to clipboard"
+  "copyToClipboard": "Copy to clipboard",
+  "somethingWentWrong": "Something went wrong",
+  "tryAgain": "Try again",
+  "goHome": "Go home"
 }

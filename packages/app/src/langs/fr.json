@@ -226,5 +226,8 @@
   },
   "save": "Sauvegarder",
   "cropImage": "Recadrer l'image",
-  "copyToClipboard": "Copier dans le presse-papier"
+  "copyToClipboard": "Copier dans le presse-papier",
+  "somethingWentWrong": "Quelque chose s'est mal passé",
+  "tryAgain": "Ressayer",
+  "goHome": "Aller à l'accueil"
 }
