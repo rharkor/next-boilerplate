@@ -139,12 +139,11 @@ type IWithPasswordStrenghProps =
 export type FormFieldProps<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-> = Omit<InputProps, "form" | "name" | "tooltip" | "type" | "skeleton"> & {
+> = Omit<InputProps, "form" | "name" | "tooltip" | "type"> & {
   form: UseFormReturn<TFieldValues>
   name: TName //? Required
   tooltip?: string
   type: InputProps["type"] | "password-eye-slash" | "slug"
-  skeleton?: boolean
 } & IWithPasswordStrenghProps
 
 const numberRegex = /[\d]/
@@ -160,7 +159,6 @@ export default function FormField<
   name,
   tooltip,
   type,
-  skeleton,
   passwordStrength,
   inputRef,
   ...props
