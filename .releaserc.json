@@ -16,9 +16,22 @@
         "npmPublish": false
       }
     ],
-    "@semantic-release/release-notes-generator",
+    [
+      "@semantic-release/release-notes-generator",
+      {
+        "preset": "angular",
+        "writerOpts": {
+          "commitsSort": ["subject", "scope"]
+        }
+      }
+    ],
+    [
+      "@semantic-release/commit-analyzer",
+      {
+        "preset": "angular"
+      }
+    ],
     "@semantic-release/github",
-    "@semantic-release/commit-analyzer",
     "@semantic-release/git",
     "@semantic-release/changelog"
   ]
