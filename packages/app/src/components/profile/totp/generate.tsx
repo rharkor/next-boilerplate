@@ -89,29 +89,20 @@ export default function GenerateTotp({ account }: { account: ReturnType<typeof u
         <h3 className="text-medium font-medium">{dictionary.totp.generateTitle}</h3>
         <p className="text-muted-foreground text-sm">{dictionary.totp.generateDescription}</p>
       </div>
-      <Skeleton isLoaded={account.isInitialLoading === false} className={cn("rounded-medium -ml-2 p-2")}>
-        {hasOtpVerified ? (
-          <Button
-            color="danger"
-            onClick={() => {
-              setDesactivate2FAModalOpen(true)
-            }}
-            isLoading={desactivate2FAMutation.isLoading}
-          >
-            {dictionary.totp.desactivate}
-          </Button>
-        ) : (
-          <Button
-            color="primary"
-            onClick={() => {
-              setIsModalOpen(true)
-            }}
-            isLoading={generateTotpSecretMutation.isLoading}
-          >
-            {dictionary.totp.generate}
-          </Button>
-        )}
-      </Skeleton>
+      <Button
+        color={hasOtpVerified ? "danger" : "primary"}
+        onClick={() => {
+          if (hasOtpVerified) setDesactivate2FAModalOpen(true)
+          else setIsModalOpen(true)
+        }}
+        isLoading={desactivate2FAMutation.isLoading || generateTotpSecretMutation.isLoading}
+        isDisabled={
+          account.isInitialLoading || desactivate2FAMutation.isLoading || generateTotpSecretMutation.isLoading
+        }
+        className="w-max"
+      >
+        {hasOtpVerified ? dictionary.totp.desactivate : dictionary.totp.generate}
+      </Button>
       <Modal isOpen={isModalOpen} onOpenChange={setIsModalOpen}>
         <ModalContent>
           {(onClose) => (
@@ -151,7 +142,12 @@ export default function GenerateTotp({ account }: { account: ReturnType<typeof u
                         className="size-48 lg:size-64"
                       />
                     </Skeleton>
-                    <Skeleton isLoaded={!!totpSecretData} className="rounded-medium shrink-0">
+                    <Skeleton
+                      isLoaded={!!totpSecretData}
+                      className={cn("shrink-0", {
+                        "rounded-medium": !totpSecretData,
+                      })}
+                    >
                       <p className="text-muted-foreground text-xs">({dictionary.totp.generateStep1Description})</p>
                     </Skeleton>
                   </section>
