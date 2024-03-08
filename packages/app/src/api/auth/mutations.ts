@@ -1,7 +1,7 @@
 import * as bip39 from "bip39"
 import { randomUUID } from "crypto"
 import { env } from "env.mjs"
-import { authenticator } from "otplib"
+import * as OTPAuth from "otpauth"
 import { z } from "zod"
 
 import {
@@ -11,7 +11,7 @@ import {
   signUpSchema,
   verifyTotpSchema,
 } from "@/api/auth/schemas"
-import { emailVerificationExpiration, rolesAsObject } from "@/constants"
+import { emailVerificationExpiration, otpWindow, rolesAsObject } from "@/constants"
 import { hash } from "@/lib/bcrypt"
 import { sendMail } from "@/lib/mailer"
 import { prisma } from "@/lib/prisma"
@@ -109,9 +109,17 @@ export const generateTotpSecret = async ({ ctx: { session } }: apiInputFromSchem
       },
     })
     if (!user.email) return ApiError("unknownError")
+    const totp = new OTPAuth.TOTP({
+      issuer: "smart-dev",
+      label: user.email,
+      algorithm: "SHA1",
+      digits: 6,
+      period: 30,
+      secret,
+    })
     const response: z.infer<ReturnType<typeof generateTotpSecretResponseSchema>> = {
       success: true,
-      url: authenticator.keyuri(user.email, "#{PROJECT_NAME}#", secret),
+      url: totp.toString(),
       mnemonic,
     }
     return response
@@ -131,7 +139,17 @@ export const verifyTotp = async ({ input, ctx: { session } }: apiInputFromSchema
     })
     if (!user) return ApiError("userNotFound")
     if (!user.otpSecret) return ApiError("otpSecretNotFound")
-    const isValid = authenticator.check(token, user.otpSecret)
+    const totp = new OTPAuth.TOTP({
+      algorithm: "SHA1",
+      digits: 6,
+      period: 30,
+      secret: user.otpSecret,
+    })
+    const isValid =
+      totp.validate({
+        token,
+        window: otpWindow,
+      }) !== null
     if (user.otpVerified === false && isValid) {
       await prisma.user.update({
         where: {
@@ -162,7 +180,17 @@ export const desactivateTotp = async ({
     })
     if (!user) return ApiError("userNotFound")
     if (!user.otpSecret) return ApiError("otpSecretNotFound")
-    const isValid = authenticator.check(input.token, user.otpSecret)
+    const totp = new OTPAuth.TOTP({
+      algorithm: "SHA1",
+      digits: 6,
+      period: 30,
+      secret: user.otpSecret,
+    })
+    const isValid =
+      totp.validate({
+        token: input.token,
+        window: otpWindow,
+      }) !== null
     if (!isValid) return ApiError("otpInvalid")
     await prisma.user.update({
       where: {

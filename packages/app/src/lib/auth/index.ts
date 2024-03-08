@@ -5,11 +5,12 @@ import { Provider } from "next-auth/providers/index"
 import { randomUUID } from "crypto"
 import { env } from "env.mjs"
 import { i18n, Locale } from "i18n-config"
-import { authenticator } from "otplib"
+import * as OTPAuth from "otpauth"
 import requestIp from "request-ip"
 import { z } from "zod"
 
 import { sendVerificationEmail } from "@/api/me/email/mutations"
+import { otpWindow } from "@/constants"
 import { isPossiblyUndefined, ITrpcContext } from "@/types"
 import { logger } from "@lib/logger"
 import { PrismaAdapter } from "@next-auth/prisma-adapter"
@@ -108,7 +109,7 @@ export const providers: Provider[] = [
         logger.error("Error creating session", error)
       }
 
-      logger.debug("User logged in", user.id)
+      // logger.debug("User logged in", user.id)
       return {
         id: user.id.toString(),
         email: user.email,
@@ -269,7 +270,17 @@ export const nextAuthOptions: NextAuthOptions = {
           throw new Error("OTP_REQUIRED")
         } else if (userHasOtp && credentials?.otp) {
           //? Check the otp
-          const isValid = authenticator.check(credentials.otp as string, dbUser.otpSecret)
+          const totp = new OTPAuth.TOTP({
+            algorithm: "SHA1",
+            digits: 6,
+            period: 30,
+            secret: dbUser.otpSecret,
+          })
+          const isValid =
+            totp.validate({
+              token: credentials.otp as string,
+              window: otpWindow,
+            }) !== null
           if (!isValid) {
             throw new Error("OTP_INVALID")
           }
