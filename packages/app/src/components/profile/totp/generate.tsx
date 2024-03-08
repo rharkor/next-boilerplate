@@ -96,9 +96,7 @@ export default function GenerateTotp({ account }: { account: ReturnType<typeof u
           else setIsModalOpen(true)
         }}
         isLoading={desactivate2FAMutation.isLoading || generateTotpSecretMutation.isLoading}
-        isDisabled={
-          account.isInitialLoading || desactivate2FAMutation.isLoading || generateTotpSecretMutation.isLoading
-        }
+        isDisabled={account.isLoading || desactivate2FAMutation.isLoading || generateTotpSecretMutation.isLoading}
         className="w-max"
       >
         {hasOtpVerified ? dictionary.totp.desactivate : dictionary.totp.generate}
