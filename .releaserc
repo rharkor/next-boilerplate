@@ -1,12 +1,12 @@
 {
   "branches": [
     {
-      "name": "rec",
+      "name": "rec-release",
       "channel": "beta",
       "prerelease": true
     },
     {
-      "name": "main"
+      "name": "main-release"
     }
   ],
   "plugins": [
