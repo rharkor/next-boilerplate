@@ -110,7 +110,7 @@ export const generateTotpSecret = async ({ ctx: { session } }: apiInputFromSchem
     })
     if (!user.email) return ApiError("unknownError")
     const totp = new OTPAuth.TOTP({
-      issuer: "smart-dev",
+      issuer: "next-boilerplate",
       label: user.email,
       algorithm: "SHA1",
       digits: 6,

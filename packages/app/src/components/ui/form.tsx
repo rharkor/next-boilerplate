@@ -6,7 +6,7 @@ import { Controller, FieldPath, FieldValues, UseFormReturn } from "react-hook-fo
 
 import { useDictionary } from "@/contexts/dictionary/utils"
 import { cn, stringToSlug } from "@/lib/utils"
-import { Checkbox, Input, InputProps, Skeleton, Tooltip } from "@nextui-org/react"
+import { Checkbox, Input, InputProps, Tooltip } from "@nextui-org/react"
 
 import { Icons } from "../icons"
 
@@ -227,14 +227,6 @@ export default function FormField<
       <WithPasswordStrenghPopover form={form} name={name} isFocused={isFocused}>
         {input}
       </WithPasswordStrenghPopover>
-    )
-  }
-
-  if (skeleton !== undefined) {
-    input = (
-      <Skeleton isLoaded={!skeleton} className="rounded-medium">
-        {input}
-      </Skeleton>
     )
   }
 

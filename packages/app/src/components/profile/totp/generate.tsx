@@ -129,7 +129,9 @@ export default function GenerateTotp({ account }: { account: ReturnType<typeof u
                     transform: `translateX(-${modalIndex * 100}%)`,
                   }}
                 >
-                  <section className="flex h-full min-w-full flex-col items-center justify-center gap-4 overflow-auto">
+                  <section
+                    className={cn("flex h-full min-w-full flex-col items-center justify-center gap-4 overflow-auto")}
+                  >
                     <h4 className="text-medium w-full">
                       <span className="text-foreground text-lg font-semibold">1.</span> {dictionary.totp.generateStep1}
                     </h4>
@@ -140,7 +142,7 @@ export default function GenerateTotp({ account }: { account: ReturnType<typeof u
                           !!totpSecretData,
                       })}
                       onClick={() => copyToClipboard(totpSecretData?.url)}
-                      tabIndex={0}
+                      tabIndex={modalIndex === 0 ? 0 : -1}
                     >
                       <QRCodeSVG
                         value={totpSecretData?.url ?? ""}
@@ -153,7 +155,7 @@ export default function GenerateTotp({ account }: { account: ReturnType<typeof u
                       <p className="text-muted-foreground text-xs">({dictionary.totp.generateStep1Description})</p>
                     </Skeleton>
                   </section>
-                  <section className="flex h-full min-w-full flex-col items-center gap-4 overflow-auto">
+                  <section className={cn("flex h-full min-w-full flex-col items-center gap-4 overflow-auto")}>
                     <div className="flex w-full flex-col">
                       <h4 className="text-medium">
                         <span className="text-foreground text-lg font-semibold">2.</span>{" "}
@@ -169,7 +171,7 @@ export default function GenerateTotp({ account }: { account: ReturnType<typeof u
                     <h4 className="text-medium w-full">
                       <span className="text-foreground text-lg font-semibold">3.</span> {dictionary.totp.generateStep3}
                     </h4>
-                    <div className="flex flex-col gap-4">
+                    <div className={cn("flex flex-col gap-4")}>
                       <div className="grid grid-cols-3 gap-x-6 gap-y-2">
                         {totpSecretData?.mnemonic.split(" ").map((word, index) => (
                           <p
@@ -187,14 +189,16 @@ export default function GenerateTotp({ account }: { account: ReturnType<typeof u
                             {mnemonicVerif.split(" ")[index]}
                             <Button
                               className={cn(
-                                "bg-danger/30 invisible absolute left-0 top-0 flex h-full w-full items-center justify-end",
+                                "bg-danger/30 absolute left-0 top-0 flex h-full w-full !transform-none items-center justify-end opacity-0 hover:opacity-0",
                                 {
-                                  "group-hover:visible": mnemonicVerif.split(" ")[index],
+                                  "hover:opacity-100 focus:opacity-100 group-hover:opacity-100 group-focus:opacity-100":
+                                    !!mnemonicVerif.split(" ")[index],
                                 }
                               )}
+                              tabIndex={!!mnemonicVerif.split(" ")[index] && modalIndex === 2 ? 0 : -1}
                               color="danger"
                               variant="flat"
-                              onClick={() => {
+                              onPress={() => {
                                 const newMnemonicVerif = [...mnemonicVerif.split(" ")]
                                 newMnemonicVerif[index] = ""
                                 setMnemonicVerif(newMnemonicVerif.join(" "))
@@ -212,8 +216,9 @@ export default function GenerateTotp({ account }: { account: ReturnType<typeof u
                             variant="flat"
                             key={index}
                             className={cn("flex-1")}
+                            tabIndex={modalIndex === 2 ? 0 : -1}
                             isDisabled={mnemonicVerif.split(" ").includes(word)}
-                            onClick={() => {
+                            onPress={() => {
                               const newMnemonicVerif = [...mnemonicVerif.split(" ")]
                               const firstEmptyIndex = newMnemonicVerif.findIndex((word) => !word)
                               newMnemonicVerif[firstEmptyIndex === -1 ? newMnemonicVerif.length : firstEmptyIndex] =
@@ -231,8 +236,8 @@ export default function GenerateTotp({ account }: { account: ReturnType<typeof u
                     <h4 className="text-medium w-full">
                       <span className="text-foreground text-lg font-semibold">4.</span> {dictionary.totp.generateStep4}
                     </h4>
-                    <div className="flex flex-1 items-center justify-center">
-                      <OtpInput otp={otp} setOtp={setOtp} />
+                    <div className={cn("flex flex-1 items-center justify-center")}>
+                      <OtpInput isFocusable={modalIndex === 3} otp={otp} setOtp={setOtp} />
                     </div>
                   </section>
                 </div>
