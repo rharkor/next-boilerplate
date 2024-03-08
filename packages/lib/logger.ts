@@ -25,7 +25,11 @@ const printColor =
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       .map((arg: any) => {
         if (typeof arg === "object") {
-          return arg.toString()
+          const str = arg.toString()
+          if (str === "[object Object]") {
+            return JSON.stringify(arg, null, 2)
+          }
+          return str
         }
         return arg
       })
