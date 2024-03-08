@@ -37,6 +37,7 @@ jobs:
         run: |
           echo "Syncing ${{ github.ref_name }} to ${{ github.ref_name }}-release"
           git checkout -b ${{ github.ref_name }}-release
+          git push origin ${{ github.ref_name }}-release
           git merge ${{ github.ref_name }}
           git push origin ${{ github.ref_name }}-release
 
