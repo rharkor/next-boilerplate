@@ -14,15 +14,14 @@
     "init:env": "npm run init:env -w packages/scripts",
     "depcheck": "npm run depcheck -w packages/scripts",
     "is-initialized": "npm run is-initialized -w packages/scripts",
-    "preinstall": "only-allow-many npm"
+    "preinstall": "npx --yes only-allow-many npm"
   },
   "workspaces": [
     "apps/*",
     "packages/*"
   ],
   "dependencies": {
-    "concurrently": "^8.2.2",
-    "only-allow-many": "^1.2.2"
+    "concurrently": "^8.2.2"
   },
   "devDependencies": {
     "@semantic-release/changelog": "^6.0.3",
