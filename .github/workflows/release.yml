@@ -37,12 +37,9 @@ jobs:
         run: |
           echo "Syncing ${{ github.ref_name }} to ${{ github.ref_name }}-release"
           git config user.name "GitHub Actions"
-          git config user.email "actions@github.com"
-          git fetch
-          git checkout ${{ github.ref_name }}-release
-          git pull
-          git merge --no-ff ${{ github.ref_name }} -m "Sync ${{ github.ref_name }} to ${{ github.ref_name }}-release"
-          git push
+          git config user.email "louis@huort.com"
+          git checkout -B ${{ github.ref_name }}-release
+          git push origin ${{ github.ref_name }}-release
 
   release:
     name: Release
