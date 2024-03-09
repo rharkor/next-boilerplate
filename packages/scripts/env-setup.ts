@@ -15,27 +15,27 @@ const rootDir = path.join(__dirname, "..", "..")
 export const envSetup = async (initDb: boolean = true) => {
   //* Copy the .env.example to .env for
   // App
-  const appEnvPath = path.join(rootDir, "packages", "app", ".env")
-  if (!fs.existsSync(appEnvPath) && fs.existsSync(path.join(rootDir, "packages", "app", ".env.example"))) {
-    fs.copyFileSync(path.join(rootDir, "packages", "app", ".env.example"), appEnvPath)
+  const appEnvPath = path.join(rootDir, "apps", "app", ".env")
+  if (!fs.existsSync(appEnvPath) && fs.existsSync(path.join(rootDir, "apps", "app", ".env.example"))) {
+    fs.copyFileSync(path.join(rootDir, "apps", "app", ".env.example"), appEnvPath)
     logger.log(chalk.gray("Created .env for app"))
   } else logger.log(chalk.gray("Skipping .env for app"))
   // Landing
-  const landingEnvPath = path.join(rootDir, "packages", "landing", ".env")
-  if (!fs.existsSync(landingEnvPath) && fs.existsSync(path.join(rootDir, "packages", "landing", ".env.example"))) {
-    fs.copyFileSync(path.join(rootDir, "packages", "landing", ".env.example"), landingEnvPath)
+  const landingEnvPath = path.join(rootDir, "apps", "landing", ".env")
+  if (!fs.existsSync(landingEnvPath) && fs.existsSync(path.join(rootDir, "apps", "landing", ".env.example"))) {
+    fs.copyFileSync(path.join(rootDir, "apps", "landing", ".env.example"), landingEnvPath)
     logger.log(chalk.gray("Created .env for landing"))
   } else logger.log(chalk.gray("Skipping .env for landing"))
   // Cron
-  const cronEnvPath = path.join(rootDir, "packages", "cron", ".env")
-  if (!fs.existsSync(cronEnvPath) && fs.existsSync(path.join(rootDir, "packages", "cron", ".env.example"))) {
-    fs.copyFileSync(path.join(rootDir, "packages", "cron", ".env.example"), cronEnvPath)
+  const cronEnvPath = path.join(rootDir, "apps", "cron", ".env")
+  if (!fs.existsSync(cronEnvPath) && fs.existsSync(path.join(rootDir, "apps", "cron", ".env.example"))) {
+    fs.copyFileSync(path.join(rootDir, "apps", "cron", ".env.example"), cronEnvPath)
     logger.log(chalk.gray("Created .env for cron"))
   } else logger.log(chalk.gray("Skipping .env for cron"))
 
   if (initDb) {
     //* Initialize the database
-    const appPath = path.join(rootDir, "packages", "app")
+    const appPath = path.join(rootDir, "apps", "app")
     logger.log(chalk.blue("Initializing the database..."))
     if (!fs.existsSync(appPath)) {
       logger.log(chalk.gray("Skipping database initialization (no app folder)"))

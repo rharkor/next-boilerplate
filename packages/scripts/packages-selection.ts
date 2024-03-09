@@ -14,7 +14,11 @@ import { logger } from "@lib/logger"
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url))
 const rootDir = path.join(__dirname, "..", "..")
 
-const packagesAvailable = fs.readdirSync(path.join(rootDir, "packages")).filter((p) => p !== "scripts" && p !== "lib")
+const packagesAvailable = fs
+  .readdirSync(path.join(rootDir, "packages"))
+  .filter((p) => p !== "scripts" && p !== "lib")
+  .map((p) => path.join("packages", p))
+  .concat(fs.readdirSync(path.join(rootDir, "apps")).map((p) => path.join("apps", p)))
 const dockerComposePaths = [
   path.join(rootDir, "docker", "docker-compose.yml"),
   path.join(rootDir, "docker", "docker-compose.local.yml"),
@@ -41,12 +45,10 @@ export const packagesSelection = async () => {
   logger.log(chalk.blue("Removing packages..."))
   for (const packageToRemove of packagesToRemove) {
     //? Remove the package folder
-    await fs.promises.rm(path.join(rootDir, "packages", packageToRemove), { recursive: true })
+    await fs.promises.rm(path.join(rootDir, packageToRemove), { recursive: true })
     //? Remove from the workspace in the root package.json
     const rootPackageJson = JSON.parse(fs.readFileSync(path.join(rootDir, "package.json")).toString())
-    rootPackageJson.workspaces = rootPackageJson.workspaces.filter(
-      (w: string) => !w.includes(`packages/${packageToRemove}`)
-    )
+    rootPackageJson.workspaces = rootPackageJson.workspaces.filter((w: string) => !w.includes(packageToRemove))
     fs.writeFileSync(path.join(rootDir, "package.json"), JSON.stringify(rootPackageJson, null, 2))
     logger.log(chalk.gray(`Removed ${packageToRemove}!`))
   }

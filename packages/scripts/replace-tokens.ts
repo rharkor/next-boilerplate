@@ -13,7 +13,7 @@ import { logger } from "@lib/logger"
 
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url))
 
-const filesToCheck = ["../docker/docker-compose.yml", "app/src/api/auth/mutations.ts"]
+const filesToCheck = ["../docker/docker-compose.yml", "../apps/app/src/api/auth/mutations.ts"]
 
 //? Find all tokens of all the files in the root directory
 const findTokens: () => {
@@ -76,9 +76,11 @@ export const replaceTokens = async () => {
         fs.writeFileSync(devContainerFile, newDevContainerFileContent, "utf8")
         logger.log(chalk.gray(`Done for ${devContainerFile}`))
         const packages = fs.readdirSync(path.join(__dirname, ".."))
+        const apps = fs.readdirSync(path.join(__dirname, "..", "..", "apps"))
         const pJsonFiles = [
           path.join(__dirname, "../../package.json"),
           ...packages.map((p) => path.join(__dirname, "..", p, "package.json")),
+          ...apps.map((a) => path.join(__dirname, "..", "..", "apps", a, "package.json")),
         ]
         for (const pJsonFile of pJsonFiles) {
           if (!fs.existsSync(pJsonFile)) continue
