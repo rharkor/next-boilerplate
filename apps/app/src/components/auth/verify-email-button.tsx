@@ -33,7 +33,7 @@ export default function VerifyEmailButton({ session }: { session: Session }) {
 
   if (hasVerifiedEmail) {
     return (
-      <p className="text-primary flex w-max flex-1 items-center space-x-2 font-medium">
+      <p className="flex w-max flex-1 items-center space-x-2 font-medium text-primary">
         <BadgeCheck className="inline-block size-5" />
         <span>{dictionary.emailAlreadyVerified}</span>
       </p>

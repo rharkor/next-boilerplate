@@ -58,7 +58,7 @@ export default function OtpInput({ otp, setOtp, withAutoFocus, isFocusable }: Ot
         return (
           <input
             className={cn(
-              "border-muted-foreground/50 rounded-medium focus:border-primary h-16 w-12 border-2 text-center text-xl !outline-none transition-all duration-200 ease-in-out",
+              "h-16 w-12 rounded-medium border-2 border-muted-foreground/50 text-center text-xl !outline-none transition-all duration-200 ease-in-out focus:border-primary",
               {
                 "border-primary-400/50": data,
                 "!ml-4": index === 3 && otp.length === 6,

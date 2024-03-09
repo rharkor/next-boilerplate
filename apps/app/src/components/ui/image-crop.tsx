@@ -430,7 +430,7 @@ function CropContent({
             />
             {/* CROP AREA */}
             <div
-              className={cn("outline-primary absolute cursor-move outline outline-[3px]", {
+              className={cn("absolute cursor-move outline outline-[3px] outline-primary", {
                 invisible: isImageLoading,
               })}
               style={{
@@ -441,7 +441,7 @@ function CropContent({
             {/* DOT1 | TOP-LEFT */}
             <div
               className={cn(
-                "bg-primary absolute left-0 top-0 size-4 translate-x-[calc(-50%-1.5px)] translate-y-[calc(-50%-1.5px)] cursor-nw-resize rounded-full",
+                "absolute left-0 top-0 size-4 translate-x-[calc(-50%-1.5px)] translate-y-[calc(-50%-1.5px)] cursor-nw-resize rounded-full bg-primary",
                 {
                   invisible: isImageLoading,
                 }
@@ -451,7 +451,7 @@ function CropContent({
             {/* DOT2 | TOP-RIGHT */}
             <div
               className={cn(
-                "bg-primary absolute right-0 top-0 size-4 translate-x-[calc(-50%+1.5px)] translate-y-[calc(-50%-1.5px)] cursor-ne-resize rounded-full",
+                "absolute right-0 top-0 size-4 translate-x-[calc(-50%+1.5px)] translate-y-[calc(-50%-1.5px)] cursor-ne-resize rounded-full bg-primary",
                 {
                   invisible: isImageLoading,
                 }
@@ -461,7 +461,7 @@ function CropContent({
             {/* DOT3 | BOTTOM-LEFT */}
             <div
               className={cn(
-                "bg-primary absolute bottom-0 left-0 size-4 translate-x-[calc(-50%-1.5px)] translate-y-[calc(-50%+1.5px)] cursor-sw-resize rounded-full",
+                "absolute bottom-0 left-0 size-4 translate-x-[calc(-50%-1.5px)] translate-y-[calc(-50%+1.5px)] cursor-sw-resize rounded-full bg-primary",
                 {
                   invisible: isImageLoading,
                 }
@@ -471,7 +471,7 @@ function CropContent({
             {/* DOT4 | BOTTOM-RIGHT */}
             <div
               className={cn(
-                "bg-primary absolute bottom-0 right-0 size-4 translate-x-[calc(-50%+1.5px)] translate-y-[calc(-50%+1.5px)] cursor-se-resize rounded-full",
+                "absolute bottom-0 right-0 size-4 translate-x-[calc(-50%+1.5px)] translate-y-[calc(-50%+1.5px)] cursor-se-resize rounded-full bg-primary",
                 {
                   invisible: isImageLoading,
                 }
@@ -481,7 +481,7 @@ function CropContent({
             {/* DOT5 | TOP */}
             <div
               className={cn(
-                "bg-primary absolute left-1/2 top-0 size-4 -translate-x-1/2 translate-y-[calc(-50%-1.5px)] cursor-n-resize rounded-full",
+                "absolute left-1/2 top-0 size-4 -translate-x-1/2 translate-y-[calc(-50%-1.5px)] cursor-n-resize rounded-full bg-primary",
                 {
                   invisible: isImageLoading,
                 }
@@ -491,7 +491,7 @@ function CropContent({
             {/* DOT6 | BOTTOM */}
             <div
               className={cn(
-                "bg-primary absolute bottom-0 left-1/2 size-4 -translate-x-1/2 translate-y-[calc(-50%+1.5px)] cursor-s-resize rounded-full",
+                "absolute bottom-0 left-1/2 size-4 -translate-x-1/2 translate-y-[calc(-50%+1.5px)] cursor-s-resize rounded-full bg-primary",
                 {
                   invisible: isImageLoading,
                 }
@@ -501,7 +501,7 @@ function CropContent({
             {/* DOT7 | LEFT */}
             <div
               className={cn(
-                "bg-primary absolute left-0 top-1/2 size-4 -translate-y-1/2 translate-x-[calc(-50%-1.5px)] cursor-w-resize rounded-full",
+                "absolute left-0 top-1/2 size-4 -translate-y-1/2 translate-x-[calc(-50%-1.5px)] cursor-w-resize rounded-full bg-primary",
                 {
                   invisible: isImageLoading,
                 }
@@ -511,7 +511,7 @@ function CropContent({
             {/* DOT8 | RIGHT */}
             <div
               className={cn(
-                "bg-primary absolute right-0 top-1/2 size-4 -translate-y-1/2 translate-x-[calc(-50%+1.5px)] cursor-e-resize rounded-full",
+                "absolute right-0 top-1/2 size-4 -translate-y-1/2 translate-x-[calc(-50%+1.5px)] cursor-e-resize rounded-full bg-primary",
                 {
                   invisible: isImageLoading,
                 }
@@ -520,9 +520,9 @@ function CropContent({
             />
           </div>
           {isImageLoading && (
-            <div className="bg-content1/50 absolute inset-0 flex flex-col items-center justify-center gap-1">
+            <div className="absolute inset-0 flex flex-col items-center justify-center gap-1 bg-content1/50">
               <Spinner color="primary" />
-              <span className="text-foreground text-base font-bold">{dictionary.loading}</span>
+              <span className="text-base font-bold text-foreground">{dictionary.loading}</span>
             </div>
           )}
         </div>

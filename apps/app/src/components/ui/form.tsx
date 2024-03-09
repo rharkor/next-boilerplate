@@ -72,7 +72,7 @@ const WithPasswordStrenghPopover = <
         createPortal(
           <div
             className={cn(
-              "rounded-medium border-default-100 bg-default-50 pointer-events-none fixed z-50 flex h-max flex-col gap-2 border p-2 opacity-0 transition-opacity duration-200 ease-in-out",
+              "pointer-events-none fixed z-50 flex h-max flex-col gap-2 rounded-medium border border-default-100 bg-default-50 p-2 opacity-0 transition-opacity duration-200 ease-in-out",
               {
                 "pointer-events-auto opacity-100": isFocused,
               }
@@ -85,7 +85,7 @@ const WithPasswordStrenghPopover = <
             ref={popoverRef}
           >
             <div
-              className={cn("rounded-medium h-2 transition-all duration-300 ease-out", {
+              className={cn("h-2 rounded-medium transition-all duration-300 ease-out", {
                 "bg-danger-500": passwordStrengthValue < 2,
                 "bg-warning": passwordStrengthValue < 5 && passwordStrengthValue >= 2,
                 "bg-success": passwordStrengthValue === 5,
@@ -202,7 +202,7 @@ export default function FormField<
             props.endContent ||
             (type === "password-eye-slash" ? (
               <button
-                className="text-default-400 hover:text-primary focus:text-primary text-2xl focus:outline-none"
+                className="text-2xl text-default-400 hover:text-primary focus:text-primary focus:outline-none"
                 type="button"
                 onClick={toggleVisibility}
               >

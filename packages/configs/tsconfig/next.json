@@ -1,29 +1,41 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
-  "extends": "tsconfig/paths.json",
+  "display": "Next.js",
   "compilerOptions": {
     "target": "esnext",
-    "lib": ["esnext"],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
     "esModuleInterop": true,
     "module": "esnext",
     "moduleResolution": "Bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
+    "jsx": "preserve",
     "incremental": true,
-    "baseUrl": ".",
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
     "paths": {
-      "@/*": ["./src/*"],
+      "@/*": ["src/*"],
       "@lib/*": ["../../packages/lib/*"]
-    },
-    "outDir": "dist"
+    }
   },
-  "include": ["**/*.ts", "**/*.d.ts", ".eslintrc.js"],
-  "exclude": ["node_modules"],
-  "tsc-alias": {
-    "resolveFullPaths": true
-  }
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "**/*.mjs",
+    ".next/types/**/*.ts",
+    ".eslintrc.js",
+    "postcss.config.js",
+    "tailwind.config.js",
+    "prettier.config.js"
+  ],
+  "exclude": ["node_modules"]
 }

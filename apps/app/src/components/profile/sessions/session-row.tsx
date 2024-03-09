@@ -66,15 +66,15 @@ export default function SessionRow({ session, setSelectedSession, skeleton, skel
         {skeleton ? (
           <Skeleton className="h-4 w-9 rounded-full" disableAnimation={!skeletonAnimation} />
         ) : (
-          <p className="text-muted-foreground text-xs">{userAgents?.browser.name}</p>
+          <p className="text-xs text-muted-foreground">{userAgents?.browser.name}</p>
         )}
       </div>
       <div className="flex flex-col space-y-1">
-        <p className="text-muted-foreground text-xs">{dictionary.profilePage.profileDetails.lastUsed}</p>
+        <p className="text-xs text-muted-foreground">{dictionary.profilePage.profileDetails.lastUsed}</p>
         {skeleton ? (
           <Skeleton className="h-4 w-8 rounded-full" disableAnimation={!skeletonAnimation} />
         ) : (
-          <p className="text-muted-foreground text-xs">
+          <p className="text-xs text-muted-foreground">
             {session.lastUsedAt
               ? getTimeBetween(new Date(session.lastUsedAt), new Date(), {
                   dictionary,
@@ -84,19 +84,19 @@ export default function SessionRow({ session, setSelectedSession, skeleton, skel
         )}
       </div>
       <div className="flex flex-col space-y-1">
-        <p className="text-muted-foreground text-xs">{dictionary.profilePage.profileDetails.created}</p>
+        <p className="text-xs text-muted-foreground">{dictionary.profilePage.profileDetails.created}</p>
         {skeleton ? (
           <Skeleton className="h-4 w-10 rounded-full" disableAnimation={!skeletonAnimation} />
         ) : (
-          <p className="text-muted-foreground text-xs">{new Date(session.createdAt).toLocaleDateString()}</p>
+          <p className="text-xs text-muted-foreground">{new Date(session.createdAt).toLocaleDateString()}</p>
         )}
       </div>
       <div className="flex flex-col space-y-1">
-        <p className="text-muted-foreground text-xs">{dictionary.profilePage.profileDetails.expires}</p>
+        <p className="text-xs text-muted-foreground">{dictionary.profilePage.profileDetails.expires}</p>
         {skeleton ? (
           <Skeleton className="h-4 w-10 rounded-full" disableAnimation={!skeletonAnimation} />
         ) : (
-          <p className="text-muted-foreground text-xs">
+          <p className="text-xs text-muted-foreground">
             {dictionary.profilePage.profileDetails.in}{" "}
             {getTimeBetween(new Date(session.expires), new Date(), {
               dictionary,

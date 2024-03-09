@@ -7,8 +7,8 @@
     "start": "turbo run start",
     "lint": "turbo run lint",
     "lint:fix": "turbo run lint:fix",
-    "prettier": "prettier --check \"**/*.{js,jsx,ts,tsx}\"",
-    "prettier:fix": "prettier --write \"**/*.{js,jsx,ts,tsx}\"",
+    "prettier": "turbo run prettier",
+    "prettier:fix": "turbo run prettier:fix",
     "test": "npm run test --ws",
     "init": "npm run init -w packages/scripts",
     "init:env": "npm run init:env -w packages/scripts",
@@ -18,7 +18,8 @@
   },
   "workspaces": [
     "apps/*",
-    "packages/*"
+    "packages/*",
+    "packages/configs/*"
   ],
   "dependencies": {
     "concurrently": "^8.2.2"

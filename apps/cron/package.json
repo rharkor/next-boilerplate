@@ -13,7 +13,6 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "module",
   "dependencies": {
     "@prisma/client": "^5.9.1",
     "@t3-oss/env-core": "^0.9.2",
@@ -29,7 +28,10 @@
     "nodemon": "^3.0.3",
     "tsc-alias": "^1.8.8",
     "typescript": "^5.3.3",
-    "zod": "^3.22.4"
+    "zod": "^3.22.4",
+    "eslint-config-custom": "*",
+    "tsconfig": "*",
+    "custom-prettier-config": "*"
   },
   "prisma": {
     "schema": "../app/prisma/schema.prisma"

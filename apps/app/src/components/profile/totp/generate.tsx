@@ -87,7 +87,7 @@ export default function GenerateTotp({ account }: { account: ReturnType<typeof u
     <div className="flex flex-col gap-2">
       <div className="-mx-2 flex flex-col px-2">
         <h3 className="text-medium font-medium">{dictionary.totp.generateTitle}</h3>
-        <p className="text-muted-foreground text-sm">{dictionary.totp.generateDescription}</p>
+        <p className="text-sm text-muted-foreground">{dictionary.totp.generateDescription}</p>
       </div>
       <Button
         color={hasOtpVerified ? "danger" : "primary"}
@@ -121,13 +121,13 @@ export default function GenerateTotp({ account }: { account: ReturnType<typeof u
                   <section
                     className={cn("flex h-full min-w-full flex-col items-center justify-center gap-4 overflow-auto")}
                   >
-                    <h4 className="text-medium w-full">
-                      <span className="text-foreground text-lg font-semibold">1.</span> {dictionary.totp.generateStep1}
+                    <h4 className="w-full text-medium">
+                      <span className="text-lg font-semibold text-foreground">1.</span> {dictionary.totp.generateStep1}
                     </h4>
                     <Skeleton
                       isLoaded={!!totpSecretData}
-                      className={cn("rounded-medium w-max shrink-0 !transition-all duration-200", {
-                        "outline-primary cursor-pointer outline outline-0 outline-offset-2 focus-visible:outline-4 active:scale-[.98] active:outline-4":
+                      className={cn("w-max shrink-0 rounded-medium !transition-all duration-200", {
+                        "cursor-pointer outline outline-0 outline-offset-2 outline-primary focus-visible:outline-4 active:scale-[.98] active:outline-4":
                           !!totpSecretData,
                       })}
                       onClick={() => copyToClipboard(totpSecretData?.url)}
@@ -146,31 +146,31 @@ export default function GenerateTotp({ account }: { account: ReturnType<typeof u
                         "rounded-medium": !totpSecretData,
                       })}
                     >
-                      <p className="text-muted-foreground text-xs">({dictionary.totp.generateStep1Description})</p>
+                      <p className="text-xs text-muted-foreground">({dictionary.totp.generateStep1Description})</p>
                     </Skeleton>
                   </section>
                   <section className={cn("flex h-full min-w-full flex-col items-center gap-4 overflow-auto")}>
                     <div className="flex w-full flex-col">
                       <h4 className="text-medium">
-                        <span className="text-foreground text-lg font-semibold">2.</span>{" "}
+                        <span className="text-lg font-semibold text-foreground">2.</span>{" "}
                         {dictionary.totp.generateStep2}
                       </h4>
-                      <p className="text-muted-foreground text-sm">{dictionary.totp.generateStep2Description}</p>
+                      <p className="text-sm text-muted-foreground">{dictionary.totp.generateStep2Description}</p>
                     </div>
                     <div className="flex flex-1 items-center justify-center">
-                      <p className="bg-muted rounded-medium p-2 text-lg">{totpSecretData?.mnemonic}</p>
+                      <p className="rounded-medium bg-muted p-2 text-lg">{totpSecretData?.mnemonic}</p>
                     </div>
                   </section>
                   <section className="flex h-full min-w-full flex-col items-center gap-4 overflow-auto">
-                    <h4 className="text-medium w-full">
-                      <span className="text-foreground text-lg font-semibold">3.</span> {dictionary.totp.generateStep3}
+                    <h4 className="w-full text-medium">
+                      <span className="text-lg font-semibold text-foreground">3.</span> {dictionary.totp.generateStep3}
                     </h4>
                     <div className={cn("flex flex-col gap-4")}>
                       <div className="grid grid-cols-3 gap-x-6 gap-y-2">
                         {totpSecretData?.mnemonic.split(" ").map((word, index) => (
                           <p
                             className={cn(
-                              "bg-muted/20 rounded-medium hover:bg-primary/30 focus:bg-primary/30 group relative h-[34px] w-full min-w-[70px] p-1.5 text-sm transition-all",
+                              "group relative h-[34px] w-full min-w-[70px] rounded-medium bg-muted/20 p-1.5 text-sm transition-all hover:bg-primary/30 focus:bg-primary/30",
                               {
                                 "bg-danger-50 hover:bg-danger-100":
                                   mnemonicVerif.split(" ")[index] && mnemonicVerif.split(" ")[index] !== word,
@@ -183,7 +183,7 @@ export default function GenerateTotp({ account }: { account: ReturnType<typeof u
                             {mnemonicVerif.split(" ")[index]}
                             <Button
                               className={cn(
-                                "bg-danger/30 absolute left-0 top-0 flex h-full w-full !transform-none items-center justify-end opacity-0 hover:opacity-0",
+                                "absolute left-0 top-0 flex h-full w-full !transform-none items-center justify-end bg-danger/30 opacity-0 hover:opacity-0",
                                 {
                                   "hover:opacity-100 focus:opacity-100 group-hover:opacity-100 group-focus:opacity-100":
                                     !!mnemonicVerif.split(" ")[index],
@@ -227,8 +227,8 @@ export default function GenerateTotp({ account }: { account: ReturnType<typeof u
                     </div>
                   </section>
                   <section className="flex h-full min-w-full flex-col items-center gap-4">
-                    <h4 className="text-medium w-full">
-                      <span className="text-foreground text-lg font-semibold">4.</span> {dictionary.totp.generateStep4}
+                    <h4 className="w-full text-medium">
+                      <span className="text-lg font-semibold text-foreground">4.</span> {dictionary.totp.generateStep4}
                     </h4>
                     <div className={cn("flex flex-1 items-center justify-center")}>
                       <OtpInput isFocusable={modalIndex === 3} otp={otp} setOtp={setOtp} />
