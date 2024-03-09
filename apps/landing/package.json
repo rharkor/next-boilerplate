@@ -1,13 +1,14 @@
 {
   "name": "@next-boilerplate/landing",
   "scripts": {
-    "dev": "next dev -p 3002",
+    "dev": "npm run is-initialized && next dev -p 3002",
     "build": "next build",
     "start": "next start --port ${PORT:-3000}",
     "lint": "next lint && eslint . --ext .js,.jsx,.ts,.tsx",
     "lint:fix": "next lint --fix && eslint . --ext .js,.jsx,.ts,.tsx --fix",
     "test": "exit 0",
-    "analyze": "ANALYZE=true npm run build && cd .next/analyze && npx -y serve"
+    "analyze": "ANALYZE=true npm run build && cd .next/analyze && npx -y serve",
+    "is-initialized": "cd ../../packages/scripts && npm run is-initialized"
   },
   "dependencies": {
     "@formatjs/intl-localematcher": "^0.5.0",

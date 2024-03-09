@@ -24,7 +24,7 @@
     ],
     "paths": {
       "@/*": ["./src/*"],
-      "@lib/*": ["../lib/*"]
+      "@lib/*": ["../../packages/lib/*"]
     }
   },
   "include": [

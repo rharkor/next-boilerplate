@@ -10,7 +10,7 @@
     "test": "cross-env FORCE_COLOR=1 jest --passWithNoTests",
     "postinstall": "patch-package && prisma generate",
     "seed": "cross-env NODE_ENV=development tsx prisma/seed.ts",
-    "is-initialized": "cd ../scripts && npm run is-initialized",
+    "is-initialized": "cd ../../packages/scripts && npm run is-initialized",
     "analyze": "ANALYZE=true npm run build && cd .next/analyze && npx -y serve"
   },
   "dependencies": {

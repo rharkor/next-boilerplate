@@ -31,3 +31,8 @@ yarn-error.log*
 /test-results/
 /playwright-report/
 /playwright/.cache/
+
+.turbo
+build/**
+dist/**
+.next/**
