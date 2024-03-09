@@ -33,7 +33,8 @@ export default function SignoutButton({ children }: { children: React.ReactNode 
       logger.error(e)
     }
     await signOut({ callbackUrl: authRoutes.signIn[0] })
-    setSignOutLoading(false)
+    // Do not set signOutLoading to false, as the user will be redirected
+    // setSignOutLoading(false)
   }
 
   return (
