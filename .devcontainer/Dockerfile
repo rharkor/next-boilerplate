@@ -11,6 +11,3 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
 # Install more global node modules
 RUN su node -c "npm install -g npm@latest"
 RUN su node -c "npm install -g prisma"
-
-# Install bun
-RUN /bin/bash -c "curl -fsSL https://bun.sh/install | bash"
