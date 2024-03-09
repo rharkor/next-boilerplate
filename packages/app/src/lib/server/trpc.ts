@@ -1,9 +1,9 @@
 import { Session } from "next-auth"
-import { env } from "env.mjs"
 import superjson from "superjson"
 import { ZodError } from "zod"
 
 import { getAuthApi } from "@/components/auth/require-auth"
+import { env } from "@/lib/env"
 import { User } from "@prisma/client"
 import { initTRPC } from "@trpc/server"
 

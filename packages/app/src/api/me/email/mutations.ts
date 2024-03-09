@@ -1,9 +1,9 @@
 import { randomUUID } from "crypto"
-import { env } from "env.mjs"
-import { i18n } from "i18n-config"
 
 import { sendVerificationEmailSchema, verifyEmailSchema } from "@/api/me/schemas"
 import { emailVerificationExpiration, resendEmailVerificationExpiration } from "@/constants"
+import { env } from "@/lib/env"
+import { i18n } from "@/lib/i18n-config"
 import { sendMail } from "@/lib/mailer"
 import { prisma } from "@/lib/prisma"
 import { html, plainText, subject } from "@/lib/templates/mail/verify-email"

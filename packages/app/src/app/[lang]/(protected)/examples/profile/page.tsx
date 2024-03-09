@@ -1,5 +1,4 @@
 import { getServerSession } from "next-auth"
-import { Locale } from "i18n-config"
 
 import DeleteAccountButton from "@/components/auth/delete-account-button"
 import SignoutButton from "@/components/auth/sign-out-button"
@@ -8,6 +7,7 @@ import ProfileDetails from "@/components/profile/profile-details"
 import UserActiveSessions from "@/components/profile/sessions/user-active-sessions"
 import CardTitle from "@/components/ui/card"
 import { nextAuthOptions } from "@/lib/auth"
+import { Locale } from "@/lib/i18n-config"
 import { getDictionary } from "@/lib/langs"
 import { Card, CardBody, CardHeader } from "@nextui-org/react"
 

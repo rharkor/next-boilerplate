@@ -1,4 +1,4 @@
-import { Locale } from "i18n-config"
+import { Locale } from "@/lib/i18n-config"
 
 import { ThemeSwitch } from "./theme/theme-switch"
 import LocaleSwitcher from "./locale-switcher"

@@ -1,6 +1,7 @@
 import { Metadata } from "next"
 import { notFound } from "next/navigation"
-import { env } from "env.mjs"
+
+import { env } from "@/lib/env"
 
 export const metadata: Metadata = {
   title: "Examples",

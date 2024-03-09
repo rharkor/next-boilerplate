@@ -1,8 +1,7 @@
-import { Locale } from "i18n-config"
-
 import requireAuth from "@/components/auth/require-auth"
 import NavSettings from "@/components/nav-settings"
 import { lastLocaleExpirationInSeconds } from "@/constants"
+import { Locale } from "@/lib/i18n-config"
 import { prisma } from "@/lib/prisma"
 import { redis } from "@/lib/redis"
 

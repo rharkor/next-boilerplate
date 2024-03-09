@@ -3,8 +3,8 @@
 import { useState } from "react"
 import { usePathname } from "next/navigation"
 import { useRouter } from "next/navigation"
-import { Locale, localesDetailed } from "i18n-config"
 
+import { Locale, localesDetailed } from "@/lib/i18n-config"
 import { Avatar, Select, SelectItem } from "@nextui-org/react"
 
 export default function LocaleSwitcher({ lang }: { lang: Locale }) {

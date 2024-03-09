@@ -1,6 +1,7 @@
 import { compare, hash as bhash } from "bcryptjs"
 import crypto from "crypto-js"
-import { env } from "env.mjs"
+
+import { env } from "@/lib/env"
 
 const PASSWORD_HASHER_SECRET = env.PASSWORD_HASHER_SECRET
 

@@ -2,13 +2,13 @@
 
 import { useCallback, useState } from "react"
 import { useSession } from "next-auth/react"
-import { env } from "env.mjs"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
 
 import { updateUserSchema } from "@/api/me/schemas"
 import { useAccount } from "@/contexts/account"
 import { useDictionary } from "@/contexts/dictionary/utils"
+import { env } from "@/lib/env"
 import { trpc } from "@/lib/trpc/client"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { logger } from "@lib/logger"

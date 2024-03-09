@@ -1,7 +1,7 @@
-import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime"
-import { env } from "env.mjs"
+import { useRouter } from "next/navigation"
 import { toast } from "react-toastify"
 
+import { env } from "@/lib/env"
 import { logger } from "@lib/logger"
 import { TRPCClientErrorLike } from "@trpc/client"
 
@@ -15,6 +15,8 @@ import "client-only"
 type TOptions = {
   showNotification?: boolean // default true
 }
+
+type AppRouterInstance = ReturnType<typeof useRouter>
 
 export const handleQueryError = <T extends TRPCClientErrorLike<AppRouter>>(
   error: T,

@@ -1,8 +1,8 @@
 import { randomUUID } from "crypto"
-import { env } from "env.mjs"
 import { z } from "zod"
 
 import { maxUploadSize } from "@/constants"
+import { env } from "@/lib/env"
 import { prisma } from "@/lib/prisma"
 import { s3Client } from "@/lib/s3"
 import { stringToSlug } from "@/lib/utils"

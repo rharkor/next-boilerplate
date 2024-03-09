@@ -257,7 +257,7 @@ export default function Home() {
 #### Server side
 
 ```tsx
-import { Locale } from "i18n-config"
+import { Locale } from "@/lib/i18n-config"
 
 import { getDictionary } from "@/lib/langs"
 

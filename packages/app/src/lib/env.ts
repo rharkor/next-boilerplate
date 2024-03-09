@@ -1,7 +1,8 @@
-import { logger } from "@lib/logger"
-import { createEnv } from "@t3-oss/env-nextjs"
 import { config } from "dotenv"
 import { z } from "zod"
+
+import { logger } from "@lib/logger"
+import { createEnv } from "@t3-oss/env-nextjs"
 
 if (!process.env.ENV) {
   config()
@@ -26,7 +27,7 @@ export const env = createEnv({
     REDIS_PORT: z
       .string()
       .optional()
-      .transform((value) => parseInt(value)),
+      .transform((value) => (!!value ? parseInt(value) : value)),
     REDIS_USERNAME: z.string().optional(),
     REDIS_PASSWORD: z.string().optional(),
     REDIS_USE_TLS: z
@@ -87,7 +88,6 @@ export const env = createEnv({
     REDIS_PORT: process.env.REDIS_PORT,
     REDIS_USERNAME: process.env.REDIS_USERNAME,
     REDIS_PASSWORD: process.env.REDIS_PASSWORD,
-    REDIS_TLS: process.env.REDIS_TLS,
     REDIS_USE_TLS: process.env.REDIS_USE_TLS,
     NEXT_PUBLIC_IS_DEMO: process.env.NEXT_PUBLIC_IS_DEMO,
     NEXT_PUBLIC_DEMO_EMAIL: process.env.NEXT_PUBLIC_DEMO_EMAIL,

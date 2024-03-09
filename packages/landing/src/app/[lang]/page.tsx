@@ -1,6 +1,5 @@
-import { env } from "env.mjs"
-import { Locale } from "i18n-config"
-
+import { env } from "@/lib/env"
+import { Locale } from "@/lib/i18n-config"
 import { getDictionary } from "@/lib/langs"
 
 import Blob from "./blob"

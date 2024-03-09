@@ -1,10 +1,10 @@
 import Link from "next/link"
 import { getServerSession } from "next-auth"
-import { Locale } from "i18n-config"
 
 import { RegisterUserAuthForm } from "@/components/auth/register-user-auth-form"
 import { authRoutes } from "@/constants/auth"
 import { nextAuthOptions } from "@/lib/auth"
+import { Locale } from "@/lib/i18n-config"
 import { getDictionary } from "@/lib/langs"
 import { cn } from "@/lib/utils"
 import { Button } from "@nextui-org/react"

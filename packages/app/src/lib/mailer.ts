@@ -1,6 +1,6 @@
-import { env } from "env.mjs"
 import { createTransport } from "nodemailer"
 
+import { env } from "@/lib/env"
 import { logger } from "@lib/logger"
 
 import { ApiError } from "./utils/server-utils"

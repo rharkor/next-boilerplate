@@ -1,5 +1,4 @@
-import { env } from "env.mjs"
-
+import { env } from "@/lib/env"
 import { logger } from "@lib/logger"
 
 function getBaseUrl() {

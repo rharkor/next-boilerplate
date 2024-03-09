@@ -3,9 +3,9 @@ import { Metadata } from "next"
 import { cookies } from "next/headers"
 import { redirect } from "next/navigation"
 import { createHash } from "crypto"
-import { i18n, Locale } from "i18n-config"
 
 import { fontSans } from "@/lib/fonts"
+import { i18n, Locale } from "@/lib/i18n-config"
 import { getDictionary } from "@/lib/langs"
 import { cn } from "@/lib/utils"
 

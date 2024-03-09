@@ -1,5 +1,4 @@
-import { Locale } from "i18n-config"
-
+import { Locale } from "@/lib/i18n-config"
 import { ValueOf } from "@/types"
 
 // We enumerate all dictionaries here for better linting and typescript support

@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server"
-import { env } from "env.mjs"
 import requestIp from "request-ip"
 
 import { RATE_LIMIT_DURATION, RATE_LIMIT_PER_INTERVAL } from "@/constants/rate-limit"
+import { env } from "@/lib/env"
 import { logger } from "@lib/logger"
 
 import { ApiError } from "./utils/server-utils"

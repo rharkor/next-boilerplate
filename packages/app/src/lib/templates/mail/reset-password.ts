@@ -1,4 +1,4 @@
-import { env } from "env.mjs"
+import { env } from "@/lib/env"
 
 export const subject = "Reset your password"
 

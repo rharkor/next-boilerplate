@@ -1,9 +1,9 @@
 import { ReactNode } from "react"
-import { Locale } from "i18n-config"
 
 import { NextAuthProvider } from "@/components/auth/provider"
 import { ThemeProvider } from "@/components/theme/theme-provider"
 import DictionaryProvider from "@/contexts/dictionary/provider"
+import { Locale } from "@/lib/i18n-config"
 import { TDictionary } from "@/lib/langs"
 import TrpcProvider from "@/lib/trpc/provider"
 

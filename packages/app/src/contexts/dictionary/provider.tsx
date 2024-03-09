@@ -1,8 +1,8 @@
 "use client"
 
 import { createHash } from "crypto"
-import { Locale } from "i18n-config"
 
+import { Locale } from "@/lib/i18n-config"
 import { getDictionary, TDictionary } from "@/lib/langs"
 import { logger } from "@lib/logger"
 

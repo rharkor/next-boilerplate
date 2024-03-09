@@ -1,11 +1,11 @@
 import Link from "next/link"
 import { redirect } from "next/navigation"
-import { Locale } from "i18n-config"
 import { ChevronRight } from "lucide-react"
 
 import { RegisterUserAuthForm } from "@/components/auth/register-user-auth-form"
 import CardTitle from "@/components/ui/card"
 import { authRoutes } from "@/constants/auth"
+import { Locale } from "@/lib/i18n-config"
 import { getDictionary } from "@/lib/langs"
 import { Button, Card, CardBody, CardHeader } from "@nextui-org/react"
 

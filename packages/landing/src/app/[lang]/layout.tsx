@@ -1,9 +1,9 @@
 import React from "react"
 import { Metadata } from "next"
 import { redirect } from "next/navigation"
-import { i18n } from "i18n-config"
 
 import { fontSans } from "@/lib/fonts"
+import { i18n } from "@/lib/i18n-config"
 import { cn } from "@/lib/utils"
 
 import "../globals.css"

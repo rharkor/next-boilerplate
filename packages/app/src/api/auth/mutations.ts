@@ -1,6 +1,5 @@
 import * as bip39 from "bip39"
 import { randomUUID } from "crypto"
-import { env } from "env.mjs"
 import * as OTPAuth from "otpauth"
 import { z } from "zod"
 
@@ -13,6 +12,7 @@ import {
 } from "@/api/auth/schemas"
 import { emailVerificationExpiration, lastLocaleExpirationInSeconds, otpWindow, rolesAsObject } from "@/constants"
 import { hash } from "@/lib/bcrypt"
+import { env } from "@/lib/env"
 import { sendMail } from "@/lib/mailer"
 import { prisma } from "@/lib/prisma"
 import { redis } from "@/lib/redis"

@@ -1,11 +1,11 @@
 import Link from "next/link"
 import { getServerSession } from "next-auth"
-import { env } from "env.mjs"
-import { Locale } from "i18n-config"
 
 import { LoginUserAuthForm } from "@/components/auth/login-user-auth-form"
 import { authRoutes } from "@/constants/auth"
 import { nextAuthOptions } from "@/lib/auth"
+import { env } from "@/lib/env"
+import { Locale } from "@/lib/i18n-config"
 import { getDictionary } from "@/lib/langs"
 import { cn } from "@/lib/utils"
 import { Button } from "@nextui-org/react"

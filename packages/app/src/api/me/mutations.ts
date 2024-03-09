@@ -1,7 +1,6 @@
-import { env } from "env.mjs"
-
 import { updateUserSchema } from "@/api/me/schemas"
 import { rolesAsObject } from "@/constants"
+import { env } from "@/lib/env"
 import { prisma } from "@/lib/prisma"
 import { s3Client } from "@/lib/s3"
 import { ApiError } from "@/lib/utils/server-utils"
