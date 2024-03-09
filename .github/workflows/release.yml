@@ -39,8 +39,7 @@ jobs:
           git config user.name "GitHub Actions"
           git config user.email "louis@huort.com"
           git checkout -b ${{ github.ref_name }}-release
-          git reset --hard ${{ github.ref_name }}
-          git pull origin ${{ github.ref_name }}-release --ff-only
+          git rebase -X theirs ${{ github.ref_name }}
           git push origin ${{ github.ref_name }}-release
 
   release:
