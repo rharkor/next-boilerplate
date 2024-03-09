@@ -8,9 +8,13 @@ import { logger } from "@lib/logger"
 
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url))
 const rootPath = path.join(__dirname, "..")
+const appsRootPath = path.join(rootPath, "..", "apps")
 
-const packages = fs.readdirSync(path.join(rootPath))
-const packagesPath = packages.map((pkg) => path.join(rootPath, pkg))
+const packages = fs.readdirSync(rootPath)
+const apps = fs.readdirSync(appsRootPath)
+const packagesPath = packages
+  .map((pkg) => path.join(rootPath, pkg))
+  .concat(apps.map((app) => path.join(appsRootPath, app)))
 
 const options: { skipMissing: boolean; ignoreMatches: string[] } = {
   skipMissing: false,
@@ -22,9 +26,9 @@ const main = async () => {
   let hasError = false
   for (const pkg of packagesPath) {
     logger.log(chalk.blue(`Checking ${pkg}...`))
-    if (pkg === path.join(rootPath, "docs")) {
+    if (pkg === path.join(appsRootPath, "docs")) {
       options.ignoreMatches.push("@docusaurus/preset-classic", "@mdx-js/react", "clsx", "prism-react-renderer")
-    } else if (pkg === path.join(rootPath, "app")) {
+    } else if (pkg === path.join(appsRootPath, "app")) {
       options.ignoreMatches.push(
         "@semantic-release/*",
         "env.mjs",
@@ -37,11 +41,11 @@ const main = async () => {
         "autoprefixer",
         "@lib/logger"
       )
-    } else if (pkg === path.join(rootPath, "landing")) {
+    } else if (pkg === path.join(appsRootPath, "landing")) {
       options.ignoreMatches.push("@types/react-dom", "@lib/logger")
     } else if (pkg === path.join(rootPath, "scripts")) {
       options.ignoreMatches.push("env-setup", "packages-selection", "replace-tokens", "runtime", "@lib/logger")
-    } else if (pkg === path.join(rootPath, "cron")) {
+    } else if (pkg === path.join(appsRootPath, "cron")) {
       options.ignoreMatches.push("chalk", "@types/node")
     } else if (pkg === path.join(rootPath, "lib")) {
       continue

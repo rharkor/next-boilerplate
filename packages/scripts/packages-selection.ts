@@ -14,7 +14,10 @@ import { logger } from "@lib/logger"
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url))
 const rootDir = path.join(__dirname, "..", "..")
 
-const packagesAvailable = fs.readdirSync(path.join(rootDir, "packages")).filter((p) => p !== "scripts" && p !== "lib")
+const packagesAvailable = fs
+  .readdirSync(path.join(rootDir, "packages"))
+  .concat(fs.readdirSync(path.join(rootDir, "apps")))
+  .filter((p) => p !== "scripts" && p !== "lib")
 const dockerComposePaths = [
   path.join(rootDir, "docker", "docker-compose.yml"),
   path.join(rootDir, "docker", "docker-compose.local.yml"),
