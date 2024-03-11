@@ -118,7 +118,8 @@ const onlyFrontAppsAdaptaion: {
         '"deploy-db:prod": "prisma migrate deploy && npm run seed",',
         '"seed": "cross-env NODE_ENV=development tsx prisma/seed.ts",',
         new RegExp(
-          /"prisma"\: \{\n.*"schema"\: "prisma\/schema\.prisma"\,\n.*"seed"\: "tsx prisma\/seed\.ts"\n\s*\}/
+          /"prisma"\: \{\n.*"schema"\: "prisma\/schema\.prisma"\,\n.*"seed"\: "tsx prisma\/seed\.ts"\n\s*\}/,
+          "g"
         ),
       ],
       replacements: {
