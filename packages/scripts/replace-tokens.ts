@@ -171,6 +171,9 @@ export const replaceTokens = async () => {
 
         // Reinstall dependencies
         logger.log(chalk.blue("Reinstalling dependencies..."));
+        execSync("rm -rf node_modules", {
+          cwd: rootDir,
+        });
         execSync("npm install", {
           cwd: rootDir,
         });
