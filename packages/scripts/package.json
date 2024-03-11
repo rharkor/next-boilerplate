@@ -21,7 +21,7 @@
     "depcheck": "^1.4.7",
     "dotenv": "^16.3.1",
     "eslint-config-custom": "*",
-    "glob": "^10.3.10",
+    "glob": "^7.2.3",
     "inquirer": "^9.2.11",
     "patch-package": "^8.0.0",
     "tsx": "^4.7.0",
