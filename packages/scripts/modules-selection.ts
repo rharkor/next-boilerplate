@@ -166,7 +166,9 @@ export const modulesSelection = async () => {
     // Remove the files that are not needed anymore
     await Promise.all(
       onlyFrontToRemove.map((file) =>
-        fs.promises.unlink(path.join(rootDir, file))
+        fs.promises.rm(path.join(rootDir, file), {
+          recursive: true,
+        })
       )
     );
     logger.log(chalk.gray("Removed unnecessary files!"));
