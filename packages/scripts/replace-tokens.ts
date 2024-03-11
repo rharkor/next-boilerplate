@@ -5,6 +5,7 @@
 
 import chalk from "chalk";
 import * as fs from "fs";
+import { glob } from "glob";
 import inquirer from "inquirer";
 import * as path from "path";
 import * as url from "url";
@@ -140,8 +141,47 @@ export const replaceTokens = async () => {
           "utf8"
         );
         logger.log(chalk.gray(`Done for ${terraformMainFile}`));
+
+        //? Replace in all files from root except package-lock.json
+        // Function to replace text in a file
+        const searchRegex = new RegExp(`@${nameToReplace}`, "g");
+        function replaceTextInFile(filePath: string) {
+          fs.readFile(filePath, "utf8", (err, data) => {
+            if (err) {
+              console.error("Error reading file:", err);
+              return;
+            }
+
+            const replacedData = data.replace(
+              searchRegex,
+              `@${newProjectName}`
+            );
+
+            fs.writeFile(filePath, replacedData, "utf8", (err) => {
+              if (err) {
+                console.error("Error writing to file:", err);
+              }
+            });
+          });
+        }
+
+        // Function to recursively search and replace in all files
+        async function replaceInDirectory(dir: string) {
+          const tsFiles = await glob(`${dir}/**/*.{ts,tsx}`, {
+            ignore: "node_modules/**",
+          });
+          const pjsonFiles = await glob(`${dir}/**/package.json`, {
+            ignore: "node_modules/**",
+          });
+          const allFiles = tsFiles.concat(pjsonFiles);
+          allFiles.forEach((file) => {
+            replaceTextInFile(file);
+          });
+        }
+
+        const rootDir = path.join(__dirname, "..", "..");
+        await replaceInDirectory(rootDir);
       }
     }
-    fs.writeFileSync(filePath, newFileContent, "utf8");
   }
 };
