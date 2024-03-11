@@ -93,7 +93,14 @@ git clone https://github.com/rharkor/next-boilerplate
 npm run init
 ```
 
-3. Install the dependencies:
+> If the project is already initialized just run the following command to install git hooks:
+>
+> ```bash
+> npm install --global git-conventional-commits
+> git config core.hooksPath .git-hooks
+> ```
+
+1. Install the dependencies:
 
 ```bash
 npm install
