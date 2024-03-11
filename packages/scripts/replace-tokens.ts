@@ -147,6 +147,7 @@ export const replaceTokens = async () => {
         const searchRegex = new RegExp(`@${nameToReplace}`, "g");
         async function replaceTextInFile(filePath: string) {
           const data = await fs.promises.readFile(filePath, "utf8");
+          if (data.match(searchRegex) === null) return;
           const replacedData = data.replace(searchRegex, `@${newProjectName}`);
           await fs.promises.writeFile(filePath, replacedData, "utf8");
           logger.log(chalk.gray(`Done for ${filePath}`));
@@ -155,10 +156,10 @@ export const replaceTokens = async () => {
         // Function to recursively search and replace in all files
         async function replaceInDirectory(dir: string) {
           const tsFiles = await glob(`${dir}/**/*.{ts,tsx}`, {
-            ignore: "node_modules/**",
+            ignore: `${dir}/**/node_modules/**`,
           });
           const pjsonFiles = await glob(`${dir}/**/package.json`, {
-            ignore: "node_modules/**",
+            ignore: `${dir}/**/node_modules/**`,
           });
           const allFiles = tsFiles.concat(pjsonFiles);
           await Promise.all(allFiles.map((file) => replaceTextInFile(file)));
