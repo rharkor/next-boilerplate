@@ -115,8 +115,14 @@ const onlyFrontAppsAdaptaion: {
     path: "apps/app/package.json",
     fileEdits: {
       removals: [
-        '"deploy-db:prod": "prisma migrate deploy && npm run seed",',
-        '"seed": "cross-env NODE_ENV=development tsx prisma/seed.ts",',
+        new RegExp(
+          /\,\n.*"deploy-db\:prod"\: "prisma migrate deploy && npm run seed"/,
+          "g"
+        ),
+        new RegExp(
+          /\,\n.*"seed"\: "cross-env NODE_ENV=development tsx prisma\/seed.ts"/,
+          "g"
+        ),
         new RegExp(
           /\,\n.*"prisma"\: \{\n.*"schema"\: "prisma\/schema\.prisma"\,\n.*"seed"\: "tsx prisma\/seed\.ts"\n\s*\}/,
           "g"
