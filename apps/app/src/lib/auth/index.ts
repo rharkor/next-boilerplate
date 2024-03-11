@@ -13,7 +13,7 @@ import { authRoutes, JWT_MAX_AGE } from "@/constants/auth"
 import { env } from "@/lib/env"
 import { i18n, Locale } from "@/lib/i18n-config"
 import { ITrpcContext } from "@/types"
-import { logger } from "@lib/logger"
+import { logger } from "@next-boilerplate/lib/logger"
 import { PrismaAdapter } from "@next-auth/prisma-adapter"
 
 import { signInSchema } from "../../api/auth/schemas"

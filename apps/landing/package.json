@@ -30,7 +30,8 @@
     "zod": "^3.22.4",
     "eslint-config-custom": "*",
     "tsconfig": "*",
-    "custom-prettier-config": "*"
+    "custom-prettier-config": "*",
+    "@next-boilerplate/lib": "*"
   },
   "devDependencies": {
     "@types/node": "^20",

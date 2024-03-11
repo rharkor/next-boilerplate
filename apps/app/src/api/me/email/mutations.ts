@@ -9,7 +9,7 @@ import { prisma } from "@/lib/prisma"
 import { html, plainText, subject } from "@/lib/templates/mail/verify-email"
 import { ApiError, handleApiError } from "@/lib/utils/server-utils"
 import { apiInputFromSchema } from "@/types"
-import { logger } from "@lib/logger"
+import { logger } from "@next-boilerplate/lib/logger"
 
 export const sendVerificationEmail = async ({ input }: apiInputFromSchema<typeof sendVerificationEmailSchema>) => {
   try {

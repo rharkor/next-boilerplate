@@ -4,7 +4,7 @@ import { createHash } from "crypto"
 
 import { Locale } from "@/lib/i18n-config"
 import { getDictionary, TDictionary } from "@/lib/langs"
-import { logger } from "@lib/logger"
+import { logger } from "@next-boilerplate/lib/logger"
 
 import { DictionaryContext } from "./context"
 

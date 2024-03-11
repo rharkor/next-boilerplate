@@ -3,7 +3,7 @@ import { type ClassValue, clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
 
 import { authRoutes } from "@/constants/auth"
-import { logger } from "@lib/logger"
+import { logger } from "@next-boilerplate/lib/logger"
 import { TRPCClientErrorLike } from "@trpc/client"
 
 import { AppRouter } from "../../api/_app"

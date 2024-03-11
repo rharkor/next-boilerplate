@@ -6,15 +6,21 @@ WORKDIR /usr/src/app
 ENV NODE_ENV production
 
 #? Copy the necessary files to install dependencies
-COPY package*.json .
-COPY packages/lib/package*.json ./packages/lib/
-COPY packages/app/package*.json ./packages/app/
-COPY packages/app/prisma/schema.prisma ./packages/app/prisma/schema.prisma
+COPY package.json ./
+COPY package-lock.json ./
+
+COPY apps/landing/package.json ./apps/landing/package.json
 
 RUN npm i --only=production
 
 
 FROM node:20-alpine AS builder
+
+ARG TURBO_TEAM
+ENV TURBO_TEAM=$TURBO_TEAM
+
+ARG TURBO_TOKEN
+ENV TURBO_TOKEN=$TURBO_TOKEN
 
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
@@ -24,10 +30,11 @@ ENV NODE_ENV production
 
 COPY --from=deps /usr/src/app .
 
-COPY packages/lib ./packages/lib
-COPY packages/app ./packages/app
+COPY apps/landing ./apps/landing
+COPY packages ./packages
 
-RUN npm run build -w packages/app
+
+RUN npm run build -w apps/landing
 
 
 FROM node:20-alpine AS runner
@@ -43,4 +50,4 @@ COPY --from=builder /usr/src/app .
 
 EXPOSE 3000
 
-CMD [ "npm", "start", "-w", "packages/app" ]
+CMD [ "npm", "start", "-w", "apps/landing" ]

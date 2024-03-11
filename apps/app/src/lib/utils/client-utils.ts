@@ -2,7 +2,7 @@ import { useRouter } from "next/navigation"
 import { toast } from "react-toastify"
 
 import { env } from "@/lib/env"
-import { logger } from "@lib/logger"
+import { logger } from "@next-boilerplate/lib/logger"
 import { TRPCClientErrorLike } from "@trpc/client"
 
 import { AppRouter } from "../../api/_app"

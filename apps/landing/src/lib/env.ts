@@ -1,6 +1,6 @@
 import { z } from "zod"
 
-import { logger } from "@lib/logger"
+import { logger } from "@next-boilerplate/lib/logger"
 import { createEnv } from "@t3-oss/env-nextjs"
 
 export const env = createEnv({

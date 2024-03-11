@@ -1,33 +1,38 @@
-import chalk from "chalk"
-import depcheck from "depcheck"
-import * as fs from "fs"
-import * as path from "path"
-import * as url from "url"
+import chalk from "chalk";
+import depcheck from "depcheck";
+import * as fs from "fs";
+import * as path from "path";
+import * as url from "url";
 
-import { logger } from "@lib/logger"
+import { logger } from "@next-boilerplate/lib/logger";
 
-const __dirname = url.fileURLToPath(new URL(".", import.meta.url))
-const rootPath = path.join(__dirname, "..")
-const appsRootPath = path.join(rootPath, "..", "apps")
+const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
+const rootPath = path.join(__dirname, "..");
+const appsRootPath = path.join(rootPath, "..", "apps");
 
-const packages = fs.readdirSync(rootPath)
-const apps = fs.readdirSync(appsRootPath)
+const packages = fs.readdirSync(rootPath);
+const apps = fs.readdirSync(appsRootPath);
 const packagesPath = packages
   .map((pkg) => path.join(rootPath, pkg))
-  .concat(apps.map((app) => path.join(appsRootPath, app)))
+  .concat(apps.map((app) => path.join(appsRootPath, app)));
 
 const options: { skipMissing: boolean; ignoreMatches: string[] } = {
   skipMissing: false,
   ignoreMatches: [],
-}
+};
 
 const main = async () => {
-  let message = ""
-  let hasError = false
+  let message = "";
+  let hasError = false;
   for (const pkg of packagesPath) {
-    logger.log(chalk.blue(`Checking ${pkg}...`))
+    logger.log(chalk.blue(`Checking ${pkg}...`));
     if (pkg === path.join(appsRootPath, "docs")) {
-      options.ignoreMatches.push("@docusaurus/preset-classic", "@mdx-js/react", "clsx", "prism-react-renderer")
+      options.ignoreMatches.push(
+        "@docusaurus/preset-classic",
+        "@mdx-js/react",
+        "clsx",
+        "prism-react-renderer"
+      );
     } else if (pkg === path.join(appsRootPath, "app")) {
       options.ignoreMatches.push(
         "@semantic-release/*",
@@ -39,27 +44,36 @@ const main = async () => {
         "@react-aria/visually-hidden",
         "cron",
         "autoprefixer",
-        "@lib/logger"
-      )
+        "@next-boilerplate/lib/logger"
+      );
     } else if (pkg === path.join(appsRootPath, "landing")) {
-      options.ignoreMatches.push("@types/react-dom", "@lib/logger")
+      options.ignoreMatches.push(
+        "@types/react-dom",
+        "@next-boilerplate/lib/logger"
+      );
     } else if (pkg === path.join(rootPath, "scripts")) {
-      options.ignoreMatches.push("env-setup", "packages-selection", "replace-tokens", "runtime", "@lib/logger")
+      options.ignoreMatches.push(
+        "env-setup",
+        "packages-selection",
+        "replace-tokens",
+        "runtime",
+        "@next-boilerplate/lib/logger"
+      );
     } else if (pkg === path.join(appsRootPath, "cron")) {
-      options.ignoreMatches.push("chalk", "@types/node")
+      options.ignoreMatches.push("chalk", "@types/node");
     } else if (pkg === path.join(rootPath, "lib")) {
-      continue
+      continue;
     }
     await depcheck(pkg, options).then(async (unused) => {
       const beautify = (arr: string[]) => {
         return arr
           .map((item) => {
-            return `  - ${item}`
+            return `  - ${item}`;
           })
-          .join("\n")
-      }
-      const hasUnused = unused.dependencies.length > 0
-      const hasMissing = Object.keys(unused.missing).length > 0
+          .join("\n");
+      };
+      const hasUnused = unused.dependencies.length > 0;
+      const hasMissing = Object.keys(unused.missing).length > 0;
       message += `${
         hasUnused
           ? `${chalk.red(pkg + " Unused dependencies:")}
@@ -71,25 +85,28 @@ const main = async () => {
       ? `${chalk.yellow(pkg + " Missing dependencies:")}
   ${beautify(Object.keys(unused.missing))}`
       : ""
-  }`
-      if (unused.dependencies.length > 0 || Object.keys(unused.missing).length > 0) {
-        hasError = true
+  }`;
+      if (
+        unused.dependencies.length > 0 ||
+        Object.keys(unused.missing).length > 0
+      ) {
+        hasError = true;
       }
-    })
-    logger.log(chalk.gray(`Done ${pkg}`))
+    });
+    logger.log(chalk.gray(`Done ${pkg}`));
   }
   if (hasError) {
-    logger.log(message)
-    process.exit(1)
+    logger.log(message);
+    process.exit(1);
   }
 
-  process.exit(0)
-}
+  process.exit(0);
+};
 
-main()
+main();
 
 process.on("SIGINT", function () {
-  logger.log("\n")
-  logger.log("Bye!")
-  process.exit()
-})
+  logger.log("\n");
+  logger.log("Bye!");
+  process.exit();
+});

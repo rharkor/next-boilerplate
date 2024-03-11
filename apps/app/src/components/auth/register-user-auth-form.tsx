@@ -15,7 +15,7 @@ import { trpc } from "@/lib/trpc/client"
 import { cn } from "@/lib/utils"
 import { handleMutationError } from "@/lib/utils/client-utils"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { logger } from "@lib/logger"
+import { logger } from "@next-boilerplate/lib/logger"
 import { Button } from "@nextui-org/react"
 
 import TotpVerificationModal from "../profile/totp/totp-verification-modal"
