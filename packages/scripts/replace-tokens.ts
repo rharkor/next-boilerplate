@@ -4,6 +4,7 @@
  */
 
 import chalk from "chalk";
+import { execSync } from "child_process";
 import * as fs from "fs";
 import { glob } from "glob";
 import inquirer from "inquirer";
@@ -167,6 +168,13 @@ export const replaceTokens = async () => {
 
         const rootDir = path.join(__dirname, "..", "..");
         await replaceInDirectory(rootDir);
+
+        // Reinstall dependencies
+        logger.log(chalk.blue("Reinstalling dependencies..."));
+        execSync("npm install", {
+          cwd: rootDir,
+        });
+        logger.log(chalk.gray("Done!"));
       }
     }
   }
