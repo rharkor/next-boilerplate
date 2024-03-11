@@ -117,10 +117,10 @@ const onlyFrontAppsAdaptaion: {
       removals: [
         '"deploy-db:prod": "prisma migrate deploy && npm run seed",',
         '"seed": "cross-env NODE_ENV=development tsx prisma/seed.ts",',
-        `"prisma": {
-        "schema": "prisma/schema.prisma",
-        "seed": "tsx prisma/seed.ts"
-      }`,
+        `  "prisma": {
+          "schema": "prisma/schema.prisma",
+          "seed": "tsx prisma/seed.ts"
+        }`,
       ],
       replacements: {
         '"start": "npm run deploy-db:prod && next start --port ${PORT:-3000}",':
