@@ -175,7 +175,9 @@ export const modulesSelection = async () => {
 
     // Adapt the files that are not needed anymore
     for (const { path: filePath, fileEdits } of onlyFrontAppsAdaptaion) {
-      const file = fs.readFileSync(path.join(rootDir, filePath)).toString();
+      const file = fs
+        .readFileSync(path.join(rootDir, filePath), "utf-8")
+        .toString();
       if ("newContent" in fileEdits) {
         fs.writeFileSync(
           path.join(rootDir, filePath),
@@ -183,12 +185,12 @@ export const modulesSelection = async () => {
         );
       } else {
         for (const removal of fileEdits.removals ?? []) {
-          file.replace(removal, "");
+          file.replaceAll(removal, "");
         }
         for (const [key, value] of Object.entries(
           fileEdits.replacements ?? {}
         )) {
-          file.replace(key, value);
+          file.replaceAll(key, value);
         }
         fs.writeFileSync(path.join(rootDir, filePath), file);
       }
