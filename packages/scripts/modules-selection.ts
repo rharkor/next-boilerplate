@@ -160,9 +160,7 @@ const onlyFrontAppsAdaptaion: {
           "superjson",
           "tsx",
           "ua-parser-js",
-        ].map(
-          (s) => new RegExp(`\\n\\s*"${s.replaceAll("/", "/")}"\:.*\,`, "g")
-        ),
+        ].map((s) => new RegExp(`\\n\\s*"${s}"\:.*\,`, "g")),
       ],
       replacements: {
         '"start": "npm run deploy-db:prod && next start --port ${PORT:-3000}",':
@@ -246,7 +244,7 @@ const noUiAppsAdaptaion: {
         "react-hook-form",
         "framer-motion",
         "@nextui-org/react",
-      ].map((s) => new RegExp(`\\n\\s*"${s.replaceAll("/", "/")}"\:.*\,`, "g")),
+      ].map((s) => new RegExp(`\\n\\s*"${s}"\:.*\,`, "g")),
     },
   },
 ];
