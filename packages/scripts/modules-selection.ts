@@ -244,6 +244,8 @@ const noUiAppsAdaptaion: {
         "lucide-react",
         "react-dropzone",
         "react-hook-form",
+        "framer-motion",
+        "@nextui-org/react",
       ].map((s) => new RegExp(`\\n\\s*"${s.replaceAll("/", "/")}"\:.*\,`, "g")),
     },
   },
