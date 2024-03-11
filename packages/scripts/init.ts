@@ -25,6 +25,17 @@ async function main() {
 
   if (!alreadyInitialized) {
     logger.log(chalk.green("Welcome to the init script!"));
+  }
+
+  if (!alreadyInitialized) {
+    logger.log(chalk.blue('Starting the "modules selection" script...'));
+    await modulesSelection();
+    logger.log(chalk.green("Done!"));
+  } else {
+    logger.log(chalk.gray("Skipping modulesSelection()"));
+  }
+
+  if (!alreadyInitialized) {
     logger.log(chalk.blue('Starting the "replace tokens" script...'));
     await replaceTokens();
     logger.log(chalk.green("Done!"));
@@ -39,10 +50,6 @@ async function main() {
   } else {
     logger.log(chalk.gray("Skipping packagesSelection()"));
   }
-
-  logger.log(chalk.blue('Starting the "modules selection" script...'));
-  await modulesSelection();
-  logger.log(chalk.green("Done!"));
 
   logger.log(chalk.blue('Starting the "env setup" script...'));
   await envSetup();

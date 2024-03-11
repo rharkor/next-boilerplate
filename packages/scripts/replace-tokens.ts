@@ -168,17 +168,19 @@ export const replaceTokens = async () => {
 
         const rootDir = path.join(__dirname, "..", "..");
         await replaceInDirectory(rootDir);
-
-        // Reinstall dependencies
-        logger.log(chalk.blue("Reinstalling dependencies..."));
-        execSync("rm -rf node_modules", {
-          cwd: rootDir,
-        });
-        execSync("npm install", {
-          cwd: rootDir,
-        });
-        logger.log(chalk.gray("Done!"));
       }
     }
   }
+
+  const rootDir = path.join(__dirname, "..", "..");
+  //? Reinstall dependencies
+  logger.log(chalk.blue("Reinstalling dependencies..."));
+  execSync("rm -rf node_modules", {
+    cwd: rootDir,
+  });
+  execSync("npm install", {
+    cwd: rootDir,
+    stdio: "inherit",
+  });
+  logger.log(chalk.gray("Done!"));
 };
