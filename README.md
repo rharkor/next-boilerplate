@@ -87,7 +87,13 @@ To get started with this boilerplate, follow these steps:
 git clone https://github.com/rharkor/next-boilerplate
 ```
 
-2. Initialize the project:
+2. Install the dependencies:
+
+```bash
+npm install
+```
+
+3. Initialize the project:
 
 ```bash
 npm run init
@@ -100,19 +106,19 @@ npm run init
 > git config core.hooksPath .git-hooks
 > ```
 
-1. Install the dependencies:
+4. Install the updated dependencies:
 
 ```bash
 npm install
 ```
 
-4. Run the development server:
+5. Run the development server:
 
 ```bash
 npm run dev
 ```
 
-5. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+6. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 ## 🗄️ Monorepo packages
 
