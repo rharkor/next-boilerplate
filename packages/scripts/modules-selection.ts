@@ -145,6 +145,12 @@ const onlyFrontAppsAdaptaion: {
         "aW1wb3J0IE5hdlNldHRpbmdzIGZyb20gIkAvY29tcG9uZW50cy9uYXYtc2V0dGluZ3MiCmltcG9ydCB7IExvY2FsZSB9IGZyb20gIkAvbGliL2kxOG4tY29uZmlnIgppbXBvcnQgeyBnZXREaWN0aW9uYXJ5IH0gZnJvbSAiQC9saWIvbGFuZ3MiCgpleHBvcnQgZGVmYXVsdCBhc3luYyBmdW5jdGlvbiBIb21lKHsKICBwYXJhbXM6IHsgbGFuZyB9LAp9OiB7CiAgcGFyYW1zOiB7CiAgICBsYW5nOiBMb2NhbGUKICB9Cn0pIHsKICBjb25zdCBkaWN0aW9uYXJ5ID0gYXdhaXQgZ2V0RGljdGlvbmFyeShsYW5nKQoKICByZXR1cm4gKAogICAgPG1haW4gY2xhc3NOYW1lPSJjb250YWluZXIgbS1hdXRvIGZsZXggbWluLWgtc2NyZWVuIGZsZXgtMSBmbGV4LWNvbCBpdGVtcy1jZW50ZXIganVzdGlmeS1jZW50ZXIgZ2FwLTMiPgogICAgICA8TmF2U2V0dGluZ3MgbGFuZz17bGFuZ30gLz4KICAgICAgPGgxIGNsYXNzTmFtZT0idGV4dC00eGwgZm9udC1ib2xkIj57ZGljdGlvbmFyeS5ob21lUGFnZS50aXRsZX08L2gxPgogICAgPC9tYWluPgogICkKfQo=",
     },
   },
+  {
+    path: "apps/app/next.config.mjs",
+    fileEdits: {
+      removals: [new RegExp(/redirects\(\)\s{(\n|.)*},/, "g")],
+    },
+  },
 ];
 
 export const modulesSelection = async () => {
