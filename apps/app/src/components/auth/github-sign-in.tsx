@@ -11,7 +11,7 @@ export default function GithubSignIn({
   handleSignIn,
 }: {
   providerId: string
-  handleSignIn: ({ depth, otp, providerId }: { depth?: number; otp?: string; providerId: string }) => Promise<void>
+  handleSignIn: ({ depth, otp, providerId }: { depth?: number; otp?: string; providerId: string }) => Promise<boolean>
 }) {
   const [isLoading, setIsLoading] = useState(false)
 
@@ -21,9 +21,11 @@ export default function GithubSignIn({
         variant="ghost"
         color="primary"
         type="button"
-        onClick={() => {
+        onPress={async () => {
           setIsLoading(true)
-          handleSignIn({ providerId }).finally(() => setIsLoading(false))
+          const res = await handleSignIn({ providerId })
+          // If not a success
+          if (!res) setIsLoading(false)
         }}
         isDisabled={isLoading}
       >

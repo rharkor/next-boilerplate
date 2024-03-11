@@ -24,7 +24,7 @@ export default async function Recover2FA({
       <NavSettings lang={lang} />
       <h1 className="text-2xl font-semibold tracking-tight">{dictionary.recover2FA}</h1>
       <Recover2FAForm email={email} />
-      <Link href={authRoutes.signIn[0]} className="text-muted-foreground hover:text-primary text-sm">
+      <Link href={authRoutes.signIn[0]} className="text-sm text-muted-foreground hover:text-primary">
         {dictionary.goToSignInPage}
       </Link>
     </main>

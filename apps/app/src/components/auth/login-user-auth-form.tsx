@@ -120,7 +120,7 @@ export function LoginUserAuthForm({ searchParams, ...props }: UserAuthFormProps)
           autoCorrect="off"
           isDisabled={isLoading}
         />
-        <Link className="text-muted-foreground hover:text-primary ml-auto text-sm" href={"/forgot-password"}>
+        <Link className="ml-auto text-sm text-muted-foreground hover:text-primary" href={"/forgot-password"}>
           {dictionary.forgotPassword}
         </Link>
         <Button type="submit" isLoading={isLoading} color="primary">

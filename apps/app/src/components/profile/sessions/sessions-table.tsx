@@ -74,14 +74,16 @@ export default function SessionsTable() {
       <ul className="flex flex-col space-y-4 overflow-hidden overflow-x-auto">
         {activeSessions.isFetched ? rows : skelRows}
       </ul>
-      <Pagination
-        className={cn("ml-auto max-h-[50px] max-w-full overflow-y-hidden transition-all duration-300", {
-          "!m-0 max-h-0 p-0": !showPagination,
-        })}
-        total={meta?.totalPages ?? 1}
-        page={meta?.page ?? 1}
-        onChange={setCurrentPage}
-      />
+      {meta && (
+        <Pagination
+          className={cn("ml-auto max-h-[50px] max-w-full overflow-y-hidden transition-all duration-300", {
+            "!m-0 max-h-0 p-0": !showPagination,
+          })}
+          total={meta.totalPages}
+          page={meta.page}
+          onChange={setCurrentPage}
+        />
+      )}
       <Modal isOpen={!!selectedSession} onOpenChange={(open) => !open && setSelectedSession(null)}>
         <ModalContent>
           {(onClose) => (
@@ -106,7 +108,7 @@ export default function SessionsTable() {
       </Modal>
       {isDisabled && (
         <div className="absolute -inset-2 !mt-0 flex flex-col items-center justify-center backdrop-blur-sm">
-          <p className="text-muted-foreground text-sm font-semibold">{dictionary.errors.unavailableWithOAuth}</p>
+          <p className="text-sm font-semibold text-muted-foreground">{dictionary.errors.unavailableWithOAuth}</p>
         </div>
       )}
     </div>

@@ -33,7 +33,7 @@ export const handleSignIn = async ({
   depth?: number
   getOtpCode: () => Promise<string | null>
 }) => {
-  return new Promise<void | boolean>(async (resolve, reject) => {
+  return new Promise<boolean>(async (resolve, reject) => {
     logger.debug("Signing in with credentials", data)
     try {
       const res = await signIn("credentials", {
@@ -50,7 +50,7 @@ export const handleSignIn = async ({
         //? Refreshing the router is necessary due to next.js client cache, see: https://nextjs.org/docs/app/building-your-application/caching
         // router.refresh()
         */
-        resolve()
+        resolve(true)
       } else {
         if (res.error === "OTP_REQUIRED") {
           logger.debug("OTP_REQUIRED")
@@ -61,7 +61,7 @@ export const handleSignIn = async ({
           if (otp === null) {
             return
           }
-          await handleSignIn({
+          const res = await handleSignIn({
             data: { ...data, otp },
             callbackUrl,
             router,
@@ -69,7 +69,7 @@ export const handleSignIn = async ({
             depth: depth + 1,
             getOtpCode,
           })
-          resolve()
+          resolve(res)
           return
         } else if (res.error === "OTP_INVALID") {
           throw new Error(dictionary.errors.otpInvalid)
@@ -92,7 +92,7 @@ export const handleSignIn = async ({
       }
       reject(error)
     } finally {
-      resolve()
+      resolve(false)
     }
   })
 }

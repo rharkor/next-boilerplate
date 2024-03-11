@@ -25,7 +25,7 @@ export default function Providers({
     redirect(callbackUrl)
   }
 
-  async function handleSignIn({ providerId }: { providerId: string }) {
+  async function handleSignIn({ providerId }: { providerId: string }): Promise<boolean> {
     try {
       const res = await signIn(providerId, {
         callbackUrl: `${window.location.origin}${authRoutes.redirectAfterSignIn}`,
@@ -41,6 +41,7 @@ export default function Providers({
           }
         }
       }
+      return true
       //? Do not setIsLoading(false) here because the user will be redirected to profile
     } catch (error) {
       logger.error(error)
@@ -49,6 +50,7 @@ export default function Providers({
       } else {
         toast(dictionary.errors.unknownError)
       }
+      return false
     }
   }
 

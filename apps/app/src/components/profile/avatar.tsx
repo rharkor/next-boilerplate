@@ -110,7 +110,7 @@ export default function UpdateAvatar({ account }: { account: ReturnType<typeof u
       <div className={cn("group relative h-20 w-20 rounded-full")}>
         <Skeleton isLoaded={!account.isLoading} className={cn("rounded-full")}>
           <Avatar
-            className="text-large !size-20"
+            className="!size-20 text-large"
             src={getImageUrl(account.data?.user.image) || undefined}
             name={account.data?.user.username || undefined}
             onClick={() => setShowModal(true)}
@@ -118,7 +118,7 @@ export default function UpdateAvatar({ account }: { account: ReturnType<typeof u
         </Skeleton>
         <Button
           className={cn(
-            "upload-group bg-muted/10 group absolute inset-0 flex h-[unset] cursor-pointer items-center justify-center overflow-hidden rounded-full opacity-0 backdrop-blur-sm transition-all duration-200",
+            "upload-group group absolute inset-0 flex h-[unset] cursor-pointer items-center justify-center overflow-hidden rounded-full bg-muted/10 opacity-0 backdrop-blur-sm transition-all duration-200",
             "focus:opacity-100 group-hover:opacity-100 group-focus:opacity-100",
             {
               hidden: account.isLoading,
@@ -126,12 +126,12 @@ export default function UpdateAvatar({ account }: { account: ReturnType<typeof u
           )}
           onPress={() => setShowModal(true)}
         >
-          <Camera className="duration-250 size-8 transition-all group-[.upload-group]:active:scale-95" />
+          <Camera className="size-8 transition-all duration-250 group-[.upload-group]:active:scale-95" />
         </Button>
         <Button
           color="danger"
           className={cn(
-            "text-foreground absolute right-0 top-0 h-[unset] min-w-0 rounded-full p-1.5 opacity-0 transition-all duration-200 focus:opacity-100 group-hover:opacity-100 group-focus:opacity-100",
+            "absolute right-0 top-0 h-[unset] min-w-0 rounded-full p-1.5 text-foreground opacity-0 transition-all duration-200 focus:opacity-100 group-hover:opacity-100 group-focus:opacity-100",
             {
               hidden: account.isLoading || !account.data?.user.image,
             }

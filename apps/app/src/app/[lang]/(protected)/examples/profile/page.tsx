@@ -32,7 +32,7 @@ export default async function Profile({
           </CardHeader>
           <CardBody>
             <p className="text-muted-foreground">{dictionary.profilePage.serverSideData}</p>
-            <pre className="bg-muted mt-2 w-[40rem] max-w-full overflow-auto rounded p-2">
+            <pre className="mt-2 w-[40rem] max-w-full overflow-auto rounded bg-muted p-2">
               {JSON.stringify(session, null, 2)}
             </pre>
             <div className="mt-4 flex flex-col items-center space-y-2 md:mr-0 md:w-full md:flex-row md:justify-end md:space-x-2 md:space-y-0">
