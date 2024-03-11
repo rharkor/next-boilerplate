@@ -14,6 +14,12 @@ const packages = fs.readdirSync(rootPath);
 const apps = fs.readdirSync(appsRootPath);
 const packagesPath = packages
   .map((pkg) => path.join(rootPath, pkg))
+  .flatMap((pkg) => {
+    if (pkg.includes("packages/configs")) {
+      const subPackages = fs.readdirSync(pkg);
+      return subPackages.map((subPkg) => path.join(pkg, subPkg));
+    } else return pkg;
+  })
   .concat(apps.map((app) => path.join(appsRootPath, app)));
 
 const options: { skipMissing: boolean; ignoreMatches: string[] } = {
@@ -63,7 +69,21 @@ const main = async () => {
       options.ignoreMatches.push("chalk", "@types/node");
     } else if (pkg === path.join(rootPath, "lib")) {
       continue;
+    } else if (pkg === path.join(rootPath, "configs", "eslint")) {
+      options.ignoreMatches.push(
+        "next",
+        "@typescript-eslint/eslint-plugin",
+        "@typescript-eslint/parser",
+        "eslint",
+        "eslint-config-next",
+        "eslint-config-prettier",
+        "eslint-config-react-app",
+        "eslint-plugin-simple-import-sort",
+        "eslint-plugin-tailwindcss",
+        "eslint-plugin-unused-imports"
+      );
     }
+
     await depcheck(pkg, options).then(async (unused) => {
       const beautify = (arr: string[]) => {
         return arr
