@@ -197,6 +197,8 @@ const noUiToRemove = [
   "apps/app/src/components/icons.tsx",
   "apps/app/src/components/theme/theme-switch.tsx",
   "apps/app/src/components/nav-settings.tsx",
+  "apps/app/src/app/[lang]/not-found.tsx",
+  "apps/app/src/app/[lang]/error.tsx",
 ];
 
 const noUiAppsAdaptaion: {
@@ -218,6 +220,13 @@ const noUiAppsAdaptaion: {
     },
   },
   {
+    path: "apps/app/tailwind.config.js",
+    fileEdits: {
+      newContent:
+        "aW1wb3J0ICogYXMgcGF0aCBmcm9tICJwYXRoIgoKLyoqIEB0eXBlIHtpbXBvcnQoJ3RhaWx3aW5kY3NzJykuQ29uZmlnfSAqLwptb2R1bGUuZXhwb3J0cyA9IHsKICBjb250ZW50OiBbCiAgICAuLi5bInBhZ2VzLyoqLyoue3RzLHRzeH0iLCAiY29tcG9uZW50cy8qKi8qLnt0cyx0c3h9IiwgImFwcC8qKi8qLnt0cyx0c3h9IiwgInNyYy8qKi8qLnt0cyx0c3h9Il0ubWFwKChwKSA9PgogICAgICBwYXRoLmpvaW4oX19kaXJuYW1lLCBwKQogICAgKSwKICBdLAogIHRoZW1lOiB7CiAgICBleHRlbmQ6IHsKICAgICAgY29sb3JzOiB7CiAgICAgIH0sCiAgICB9LAogIH0sCiAgZGFya01vZGU6ICJjbGFzcyIsCn0K",
+    },
+  },
+  {
     path: "apps/app/src/app/[lang]/providers.tsx",
     fileEdits: {
       removals: [
@@ -225,6 +234,17 @@ const noUiAppsAdaptaion: {
         "<UIProvider>",
         "</UIProvider>",
       ],
+    },
+  },
+  {
+    path: "apps/app/package.json",
+    fileEdits: {
+      removals: [
+        "@types/react-dom",
+        "lucide-react",
+        "react-dropzone",
+        "react-hook-form",
+      ].map((s) => new RegExp(`\\n\\s*"${s.replaceAll("/", "/")}"\:.*\,`, "g")),
     },
   },
 ];
