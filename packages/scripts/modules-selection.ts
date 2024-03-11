@@ -153,6 +153,38 @@ const onlyFrontAppsAdaptaion: {
   },
 ];
 
+const noUiToRemove = ["apps/app/src/app/[lang]/ui-provider.tsx"];
+
+const noUiAppsAdaptaion: {
+  path: string;
+  fileEdits:
+    | {
+        newContent: string;
+      }
+    | {
+        removals?: (string | RegExp)[];
+        replacements?: { [key: string]: string };
+      };
+}[] = [
+  {
+    path: "apps/app/src/app/[lang]/(not-protected)/page.tsx",
+    fileEdits: {
+      newContent:
+        "aW1wb3J0IHsgTG9jYWxlIH0gZnJvbSAiQC9saWIvaTE4bi1jb25maWciCmltcG9ydCB7IGdldERpY3Rpb25hcnkgfSBmcm9tICJAL2xpYi9sYW5ncyIKCmV4cG9ydCBkZWZhdWx0IGFzeW5jIGZ1bmN0aW9uIEhvbWUoewogIHBhcmFtczogeyBsYW5nIH0sCn06IHsKICBwYXJhbXM6IHsKICAgIGxhbmc6IExvY2FsZQogIH0KfSkgewogIGNvbnN0IGRpY3Rpb25hcnkgPSBhd2FpdCBnZXREaWN0aW9uYXJ5KGxhbmcpCgogIHJldHVybiAoCiAgICA8bWFpbiBjbGFzc05hbWU9ImNvbnRhaW5lciBtLWF1dG8gZmxleCBtaW4taC1zY3JlZW4gZmxleC0xIGZsZXgtY29sIGl0ZW1zLWNlbnRlciBqdXN0aWZ5LWNlbnRlciBnYXAtMyI+CiAgICAgIDxoMSBjbGFzc05hbWU9InRleHQtNHhsIGZvbnQtYm9sZCI+e2RpY3Rpb25hcnkuaG9tZVBhZ2UudGl0bGV9PC9oMT4KICAgIDwvbWFpbj4KICApCn0=",
+    },
+  },
+  {
+    path: "apps/app/src/app/[lang]/providers.tsx",
+    fileEdits: {
+      removals: [
+        'import UIProvider from "./ui-provider"',
+        "<UIProvider>",
+        "</UIProvider>",
+      ],
+    },
+  },
+];
+
 export const modulesSelection = async () => {
   const { onlyFront } = await inquirer.prompt<{ onlyFront: boolean }>([
     {
@@ -208,5 +240,50 @@ export const modulesSelection = async () => {
       }
     }
     logger.log(chalk.gray("Adapted unnecessary files!"));
+
+    const { noUi } = await inquirer.prompt<{ noUi: boolean }>([
+      {
+        type: "confirm",
+        name: "noUi",
+        message: "Do you want to remove the UI from the app?",
+        default: false,
+      },
+    ]);
+
+    if (noUi) {
+      // Remove the files that are not needed anymore
+      await Promise.all(
+        noUiToRemove.map((file) =>
+          fs.promises.rm(path.join(rootDir, file), {
+            recursive: true,
+          })
+        )
+      );
+      logger.log(chalk.gray("Removed unnecessary files!"));
+
+      // Adapt the files that are not needed anymore
+      for (const { path: filePath, fileEdits } of noUiAppsAdaptaion) {
+        let file = fs
+          .readFileSync(path.join(rootDir, filePath), "utf-8")
+          .toString();
+        if ("newContent" in fileEdits) {
+          fs.writeFileSync(
+            path.join(rootDir, filePath),
+            Buffer.from(fileEdits.newContent, "base64").toString()
+          );
+        } else {
+          for (const removal of fileEdits.removals ?? []) {
+            file = file.replaceAll(removal, "");
+          }
+          for (const [key, value] of Object.entries(
+            fileEdits.replacements ?? {}
+          )) {
+            file = file.replaceAll(key, value);
+          }
+          fs.writeFileSync(path.join(rootDir, filePath), file);
+        }
+      }
+      logger.log(chalk.gray("Adapted unnecessary files!"));
+    }
   }
 };
