@@ -7,7 +7,7 @@ import { toast } from "react-toastify"
 import { useAccount } from "@/contexts/account"
 import { useDictionary } from "@/contexts/dictionary/utils"
 import { trpc } from "@/lib/trpc/client"
-import { logger } from "@lib/logger"
+import { logger } from "@next-boilerplate/lib/logger"
 import { Button } from "@nextui-org/react"
 
 export default function VerifyEmailButton({ session }: { session: Session }) {

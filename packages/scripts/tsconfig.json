@@ -14,10 +14,7 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "incremental": true,
-    "baseUrl": ".",
-    "paths": {
-      "@lib/*": ["../lib/*"]
-    }
+    "baseUrl": "."
   },
   "include": ["**/*.ts", ".eslintrc.js"],
   "exclude": ["node_modules"]

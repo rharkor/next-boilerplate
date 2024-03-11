@@ -1,7 +1,7 @@
 import { createTransport } from "nodemailer"
 
 import { env } from "@/lib/env"
-import { logger } from "@lib/logger"
+import { logger } from "@next-boilerplate/lib/logger"
 
 import { ApiError } from "./utils/server-utils"
 

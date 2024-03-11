@@ -8,7 +8,7 @@ import { toast } from "react-toastify"
 import GithubSignIn from "@/components/auth/github-sign-in"
 import { authRoutes } from "@/constants/auth"
 import { useDictionary } from "@/contexts/dictionary/utils"
-import { logger } from "@lib/logger"
+import { logger } from "@next-boilerplate/lib/logger"
 
 export default function Providers({
   searchParams,

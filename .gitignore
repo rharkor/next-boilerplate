@@ -36,3 +36,10 @@ yarn-error.log*
 build/**
 dist/**
 .next/**
+
+output.json
+*.terraform*
+!.terraform.lock.hcl
+!terraform.tfstate
+*.tfstate.backup
+.auto.tfvars.json

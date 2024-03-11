@@ -3,7 +3,7 @@ import base32Encode from "base32-encode"
 import { z } from "zod"
 
 import { Path } from "@/types"
-import { logger } from "@lib/logger"
+import { logger } from "@next-boilerplate/lib/logger"
 import { Prisma } from "@prisma/client"
 import { TRPCError } from "@trpc/server"
 import { TRPC_ERROR_CODE_KEY } from "@trpc/server/rpc"

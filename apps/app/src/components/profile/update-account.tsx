@@ -11,7 +11,7 @@ import { useDictionary } from "@/contexts/dictionary/utils"
 import { env } from "@/lib/env"
 import { trpc } from "@/lib/trpc/client"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { logger } from "@lib/logger"
+import { logger } from "@next-boilerplate/lib/logger"
 
 import FormField from "../ui/form"
 import NeedSavePopup from "../ui/need-save-popup"

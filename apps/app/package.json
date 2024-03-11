@@ -75,7 +75,8 @@
     "zod": "^3.21.4",
     "eslint-config-custom": "*",
     "tsconfig": "*",
-    "custom-prettier-config": "*"
+    "custom-prettier-config": "*",
+    "@next-boilerplate/lib": "*"
   },
   "devDependencies": {
     "@babel/core": "^7.22.17",
