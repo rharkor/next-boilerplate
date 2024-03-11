@@ -60,6 +60,14 @@ export const replaceTokens = async () => {
         name: "token",
         message: `What is the value of ${token}?`,
         prefix: `🔑 [${i + 1}/${allTokens.length}]`,
+        validate: (input) => {
+          // Slug
+          if (token === "PROJECT_NAME") {
+            if (!/^[a-z0-9-]+$/.test(input))
+              return "The project name must be a slug";
+          }
+          return true;
+        },
       },
     ]);
     allTokensValues[token] = answers.token;
