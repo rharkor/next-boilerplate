@@ -35,5 +35,6 @@
     "semantic-release": "^23.0.0",
     "turbo": "^1.12.5"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "version": "3.7.0-rec-release.1"
 }
