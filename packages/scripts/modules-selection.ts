@@ -160,7 +160,9 @@ const onlyFrontAppsAdaptaion: {
           "superjson",
           "tsx",
           "ua-parser-js",
-        ].map((s) => new RegExp(`\n\s*"${s.replaceAll("/", "/")}"\:.*\,`, "g")),
+        ].map(
+          (s) => new RegExp(`\\n\\s*"${s.replaceAll("/", "/")}"\:.*\,`, "g")
+        ),
       ],
       replacements: {
         '"start": "npm run deploy-db:prod && next start --port ${PORT:-3000}",':
