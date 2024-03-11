@@ -32,18 +32,13 @@
     },
     "6379": {
       "label": "redis"
-    },
-    "6080": {
-      "label": "desktop"
     }
   },
 
   // Use 'postCreateCommand' to run commands after the container is created.
   "postCreateCommand": "bash ./packages/scripts/install/install.sh",
 
-  // Configure tool-specific properties.
   "customizations": {
-    "postCreateCommand": "bash ./packages/scripts/install/install.sh",
     "vscode": {
       "extensions": [
         "formulahendry.auto-rename-tag",
@@ -73,9 +68,6 @@
         "hashicorp.terraform"
       ]
     }
-  },
-  "features": {
-    "ghcr.io/devcontainers/features/desktop-lite:1": {}
   }
 
   // Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
