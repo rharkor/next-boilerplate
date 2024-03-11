@@ -153,7 +153,15 @@ const onlyFrontAppsAdaptaion: {
   },
 ];
 
-const noUiToRemove = ["apps/app/src/app/[lang]/ui-provider.tsx"];
+const noUiToRemove = [
+  "apps/app/src/app/[lang]/ui-provider.tsx",
+  "apps/app/src/components/ui",
+  "apps/app/src/components/auto-refresh.tsx",
+  "apps/app/src/components/locale-switcher.tsx",
+  "apps/app/src/components/icons.tsx",
+  "apps/app/src/components/theme/theme-switch.tsx",
+  "apps/app/src/components/nav-settings.tsx",
+];
 
 const noUiAppsAdaptaion: {
   path: string;
