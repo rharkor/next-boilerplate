@@ -20,6 +20,127 @@ const dockerComposePaths = [
   path.join(rootDir, ".devcontainer", "docker-compose.yml"),
 ];
 
+const onlyFrontToRemove = [
+  "apps/app/prisma",
+  "apps/app/src/api",
+  "apps/app/src/app/api/auth",
+  "apps/app/src/app/api/trpc",
+  "apps/app/src/app/[lang]/(protected)",
+  "apps/app/src/app/[lang]/(sys-auth)",
+  "apps/app/src/components/auth",
+  "apps/app/src/components/profile",
+  "apps/app/src/constants/auth.ts",
+  "apps/app/src/constants/rate-limit.ts",
+  "apps/app/src/contexts/account.tsx",
+  "apps/app/src/contexts/active-sessions.tsx",
+  "apps/app/src/lib/auth",
+  "apps/app/src/lib/server",
+  "apps/app/src/lib/templates",
+  "apps/app/src/lib/trpc",
+  "apps/app/src/lib/utils/client-utils.ts",
+  "apps/app/src/lib/utils/server-utils.ts",
+  "apps/app/src/lib/bcrypt.ts",
+  "apps/app/src/lib/mailer.ts",
+  "apps/app/src/lib/prisma.ts",
+  "apps/app/src/lib/queries-options.ts",
+  "apps/app/src/lib/rate-limit.ts",
+  "apps/app/src/lib/redis.ts",
+  "apps/app/src/lib/s3.ts",
+  "apps/app/src/types/auth.d.ts",
+  "apps/app/src/types/api.d.ts",
+  "apps/app/types.d.ts",
+];
+
+const onlyFrontAppsAdaptaion: {
+  path: string;
+  fileEdits:
+    | {
+        newContent: string;
+      }
+    | {
+        removals?: string[];
+        replacements?: { [key: string]: string };
+      };
+}[] = [
+  {
+    path: "apps/app/src/lib/utils/server-utils.ts",
+    fileEdits: {
+      newContent:
+        "aW1wb3J0IHsgdHlwZSBDbGFzc1ZhbHVlLCBjbHN4IH0gZnJvbSAiY2xzeCIKaW1wb3J0IHsgdHdNZXJnZSB9IGZyb20gInRhaWx3aW5kLW1lcmdlIgoKZXhwb3J0IGZ1bmN0aW9uIGNuKC4uLmlucHV0czogQ2xhc3NWYWx1ZVtdKSB7CiAgcmV0dXJuIHR3TWVyZ2UoY2xzeChpbnB1dHMpKQp9CgpleHBvcnQgZnVuY3Rpb24gYnl0ZXNUb01lZ2FieXRlcyhieXRlczogbnVtYmVyLCByb3VuZD86IGJvb2xlYW4pOiBudW1iZXIgewogIGNvbnN0IG1lZ2FieXRlcyA9IGJ5dGVzIC8gKDEwMjQgKiAxMDI0KQogIGlmIChyb3VuZCkgcmV0dXJuIE1hdGgucm91bmQobWVnYWJ5dGVzICogMTAwKSAvIDEwMAogIHJldHVybiBtZWdhYnl0ZXMKfQoKZXhwb3J0IGZ1bmN0aW9uIGNodW5rPFQ+KGFycmF5OiBUW10sIHNpemU6IG51bWJlcik6IFRbXVtdIHsKICBjb25zdCByZXN1bHQ6IFRbXVtdID0gW10KCiAgZm9yIChsZXQgaSA9IDA7IGkgPCBhcnJheS5sZW5ndGg7IGkgKz0gc2l6ZSkgewogICAgcmVzdWx0LnB1c2goYXJyYXkuc2xpY2UoaSwgaSArIHNpemUpKQogIH0KCiAgcmV0dXJuIHJlc3VsdAp9CgpleHBvcnQgZnVuY3Rpb24gc3RyaW5nVG9TbHVnKHN0cmluZzogc3RyaW5nKTogc3RyaW5nIHsKICByZXR1cm4gc3RyaW5nCiAgICAudG9Mb3dlckNhc2UoKQogICAgLnJlcGxhY2UoL1teXHcgLV0rL2csICIiKQogICAgLnJlcGxhY2UoLyArL2csICItIikKfQoKZXhwb3J0IGZ1bmN0aW9uIHNsZWVwKG1zOiBudW1iZXIpIHsKICByZXR1cm4gbmV3IFByb21pc2UoKHJlc29sdmUpID0+IHNldFRpbWVvdXQocmVzb2x2ZSwgbXMpKQp9",
+    },
+  },
+  {
+    path: "apps/app/src/types/index.d.ts",
+    fileEdits: {
+      newContent:
+        "ZXhwb3J0IHR5cGUgVmFsdWVPZjxUPiA9IFRba2V5b2YgVF0KCmV4cG9ydCB0eXBlIFBhdGg8VCwgUHJlZml4IGV4dGVuZHMgc3RyaW5nID0gIiI+ID0gVCBleHRlbmRzIG9iamVjdAogID8gewogICAgICBbSyBpbiBrZXlvZiBUXS0/OiBLIGV4dGVuZHMgc3RyaW5nCiAgICAgICAgPyBgJHtQcmVmaXh9JHtQcmVmaXggZXh0ZW5kcyAiIiA/ICIiIDogIi4ifSR7S31gIHwgUGF0aDxUW0tdLCBgJHtQcmVmaXh9JHtQcmVmaXggZXh0ZW5kcyAiIiA/ICIiIDogIi4ifSR7S31gPgogICAgICAgIDogbmV2ZXIKICAgIH1ba2V5b2YgVF0KICA6IG5ldmVy",
+    },
+  },
+  {
+    path: "apps/app/.env.example",
+    fileEdits: {
+      newContent:
+        "UkVBQ1RfRURJVE9SPWNvZGUKTkVYVF9URUxFTUVUUllfRElTQUJMRUQ9MQpFTlY9ZGV2ZWxvcG1lbnQ=",
+    },
+  },
+  {
+    path: "apps/app/Dockerfile",
+    fileEdits: {
+      removals: [
+        "COPY packages/app/prisma/schema.prisma ./packages/app/prisma/schema.prisma",
+      ],
+    },
+  },
+  {
+    path: "apps/app/src/lib/env.ts",
+    fileEdits: {
+      newContent:
+        "aW1wb3J0IHsgY29uZmlnIH0gZnJvbSAiZG90ZW52IgppbXBvcnQgeyB6IH0gZnJvbSAiem9kIgoKaW1wb3J0IHsgbG9nZ2VyIH0gZnJvbSAiQG5leHQtYm9pbGVycGxhdGUvbGliL2xvZ2dlciIKaW1wb3J0IHsgY3JlYXRlRW52IH0gZnJvbSAiQHQzLW9zcy9lbnYtbmV4dGpzIgoKaWYgKCFwcm9jZXNzLmVudi5FTlYpIHsKICBjb25maWcoKQp9CgpleHBvcnQgY29uc3QgZW52ID0gY3JlYXRlRW52KHsKICBzZXJ2ZXI6IHsKICAgIEFOQUxZWkU6IHoKICAgICAgLmVudW0oWyJ0cnVlIiwgImZhbHNlIl0pCiAgICAgIC5vcHRpb25hbCgpCiAgICAgIC50cmFuc2Zvcm0oKHZhbHVlKSA9PiB2YWx1ZSA9PT0gInRydWUiKSwKICAgIEVOVjogei5lbnVtKFsiZGV2ZWxvcG1lbnQiLCAic3RhZ2luZyIsICJwcmVwcm9kdWN0aW9uIiwgInByb2R1Y3Rpb24iXSksCiAgfSwKICBjbGllbnQ6IHsKICB9LAogIHJ1bnRpbWVFbnY6IHsKICAgIEFOQUxZWkU6IHByb2Nlc3MuZW52LkFOQUxZWkUsCiAgICBFTlY6IHByb2Nlc3MuZW52LkVOViwKICB9LAogIG9uVmFsaWRhdGlvbkVycm9yOiAoZXJyb3IpID0+IHsKICAgIGxvZ2dlci5lcnJvcihlcnJvcikKICAgIHRocm93ICJJbnZhbGlkIGVudmlyb25tZW50IHZhcmlhYmxlcyIKICB9LAp9KQ==",
+    },
+  },
+  {
+    path: "apps/app/src/app/[lang]/providers.tsx",
+    fileEdits: {
+      removals: [
+        'import { NextAuthProvider } from "@/components/auth/provider"',
+        'import TrpcProvider from "@/lib/trpc/provider"',
+        "<NextAuthProvider>",
+        "<TrpcProvider>",
+        "</TrpcProvider>",
+        "</NextAuthProvider>",
+      ],
+    },
+  },
+  {
+    path: "apps/app/package.json",
+    fileEdits: {
+      removals: [
+        '"deploy-db:prod": "prisma migrate deploy && npm run seed",',
+        '"seed": "cross-env NODE_ENV=development tsx prisma/seed.ts",',
+        `"prisma": {
+        "schema": "prisma/schema.prisma",
+        "seed": "tsx prisma/seed.ts"
+      }`,
+      ],
+      replacements: {
+        '"start": "npm run deploy-db:prod && next start --port ${PORT:-3000}",':
+          '"start": "next start --port ${PORT:-3000}",',
+        '"dev": "npm run is-initialized && prisma migrate dev && cross-env FORCE_COLOR=1 next dev",':
+          '"dev": "npm run is-initialized && cross-env FORCE_COLOR=1 next dev",',
+        '"postinstall": "patch-package && prisma generate",':
+          '"postinstall": "patch-package",',
+      },
+    },
+  },
+  {
+    path: "apps/app/src/app/[lang]/(not-protected)/page.tsx",
+    fileEdits: {
+      newContent:
+        "aW1wb3J0IE5hdlNldHRpbmdzIGZyb20gIkAvY29tcG9uZW50cy9uYXYtc2V0dGluZ3MiCmltcG9ydCB7IExvY2FsZSB9IGZyb20gIkAvbGliL2kxOG4tY29uZmlnIgppbXBvcnQgeyBnZXREaWN0aW9uYXJ5IH0gZnJvbSAiQC9saWIvbGFuZ3MiCgpleHBvcnQgZGVmYXVsdCBhc3luYyBmdW5jdGlvbiBIb21lKHsKICBwYXJhbXM6IHsgbGFuZyB9LAp9OiB7CiAgcGFyYW1zOiB7CiAgICBsYW5nOiBMb2NhbGUKICB9Cn0pIHsKICBjb25zdCBkaWN0aW9uYXJ5ID0gYXdhaXQgZ2V0RGljdGlvbmFyeShsYW5nKQoKICByZXR1cm4gKAogICAgPG1haW4gY2xhc3NOYW1lPSJjb250YWluZXIgbS1hdXRvIGZsZXggbWluLWgtc2NyZWVuIGZsZXgtMSBmbGV4LWNvbCBpdGVtcy1jZW50ZXIganVzdGlmeS1jZW50ZXIgZ2FwLTMiPgogICAgICA8TmF2U2V0dGluZ3MgbGFuZz17bGFuZ30gLz4KICAgICAgPGgxIGNsYXNzTmFtZT0idGV4dC00eGwgZm9udC1ib2xkIj57ZGljdGlvbmFyeS5ob21lUGFnZS50aXRsZX08L2gxPgogICAgPC9tYWluPgogICkKfQo=",
+    },
+  },
+];
+
 export const modulesSelection = async () => {
   const { onlyFront } = await inquirer.prompt<{ onlyFront: boolean }>([
     {
@@ -41,5 +162,35 @@ export const modulesSelection = async () => {
       fs.writeFileSync(dockerComposePath, YAML.stringify(dockerComposeYaml));
     }
     logger.log(chalk.gray("Removed docker-compose services!"));
+
+    // Remove the files that are not needed anymore
+    await Promise.all(
+      onlyFrontToRemove.map((file) =>
+        fs.promises.unlink(path.join(rootDir, file))
+      )
+    );
+    logger.log(chalk.gray("Removed unnecessary files!"));
+
+    // Adapt the files that are not needed anymore
+    for (const { path: filePath, fileEdits } of onlyFrontAppsAdaptaion) {
+      const file = fs.readFileSync(path.join(rootDir, filePath)).toString();
+      if ("newContent" in fileEdits) {
+        fs.writeFileSync(
+          path.join(rootDir, filePath),
+          Buffer.from(fileEdits.newContent, "base64").toString()
+        );
+      } else {
+        for (const removal of fileEdits.removals ?? []) {
+          file.replace(removal, "");
+        }
+        for (const [key, value] of Object.entries(
+          fileEdits.replacements ?? {}
+        )) {
+          file.replace(key, value);
+        }
+        fs.writeFileSync(path.join(rootDir, filePath), file);
+      }
+    }
+    logger.log(chalk.gray("Adapted unnecessary files!"));
   }
 };

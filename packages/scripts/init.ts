@@ -36,13 +36,13 @@ async function main() {
   //   logger.log(chalk.gray("Skipping packagesSelection()"));
   // }
 
-  // logger.log(chalk.blue('Starting the "env setup" script...'));
-  // await envSetup();
-  // logger.log(chalk.green("Done!"));
-
   logger.log(chalk.blue('Starting the "modules selection" script...'));
   await modulesSelection();
   logger.log(chalk.green("Done!"));
+
+  // logger.log(chalk.blue('Starting the "env setup" script...'));
+  // await envSetup();
+  // logger.log(chalk.green("Done!"));
 
   // logger.log(chalk.blue('Starting the "complete initialisation" script...'));
   // await completeInitialisation();
