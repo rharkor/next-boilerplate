@@ -410,7 +410,7 @@ function CropContent({
   return (
     <>
       <ModalBody className="flex items-center justify-center">
-        <div className="relative flex size-[500px] max-h-[100%] max-w-[100%] items-center justify-center overflow-hidden">
+        <div className="relative flex size-[500px] max-h-full max-w-full items-center justify-center overflow-hidden">
           <div className="relative flex select-none">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img

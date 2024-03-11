@@ -49,21 +49,18 @@ const main = async () => {
         "@react-aria/ssr",
         "@react-aria/visually-hidden",
         "cron",
-        "autoprefixer",
-        "@next-boilerplate/lib/logger"
+        "autoprefixer"
       );
     } else if (pkg === path.join(appsRootPath, "landing")) {
-      options.ignoreMatches.push(
-        "@types/react-dom",
-        "@next-boilerplate/lib/logger"
-      );
+      options.ignoreMatches.push("@types/react-dom");
     } else if (pkg === path.join(rootPath, "scripts")) {
       options.ignoreMatches.push(
         "env-setup",
         "packages-selection",
         "replace-tokens",
         "runtime",
-        "@next-boilerplate/lib/logger"
+        "complete-initialisation",
+        "modules-selection"
       );
     } else if (pkg === path.join(appsRootPath, "cron")) {
       options.ignoreMatches.push("chalk", "@types/node");

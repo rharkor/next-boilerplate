@@ -11,6 +11,7 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
 # Install more global node modules
 RUN su node -c "npm install -g npm@latest"
 RUN su node -c "npm install -g prisma"
+RUN su node -c "npm install -g turbo"
 
 # Terraform
 RUN wget -O- https://apt.releases.hashicorp.com/gpg | \

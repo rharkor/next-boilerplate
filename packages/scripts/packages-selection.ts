@@ -16,7 +16,7 @@ const rootDir = path.join(__dirname, "..", "..");
 
 const packagesAvailable = fs
   .readdirSync(path.join(rootDir, "packages"))
-  .filter((p) => p !== "scripts" && p !== "lib")
+  .filter((p) => p !== "scripts" && p !== "lib" && p !== "configs")
   .map((p) => path.join("packages", p))
   .concat(
     fs.readdirSync(path.join(rootDir, "apps")).map((p) => path.join("apps", p))
