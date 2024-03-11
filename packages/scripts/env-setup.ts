@@ -59,6 +59,10 @@ export const envSetup = async (initDb: boolean = true) => {
       logger.log(
         chalk.gray("Skipping database initialization (no app folder)")
       );
+    } else if (!fs.existsSync(path.join(appPath, "prisma"))) {
+      logger.log(
+        chalk.gray("Skipping database initialization (no prisma folder in app)")
+      );
     } else {
       //? Prisma command exists
       try {

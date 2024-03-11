@@ -1,5 +1,4 @@
 import NavSettings from "@/components/nav-settings"
-import { authRoutes } from "@/constants/auth"
 import { Locale } from "@/lib/i18n-config"
 import { getDictionary } from "@/lib/langs"
 import { Button, Link } from "@nextui-org/react"
@@ -19,16 +18,6 @@ export default async function Home({
       <h1 className="text-4xl font-bold">{dictionary.homePage.title}</h1>
       <nav className="flex flex-col items-center justify-center">
         <ul className="flex flex-row items-center justify-center gap-2">
-          <li>
-            <Button as={Link} href={authRoutes.signIn[0]} color="primary" variant="flat">
-              {dictionary.signIn}
-            </Button>
-          </li>
-          <li>
-            <Button as={Link} href={authRoutes.signUp[0]} color="primary" variant="flat">
-              {dictionary.signUp}
-            </Button>
-          </li>
           <li>
             <Button as={Link} href="/examples/profile" color="primary" variant="flat">
               {dictionary.profile}

@@ -15,16 +15,17 @@
     "dev": "exit 0"
   },
   "dependencies": {
+    "@next-boilerplate/lib": "*",
     "@types/inquirer": "^9.0.3",
     "chalk": "^5.3.0",
     "depcheck": "^1.4.7",
     "dotenv": "^16.3.1",
+    "eslint-config-custom": "*",
+    "glob": "^10.3.10",
     "inquirer": "^9.2.11",
-    "tsx": "^4.7.0",
     "patch-package": "^8.0.0",
-    "yaml": "^2.3.4",
-    "@next-boilerplate/lib": "*",
-    "eslint-config-custom": "*"
+    "tsx": "^4.7.0",
+    "yaml": "^2.3.4"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^7.0.0",

@@ -20,7 +20,7 @@ jobs:
     permissions:
       contents: write # to be able to push to the main:release and rec:release branches
       id-token: write # to enable use of OIDC for npm provenance
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main' || github.ref == 'refs/heads/rec'
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/rec'
     steps:
       - name: Generate token
         id: generate_token
@@ -42,14 +42,13 @@ jobs:
         run: |
           SOURCE_BRANCH="${GITHUB_REF_NAME}"
           TARGET_BRANCH="${GITHUB_REF_NAME}-release"
-          # Ensure we're on the source branch
-          git checkout ${SOURCE_BRANCH}
-          # Delete the target branch locally
-          git branch -D ${TARGET_BRANCH} || true
-          # Create a new local branch based on the current state of the source
-          git checkout -b ${TARGET_BRANCH}
-          # Force-push this new branch to the remote, overwriting the target
-          git push origin ${TARGET_BRANCH} --force
+          # Checkout target branch
+          git fetch origin ${TARGET_BRANCH}:${TARGET_BRANCH}
+          git checkout ${TARGET_BRANCH}
+          # Merge changes from SOURCE_BRANCH to TARGET_BRANCH, favoring 'theirs' for conflicts
+          git merge -X theirs origin/${SOURCE_BRANCH}
+          # Push changes to TARGET_BRANCH
+          git push origin ${TARGET_BRANCH}
         env:
           GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
 
@@ -61,7 +60,7 @@ jobs:
       issues: write # to be able to comment on released issues
       pull-requests: write # to be able to comment on released pull requests
       id-token: write # to enable use of OIDC for npm provenance
-    if: github.event_name == 'push' && (github.ref == 'refs/heads/main-release' || github.ref == 'refs/heads/rec-release')
+    if: (github.ref == 'refs/heads/main-release' || github.ref == 'refs/heads/rec-release')
     steps:
       - name: Generate token
         id: generate_token

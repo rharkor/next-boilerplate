@@ -4,7 +4,9 @@
  */
 
 import chalk from "chalk";
+import { execSync } from "child_process";
 import * as fs from "fs";
+import { glob } from "glob";
 import inquirer from "inquirer";
 import * as path from "path";
 import * as url from "url";
@@ -29,6 +31,8 @@ const findTokens: () => {
   } = {};
   filesToCheck.forEach((file) => {
     const filePath = path.join(__dirname, "..", file);
+    // Check if the file exists
+    if (!fs.existsSync(filePath)) return;
     const fileContent = fs.readFileSync(filePath, "utf8");
     const regex = /#{(.*?)}#/g;
     let match;
@@ -60,6 +64,14 @@ export const replaceTokens = async () => {
         name: "token",
         message: `What is the value of ${token}?`,
         prefix: `🔑 [${i + 1}/${allTokens.length}]`,
+        validate: (input) => {
+          // Slug
+          if (token === "PROJECT_NAME") {
+            if (!/^[a-z0-9-]+$/.test(input))
+              return "The project name must be a slug";
+          }
+          return true;
+        },
       },
     ]);
     allTokensValues[token] = answers.token;
@@ -132,8 +144,45 @@ export const replaceTokens = async () => {
           "utf8"
         );
         logger.log(chalk.gray(`Done for ${terraformMainFile}`));
+
+        //? Replace in all files from root except package-lock.json
+        // Function to replace text in a file
+        const searchRegex = new RegExp(`@${nameToReplace}`, "g");
+        async function replaceTextInFile(filePath: string) {
+          const data = await fs.promises.readFile(filePath, "utf8");
+          if (data.match(searchRegex) === null) return;
+          const replacedData = data.replace(searchRegex, `@${newProjectName}`);
+          await fs.promises.writeFile(filePath, replacedData, "utf8");
+          logger.log(chalk.gray(`Done for ${filePath}`));
+        }
+
+        // Function to recursively search and replace in all files
+        async function replaceInDirectory(dir: string) {
+          const tsFiles = await glob(`${dir}/**/*.{ts,tsx}`, {
+            ignore: `${dir}/**/node_modules/**`,
+          });
+          const pjsonFiles = await glob(`${dir}/**/package.json`, {
+            ignore: `${dir}/**/node_modules/**`,
+          });
+          const allFiles = tsFiles.concat(pjsonFiles);
+          await Promise.all(allFiles.map((file) => replaceTextInFile(file)));
+        }
+
+        const rootDir = path.join(__dirname, "..", "..");
+        await replaceInDirectory(rootDir);
       }
     }
-    fs.writeFileSync(filePath, newFileContent, "utf8");
   }
+
+  const rootDir = path.join(__dirname, "..", "..");
+  //? Reinstall dependencies
+  logger.log(chalk.blue("Reinstalling dependencies..."));
+  execSync("rm -rf node_modules", {
+    cwd: rootDir,
+  });
+  execSync("npm install", {
+    cwd: rootDir,
+    stdio: "inherit",
+  });
+  logger.log(chalk.gray("Done!"));
 };
