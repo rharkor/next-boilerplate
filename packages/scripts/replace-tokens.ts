@@ -31,6 +31,8 @@ const findTokens: () => {
   } = {};
   filesToCheck.forEach((file) => {
     const filePath = path.join(__dirname, "..", file);
+    // Check if the file exists
+    if (!fs.existsSync(filePath)) return;
     const fileContent = fs.readFileSync(filePath, "utf8");
     const regex = /#{(.*?)}#/g;
     let match;
