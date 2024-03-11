@@ -145,24 +145,11 @@ export const replaceTokens = async () => {
         //? Replace in all files from root except package-lock.json
         // Function to replace text in a file
         const searchRegex = new RegExp(`@${nameToReplace}`, "g");
-        function replaceTextInFile(filePath: string) {
-          fs.readFile(filePath, "utf8", (err, data) => {
-            if (err) {
-              console.error("Error reading file:", err);
-              return;
-            }
-
-            const replacedData = data.replace(
-              searchRegex,
-              `@${newProjectName}`
-            );
-
-            fs.writeFile(filePath, replacedData, "utf8", (err) => {
-              if (err) {
-                console.error("Error writing to file:", err);
-              }
-            });
-          });
+        async function replaceTextInFile(filePath: string) {
+          const data = await fs.promises.readFile(filePath, "utf8");
+          const replacedData = data.replace(searchRegex, `@${newProjectName}`);
+          await fs.promises.writeFile(filePath, replacedData, "utf8");
+          logger.log(chalk.gray(`Done for ${filePath}`));
         }
 
         // Function to recursively search and replace in all files
@@ -174,9 +161,7 @@ export const replaceTokens = async () => {
             ignore: "node_modules/**",
           });
           const allFiles = tsFiles.concat(pjsonFiles);
-          allFiles.forEach((file) => {
-            replaceTextInFile(file);
-          });
+          await Promise.all(allFiles.map((file) => replaceTextInFile(file)));
         }
 
         const rootDir = path.join(__dirname, "..", "..");
