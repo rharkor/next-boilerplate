@@ -66,6 +66,10 @@ With this template, you get all the awesomeness you need:
       - [Server side](#server-side)
       - [Loading optimization](#loading-optimization)
       - [Traduction file](#traduction-file)
+  - [☁️ Cloud deployment](#️-cloud-deployment)
+    - [Build](#build)
+    - [Debug in local](#debug-in-local)
+    - [Deploy](#deploy)
   - [🤝 Contribution](#-contribution)
   - [Support](#support)
   - [📜 License](#-license)
@@ -227,7 +231,7 @@ export const env = createEnv({
     SECRET_KEY: process.env.SECRET_KEY,
     API_URL: process.env.NEXT_PUBLIC_API_URL,
   },
-})
+});
 ```
 
 If the required environment variables are not set, you'll get an error message:
@@ -243,39 +247,39 @@ If the required environment variables are not set, you'll get an error message:
 #### Client-side
 
 ```tsx
-import { useDictionary } from "@/contexts/dictionary/utils"
+import { useDictionary } from "@/contexts/dictionary/utils";
 
 export default function Home() {
-  const dictionary = useDictionary()
+  const dictionary = useDictionary();
   return (
     <div>
       <h1>{dictionary.hello}</h1>
     </div>
-  )
+  );
 }
 ```
 
 #### Server side
 
 ```tsx
-import { Locale } from "@/lib/i18n-config"
+import { Locale } from "@/lib/i18n-config";
 
-import { getDictionary } from "@/lib/langs"
+import { getDictionary } from "@/lib/langs";
 
 export default async function Home({
   params: { lang },
 }: {
   params: {
-    lang: Locale
-  }
+    lang: Locale;
+  };
 }) {
-  const dictionary = await getDictionary(lang)
+  const dictionary = await getDictionary(lang);
 
   return (
     <div>
       <h1>{dictionary.hello}</h1>
     </div>
-  )
+  );
 }
 ```
 
@@ -287,6 +291,49 @@ The dictionary is loaded on the server and passed on the client only on the firs
 
 The files for traduction are located in `packages/app/src/langs` or `packages/landing/src/langs` depending on the package you want to use it in.
 If you want to add a new language, you can add a new file in the `langs` folder then modify the file `i18n-config.ts` and `langs.ts`.
+
+## ☁️ Cloud deployment
+
+_Please note that the following steps are for deploying the any application package._
+
+### Build
+
+1. Build the docker image
+
+```bash
+docker build -t <image-name> -f <path-to-Dockerfile> .
+```
+
+Exemple (landing):
+
+```bash
+docker build -t next-boilerplate/landing -f apps/landing/Dockerfile .
+```
+
+2. Push the image to a container registry
+
+```bash
+docker push <image-name>
+```
+
+Exemple (landing):
+
+```bash
+docker tag next-boilerplate/landing:latest <registry-url>/next-boilerplate/landing:latest
+docker push <registry-url>/next-boilerplate/landing:latest
+```
+
+### Debug in local
+
+After the build you can run the image in local to see if everything is working as expected.
+
+```bash
+docker run --rm -it -p 3000:3000 <image-name>
+```
+
+### Deploy
+
+For development environment or low usage application please prefer "Fargate", for production environment or high usage application please prefer "EC2".
 
 ## 🤝 Contribution
 

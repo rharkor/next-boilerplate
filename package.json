@@ -9,7 +9,7 @@
     "lint:fix": "turbo run lint:fix",
     "prettier": "turbo run prettier",
     "prettier:fix": "turbo run prettier:fix",
-    "test": "npm run test --ws",
+    "test": "turbo run test",
     "init": "npm run init -w packages/scripts",
     "init:env": "npm run init:env -w packages/scripts",
     "depcheck": "npm run depcheck -w packages/scripts",
