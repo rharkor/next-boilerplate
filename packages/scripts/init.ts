@@ -44,8 +44,9 @@ async function main() {
   await envSetup();
   logger.log(chalk.green("Done!"));
 
-  if (process.env.SKIP_INIT_CHECK !== "true") await completeInitialisation();
-  else logger.log(chalk.yellow("Skipping completeInitialisation()"));
+  logger.log(chalk.blue('Starting the "complete initialisation" script...'));
+  await completeInitialisation();
+
   exit(0);
 }
 
