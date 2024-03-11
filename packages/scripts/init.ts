@@ -1,7 +1,9 @@
 import chalk from "chalk";
+import { completeInitialisation } from "complete-initialisation";
 import { config } from "dotenv";
 import { envSetup } from "env-setup";
 import * as fs from "fs/promises";
+import { modulesSelection } from "modules-selection";
 import { exit } from "node:process";
 import { packagesSelection } from "packages-selection";
 import * as path from "path";
@@ -9,8 +11,6 @@ import { replaceTokens } from "replace-tokens";
 import * as url from "url";
 
 import { logger } from "@next-boilerplate/lib/logger";
-
-import { completeInitialisation } from "./complete-initialisation";
 
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 const rootPath = path.join(__dirname, "..");
@@ -25,6 +25,17 @@ async function main() {
 
   if (!alreadyInitialized) {
     logger.log(chalk.green("Welcome to the init script!"));
+  }
+
+  if (!alreadyInitialized) {
+    logger.log(chalk.blue('Starting the "modules selection" script...'));
+    await modulesSelection();
+    logger.log(chalk.green("Done!"));
+  } else {
+    logger.log(chalk.gray("Skipping modulesSelection()"));
+  }
+
+  if (!alreadyInitialized) {
     logger.log(chalk.blue('Starting the "replace tokens" script...'));
     await replaceTokens();
     logger.log(chalk.green("Done!"));
@@ -44,8 +55,9 @@ async function main() {
   await envSetup();
   logger.log(chalk.green("Done!"));
 
-  if (process.env.SKIP_INIT_CHECK !== "true") await completeInitialisation();
-  else logger.log(chalk.yellow("Skipping completeInitialisation()"));
+  logger.log(chalk.blue('Starting the "complete initialisation" script...'));
+  await completeInitialisation();
+
   exit(0);
 }
 

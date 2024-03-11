@@ -1,0 +1,5 @@
+{
+  "PROJECT_NAME": "#{PROJECT_NAME}#",
+  "AWS_PROFILE": "personal",
+  "AWS_REGION": "eu-west-1"
+}
