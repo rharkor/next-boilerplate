@@ -100,7 +100,7 @@ export default function UpdateAccount({ sessionHasVerifiedEmail }: { sessionHasV
       <GenerateTotp account={account} />
       {!hasVerifiedEmail && (
         <div className="absolute -inset-2 z-10 !m-0 flex items-center justify-center backdrop-blur-sm">
-          <p className="text-muted-foreground text-center text-sm font-semibold">
+          <p className="text-center text-sm font-semibold text-muted-foreground">
             {dictionary.errors.emailNotVerified}
           </p>
         </div>

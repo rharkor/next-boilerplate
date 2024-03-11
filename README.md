@@ -64,6 +64,7 @@ With this template, you get all the awesomeness you need:
     - [Internationalization](#internationalization)
       - [Client-side](#client-side)
       - [Server side](#server-side)
+      - [Loading optimization](#loading-optimization)
       - [Traduction file](#traduction-file)
   - [🤝 Contribution](#-contribution)
   - [Support](#support)
@@ -277,6 +278,10 @@ export default async function Home({
   )
 }
 ```
+
+#### Loading optimization
+
+The dictionary is loaded on the server and passed on the client only on the first load. If you make any changes to the dictionary, the server will see the difference and send the new dictionary to the client.
 
 #### Traduction file
 

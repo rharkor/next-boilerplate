@@ -98,7 +98,7 @@ export default function Recover2FAForm({ email }: { email?: string }) {
         placeholder={dictionary.email}
         autoComplete="email"
       />
-      <p className="text-muted-foreground mt-6 text-sm">{dictionary.recover2FADescription}</p>
+      <p className="mt-6 text-sm text-muted-foreground">{dictionary.recover2FADescription}</p>
       <div className="flex flex-col">
         <div className="grid grid-cols-3 gap-x-6 gap-y-2" ref={divRef}>
           {mnemonic.map((data, index) => {
@@ -112,7 +112,7 @@ export default function Recover2FAForm({ email }: { email?: string }) {
               >
                 <input
                   className={cn(
-                    "bg-muted rounded-medium hover:bg-primary-200/70 focus:bg-primary-200/70 group relative h-[34px] w-full min-w-[70px] p-1.5 text-sm transition-all",
+                    "group relative h-[34px] w-full min-w-[70px] rounded-medium bg-muted p-1.5 text-sm transition-all hover:bg-primary-200/70 focus:bg-primary-200/70",
                     {
                       "bg-danger-50 hover:bg-danger-100": mnemonicError,
                     }

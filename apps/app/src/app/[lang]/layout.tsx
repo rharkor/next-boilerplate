@@ -41,7 +41,7 @@ export default async function RootLayout({
 
   return (
     <html lang={params.lang}>
-      <body className={cn("antialiaseds bg-background min-h-screen font-sans", fontSans.variable)}>
+      <body className={cn("antialiaseds min-h-screen bg-background font-sans", fontSans.variable)}>
         <RootProviders
           dictionary={hasDictLoaded ? undefined : dictionary}
           lang={params.lang as Locale}

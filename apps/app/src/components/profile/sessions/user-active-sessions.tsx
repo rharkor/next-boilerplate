@@ -4,10 +4,10 @@ import SessionsTable from "./sessions-table"
 
 export default async function UserActiveSessions({ dictionary }: { dictionary: TDictionary }) {
   return (
-    <section className="text-foreground p-2">
+    <section className="p-2 text-foreground">
       <header>
         <h3 className="text-lg font-medium">{dictionary.profilePage.profileDetails.loggedDevices}</h3>
-        <p className="text-muted-foreground text-sm">
+        <p className="text-sm text-muted-foreground">
           {dictionary.profilePage.profileDetails.loggedDevicesDescription}
         </p>
       </header>

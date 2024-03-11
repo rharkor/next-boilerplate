@@ -37,12 +37,12 @@ export default async function SignInPage({
           {dictionary.toSignUp}
         </Button>
       )}
-      <div className="bg-muted hidden h-full lg:block"></div>
+      <div className="hidden h-full bg-muted lg:block"></div>
       <div className="lg:p-8">
         <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
           <div className="flex flex-col space-y-2 text-center">
             <h1 className="text-2xl font-semibold tracking-tight">{dictionary.signInPage.loginToYourAccount}</h1>
-            <p className="text-muted-foreground text-sm">{dictionary.signInPage.enterDetails}</p>
+            <p className="text-sm text-muted-foreground">{dictionary.signInPage.enterDetails}</p>
           </div>
           <div className="grid gap-6">
             <LoginUserAuthForm searchParams={searchParams} />
@@ -53,7 +53,7 @@ export default async function SignInPage({
                     <span className="w-full border-t" />
                   </div>
                   <div className="relative flex justify-center text-xs uppercase">
-                    <span className="bg-background text-muted-foreground px-2">{dictionary.auth.orContinueWith}</span>
+                    <span className="bg-background px-2 text-muted-foreground">{dictionary.auth.orContinueWith}</span>
                   </div>
                 </div>
                 <Providers searchParams={searchParams} session={session} />

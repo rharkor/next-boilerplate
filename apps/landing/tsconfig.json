@@ -1,31 +1,8 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
-  "display": "Next.js",
+  "extends": "tsconfig/next.json",
   "compilerOptions": {
-    "target": "esnext",
-    "lib": ["dom", "dom.iterable", "esnext"],
-    "allowJs": true,
-    "skipLibCheck": true,
-    "strict": true,
-    "forceConsistentCasingInFileNames": true,
-    "noEmit": true,
-    "esModuleInterop": true,
-    "module": "esnext",
-    "moduleResolution": "Bundler",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "jsx": "preserve",
-    "incremental": true,
-    "baseUrl": ".",
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ],
-    "paths": {
-      "@/*": ["./src/*"],
-      "@lib/*": ["../../packages/lib/*"]
-    }
+    "baseUrl": "."
   },
   "include": [
     "next-env.d.ts",
@@ -35,7 +12,8 @@
     ".next/types/**/*.ts",
     ".eslintrc.js",
     "postcss.config.js",
-    "tailwind.config.js"
+    "tailwind.config.js",
+    "prettier.config.js"
   ],
   "exclude": ["node_modules"]
 }

@@ -35,7 +35,7 @@ export default function Copiable({ text, dictionary }: { text: string | undefine
   return (
     <div className="copiable group flex flex-row items-center gap-1">
       <p
-        className="bg-foreground-200/20 rounded-small border-foreground-300/20 block cursor-pointer border p-[3px] px-2 text-xs"
+        className="block cursor-pointer rounded-small border border-foreground-300/20 bg-foreground-200/20 p-[3px] px-2 text-xs"
         ref={textRef}
         onClick={selectText}
       >
@@ -47,7 +47,7 @@ export default function Copiable({ text, dictionary }: { text: string | undefine
         content={isCopied ? dictionary.copiedToClipboard : dictionary.copyToClipboard}
       >
         <Button
-          className="rounded-small border-foreground-300/20 block h-max min-h-[24px] min-w-0 cursor-pointer border bg-[unset] p-1 px-3"
+          className="block h-max min-h-[24px] min-w-0 cursor-pointer rounded-small border border-foreground-300/20 bg-[unset] p-1 px-3"
           onPress={() => {
             copyToClipboard(text)
           }}

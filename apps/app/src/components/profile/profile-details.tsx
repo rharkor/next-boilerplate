@@ -10,10 +10,10 @@ export default async function ProfileDetails({
   hasVerifiedEmail: boolean
 }) {
   return (
-    <section className="text-foreground mt-4 p-2">
+    <section className="mt-4 p-2 text-foreground">
       <header>
         <h3 className="text-lg font-medium">{dictionary.profilePage.profileDetails.updateAccount}</h3>
-        <p className="text-muted-foreground text-sm">
+        <p className="text-sm text-muted-foreground">
           {dictionary.profilePage.profileDetails.updateAccountDescription}
         </p>
       </header>

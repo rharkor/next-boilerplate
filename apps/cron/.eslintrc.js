@@ -7,5 +7,5 @@ module.exports = {
   parserOptions: {
     project: join(__dirname, "/tsconfig.json"),
   },
-  extends: ["custom/next"],
+  extends: ["custom/base"],
 }

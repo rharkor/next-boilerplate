@@ -34,10 +34,10 @@ function File({
 
   return (
     <li className="flex flex-col gap-2" key={i}>
-      <div className="rounded-medium border-muted-foreground/30 flex flex-row items-center justify-between gap-1 border p-1 pl-3">
+      <div className="flex flex-row items-center justify-between gap-1 rounded-medium border border-muted-foreground/30 p-1 pl-3">
         <p className="flex flex-row overflow-hidden">
           <span className="block truncate">{file.name}</span>
-          <span className="text-muted-foreground ml-1 block">({bytesToMegabytes(file.size, true)}Mo)</span>
+          <span className="ml-1 block text-muted-foreground">({bytesToMegabytes(file.size, true)}Mo)</span>
         </p>
         <div className="flex gap-1">
           <Button color="primary" className="h-[unset] min-w-0 shrink-0 rounded-full p-1" onPress={onCroppingOpen}>
@@ -111,7 +111,7 @@ export default function FileUpload({
       <div
         {...getRootProps()}
         className={cn(
-          "rounded-medium bg-muted/20 text-foreground flex h-[250px] cursor-pointer flex-col items-center justify-center gap-4 border border-dashed border-transparent p-2 px-6 transition-all",
+          "flex h-[250px] cursor-pointer flex-col items-center justify-center gap-4 rounded-medium border border-dashed border-transparent bg-muted/20 p-2 px-6 text-foreground transition-all",
           {
             "hover:border-primary hover:bg-muted/40 focus:border-primary focus:bg-muted/40": !disabled,
             "border-primary bg-muted/50": isDragAccept,
@@ -122,7 +122,7 @@ export default function FileUpload({
       >
         <input type="file" {...getInputProps()} disabled={disabled} {...props} />
         <Upload className="size-12" />
-        <p className="text-foreground/80 text-center text-sm">{dictionary.uploadDescription}</p>
+        <p className="text-center text-sm text-foreground/80">{dictionary.uploadDescription}</p>
       </div>
       <ul className="flex flex-col gap-2">
         {croppedFiles.map((file, i) => (
