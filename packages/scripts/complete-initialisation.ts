@@ -12,8 +12,14 @@ const rootPath = path.join(__dirname, "..");
 export const completeInitialisation = async () => {
   // Linting and formatting
   logger.log(chalk.blue("Linting and formatting..."));
-  execSync("npm run lint:fix", { cwd: path.join(rootPath, "..") });
-  execSync("npm run prettier:fix", { cwd: path.join(rootPath, "..") });
+  execSync("npm run lint:fix", {
+    cwd: path.join(rootPath, ".."),
+    stdio: "inherit",
+  });
+  execSync("npm run prettier:fix", {
+    cwd: path.join(rootPath, ".."),
+    stdio: "inherit",
+  });
   logger.log(chalk.green("Done!"));
 
   if (process.env.SKIP_INIT_CHECK !== "true") {
