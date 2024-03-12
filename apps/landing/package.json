@@ -30,7 +30,8 @@
     "eslint-config-custom": "*",
     "tsconfig": "*",
     "custom-prettier-config": "*",
-    "@next-boilerplate/lib": "*"
+    "@next-boilerplate/lib": "*",
+    "@next-boilerplate/scripts": "*"
   },
   "devDependencies": {
     "@types/node": "^20",

@@ -76,7 +76,8 @@
     "eslint-config-custom": "*",
     "tsconfig": "*",
     "custom-prettier-config": "*",
-    "@next-boilerplate/lib": "*"
+    "@next-boilerplate/lib": "*",
+    "@next-boilerplate/scripts": "*"
   },
   "devDependencies": {
     "@babel/core": "^7.22.17",
