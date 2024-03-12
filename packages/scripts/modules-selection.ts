@@ -190,12 +190,7 @@ const onlyFrontAppsAdaptaion: {
     fileEdits: {
       removals: [
         new RegExp(/ \,\n\s*"runServices": \["redis"\, "db"\]\,/, "g"),
-        new RegExp(/ \,\n\s*"portsAttributes"\: \{(\n|.)*},/, "g"),
       ],
-      replacements: {
-        '"forwardPorts": [3000, 3001, 3002, 5432, 6379, 6080],':
-          '"forwardPorts": [3000],',
-      },
     },
   },
 ];
