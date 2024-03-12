@@ -1,7 +1,8 @@
 {
   "project_name": "#{PROJECT_NAME}#",
-  "aws_profile": "personal",
+  "aws_profile": "enter your aws profile",
   "aws_region": "eu-west-1",
+  "ecs_task_execution_role_arn": "complete this field, example: arn:aws:iam::123456789:role/default-ecs-task-execution-role",
   "task_definitions": [
     {
       "task_name": "app",

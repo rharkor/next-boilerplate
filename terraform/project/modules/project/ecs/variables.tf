@@ -6,15 +6,20 @@ variable "task_name" {
   type = string
 }
 
-variable "cpu" {
-  type = number
-}
-
-variable "memory" {
-  type = number
-}
 
 variable "vpc" {
+  type = string
+}
+
+variable "subnet_a_id" {
+  type = string
+}
+
+variable "subnet_b_id" {
+  type = string
+}
+
+variable "subnet_c_id" {
   type = string
 }
 
@@ -24,14 +29,6 @@ variable "image" {
 
 variable "region" {
   type = string
-}
-
-variable "lb_ecs_tg_arn" {
-  type = string
-}
-
-variable "lb_front_end" {
-  type = any
 }
 
 variable "desired_count" {
@@ -48,4 +45,12 @@ variable "min_capacity" {
 
 variable "ecs_task_execution_role_arn" {
   type = string
+}
+
+variable "cpu" {
+  type = number
+}
+
+variable "memory" {
+  type = number
 }

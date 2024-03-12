@@ -57,36 +57,6 @@ resource "aws_ecs_task_definition" "ecs_td" {
   }
 }
 
-resource "aws_subnet" "subnet_a" {
-  vpc_id                  = var.vpc
-  cidr_block              = "10.0.1.0/24"
-  map_public_ip_on_launch = true
-  availability_zone       = "${var.region}a"
-  tags = {
-    Name = "${var.projectName}-subnet-a"
-  }
-}
-
-resource "aws_subnet" "subnet_b" {
-  vpc_id                  = var.vpc
-  cidr_block              = "10.0.2.0/24"
-  map_public_ip_on_launch = true
-  availability_zone       = "${var.region}b"
-  tags = {
-    Name = "${var.projectName}-subnet-b"
-  }
-}
-
-resource "aws_subnet" "subnet_c" {
-  vpc_id                  = var.vpc
-  cidr_block              = "10.0.3.0/24"
-  map_public_ip_on_launch = true
-  availability_zone       = "${var.region}c"
-  tags = {
-    Name = "${var.projectName}-subnet-c"
-  }
-}
-
 resource "aws_security_group" "ecs_sg" {
   name        = "${var.projectName}-ecs-sg"
   description = "Allow traffic to ECS service"
@@ -142,19 +112,19 @@ resource "aws_ecs_service" "ecs_service" {
   launch_type     = "FARGATE"
 
   network_configuration {
-    subnets          = [aws_subnet.subnet_a.id, aws_subnet.subnet_b.id, aws_subnet.subnet_c.id]
+    subnets          = [var.subnet_a_id, var.subnet_b_id, var.subnet_c_id]
     security_groups  = [aws_security_group.ecs_sg.id]
-    assign_public_ip = true
+    assign_public_ip = false
   }
 
   load_balancer {
-    target_group_arn = var.lb_ecs_tg_arn
+    target_group_arn = module.lb.lb_ecs_tg_arn
     container_name   = "${var.projectName}-container"
     container_port   = 80
   }
 
   depends_on = [
-    var.lb_front_end,
+    module.lb.lb_front_end,
   ]
 }
 
@@ -198,4 +168,15 @@ resource "aws_appautoscaling_policy" "memory_utilization" {
     scale_in_cooldown  = 300
     scale_out_cooldown = 300
   }
+}
+
+module "lb" {
+  source = "./lb"
+
+  vpc         = var.vpc
+  projectName = var.projectName
+  ecs_sg_id   = aws_security_group.ecs_sg.id
+  subnet_a_id = var.subnet_a_id
+  subnet_b_id = var.subnet_b_id
+  subnet_c_id = var.subnet_c_id
 }

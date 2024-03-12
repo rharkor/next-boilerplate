@@ -18,3 +18,7 @@ variable "task_definitions" {
   }))
   description = "List of task definitions"
 }
+
+variable "ecs_task_execution_role_arn" {
+  type = string
+}

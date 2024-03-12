@@ -1,5 +1,9 @@
+locals {
+  identifier = "default"
+}
+
 resource "aws_iam_role" "ecs_task_execution_role" {
-  name = "${var.projectName}-ecs-task-execution-role"
+  name = "${local.identifier}-ecs-task-execution-role"
   assume_role_policy = jsonencode({
     Version = "2012-10-17",
     Statement = [
@@ -15,7 +19,7 @@ resource "aws_iam_role" "ecs_task_execution_role" {
 }
 
 resource "aws_iam_policy" "ecs_logs_policy" {
-  name        = "${var.projectName}-ecs-logs-policy"
+  name        = "${local.identifier}-ecs-logs-policy"
   description = "Allows ECS tasks to interact with CloudWatch Logs"
   policy = jsonencode({
     Version : "2012-10-17",
@@ -28,8 +32,8 @@ resource "aws_iam_policy" "ecs_logs_policy" {
           "logs:PutLogEvents"
         ],
         Resource : [
-          "arn:aws:logs:${var.region}::log-group:/ecs/${var.projectName}*",
-          "arn:aws:logs:${var.region}::log-group:/ecs/${var.projectName}*:*"
+          "arn:aws:logs:${var.region}::log-group:/ecs/${local.identifier}*",
+          "arn:aws:logs:${var.region}::log-group:/ecs/${local.identifier}*:*"
         ]
       }
     ]

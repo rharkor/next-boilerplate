@@ -25,7 +25,8 @@ module "project" {
   source = "./modules/project"
 
 
-  projectName      = var.project_name
-  region           = var.aws_region
-  task_definitions = var.task_definitions
+  projectName                 = var.project_name
+  region                      = var.aws_region
+  task_definitions            = var.task_definitions
+  ecs_task_execution_role_arn = var.ecs_task_execution_role_arn
 }
