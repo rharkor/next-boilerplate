@@ -58,3 +58,11 @@ variable "memory" {
 variable "vpc_cidr_block" {
   type = string
 }
+
+variable "scale_in_cooldown" {
+  type = number
+}
+
+variable "scale_out_cooldown" {
+  type = number
+}

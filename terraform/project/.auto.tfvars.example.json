@@ -11,7 +11,9 @@
       "docker_image": "complete this field, example: 123456789.dkr.ecr.eu-west-1.amazonaws.com/app:latest",
       "desired_count": "1",
       "max_capacity": "2",
-      "min_capacity": "1"
+      "min_capacity": "1",
+      "scale_in_cooldown": "300",
+      "scale_out_cooldown": "300"
     },
     {
       "task_name": "landing",
@@ -20,7 +22,9 @@
       "docker_image": "complete this field, example: 123456789.dkr.ecr.eu-west-1.amazonaws.com/app:latest",
       "desired_count": "1",
       "max_capacity": "2",
-      "min_capacity": "1"
+      "min_capacity": "1",
+      "scale_in_cooldown": "300",
+      "scale_out_cooldown": "300"
     },
     {
       "task_name": "cron",
@@ -29,7 +33,9 @@
       "docker_image": "complete this field, example: 123456789.dkr.ecr.eu-west-1.amazonaws.com/app:latest",
       "desired_count": "1",
       "max_capacity": "1",
-      "min_capacity": "1"
+      "min_capacity": "1",
+      "scale_in_cooldown": "300",
+      "scale_out_cooldown": "300"
     },
     {
       "task_name": "docs",
@@ -38,7 +44,9 @@
       "docker_image": "complete this field, example: 123456789.dkr.ecr.eu-west-1.amazonaws.com/app:latest",
       "desired_count": "1",
       "max_capacity": "2",
-      "min_capacity": "1"
+      "min_capacity": "1",
+      "scale_in_cooldown": "300",
+      "scale_out_cooldown": "300"
     }
   ]
 }
