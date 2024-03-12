@@ -1,35 +1,24 @@
-variable "PROJECT_NAME" {
+variable "project_name" {
   type = string
 }
 
-variable "AWS_PROFILE" {
+variable "aws_profile" {
   type = string
 }
 
-variable "AWS_REGION" {
+variable "aws_region" {
   type = string
 }
 
-variable "PROJECT_MODULE" {
-  type        = string
-  description = "The type of project to deploy (ec2, fargate)."
-
-  validation {
-    condition     = contains(["ec2", "fargate"], var.PROJECT_MODULE)
-    error_message = "Allowed values for PROJECT_MODULE are \"ec2\" or \"fargate\"."
-  }
-}
-
-variable "CPU" {
-  type        = number
-  description = "The number of CPU units used by the task (256, 512, ...)."
-}
-
-variable "MEMORY" {
-  type        = number
-  description = "The amount (in MiB) of memory used by the task (512, 1024, ...)."
-}
-
-variable "DOCKER_IMAGE" {
-  type = string
+variable "task_definitions" {
+  type = list(object({
+    task_name     = string
+    cpu           = number
+    memory        = number
+    docker_image  = string
+    desired_count = number
+    max_capacity  = number
+    min_capacity  = number
+  }))
+  description = "List of task definitions"
 }

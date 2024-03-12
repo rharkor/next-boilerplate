@@ -1,5 +1,9 @@
+locals {
+  identifier = "${var.projectName}-${var.task_name}"
+}
+
 resource "aws_ecs_cluster" "ecs_cluster" {
-  name = "${var.projectName}-ecs-cluster"
+  name = "${local.identifier}-ecs-cluster"
 
   setting {
     name  = "containerInsights"
@@ -7,59 +11,10 @@ resource "aws_ecs_cluster" "ecs_cluster" {
   }
 }
 
-resource "aws_iam_role" "ecs_task_execution_role" {
-  name = "${var.projectName}-ecs-task-execution-role"
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17",
-    Statement = [
-      {
-        Action = "sts:AssumeRole",
-        Effect = "Allow",
-        Principal = {
-          Service = "ecs-tasks.amazonaws.com"
-        }
-      }
-    ]
-  })
-}
-
-resource "aws_iam_policy" "ecs_logs_policy" {
-  name        = "${var.projectName}-ecs-logs-policy"
-  description = "Allows ECS tasks to interact with CloudWatch Logs"
-  policy = jsonencode({
-    Version : "2012-10-17",
-    Statement : [
-      {
-        Effect : "Allow",
-        Action : [
-          "logs:CreateLogGroup",
-          "logs:CreateLogStream",
-          "logs:PutLogEvents"
-        ],
-        Resource : [
-          "arn:aws:logs:${var.region}::log-group:/ecs/${var.projectName}*",
-          "arn:aws:logs:${var.region}::log-group:/ecs/${var.projectName}*:*"
-        ]
-      }
-    ]
-  })
-}
-
-resource "aws_iam_role_policy_attachment" "ecs_logs_policy_attachment" {
-  role       = aws_iam_role.ecs_task_execution_role.name
-  policy_arn = aws_iam_policy.ecs_logs_policy.arn
-}
-
-resource "aws_iam_role_policy_attachment" "ecs_task_execution_role_policy_attach" {
-  role       = aws_iam_role.ecs_task_execution_role.name
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
-}
-
-
 resource "aws_ecs_task_definition" "ecs_td" {
   family                   = "${var.projectName}-ecs-task"
   network_mode             = "awsvpc"
-  requires_compatibilities = [var.kind == "fargate" ? "FARGATE" : "EC2"]
+  requires_compatibilities = ["FARGATE"]
   container_definitions = jsonencode([
     {
       name      = "${var.projectName}-container"
@@ -91,7 +46,7 @@ resource "aws_ecs_task_definition" "ecs_td" {
       ]
     },
   ])
-  execution_role_arn = aws_iam_role.ecs_task_execution_role.arn
+  execution_role_arn = var.ecs_task_execution_role_arn
 
   cpu    = var.cpu
   memory = var.memory
@@ -141,9 +96,9 @@ resource "aws_security_group" "ecs_sg" {
     for_each = [
       {
         description = "Allow all traffic from the internet"
-        from_port   = 0
-        to_port     = 0
-        protocol    = "-1"
+        from_port   = 80
+        to_port     = 80
+        protocol    = "tcp"
         cidr_blocks = ["0.0.0.0/0"]
     }]
 
@@ -183,7 +138,7 @@ resource "aws_ecs_service" "ecs_service" {
   name            = "${var.projectName}-ecs-service"
   cluster         = aws_ecs_cluster.ecs_cluster.id
   task_definition = aws_ecs_task_definition.ecs_td.arn
-  desired_count   = 1
+  desired_count   = var.desired_count
   launch_type     = "FARGATE"
 
   network_configuration {
@@ -204,8 +159,8 @@ resource "aws_ecs_service" "ecs_service" {
 }
 
 resource "aws_appautoscaling_target" "ecs_target" {
-  max_capacity       = 2
-  min_capacity       = 0
+  max_capacity       = var.max_capacity
+  min_capacity       = var.min_capacity
   resource_id        = "service/${aws_ecs_cluster.ecs_cluster.name}/${aws_ecs_service.ecs_service.name}"
   scalable_dimension = "ecs:service:DesiredCount"
   service_namespace  = "ecs"
@@ -221,7 +176,7 @@ resource "aws_appautoscaling_policy" "cpu_utilization" {
   target_tracking_scaling_policy_configuration {
     target_value = 80.0
     predefined_metric_specification {
-      predefined_metric_type = "ECSServiceAverageMemoryUtilization"
+      predefined_metric_type = "ECSServiceAverageCPUUtilization"
     }
     scale_in_cooldown  = 300
     scale_out_cooldown = 300
@@ -236,9 +191,9 @@ resource "aws_appautoscaling_policy" "memory_utilization" {
   service_namespace  = aws_appautoscaling_target.ecs_target.service_namespace
 
   target_tracking_scaling_policy_configuration {
-    target_value = 60.0
+    target_value = 70.0
     predefined_metric_specification {
-      predefined_metric_type = "ECSServiceAverageCPUUtilization"
+      predefined_metric_type = "ECSServiceAverageMemoryUtilization"
     }
     scale_in_cooldown  = 300
     scale_out_cooldown = 300

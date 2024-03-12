@@ -2,6 +2,10 @@ variable "projectName" {
   type = string
 }
 
+variable "task_name" {
+  type = string
+}
+
 variable "cpu" {
   type = number
 }
@@ -22,14 +26,26 @@ variable "region" {
   type = string
 }
 
-variable "kind" {
-  type = string
-}
-
 variable "lb_ecs_tg_arn" {
   type = string
 }
 
 variable "lb_front_end" {
   type = any
+}
+
+variable "desired_count" {
+  type = number
+}
+
+variable "max_capacity" {
+  type = number
+}
+
+variable "min_capacity" {
+  type = number
+}
+
+variable "ecs_task_execution_role_arn" {
+  type = string
 }
