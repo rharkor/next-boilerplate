@@ -6,10 +6,6 @@ variable "vpc" {
   type = string
 }
 
-variable "ecs_sg_id" {
-  type = string
-}
-
 variable "subnet_a_id" {
   type = string
 }

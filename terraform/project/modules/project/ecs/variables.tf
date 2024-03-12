@@ -54,3 +54,7 @@ variable "cpu" {
 variable "memory" {
   type = number
 }
+
+variable "vpc_cidr_block" {
+  type = string
+}

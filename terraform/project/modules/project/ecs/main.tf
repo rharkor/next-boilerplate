@@ -65,11 +65,11 @@ resource "aws_security_group" "ecs_sg" {
   dynamic "ingress" {
     for_each = [
       {
-        description = "Allow all traffic from the internet"
+        description = "Allow traffic from the load balancer"
         from_port   = 80
         to_port     = 80
         protocol    = "tcp"
-        cidr_blocks = ["0.0.0.0/0"]
+        cidr_blocks = [var.vpc_cidr_block]
     }]
 
     content {
@@ -175,7 +175,6 @@ module "lb" {
 
   vpc         = var.vpc
   projectName = var.projectName
-  ecs_sg_id   = aws_security_group.ecs_sg.id
   subnet_a_id = var.subnet_a_id
   subnet_b_id = var.subnet_b_id
   subnet_c_id = var.subnet_c_id

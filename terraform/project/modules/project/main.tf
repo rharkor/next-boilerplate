@@ -9,12 +9,13 @@ module "ecs" {
   source = "./ecs"
   count  = length(var.task_definitions)
 
-  vpc         = module.vpc.vpc_id
-  subnet_a_id = module.vpc.subnet_a_id
-  subnet_b_id = module.vpc.subnet_b_id
-  subnet_c_id = module.vpc.subnet_c_id
-  region      = var.region
-  projectName = var.projectName
+  vpc            = module.vpc.vpc_id
+  vpc_cidr_block = module.vpc.vpc_cidr_block
+  subnet_a_id    = module.vpc.subnet_a_id
+  subnet_b_id    = module.vpc.subnet_b_id
+  subnet_c_id    = module.vpc.subnet_c_id
+  region         = var.region
+  projectName    = var.projectName
 
   ecs_task_execution_role_arn = var.ecs_task_execution_role_arn
 
