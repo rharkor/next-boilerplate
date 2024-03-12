@@ -185,6 +185,19 @@ const onlyFrontAppsAdaptaion: {
       removals: [new RegExp(/redirects\(\)\s{(\n|.)*},/, "g")],
     },
   },
+  {
+    path: ".devcontainer/devcontainer.json",
+    fileEdits: {
+      removals: [
+        new RegExp(/ \,\n\s*"runServices": \["redis"\, "db"\]\,/, "g"),
+        new RegExp(/ \,\n\s*"portsAttributes"\: \{(\n|.)*},/, "g"),
+      ],
+      replacements: {
+        '"forwardPorts": [3000, 3001, 3002, 5432, 6379, 6080],':
+          '"forwardPorts": [3000],',
+      },
+    },
+  },
 ];
 
 const noUiToRemove = [
