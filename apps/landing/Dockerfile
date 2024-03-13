@@ -11,7 +11,7 @@ COPY package-lock.json ./
 
 COPY apps/landing/package.json ./apps/landing/package.json
 
-RUN npm i --only=production
+RUN npm ci --omit=dev
 
 
 FROM node:20-alpine AS builder

@@ -25,13 +25,12 @@ module "project" {
   source = "./modules/ec2-project"
 
 
-  projectName                  = var.project_name
-  region                       = var.aws_region
-  task_definitions             = var.task_definitions
-  ecs_task_execution_role_arn  = var.ecs_task_execution_role_arn
-  ecs_task_execution_role_name = var.ecs_task_execution_role_name
-  public_ec2_key               = file("keys/id_rsa.pub")
-  user_data                    = file("user_data.sh")
+  projectName      = var.project_name
+  region           = var.aws_region
+  task_definitions = var.task_definitions
+  public_ec2_key   = file("keys/id_rsa.pub")
+  user_data        = file("templates/user_data.sh")
+  az_count         = var.az_count
 }
 
 

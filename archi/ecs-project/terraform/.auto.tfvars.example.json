@@ -2,8 +2,7 @@
   "project_name": "#{PROJECT_NAME}#",
   "aws_profile": "enter your aws profile",
   "aws_region": "eu-west-1",
-  "ecs_task_execution_role_arn": "complete this field, example: arn:aws:iam::123456789:role/default-ecs-task-execution-role",
-  "ecs_task_execution_role_name": "default-ecs-task-execution-role",
+  "az_count": "3",
   "task_definitions": [
     {
       "task_name": "app",
@@ -31,7 +30,7 @@
       "scale_out_cooldown": "300",
       "minimum_scaling_step_size": "1",
       "maximum_scaling_step_size": "1",
-      "instance_type": "t2.micro"
+      "instance_type": "t4g.nano"
     },
     {
       "task_name": "cron",
@@ -45,7 +44,7 @@
       "scale_out_cooldown": "300",
       "minimum_scaling_step_size": "1",
       "maximum_scaling_step_size": "1",
-      "instance_type": "t2.micro"
+      "instance_type": "t4g.nano"
     },
     {
       "task_name": "docs",
@@ -59,7 +58,7 @@
       "scale_out_cooldown": "300",
       "minimum_scaling_step_size": "1",
       "maximum_scaling_step_size": "1",
-      "instance_type": "t2.micro"
+      "instance_type": "t4g.nano"
     }
   ]
 }

@@ -16,6 +16,10 @@ resource "aws_iam_role" "ecs_task_execution_role" {
       }
     ]
   })
+
+  tags = {
+    Name = "${local.identifier}-ecs-task-execution-role"
+  }
 }
 
 resource "aws_iam_policy" "ecs_logs_policy" {
@@ -38,6 +42,10 @@ resource "aws_iam_policy" "ecs_logs_policy" {
       }
     ]
   })
+
+  tags = {
+    Name = "${local.identifier}-ecs-logs-policy"
+  }
 }
 
 resource "aws_iam_role_policy_attachment" "ecs_logs_policy_attachment" {
