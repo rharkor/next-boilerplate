@@ -1,18 +1,7 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "pipeline": {
-    "build": {
-      "dependsOn": ["^build"],
-      "outputs": [".next/**", "!.next/cache/**"]
-    },
-    "cron#build": {
-      "dependsOn": ["^build"],
-      "outputs": ["dist/**"]
-    },
-    "docs#build": {
-      "dependsOn": ["^build"],
-      "outputs": ["build/**"]
-    },
+    "build": {},
     "test": {},
     "lint": {},
     "lint:fix": {},

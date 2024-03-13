@@ -5,10 +5,7 @@
     "sample": "node dist/cron/src/sample/index.js",
     "dev:sample": "nodemon --watch './src/*' -e ts,json,d.ts --exec 'npm run build && npm run sample'",
     "lint": "eslint --ext .ts,.tsx .",
-    "lint:fix": "eslint --fix --ext .ts,.tsx .",
-    "test": "exit 0",
-    "start": "exit 0",
-    "dev": "exit 0"
+    "lint:fix": "eslint --fix --ext .ts,.tsx ."
   },
   "keywords": [],
   "author": "",
