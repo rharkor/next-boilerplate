@@ -3,17 +3,21 @@
   "aws_profile": "enter your aws profile",
   "aws_region": "eu-west-1",
   "ecs_task_execution_role_arn": "complete this field, example: arn:aws:iam::123456789:role/default-ecs-task-execution-role",
+  "ecs_task_execution_role_name": "default-ecs-task-execution-role",
   "task_definitions": [
     {
       "task_name": "app",
       "cpu": "256",
       "memory": "512",
       "docker_image": "complete this field, example: 123456789.dkr.ecr.eu-west-1.amazonaws.com/app:latest",
-      "desired_count": "1",
-      "max_capacity": "2",
-      "min_capacity": "1",
+      "desired_count": "2",
+      "max_capacity": "5",
+      "min_capacity": "2",
       "scale_in_cooldown": "300",
-      "scale_out_cooldown": "300"
+      "scale_out_cooldown": "300",
+      "minimum_scaling_step_size": "1",
+      "maximum_scaling_step_size": "1",
+      "instance_type": "t4g.micro"
     },
     {
       "task_name": "landing",
@@ -24,7 +28,10 @@
       "max_capacity": "2",
       "min_capacity": "1",
       "scale_in_cooldown": "300",
-      "scale_out_cooldown": "300"
+      "scale_out_cooldown": "300",
+      "minimum_scaling_step_size": "1",
+      "maximum_scaling_step_size": "1",
+      "instance_type": "t2.micro"
     },
     {
       "task_name": "cron",
@@ -35,7 +42,10 @@
       "max_capacity": "1",
       "min_capacity": "1",
       "scale_in_cooldown": "300",
-      "scale_out_cooldown": "300"
+      "scale_out_cooldown": "300",
+      "minimum_scaling_step_size": "1",
+      "maximum_scaling_step_size": "1",
+      "instance_type": "t2.micro"
     },
     {
       "task_name": "docs",
@@ -46,7 +56,10 @@
       "max_capacity": "2",
       "min_capacity": "1",
       "scale_in_cooldown": "300",
-      "scale_out_cooldown": "300"
+      "scale_out_cooldown": "300",
+      "minimum_scaling_step_size": "1",
+      "maximum_scaling_step_size": "1",
+      "instance_type": "t2.micro"
     }
   ]
 }
