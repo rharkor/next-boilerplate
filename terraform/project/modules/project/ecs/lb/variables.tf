@@ -2,6 +2,10 @@ variable "projectName" {
   type = string
 }
 
+variable "vpc" {
+  type = string
+}
+
 variable "subnet_a_id" {
   type = string
 }

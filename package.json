@@ -21,9 +21,6 @@
     "packages/*",
     "packages/configs/*"
   ],
-  "dependencies": {
-    "concurrently": "^8.2.2"
-  },
   "devDependencies": {
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/commit-analyzer": "^11.0.0",
