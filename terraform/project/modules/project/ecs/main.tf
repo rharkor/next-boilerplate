@@ -1,5 +1,9 @@
+locals {
+  identifier = "${var.projectName}-${var.task_name}"
+}
+
 resource "aws_ecs_cluster" "ecs_cluster" {
-  name = "${var.projectName}-ecs-cluster"
+  name = "${local.identifier}-ecs-cluster"
 
   setting {
     name  = "containerInsights"
@@ -7,59 +11,10 @@ resource "aws_ecs_cluster" "ecs_cluster" {
   }
 }
 
-resource "aws_iam_role" "ecs_task_execution_role" {
-  name = "${var.projectName}-ecs-task-execution-role"
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17",
-    Statement = [
-      {
-        Action = "sts:AssumeRole",
-        Effect = "Allow",
-        Principal = {
-          Service = "ecs-tasks.amazonaws.com"
-        }
-      }
-    ]
-  })
-}
-
-resource "aws_iam_policy" "ecs_logs_policy" {
-  name        = "${var.projectName}-ecs-logs-policy"
-  description = "Allows ECS tasks to interact with CloudWatch Logs"
-  policy = jsonencode({
-    Version : "2012-10-17",
-    Statement : [
-      {
-        Effect : "Allow",
-        Action : [
-          "logs:CreateLogGroup",
-          "logs:CreateLogStream",
-          "logs:PutLogEvents"
-        ],
-        Resource : [
-          "arn:aws:logs:${var.region}::log-group:/ecs/${var.projectName}*",
-          "arn:aws:logs:${var.region}::log-group:/ecs/${var.projectName}*:*"
-        ]
-      }
-    ]
-  })
-}
-
-resource "aws_iam_role_policy_attachment" "ecs_logs_policy_attachment" {
-  role       = aws_iam_role.ecs_task_execution_role.name
-  policy_arn = aws_iam_policy.ecs_logs_policy.arn
-}
-
-resource "aws_iam_role_policy_attachment" "ecs_task_execution_role_policy_attach" {
-  role       = aws_iam_role.ecs_task_execution_role.name
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
-}
-
-
 resource "aws_ecs_task_definition" "ecs_td" {
   family                   = "${var.projectName}-ecs-task"
   network_mode             = "awsvpc"
-  requires_compatibilities = [var.kind == "fargate" ? "FARGATE" : "EC2"]
+  requires_compatibilities = ["FARGATE"]
   container_definitions = jsonencode([
     {
       name      = "${var.projectName}-container"
@@ -91,7 +46,7 @@ resource "aws_ecs_task_definition" "ecs_td" {
       ]
     },
   ])
-  execution_role_arn = aws_iam_role.ecs_task_execution_role.arn
+  execution_role_arn = var.ecs_task_execution_role_arn
 
   cpu    = var.cpu
   memory = var.memory
@@ -99,36 +54,6 @@ resource "aws_ecs_task_definition" "ecs_td" {
   runtime_platform {
     operating_system_family = "LINUX"
     cpu_architecture        = "X86_64"
-  }
-}
-
-resource "aws_subnet" "subnet_a" {
-  vpc_id                  = var.vpc
-  cidr_block              = "10.0.1.0/24"
-  map_public_ip_on_launch = true
-  availability_zone       = "${var.region}a"
-  tags = {
-    Name = "${var.projectName}-subnet-a"
-  }
-}
-
-resource "aws_subnet" "subnet_b" {
-  vpc_id                  = var.vpc
-  cidr_block              = "10.0.2.0/24"
-  map_public_ip_on_launch = true
-  availability_zone       = "${var.region}b"
-  tags = {
-    Name = "${var.projectName}-subnet-b"
-  }
-}
-
-resource "aws_subnet" "subnet_c" {
-  vpc_id                  = var.vpc
-  cidr_block              = "10.0.3.0/24"
-  map_public_ip_on_launch = true
-  availability_zone       = "${var.region}c"
-  tags = {
-    Name = "${var.projectName}-subnet-c"
   }
 }
 
@@ -140,11 +65,11 @@ resource "aws_security_group" "ecs_sg" {
   dynamic "ingress" {
     for_each = [
       {
-        description = "Allow all traffic from the internet"
-        from_port   = 0
-        to_port     = 0
-        protocol    = "-1"
-        cidr_blocks = ["0.0.0.0/0"]
+        description = "Allow traffic from the load balancer"
+        from_port   = 80
+        to_port     = 80
+        protocol    = "tcp"
+        cidr_blocks = [var.vpc_cidr_block]
     }]
 
     content {
@@ -183,29 +108,29 @@ resource "aws_ecs_service" "ecs_service" {
   name            = "${var.projectName}-ecs-service"
   cluster         = aws_ecs_cluster.ecs_cluster.id
   task_definition = aws_ecs_task_definition.ecs_td.arn
-  desired_count   = 1
+  desired_count   = var.desired_count
   launch_type     = "FARGATE"
 
   network_configuration {
-    subnets          = [aws_subnet.subnet_a.id, aws_subnet.subnet_b.id, aws_subnet.subnet_c.id]
+    subnets          = [var.subnet_a_id, var.subnet_b_id, var.subnet_c_id]
     security_groups  = [aws_security_group.ecs_sg.id]
     assign_public_ip = true
   }
 
   load_balancer {
-    target_group_arn = var.lb_ecs_tg_arn
+    target_group_arn = module.lb.lb_ecs_tg_arn
     container_name   = "${var.projectName}-container"
     container_port   = 80
   }
 
   depends_on = [
-    var.lb_front_end,
+    module.lb.lb_front_end,
   ]
 }
 
 resource "aws_appautoscaling_target" "ecs_target" {
-  max_capacity       = 2
-  min_capacity       = 0
+  max_capacity       = var.max_capacity
+  min_capacity       = var.min_capacity
   resource_id        = "service/${aws_ecs_cluster.ecs_cluster.name}/${aws_ecs_service.ecs_service.name}"
   scalable_dimension = "ecs:service:DesiredCount"
   service_namespace  = "ecs"
@@ -221,10 +146,10 @@ resource "aws_appautoscaling_policy" "cpu_utilization" {
   target_tracking_scaling_policy_configuration {
     target_value = 80.0
     predefined_metric_specification {
-      predefined_metric_type = "ECSServiceAverageMemoryUtilization"
+      predefined_metric_type = "ECSServiceAverageCPUUtilization"
     }
-    scale_in_cooldown  = 300
-    scale_out_cooldown = 300
+    scale_in_cooldown  = var.scale_in_cooldown
+    scale_out_cooldown = var.scale_out_cooldown
   }
 }
 
@@ -236,11 +161,21 @@ resource "aws_appautoscaling_policy" "memory_utilization" {
   service_namespace  = aws_appautoscaling_target.ecs_target.service_namespace
 
   target_tracking_scaling_policy_configuration {
-    target_value = 60.0
+    target_value = 70.0
     predefined_metric_specification {
-      predefined_metric_type = "ECSServiceAverageCPUUtilization"
+      predefined_metric_type = "ECSServiceAverageMemoryUtilization"
     }
-    scale_in_cooldown  = 300
-    scale_out_cooldown = 300
+    scale_in_cooldown  = var.scale_in_cooldown
+    scale_out_cooldown = var.scale_out_cooldown
   }
+}
+
+module "lb" {
+  source = "./lb"
+
+  vpc         = var.vpc
+  projectName = var.projectName
+  subnet_a_id = var.subnet_a_id
+  subnet_b_id = var.subnet_b_id
+  subnet_c_id = var.subnet_c_id
 }

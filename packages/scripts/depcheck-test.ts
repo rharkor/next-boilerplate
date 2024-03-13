@@ -24,7 +24,7 @@ const packagesPath = packages
 
 const options: { skipMissing: boolean; ignoreMatches: string[] } = {
   skipMissing: false,
-  ignoreMatches: [],
+  ignoreMatches: ["@next-boilerplate/scripts"],
 };
 
 const main = async () => {

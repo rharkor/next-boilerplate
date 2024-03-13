@@ -84,7 +84,7 @@ To get started with this boilerplate, follow these steps:
 
 ```bash
 ## Don't forget to ⭐ star and fork it first :)
-git clone https://github.com/rharkor/next-boilerplate
+git clone --depth 1 https://github.com/rharkor/next-boilerplate
 ```
 
 2. Install the dependencies:

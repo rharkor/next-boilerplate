@@ -185,6 +185,12 @@ const onlyFrontAppsAdaptaion: {
       removals: [new RegExp(/redirects\(\)\s{(\n|.)*},/, "g")],
     },
   },
+  {
+    path: ".devcontainer/devcontainer.json",
+    fileEdits: {
+      removals: [new RegExp(/\,\n\s*"runServices": \["redis"\, "db"\]/, "g")],
+    },
+  },
 ];
 
 const noUiToRemove = [

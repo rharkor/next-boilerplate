@@ -3,11 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "lint": "eslint --ext .ts,.tsx .",
-    "lint:fix": "eslint --fix --ext .ts,.tsx .",
-    "test": "exit 0",
-    "build": "exit 0",
-    "start": "exit 0",
-    "dev": "exit 0"
+    "lint:fix": "eslint --fix --ext .ts,.tsx ."
   },
   "dependencies": {
     "chalk": "^5.3.0"
