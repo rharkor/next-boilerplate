@@ -17,17 +17,16 @@ terraform {
 }
 
 provider "aws" {
-  region  = var.AWS_REGION
-  profile = var.AWS_PROFILE
+  region  = var.aws_region
+  profile = var.aws_profile
 }
 
 module "project" {
   source = "./modules/project"
 
-  projectName = var.PROJECT_NAME
-  region      = var.AWS_REGION
-  cpu         = var.CPU
-  memory      = var.MEMORY
-  image       = var.DOCKER_IMAGE
-  kind        = var.PROJECT_MODULE
+
+  projectName                 = var.project_name
+  region                      = var.aws_region
+  task_definitions            = var.task_definitions
+  ecs_task_execution_role_arn = var.ecs_task_execution_role_arn
 }
