@@ -31,7 +31,8 @@ ENV NODE_ENV production
 COPY --from=deps /usr/src/app .
 
 COPY apps/landing ./apps/landing
-COPY packages ./packages
+COPY packages/configs ./packages/configs
+COPY packages/lib ./packages/lib
 
 
 RUN npm run build -w apps/landing

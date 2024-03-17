@@ -24,7 +24,27 @@ data "aws_ami" "amazon_linux_2" {
 
   filter {
     name   = "name"
-    values = ["amzn2-ami-ecs-hvm-*-x86_64-ebs"]
+    values = ["amzn2-ami-ecs-hvm-*"]
+  }
+
+  filter {
+    name   = "root-device-type"
+    values = ["ebs"]
+  }
+
+  filter {
+    name   = "architecture"
+    values = [var.architecture]
+  }
+
+  filter {
+    name   = "state"
+    values = ["available"]
+  }
+
+  filter {
+    name   = "image-type"
+    values = ["machine"]
   }
 
   owners = ["amazon"]
@@ -368,7 +388,7 @@ resource "aws_appautoscaling_policy" "cpu_utilization" {
   service_namespace  = aws_appautoscaling_target.ecs_target.service_namespace
 
   target_tracking_scaling_policy_configuration {
-    target_value = 80.0
+    target_value = 40.0
     predefined_metric_specification {
       predefined_metric_type = "ECSServiceAverageCPUUtilization"
     }
@@ -392,6 +412,29 @@ resource "aws_appautoscaling_policy" "memory_utilization" {
     scale_in_cooldown  = var.scale_in_cooldown
     scale_out_cooldown = var.scale_out_cooldown
   }
+}
+
+## Creates Capacity Provider linked with ASG and ECS Cluster
+
+resource "aws_ecs_capacity_provider" "ecs_capacity_provider" {
+  name = "${var.projectName}-ecs-cp"
+
+  auto_scaling_group_provider {
+    auto_scaling_group_arn         = aws_autoscaling_group.ecs_autoscaling_group.arn
+    managed_termination_protection = "ENABLED"
+
+    managed_scaling {
+      maximum_scaling_step_size = var.maximum_scaling_step_size
+      minimum_scaling_step_size = var.minimum_scaling_step_size
+      status                    = "ENABLED"
+      target_capacity           = 70
+    }
+  }
+}
+
+resource "aws_ecs_cluster_capacity_providers" "ecs_cluster_capacity_providers" {
+  cluster_name       = aws_ecs_cluster.ecs_cluster.name
+  capacity_providers = [aws_ecs_capacity_provider.ecs_capacity_provider.name]
 }
 
 module "lb" {

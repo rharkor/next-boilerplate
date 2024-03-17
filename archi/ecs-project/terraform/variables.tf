@@ -24,6 +24,7 @@ variable "task_definitions" {
     minimum_scaling_step_size = number
     maximum_scaling_step_size = number
     instance_type             = string
+    architecture              = string
   }))
   description = "List of task definitions"
 }

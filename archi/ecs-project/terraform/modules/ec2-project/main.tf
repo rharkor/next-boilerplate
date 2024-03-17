@@ -19,14 +19,17 @@ module "ecs" {
   private_subnets = module.vpc.private_subnets
   public_subnets  = module.vpc.public_subnets
 
-  task_name          = var.task_definitions[count.index].task_name
-  cpu                = var.task_definitions[count.index].cpu
-  memory             = var.task_definitions[count.index].memory
-  image              = var.task_definitions[count.index].docker_image
-  desired_count      = var.task_definitions[count.index].desired_count
-  min_capacity       = var.task_definitions[count.index].min_capacity
-  max_capacity       = var.task_definitions[count.index].max_capacity
-  scale_in_cooldown  = var.task_definitions[count.index].scale_in_cooldown
-  scale_out_cooldown = var.task_definitions[count.index].scale_out_cooldown
-  instance_type      = var.task_definitions[count.index].instance_type
+  task_name                 = var.task_definitions[count.index].task_name
+  cpu                       = var.task_definitions[count.index].cpu
+  memory                    = var.task_definitions[count.index].memory
+  image                     = var.task_definitions[count.index].docker_image
+  desired_count             = var.task_definitions[count.index].desired_count
+  min_capacity              = var.task_definitions[count.index].min_capacity
+  max_capacity              = var.task_definitions[count.index].max_capacity
+  scale_in_cooldown         = var.task_definitions[count.index].scale_in_cooldown
+  scale_out_cooldown        = var.task_definitions[count.index].scale_out_cooldown
+  instance_type             = var.task_definitions[count.index].instance_type
+  architecture              = var.task_definitions[count.index].architecture
+  maximum_scaling_step_size = var.task_definitions[count.index].maximum_scaling_step_size
+  minimum_scaling_step_size = var.task_definitions[count.index].minimum_scaling_step_size
 }

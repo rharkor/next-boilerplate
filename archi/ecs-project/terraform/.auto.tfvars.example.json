@@ -16,7 +16,8 @@
       "scale_out_cooldown": "300",
       "minimum_scaling_step_size": "1",
       "maximum_scaling_step_size": "1",
-      "instance_type": "t4g.micro"
+      "instance_type": "t4g.micro",
+      "architecture": "arm64"
     },
     {
       "task_name": "landing",
@@ -30,7 +31,8 @@
       "scale_out_cooldown": "300",
       "minimum_scaling_step_size": "1",
       "maximum_scaling_step_size": "1",
-      "instance_type": "t4g.nano"
+      "instance_type": "t4g.nano",
+      "architecture": "arm64"
     },
     {
       "task_name": "cron",
@@ -44,7 +46,8 @@
       "scale_out_cooldown": "300",
       "minimum_scaling_step_size": "1",
       "maximum_scaling_step_size": "1",
-      "instance_type": "t4g.nano"
+      "instance_type": "t4g.nano",
+      "architecture": "arm64"
     },
     {
       "task_name": "docs",
@@ -58,7 +61,8 @@
       "scale_out_cooldown": "300",
       "minimum_scaling_step_size": "1",
       "maximum_scaling_step_size": "1",
-      "instance_type": "t4g.nano"
+      "instance_type": "t4g.nano",
+      "architecture": "arm64"
     }
   ]
 }

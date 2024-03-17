@@ -68,6 +68,7 @@ With this template, you get all the awesomeness you need:
       - [Traduction file](#traduction-file)
   - [☁️ Cloud deployment](#️-cloud-deployment)
     - [Build](#build)
+    - [Build multi-architecture image](#build-multi-architecture-image)
     - [Debug in local](#debug-in-local)
     - [Deploy](#deploy)
   - [🤝 Contribution](#-contribution)
@@ -336,6 +337,13 @@ docker tag next-boilerplate/landing:latest <registry-url>/next-boilerplate/landi
 docker push <registry-url>/next-boilerplate/landing:latest
 ```
 
+### Build multi-architecture image
+
+Exemple (landing):
+```bash
+buildx build -t "<registry-url>/next-boilerplate/landing:latest" -f apps/landing/Dockerfile --platform linux/amd64,linux/arm64 --push .
+```
+
 ### Debug in local
 
 After the build you can run the image in local to see if everything is working as expected.
@@ -343,6 +351,11 @@ After the build you can run the image in local to see if everything is working a
 ```bash
 docker run --rm -it -p 3000:3000 <image-name>
 ```
+
+> See:
+> https://www.docker.com/blog/multi-arch-images/
+> https://aws.amazon.com/fr/blogs/containers/how-to-build-your-containers-for-arm-and-save-with-graviton-and-spot-instances-on-amazon-ecs/
+> https://docs.docker.com/build/drivers/docker-container/
 
 ### Deploy
 

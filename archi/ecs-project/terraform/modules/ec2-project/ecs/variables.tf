@@ -63,10 +63,23 @@ variable "instance_type" {
   type = string
 }
 
+variable "architecture" {
+  type = string
+}
+
 variable "private_subnets" {
   type = any
 }
 
 variable "public_subnets" {
   type = any
+}
+
+
+variable "maximum_scaling_step_size" {
+  type = number
+}
+
+variable "minimum_scaling_step_size" {
+  type = number
 }

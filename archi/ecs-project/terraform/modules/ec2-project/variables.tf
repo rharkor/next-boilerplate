@@ -8,16 +8,19 @@ variable "region" {
 
 variable "task_definitions" {
   type = list(object({
-    task_name          = string
-    cpu                = number
-    memory             = number
-    docker_image       = string
-    desired_count      = number
-    max_capacity       = number
-    min_capacity       = number
-    scale_in_cooldown  = number
-    scale_out_cooldown = number
-    instance_type      = string
+    task_name                 = string
+    cpu                       = number
+    memory                    = number
+    docker_image              = string
+    desired_count             = number
+    max_capacity              = number
+    min_capacity              = number
+    scale_in_cooldown         = number
+    scale_out_cooldown        = number
+    maximum_scaling_step_size = number
+    minimum_scaling_step_size = number
+    instance_type             = string
+    architecture              = string
   }))
   description = "List of task definitions"
 }
