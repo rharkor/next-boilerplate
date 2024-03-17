@@ -52,13 +52,13 @@ ENV NODE_ENV production
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
-COPY --from=builder /usr/src/app/apps/landing/public ./public
+COPY --from=builder /usr/src/app/apps/landing/public ./apps/landing/public
 
 RUN mkdir .next
 RUN chown nextjs:nodejs .next
 
 COPY --from=builder --chown=nextjs:nodejs /usr/src/app/apps/landing/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /usr/src/app/apps/landing/.next/static ./.next/static
+COPY --from=builder --chown=nextjs:nodejs /usr/src/app/apps/landing/.next/static ./apps/landing/.next/static
 
 USER nextjs
 
