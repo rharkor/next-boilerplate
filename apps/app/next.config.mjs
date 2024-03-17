@@ -4,6 +4,7 @@ import bunldeAnalyzer from "@next/bundle-analyzer"
  * @type {import('next').NextConfig}
  */
 const config = {
+  output: 'standalone',
   reactStrictMode: true,
   rewrites() {
     return [
