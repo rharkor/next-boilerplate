@@ -1,45 +1,56 @@
-FROM node:20-alpine AS deps
+FROM node:20-alpine as base
+
+FROM base AS deps
 
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
 ENV NODE_ENV production
 
+
 #? Copy the necessary files to install dependencies
-COPY package*.json .
-COPY packages/lib/package*.json ./packages/lib/
-COPY packages/cron/package*.json ./packages/cron/
+COPY package.json ./
+COPY package-lock.json ./
 
-RUN npm i --only=production
+COPY apps/cron/package.json ./apps/cron/package.json
 
-FROM node:20-alpine AS builder
+RUN npm ci --omit=dev
+
+FROM base AS builder
+
+ARG TURBO_TEAM
+ENV TURBO_TEAM=$TURBO_TEAM
+
+ARG TURBO_TOKEN
+ENV TURBO_TOKEN=$TURBO_TOKEN
 
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
 COPY --from=deps /usr/src/app .
 
-COPY packages/cron ./packages/cron
+COPY apps/cron ./apps/cron
+COPY packages/configs ./packages/configs
 COPY packages/lib ./packages/lib
 
-RUN npm run build -w packages/cron
+RUN npm run build -w apps/cron
 
-FROM node:20-alpine AS runner
+FROM base AS runner
 
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
-COPY --from=builder /usr/src/app/packages/cron .
-COPY --from=builder /usr/src/app/node_modules ./node_modules
+COPY --from=builder /usr/src/app .
 
-COPY packages/app/prisma/schema.prisma ../app/prisma/schema.prisma
-RUN npx prisma generate
+RUN mkdir -p apps/app/prisma
+
+COPY apps/app/prisma/schema.prisma apps/app/prisma/schema.prisma
 
 # Install logrotate
 RUN apk add --update logrotate
 
 # Add crontab file in the cron directory
-COPY packages/cron/crontab /etc/crontabs/root
+COPY apps/cron/crontab /etc/crontabs/root
 
 # Give execution rights on the cron job
 RUN chmod 0644 /etc/crontabs/root
@@ -48,8 +59,8 @@ RUN chmod 0644 /etc/crontabs/root
 RUN touch /var/log/cron.log
 
 # Set up logrotate
-COPY packages/cron/logrotate.conf /etc/logrotate.d/app
+COPY apps/cron/logrotate.conf /etc/logrotate.d/app
 RUN chmod 0644 /etc/logrotate.d/app
 
 # Run the command on container startup
-CMD crond -l 2 && tail -f /var/log/cron.log
+CMD cd apps/cron && npx -y prisma generate && crond -l 2 && tail -f /var/log/cron.log

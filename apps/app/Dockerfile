@@ -1,4 +1,6 @@
-FROM node:20-alpine AS deps
+FROM node:20-alpine AS base
+
+FROM base AS deps
 
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
@@ -6,15 +8,22 @@ WORKDIR /usr/src/app
 ENV NODE_ENV production
 
 #? Copy the necessary files to install dependencies
-COPY package*.json .
-COPY packages/lib/package*.json ./packages/lib/
-COPY packages/app/package*.json ./packages/app/
-COPY packages/app/prisma/schema.prisma ./packages/app/prisma/schema.prisma
+COPY package.json ./
+COPY package-lock.json ./
 
-RUN npm i --only=production
+COPY apps/app/package.json ./apps/app/package.json
+COPY apps/app/prisma/schema.prisma apps/app/prisma/schema.prisma
+
+RUN npm ci --omit=dev
 
 
-FROM node:20-alpine AS builder
+FROM base AS builder
+
+ARG TURBO_TEAM
+ENV TURBO_TEAM=$TURBO_TEAM
+
+ARG TURBO_TOKEN
+ENV TURBO_TOKEN=$TURBO_TOKEN
 
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
@@ -24,13 +33,15 @@ ENV NODE_ENV production
 
 COPY --from=deps /usr/src/app .
 
+COPY apps/app ./apps/app
+COPY packages/configs ./packages/configs
 COPY packages/lib ./packages/lib
-COPY packages/app ./packages/app
-
-RUN npm run build -w packages/app
 
 
-FROM node:20-alpine AS runner
+RUN npm run build -w apps/app
+
+
+FROM base AS runner
 
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
@@ -39,8 +50,19 @@ ENV PORT 3000
 ENV NEXT_TELEMETRY_DISABLED 1
 ENV NODE_ENV production
 
-COPY --from=builder /usr/src/app .
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
 
-EXPOSE 3000
+COPY --from=builder /usr/src/app/apps/app/public ./apps/app/public
 
-CMD [ "npm", "start", "-w", "packages/app" ]
+RUN mkdir .next
+RUN chown nextjs:nodejs .next
+
+COPY --from=builder --chown=nextjs:nodejs /usr/src/app/apps/app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /usr/src/app/apps/app/.next/static ./apps/app/.next/static
+
+USER nextjs
+
+ENV HOSTNAME "0.0.0.0"
+
+CMD ["node", "apps/app/server.js"]

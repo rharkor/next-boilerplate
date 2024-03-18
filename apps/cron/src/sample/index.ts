@@ -1,6 +1,6 @@
 import { env } from "@/lib/env"
+import { logger } from "@/lib/logger"
 import { prisma } from "@/lib/prisma"
-import { logger } from "@next-boilerplate/lib/logger"
 
 const main = async () => {
   const maxDurationWarning = 1000 * 60 * 5 // 5 minutes
