@@ -2,21 +2,25 @@
 #* ECS Task Definition
 #####################################
 resource "aws_ecs_task_definition" "ecs_td" {
-  family             = "${var.identifier}-ecs-task"
-  execution_role_arn = aws_iam_role.ecs_task_execution_role.arn
-  task_role_arn      = aws_iam_role.ecs_task_iam_role.arn
+  family                   = "${var.identifier}-ecs-task"
+  execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
+  task_role_arn            = aws_iam_role.ecs_task_iam_role.arn
+  requires_compatibilities = ["FARGATE"]
+  network_mode             = "awsvpc"
+  cpu                      = var.cpu
+  memory                   = var.memory
+
+
 
   container_definitions = jsonencode([
     {
       name      = "${var.identifier}-container"
       image     = "${aws_ecr_repository.ecr.repository_url}:latest"
-      cpu       = var.cpu
-      memory    = var.memory
       essential = true
       portMappings = [
         {
-          containerPort = 80
-          hostPort      = 80
+          containerPort = 3000
+          hostPort      = 3000
           protocol      = "tcp"
         },
       ]
@@ -31,11 +35,16 @@ resource "aws_ecs_task_definition" "ecs_td" {
       environment = [
         {
           name  = "PORT"
-          value = "80"
+          value = "3000"
         },
       ]
     },
   ])
+
+  runtime_platform {
+    operating_system_family = "LINUX"
+    cpu_architecture        = "ARM64"
+  }
 }
 
 resource "aws_cloudwatch_log_group" "log_group" {

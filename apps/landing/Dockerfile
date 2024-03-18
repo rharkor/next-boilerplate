@@ -62,6 +62,4 @@ COPY --from=builder --chown=nextjs:nodejs /usr/src/app/apps/landing/.next/static
 
 USER nextjs
 
-ENV HOSTNAME "0.0.0.0"
-
 CMD ["node", "apps/landing/server.js"]

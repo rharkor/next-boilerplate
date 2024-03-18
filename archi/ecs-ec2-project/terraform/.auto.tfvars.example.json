@@ -3,17 +3,17 @@
   "aws_profile": "enter your aws profile",
   "aws_region": "eu-west-1",
   "az_count": "3",
-  "instance_type": "t4g.micro",
+  "instance_type": "t4g.nano",
   "architecture": "arm64",
   "max_asg_capacity": "5",
-  "min_asg_capacity": "2",
+  "min_asg_capacity": "1",
   "minimum_scaling_step_size": "1",
   "maximum_scaling_step_size": "1",
   "task_definitions": [
     {
       "task_name": "app",
       "cpu": "256",
-      "memory": "512",
+      "memory": "256",
       "desired_count": "2",
       "max_capacity": "5",
       "min_capacity": "2",
@@ -23,7 +23,7 @@
     {
       "task_name": "landing",
       "cpu": "256",
-      "memory": "512",
+      "memory": "256",
       "desired_count": "1",
       "max_capacity": "2",
       "min_capacity": "1",
@@ -33,7 +33,7 @@
     {
       "task_name": "cron",
       "cpu": "256",
-      "memory": "512",
+      "memory": "256",
       "desired_count": "1",
       "max_capacity": "1",
       "min_capacity": "1",
@@ -43,7 +43,7 @@
     {
       "task_name": "docs",
       "cpu": "256",
-      "memory": "512",
+      "memory": "256",
       "desired_count": "1",
       "max_capacity": "2",
       "min_capacity": "1",
