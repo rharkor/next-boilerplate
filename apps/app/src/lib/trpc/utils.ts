@@ -1,5 +1,7 @@
+import { AppRouter } from "@/api/_app"
 import { env } from "@/lib/env"
 import { logger } from "@next-boilerplate/lib/logger"
+import { inferRouterOutputs } from "@trpc/server"
 
 function getBaseUrl() {
   if (typeof window !== "undefined") return ""
@@ -12,3 +14,9 @@ function getBaseUrl() {
 export function getUrl() {
   return getBaseUrl() + "/api/trpc"
 }
+
+/**
+ * This is a helper method to infer the output of a query resolver
+ * @example type HelloOutput = RouterOutputs['hello']
+ */
+export type RouterOutputs = inferRouterOutputs<AppRouter>;
