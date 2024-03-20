@@ -126,24 +126,6 @@ export const replaceTokens = async () => {
           fs.writeFileSync(pJsonFile, newPJsonFileContent, "utf8");
           logger.log(chalk.gray(`Done for ${pJsonFile}`));
         }
-        const terraformMainFile = path.join(
-          __dirname,
-          "../../terraform/main.tf"
-        );
-        const terraformMainFileContent = fs.readFileSync(
-          terraformMainFile,
-          "utf8"
-        );
-        const newTerraformMainFileContent = terraformMainFileContent.replaceAll(
-          nameToReplace,
-          newProjectName
-        );
-        fs.writeFileSync(
-          terraformMainFile,
-          newTerraformMainFileContent,
-          "utf8"
-        );
-        logger.log(chalk.gray(`Done for ${terraformMainFile}`));
 
         //? Replace in all files from root except package-lock.json
         // Function to replace text in a file
