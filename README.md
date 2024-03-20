@@ -228,7 +228,7 @@ This boilerplate comes with various testing setups to ensure your application's 
 
 [T3 Env](https://env.t3.gg/) is a library that provides environmental variables checking at build time, type validation and transforming. It ensures that your application is using the correct environment variables and their values are of the expected type. You’ll never again struggle with runtime errors caused by incorrect environment variable usage.
 
-Config file is located at `env.mjs`. Simply set your client and server variables and import `env` from any file in your project.
+Config file is located at `env.ts`. Simply set your client and server variables and import `env` from any file in your project.
 
 ```ts
 export const env = createEnv({
@@ -340,6 +340,7 @@ docker push <registry-url>/next-boilerplate/landing:latest
 ### Build multi-architecture image
 
 Exemple (landing):
+
 ```bash
 buildx build -t "<registry-url>/next-boilerplate/landing:latest" -f apps/landing/Dockerfile --platform linux/amd64,linux/arm64 --push .
 ```
@@ -353,9 +354,7 @@ docker run --rm -it -p 3000:3000 <image-name>
 ```
 
 > See:
-> https://www.docker.com/blog/multi-arch-images/
-> https://aws.amazon.com/fr/blogs/containers/how-to-build-your-containers-for-arm-and-save-with-graviton-and-spot-instances-on-amazon-ecs/
-> https://docs.docker.com/build/drivers/docker-container/
+> https://www.docker.com/blog/multi-arch-images/ > https://aws.amazon.com/fr/blogs/containers/how-to-build-your-containers-for-arm-and-save-with-graviton-and-spot-instances-on-amazon-ecs/ > https://docs.docker.com/build/drivers/docker-container/
 
 ### Deploy
 
