@@ -5,7 +5,9 @@
     "sample": "node dist/apps/cron/src/sample/index.js",
     "dev:sample": "npm run build && npm run sample",
     "lint": "eslint --ext .ts,.tsx .",
-    "lint:fix": "eslint --fix --ext .ts,.tsx ."
+    "lint:fix": "eslint --fix --ext .ts,.tsx .",
+    "prettier": "prettier --check \"**/*.{js,jsx,ts,tsx}\"",
+    "prettier:fix": "prettier --write \"**/*.{js,jsx,ts,tsx}\""
   },
   "keywords": [],
   "author": "",
