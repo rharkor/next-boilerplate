@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "files": [
-    "next.js"
+    "next.js",
+    "base.js"
   ],
   "dependencies": {
     "@typescript-eslint/eslint-plugin": "^7.0.0",
@@ -14,6 +15,7 @@
     "eslint-config-react-app": "^7.0.1",
     "eslint-plugin-simple-import-sort": "^12.0.0",
     "eslint-plugin-tailwindcss": "^3.13.0",
-    "eslint-plugin-unused-imports": "^3.0.0"
+    "eslint-plugin-unused-imports": "^3.0.0",
+    "eslint-plugin-custom-rule": "*"
   }
 }
