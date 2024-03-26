@@ -13,7 +13,7 @@ module.exports = {
       presets: [require.resolve("next/babel")],
     },
   },
-  plugins: ["@typescript-eslint", "unused-imports", "simple-import-sort"],
+  plugins: ["@typescript-eslint", "unused-imports", "simple-import-sort", "custom-rule"],
   rules: {
     "testing-library/prefer-screen-queries": "off",
     "@next/next/no-html-link-for-pages": "off",
@@ -31,6 +31,7 @@ module.exports = {
     "simple-import-sort/exports": "error",
     "tailwindcss/no-custom-classname": "off",
     "no-console": ["error", { allow: ["warn", "error"] }],
+    "custom-rule/no-use-client": "error",
   },
   overrides: [
     {
@@ -60,4 +61,4 @@ module.exports = {
       },
     },
   ],
-};
+}
