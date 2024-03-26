@@ -30,10 +30,11 @@ WORKDIR /usr/src/app
 COPY --from=deps /usr/src/app .
 
 COPY apps/cron ./apps/cron
+COPY apps/app/prisma/schema.prisma apps/app/prisma/schema.prisma
 COPY packages/configs ./packages/configs
 COPY packages/lib ./packages/lib
 
-RUN npm run build -w apps/cron
+RUN cd apps/cron && npx -y prisma generate && npm run build
 
 FROM base AS runner
 
@@ -43,8 +44,6 @@ WORKDIR /usr/src/app
 COPY --from=builder /usr/src/app .
 
 RUN mkdir -p apps/app/prisma
-
-COPY apps/app/prisma/schema.prisma apps/app/prisma/schema.prisma
 
 # Install logrotate
 RUN apk add --update logrotate
