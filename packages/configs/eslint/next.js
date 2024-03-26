@@ -30,6 +30,7 @@ module.exports = {
     "simple-import-sort/imports": "error",
     "simple-import-sort/exports": "error",
     "tailwindcss/no-custom-classname": "off",
+    "no-console": ["error", { allow: ["warn", "error"] }],
   },
   overrides: [
     {

@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "files": [
-    "next.js"
+    "next.js",
+    "base.js"
   ],
   "dependencies": {
     "@typescript-eslint/eslint-plugin": "^7.0.0",

@@ -13,6 +13,7 @@ module.exports = {
     "max-params": ["error", 4],
     "simple-import-sort/imports": "error",
     "simple-import-sort/exports": "error",
+    "no-console": ["error", { allow: ["warn", "error"] }],
   },
   overrides: [
     {
@@ -42,4 +43,4 @@ module.exports = {
       },
     },
   ],
-};
+}

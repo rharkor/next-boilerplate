@@ -16,8 +16,7 @@
     "incremental": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"],
-      "@lib/*": ["../../packages/lib/*"]
+      "@/*": ["./src/*"]
     },
     "outDir": "dist"
   },
