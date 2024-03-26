@@ -1,3 +1,5 @@
+import { exit } from "process"
+
 import { env } from "@/lib/env"
 import { prisma } from "@/lib/prisma"
 import { logger } from "@lib/logger"
@@ -23,6 +25,8 @@ const main = async () => {
   })
   const took = new Date().getTime() - now.getTime()
   if (took > maxDurationWarning) logger.warn(`[${now.toLocaleString()}] ${name} took ${took}ms`)
+
+  exit(0)
 }
 
 main()
