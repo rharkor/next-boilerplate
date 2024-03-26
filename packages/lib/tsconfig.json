@@ -17,6 +17,6 @@
     "baseUrl": ".",
     "rootDir": "."
   },
-  "include": ["**/*.ts", "**/*.d.ts", ".eslintrc.js"],
+  "include": ["**/*.ts", "**/*.d.ts", ".eslintrc*", "prettier.config.js"],
   "exclude": ["node_modules"]
 }
