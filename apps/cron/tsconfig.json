@@ -21,7 +21,7 @@
     },
     "outDir": "dist"
   },
-  "include": ["**/*.ts", "**/*.d.ts", ".eslintrc.cjs"],
+  "include": ["**/*.ts", "**/*.d.ts", ".eslintrc.cjs", "prettier.config.cjs"],
   "exclude": ["node_modules"],
   "tsc-alias": {
     "resolveFullPaths": true

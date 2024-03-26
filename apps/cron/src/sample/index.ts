@@ -1,11 +1,12 @@
 import { env } from "@/lib/env"
-import { logger } from "@/lib/logger"
 import { prisma } from "@/lib/prisma"
+import { logger } from "@lib/logger"
 
 const main = async () => {
   const maxDurationWarning = 1000 * 60 * 5 // 5 minutes
   const name = "CronName"
   const now = new Date()
+  logger.info(`[${now.toLocaleString()}] ${name} started`)
   //? Do something
   async function something() {
     logger.debug(`[${now.toLocaleString()}] ${name} started`)

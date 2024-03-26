@@ -2,8 +2,8 @@
   "name": "@next-boilerplate/cron",
   "scripts": {
     "build": "rm -rf dist && npx --package typescript -y tsc && tsc-alias",
-    "sample": "node dist/src/sample/index.js",
-    "dev:sample": "nodemon --watch './src/*' -e ts,json,d.ts --exec 'npm run build && npm run sample'",
+    "sample": "node dist/apps/cron/src/sample/index.js",
+    "dev:sample": "npm run build && npm run sample",
     "lint": "eslint --ext .ts,.tsx .",
     "lint:fix": "eslint --fix --ext .ts,.tsx ."
   },
@@ -18,7 +18,6 @@
     "custom-prettier-config": "*",
     "dotenv": "^16.4.4",
     "eslint-config-custom": "*",
-    "nodemon": "^3.0.3",
     "tsc-alias": "^1.8.8",
     "tsconfig": "*",
     "typescript": "^5.3.3",
