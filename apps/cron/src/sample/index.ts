@@ -8,7 +8,6 @@ const main = async () => {
   const maxDurationWarning = 1000 * 60 * 5 // 5 minutes
   const name = "CronName"
   const now = new Date()
-  logger.info(`[${now.toLocaleString()}] ${name} started`)
   //? Do something
   async function something() {
     logger.debug(`[${now.toLocaleString()}] ${name} started`)
