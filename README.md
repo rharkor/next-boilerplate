@@ -26,7 +26,6 @@ With this template, you get all the awesomeness you need:
 - ⚡ **[Redis](https://redis.io/)** - An in-memory data structure store, used as a database, cache, and message broker
 - 🔑 **[Auth.js](https://authjs.dev/)** - A simple, lightweight authentication library
 - 🛠️ **[Extremely strict TypeScript](https://www.typescriptlang.org/)** - With [`ts-reset`](https://github.com/total-typescript/ts-reset) library for ultimate type safety
-- 🧪 **[Jest](https://jestjs.io/)** and **[React Testing Library](https://testing-library.com/react)** - For rock-solid unit and integration tests
 - 📝 **[Conventional commits git hook](https://www.conventionalcommits.org/)** - Keep your commit history neat and tidy
 - 🎯 **[Absolute imports](https://nextjs.org/docs/advanced-features/module-path-aliases)** - No more spaghetti imports
 - ⚕️ **[Health checks](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/)** - Kubernetes-compatible for robust deployments
@@ -56,8 +55,6 @@ With this template, you get all the awesomeness you need:
   - [🚀 Deployment](#-deployment)
   - [📃 Scripts Overview](#-scripts-overview)
   - [🐳 Container Stack](#-container-stack)
-  - [🧪 Testing](#-testing)
-    - [Running Tests](#running-tests)
     - [Tanstack query](#tanstack-query)
   - [💻 Environment Variables handling](#-environment-variables-handling)
   - [📝 Development tips](#-development-tips)
@@ -209,16 +206,6 @@ Ports:
 - PostgreSQL: 5432
 - Redis: 6379
 - Desktop (password: vscode): 6080
-
-## 🧪 Testing
-
-This boilerplate comes with various testing setups to ensure your application's reliability and robustness.
-
-### Running Tests
-
-- **Unit and integration tests**: Run Jest tests using `npm run test`
-
-<img width="1392" alt="image" src="https://user-images.githubusercontent.com/28964599/233666655-93b7d08b-2fd8-406a-b43c-44d4d96cf387.png">
 
 ### Tanstack query
 
