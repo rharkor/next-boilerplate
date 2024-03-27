@@ -41,9 +41,9 @@ jobs:
         run: |
           content=`npm run build -- --filter=$TURBO_RUN_FILTER --dry-run=json`
           # the following lines are required for multi line json
-          content="${content//'%'/'%25'}"
-          content="${content//$'\n'/'%0A'}"
-          content="${content//$'\r'/'%0D'}"
+          # content="${content//'%'/'%25'}"
+          # content="${content//$'\n'/'%0A'}"
+          # content="${content//$'\r'/'%0D'}"
           echo "result=$content" >> $GITHUB_OUTPUT
       - name: Changed app?
         id: changed-app
