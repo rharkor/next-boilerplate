@@ -51,22 +51,22 @@ jobs:
         id: changed-app
         # 1. Using the 'output' of the 'changeset' step inside the `if` to check if the specific app has changed
         # 2. When `true`, we store it in the 'output' of the current step.
-        if: ${{ contains(fromJSON(steps.changeset.outputs.result).packages, 'app') }}
+        if: ${{ contains(fromJSON(steps.changeset.outputs.result).packages, '@next-boilerplate/app') }}
         run: |
           echo "result=true" >> $GITHUB_OUTPUT
       - name: Changed docs?
         id: changed-docs
-        if: ${{ contains(fromJSON(steps.changeset.outputs.result).packages, 'docs') }}
+        if: ${{ contains(fromJSON(steps.changeset.outputs.result).packages, '@next-boilerplate/docs') }}
         run: |
           echo "result=true" >> $GITHUB_OUTPUT
       - name: Changed cron?
         id: changed-cron
-        if: ${{ contains(fromJSON(steps.changeset.outputs.result).packages, 'cron') }}
+        if: ${{ contains(fromJSON(steps.changeset.outputs.result).packages, '@next-boilerplate/cron') }}
         run: |
           echo "result=true" >> $GITHUB_OUTPUT
       - name: Changed landing?
         id: changed-landing
-        if: ${{ contains(fromJSON(steps.changeset.outputs.result).packages, 'landing') }}
+        if: ${{ contains(fromJSON(steps.changeset.outputs.result).packages, '@next-boilerplate/landing') }}
         run: |
           echo "result=true" >> $GITHUB_OUTPUT
 
