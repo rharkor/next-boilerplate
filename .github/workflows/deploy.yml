@@ -39,7 +39,7 @@ jobs:
         # 2. The multi line json string is transformed to a single line string.
         # 3. The single line json string is set to an 'output' (or result) of this step.
         run: |
-          content=`npm run build -- --filter=$TURBO_RUN_FILTER --dry-run=json`
+          content=`npm run build -silent -- --filter=$TURBO_RUN_FILTER --dry-run=json`
           # the following lines are only required for multi line json
           content="${content//'%'/'%25'}"
           content="${content//$'\n'/'%0A'}"
