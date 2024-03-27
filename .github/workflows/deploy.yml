@@ -31,16 +31,15 @@ jobs:
         with:
           node-version: "20.x"
           cache: "npm"
-      - name: Install dependencies
-        run: npm install
       - name: Changeset
         id: changeset
         # 1. We need the 'output' of a turbo dry-run to get a json with all affected packages of these run.
         # 2. The multi line json string is transformed to a single line string.
         # 3. The single line json string is set to an 'output' (or result) of this step.
         run: |
+          content=`npx -y turbo build --filter="...[$TURBO_RUN_FILTER]" --dry-run=json`
           echo 'result<<EOF' >> $GITHUB_OUTPUT
-          echo `npx -y turbo build --filter="...[$TURBO_RUN_FILTER]" --dry-run=json` >> $GITHUB_OUTPUT
+          echo $content >> $GITHUB_OUTPUT
           echo 'EOF' >> $GITHUB_OUTPUT
           echo $content > $GITHUB_WORKSPACE/result.json
       - name: Upload Result as Artifact
