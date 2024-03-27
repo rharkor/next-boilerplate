@@ -44,29 +44,29 @@ jobs:
           content="${content//'%'/'%25'}"
           content="${content//$'\n'/'%0A'}"
           content="${content//$'\r'/'%0D'}"
-          echo "::set-output name=result::$content"
+          echo "result=$content" >> $GITHUB_OUTPUT
       - name: Changed app?
         id: changed-app
         # 1. Using the 'output' of the 'changeset' step inside the `if` to check if the specific app has changed
         # 2. When `true`, we store it in the 'output' of the current step.
         if: ${{ contains(fromJSON(steps.changeset.outputs.result).packages, 'app') }}
         run: |
-          echo "::set-output name=result::true"
+          echo "result=true" >> $GITHUB_OUTPUT
       - name: Changed docs?
         id: changed-docs
         if: ${{ contains(fromJSON(steps.changeset.outputs.result).packages, 'docs') }}
         run: |
-          echo "::set-output name=result::true"
+          echo "result=true" >> $GITHUB_OUTPUT
       - name: Changed cron?
         id: changed-cron
         if: ${{ contains(fromJSON(steps.changeset.outputs.result).packages, 'cron') }}
         run: |
-          echo "::set-output name=result::true"
+          echo "result=true" >> $GITHUB_OUTPUT
       - name: Changed landing?
         id: changed-landing
         if: ${{ contains(fromJSON(steps.changeset.outputs.result).packages, 'landing') }}
         run: |
-          echo "::set-output name=result::true"
+          echo "result=true" >> $GITHUB_OUTPUT
 
   deploy_app:
     name: Deploy app
