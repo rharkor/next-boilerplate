@@ -41,10 +41,13 @@ jobs:
         run: |
           content=`npm run build -- --filter=$TURBO_RUN_FILTER --dry-run=json`
           # the following lines are required for multi line json
-          # content="${content//'%'/'%25'}"
-          # content="${content//$'\n'/'%0A'}"
-          # content="${content//$'\r'/'%0D'}"
-          echo "result=$content" >> $GITHUB_OUTPUT
+          {
+            echo 'result<<EOF'
+            echo "$content"
+            echo EOF
+          } >> "$GITHUB_OUTPUT"
+          echo "Filter: $TURBO_RUN_FILTER" >> $GITHUB_STEP_SUMMARY
+          echo "Changeset: $content" >> $GITHUB_STEP_SUMMARY
       - name: Changed app?
         id: changed-app
         # 1. Using the 'output' of the 'changeset' step inside the `if` to check if the specific app has changed
