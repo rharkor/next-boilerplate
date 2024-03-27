@@ -1,4 +1,6 @@
-FROM node:20-alpine AS deps
+FROM node:20-alpine AS base
+
+FROM base AS deps
 
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
@@ -11,10 +13,10 @@ COPY package-lock.json ./
 
 COPY apps/landing/package.json ./apps/landing/package.json
 
-RUN npm i --only=production
+RUN npm ci --omit=dev
 
 
-FROM node:20-alpine AS builder
+FROM base AS builder
 
 ARG TURBO_TEAM
 ENV TURBO_TEAM=$TURBO_TEAM
@@ -31,13 +33,14 @@ ENV NODE_ENV production
 COPY --from=deps /usr/src/app .
 
 COPY apps/landing ./apps/landing
-COPY packages ./packages
+COPY packages/configs ./packages/configs
+COPY packages/lib ./packages/lib
 
 
 RUN npm run build -w apps/landing
 
 
-FROM node:20-alpine AS runner
+FROM base AS runner
 
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
@@ -46,8 +49,19 @@ ENV PORT 3000
 ENV NEXT_TELEMETRY_DISABLED 1
 ENV NODE_ENV production
 
-COPY --from=builder /usr/src/app .
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
 
-EXPOSE 3000
+COPY --from=builder /usr/src/app/apps/landing/public ./apps/landing/public
 
-CMD [ "npm", "start", "-w", "apps/landing" ]
+RUN mkdir .next
+RUN chown nextjs:nodejs .next
+
+COPY --from=builder --chown=nextjs:nodejs /usr/src/app/apps/landing/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /usr/src/app/apps/landing/.next/static ./apps/landing/.next/static
+
+USER nextjs
+
+ENV HOSTNAME "0.0.0.0"
+
+CMD ["node", "apps/landing/server.js"]

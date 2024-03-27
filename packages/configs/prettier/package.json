@@ -6,5 +6,7 @@
     "next.js",
     "base.js"
   ],
-  "dependencies": {}
+  "dependencies": {
+    "eslint-config-custom": "*"
+  }
 }

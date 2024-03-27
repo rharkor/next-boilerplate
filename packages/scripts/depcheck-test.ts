@@ -77,7 +77,8 @@ const main = async () => {
         "eslint-config-react-app",
         "eslint-plugin-simple-import-sort",
         "eslint-plugin-tailwindcss",
-        "eslint-plugin-unused-imports"
+        "eslint-plugin-unused-imports",
+        "eslint-plugin-custom-rule"
       );
     }
 

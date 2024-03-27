@@ -1,4 +1,6 @@
 //! CHALK DOESNT SUPPORT EDGE RUNTIME (ex: middleware)
+/// <reference lib="dom" />
+
 import chalk from "chalk"
 
 const allowDebug = process.env.NODE_ENV !== "production"

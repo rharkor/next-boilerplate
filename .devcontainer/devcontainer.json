@@ -65,7 +65,8 @@
         "ChakrounAnas.turbo-console-log",
         "yoavbls.pretty-ts-errors",
         "humao.rest-client",
-        "hashicorp.terraform"
+        "hashicorp.terraform",
+        "tldraw-org.tldraw-vscode"
       ]
     }
   }

@@ -3,9 +3,7 @@ import { z } from "zod"
 
 import { createEnv } from "@t3-oss/env-core"
 
-if (!process.env.ENV) {
-  config()
-}
+config()
 
 export const env = createEnv({
   server: {

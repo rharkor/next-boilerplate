@@ -26,7 +26,6 @@ With this template, you get all the awesomeness you need:
 - ⚡ **[Redis](https://redis.io/)** - An in-memory data structure store, used as a database, cache, and message broker
 - 🔑 **[Auth.js](https://authjs.dev/)** - A simple, lightweight authentication library
 - 🛠️ **[Extremely strict TypeScript](https://www.typescriptlang.org/)** - With [`ts-reset`](https://github.com/total-typescript/ts-reset) library for ultimate type safety
-- 🧪 **[Jest](https://jestjs.io/)** and **[React Testing Library](https://testing-library.com/react)** - For rock-solid unit and integration tests
 - 📝 **[Conventional commits git hook](https://www.conventionalcommits.org/)** - Keep your commit history neat and tidy
 - 🎯 **[Absolute imports](https://nextjs.org/docs/advanced-features/module-path-aliases)** - No more spaghetti imports
 - ⚕️ **[Health checks](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/)** - Kubernetes-compatible for robust deployments
@@ -56,8 +55,6 @@ With this template, you get all the awesomeness you need:
   - [🚀 Deployment](#-deployment)
   - [📃 Scripts Overview](#-scripts-overview)
   - [🐳 Container Stack](#-container-stack)
-  - [🧪 Testing](#-testing)
-    - [Running Tests](#running-tests)
     - [Tanstack query](#tanstack-query)
   - [💻 Environment Variables handling](#-environment-variables-handling)
   - [📝 Development tips](#-development-tips)
@@ -68,6 +65,7 @@ With this template, you get all the awesomeness you need:
       - [Traduction file](#traduction-file)
   - [☁️ Cloud deployment](#️-cloud-deployment)
     - [Build](#build)
+    - [Build multi-architecture image](#build-multi-architecture-image)
     - [Debug in local](#debug-in-local)
     - [Deploy](#deploy)
   - [🤝 Contribution](#-contribution)
@@ -209,16 +207,6 @@ Ports:
 - Redis: 6379
 - Desktop (password: vscode): 6080
 
-## 🧪 Testing
-
-This boilerplate comes with various testing setups to ensure your application's reliability and robustness.
-
-### Running Tests
-
-- **Unit and integration tests**: Run Jest tests using `npm run test`
-
-<img width="1392" alt="image" src="https://user-images.githubusercontent.com/28964599/233666655-93b7d08b-2fd8-406a-b43c-44d4d96cf387.png">
-
 ### Tanstack query
 
 [Tanstack query](https://tanstack.com/query/latest) is a powerful, fast, and lightweight data fetching and caching library. It provides a concise, declarative API for fetching data that integrates seamlessly with React.
@@ -227,7 +215,7 @@ This boilerplate comes with various testing setups to ensure your application's 
 
 [T3 Env](https://env.t3.gg/) is a library that provides environmental variables checking at build time, type validation and transforming. It ensures that your application is using the correct environment variables and their values are of the expected type. You’ll never again struggle with runtime errors caused by incorrect environment variable usage.
 
-Config file is located at `env.mjs`. Simply set your client and server variables and import `env` from any file in your project.
+Config file is located at `env.ts`. Simply set your client and server variables and import `env` from any file in your project.
 
 ```ts
 export const env = createEnv({
@@ -336,6 +324,14 @@ docker tag next-boilerplate/landing:latest <registry-url>/next-boilerplate/landi
 docker push <registry-url>/next-boilerplate/landing:latest
 ```
 
+### Build multi-architecture image
+
+Exemple (landing):
+
+```bash
+buildx build -t "<registry-url>/next-boilerplate/landing:latest" -f apps/landing/Dockerfile --platform linux/amd64,linux/arm64 --push .
+```
+
 ### Debug in local
 
 After the build you can run the image in local to see if everything is working as expected.
@@ -343,6 +339,9 @@ After the build you can run the image in local to see if everything is working a
 ```bash
 docker run --rm -it -p 3000:3000 <image-name>
 ```
+
+> See:
+> https://www.docker.com/blog/multi-arch-images/ > https://aws.amazon.com/fr/blogs/containers/how-to-build-your-containers-for-arm-and-save-with-graviton-and-spot-instances-on-amazon-ecs/ > https://docs.docker.com/build/drivers/docker-container/
 
 ### Deploy
 
