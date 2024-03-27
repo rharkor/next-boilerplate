@@ -19,7 +19,7 @@ jobs:
     outputs:
       changed-app: ${{ steps.changed-app.outputs.result }}
       changed-docs: ${{ steps.changed-docs.outputs.result }}
-      changed-cron: ${{ steps.changed-cron.result }}
+      changed-cron: ${{ steps.changed-cron.outputs.result }}
       changed-landing: ${{ steps.changed-landing.outputs.result }}
 
     steps:
