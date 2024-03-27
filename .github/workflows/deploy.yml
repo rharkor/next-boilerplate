@@ -47,8 +47,6 @@ jobs:
           echo 'result<<EOF' >> $GITHUB_OUTPUT
           echo $content >> $GITHUB_OUTPUT
           echo 'EOF' >> $GITHUB_OUTPUT
-          echo "Filter: $TURBO_RUN_FILTER" >> $GITHUB_STEP_SUMMARY
-          echo "Changeset: $content" >> $GITHUB_STEP_SUMMARY
       - name: Changed app?
         id: changed-app
         # 1. Using the 'output' of the 'changeset' step inside the `if` to check if the specific app has changed
@@ -79,7 +77,9 @@ jobs:
     if: ${{ needs.checks.outputs.changed-app == 'true' }}
     steps:
       - name: Deploy app
-        run: echo "Deploying app"
+        run: |
+          echo "### Deploying app 🚀" >> $GITHUB_STEP_SUMMARY
+          echo "Found changes in app compared to this commit $TURBO_RUN_FILTER" >> $GITHUB_STEP_SUMMARY
 
   deploy_docs:
     name: Deploy docs
@@ -88,7 +88,9 @@ jobs:
     if: ${{ needs.checks.outputs.changed-docs == 'true' }}
     steps:
       - name: Deploy docs
-        run: echo "Deploying docs"
+        run: |
+          echo "### Deploying docs 🚀" >> $GITHUB_STEP_SUMMARY
+          echo "Found changes in docs compared to this commit $TURBO_RUN_FILTER" >> $GITHUB_STEP_SUMMARY
 
   deploy_cron:
     name: Deploy cron
@@ -97,7 +99,9 @@ jobs:
     if: ${{ needs.checks.outputs.changed-cron == 'true' }}
     steps:
       - name: Deploy cron
-        run: echo "Deploying cron"
+        run: |
+          echo "### Deploying cron 🚀" >> $GITHUB_STEP_SUMMARY
+          echo "Found changes in cron compared to this commit $TURBO_RUN_FILTER" >> $GITHUB_STEP_SUMMARY
 
   deploy_landing:
     name: Deploy landing
@@ -106,4 +110,6 @@ jobs:
     if: ${{ needs.checks.outputs.changed-landing == 'true' }}
     steps:
       - name: Deploy landing
-        run: echo "Deploying landing"
+        run: |
+          echo "### Deploying landing 🚀" >> $GITHUB_STEP_SUMMARY
+          echo "Found changes in landing compared to this commit $TURBO_RUN_FILTER" >> $GITHUB_STEP_SUMMARY
