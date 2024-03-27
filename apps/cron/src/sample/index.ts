@@ -6,7 +6,7 @@ import { logger } from "@next-boilerplate/lib/logger"
 
 const main = async () => {
   const maxDurationWarning = 1000 * 60 * 5 // 5 minutes
-  const name = "CronName"
+  const name = "YourCronName"
   const now = new Date()
   //? Do something
   async function something() {
