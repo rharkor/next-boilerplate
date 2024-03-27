@@ -161,7 +161,7 @@ export const replaceTokens = async () => {
               `${dir}/**/build/**`,
             ],
           });
-          const allFiles = tsFiles.concat(pjsonFiles);
+          const allFiles = tsFiles.concat(pjsonFiles).concat(workflows);
           await Promise.all(allFiles.map((file) => replaceTextInFile(file)));
         }
 
