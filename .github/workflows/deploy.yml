@@ -47,6 +47,12 @@ jobs:
           echo 'result<<EOF' >> $GITHUB_OUTPUT
           echo $content >> $GITHUB_OUTPUT
           echo 'EOF' >> $GITHUB_OUTPUT
+          echo $content > $GITHUB_WORKSPACE/result.json
+      - name: Upload Result as Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: changeset-result
+          path: ${{ github.workspace }}/result.json
       - name: Changed app?
         id: changed-app
         # 1. Using the 'output' of the 'changeset' step inside the `if` to check if the specific app has changed
