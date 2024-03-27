@@ -9,12 +9,13 @@ on:
 
   workflow_dispatch:
 
+env:
+  TURBO_RUN_FILTER: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.sha || github.event.before }}
+
 jobs:
   checks:
     name: Build
     runs-on: ubuntu-latest
-    env:
-      TURBO_RUN_FILTER: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.sha || github.event.before }}
     outputs:
       changed-app: ${{ steps.changed-app.outputs.result }}
       changed-docs: ${{ steps.changed-docs.outputs.result }}
