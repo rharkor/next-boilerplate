@@ -16,8 +16,8 @@
     "is-initialized": "cd ../../packages/scripts && npm run is-initialized"
   },
   "dependencies": {
-    "@docusaurus/core": "3.1.1",
-    "@docusaurus/preset-classic": "3.1.1",
+    "@docusaurus/core": "3.2.0",
+    "@docusaurus/preset-classic": "3.2.0",
     "@mdx-js/react": "^3.0.0",
     "clsx": "^2.0.0",
     "custom-prettier-config": "*",
@@ -28,8 +28,8 @@
     "@next-boilerplate/scripts": "*"
   },
   "devDependencies": {
-    "@docusaurus/module-type-aliases": "3.1.1",
-    "@docusaurus/types": "3.1.1",
+    "@docusaurus/module-type-aliases": "3.2.0",
+    "@docusaurus/types": "3.2.0",
     "@typescript-eslint/eslint-plugin": "^7.0.0",
     "@typescript-eslint/parser": "^7.0.0",
     "eslint": "^8.55.0",
