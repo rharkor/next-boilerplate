@@ -16,7 +16,7 @@
     "baseUrl": ".",
     "outDir": "dist"
   },
-  "include": ["src/**/*.ts", ".eslintrc.cjs", "prettier.config.cjs"],
+  "include": ["src/**/*.ts"],
   "exclude": ["node_modules"],
   "tsc-alias": {
     "resolveFullPaths": true
