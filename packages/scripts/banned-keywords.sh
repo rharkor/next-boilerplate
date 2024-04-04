@@ -9,7 +9,7 @@ keywords=("TODO")
 source_code_dir="../"
 
 # Exclude node_modules and .next directories
-exclude_dir="--exclude-dir=node_modules --exclude-dir=.next --exclude-dir=.git --exclude=banned-keywords.sh --exclude-dir=.terraform"
+exclude_dir="--exclude-dir=node_modules --exclude-dir=.next --exclude-dir=.git --exclude=banned-keywords.sh --exclude-dir=.terraform --exclude-dir=dist --exclude-dir=build"
 
 
 echo Start searching..
@@ -22,7 +22,7 @@ for keyword in "${keywords[@]}"; do
     # Check if grep found any matches
     if [ -n "$grep_result" ]; then
         echo "Keyword '$keyword' found. Exiting."
-        echo $grep_result
+        echo "$grep_result"
         exit 1
     fi
 done
