@@ -22,6 +22,7 @@ export const completeInitialisation = async () => {
   });
   logger.log(chalk.green("Done!"));
 
+  // eslint-disable-next-line no-process-env
   if (process.env.SKIP_INIT_CHECK !== "true") {
     await fs
       .unlink(path.join(rootPath, "scripts", ".init-todo"))

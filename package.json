@@ -10,10 +10,10 @@
     "prettier": "turbo run prettier",
     "prettier:fix": "turbo run prettier:fix",
     "test": "turbo run test",
-    "init": "npm run init -w packages/scripts",
-    "init:env": "npm run init:env -w packages/scripts",
-    "depcheck": "npm run depcheck -w packages/scripts",
-    "is-initialized": "npm run is-initialized -w packages/scripts",
+    "init": "npm run -s init -w packages/scripts",
+    "init:env": "npm run -s init:env -w packages/scripts",
+    "depcheck": "npm run -s depcheck -w packages/scripts",
+    "is-initialized": "npm run -s is-initialized -w packages/scripts",
     "preinstall": "npx --yes only-allow-many npm"
   },
   "workspaces": [
