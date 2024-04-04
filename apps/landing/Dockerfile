@@ -40,7 +40,7 @@ COPY packages/configs ./packages/configs
 COPY packages/lib ./packages/lib
 
 
-RUN turbo run build -w apps/landing
+RUN turbo run build --filter=@next-boilerplate/landing
 
 
 FROM base AS runner
