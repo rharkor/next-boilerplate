@@ -43,7 +43,6 @@ FROM base AS runner
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
-ENV NEXT_TELEMETRY_DISABLED 1
 ENV NODE_ENV production
 
 COPY --from=builder /usr/src/app/ .

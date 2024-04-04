@@ -30,6 +30,8 @@ ENV TURBO_TOKEN=$TURBO_TOKEN
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
+ENV NODE_ENV production
+
 COPY --from=deps /usr/src/app .
 
 COPY apps/cron ./apps/cron
@@ -43,6 +45,8 @@ FROM base AS runner
 
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
+
+ENV NODE_ENV production
 
 COPY --from=builder /usr/src/app .
 
