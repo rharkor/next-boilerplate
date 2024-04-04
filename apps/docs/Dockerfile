@@ -1,4 +1,6 @@
 FROM node:20-alpine as base
+# Install turbo-cli
+RUN npm install turbo --global
 
 FROM base as deps
 
@@ -12,6 +14,7 @@ ENV NODE_ENV production
 
 COPY package.json ./
 COPY package-lock.json ./
+COPY turbo.json ./
 
 COPY apps/docs/package.json ./apps/docs/package.json
 
@@ -33,7 +36,7 @@ ENV NODE_ENV production
 COPY --from=deps /usr/src/app .
 COPY apps/docs ./apps/docs
 
-RUN npm run build -w apps/docs
+RUN turbo run build -w apps/docs
 
 FROM base AS runner
 

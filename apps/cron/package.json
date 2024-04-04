@@ -2,7 +2,7 @@
   "name": "@next-boilerplate/cron",
   "scripts": {
     "build": "tsc && tsc-alias",
-    "sample": "node dist/src/sample/index.js",
+    "sample": "node dist/sample/index.js",
     "dev:sample": "npm run build && npm run sample",
     "lint": "eslint --ext .ts,.tsx .",
     "lint:fix": "eslint --fix --ext .ts,.tsx .",

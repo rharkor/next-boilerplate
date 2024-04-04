@@ -1,4 +1,6 @@
 FROM node:20-alpine AS base
+# Install turbo-cli
+RUN npm install turbo --global
 
 FROM base AS deps
 
@@ -10,6 +12,7 @@ ENV NODE_ENV production
 #? Copy the necessary files to install dependencies
 COPY package.json ./
 COPY package-lock.json ./
+COPY turbo.json ./
 
 COPY apps/app/package.json ./apps/app/package.json
 COPY apps/app/prisma/schema.prisma apps/app/prisma/schema.prisma
@@ -38,7 +41,7 @@ COPY packages/configs ./packages/configs
 COPY packages/lib ./packages/lib
 
 
-RUN npm run build -w apps/app
+RUN turbo run build --filter=@next-boilerplate/app
 
 
 FROM base AS runner
