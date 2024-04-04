@@ -42,6 +42,7 @@ COPY packages/lib ./packages/lib
 
 
 RUN turbo run build --filter=@next-boilerplate/app
+RUN npm run deploy-db:prod -w apps/app
 
 
 FROM base AS runner
