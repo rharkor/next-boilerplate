@@ -1,2 +1,2 @@
-import { logger } from "./logger";
+import { logger } from "./logger.js";
 export { logger };
