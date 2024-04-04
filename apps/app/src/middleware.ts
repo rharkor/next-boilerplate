@@ -56,6 +56,7 @@ export function middleware(request: NextRequest) {
       response.cookies.set("saved-locale", localeInPathname, {
         path: "/",
         sameSite: "lax",
+        // eslint-disable-next-line no-process-env
         secure: process.env.NODE_ENV === "production",
       })
     }

@@ -1,3 +1,4 @@
+/* eslint-disable no-process-env */
 import { config } from "dotenv"
 import { z } from "zod"
 
@@ -27,7 +28,7 @@ export const env = createEnv({
     REDIS_PORT: z
       .string()
       .optional()
-      .transform((value) => (!!value ? parseInt(value) : value)),
+      .transform((value) => (!!value ? parseInt(value) : undefined)),
     REDIS_USERNAME: z.string().optional(),
     REDIS_PASSWORD: z.string().optional(),
     REDIS_USE_TLS: z

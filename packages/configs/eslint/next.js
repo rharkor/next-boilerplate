@@ -32,6 +32,7 @@ module.exports = {
     "tailwindcss/no-custom-classname": "off",
     "no-console": ["error", { allow: ["warn", "error"] }],
     "custom-rule/no-use-client": "error",
+    "no-process-env": "error",
   },
   overrides: [
     {

@@ -1,3 +1,4 @@
+/* eslint-disable no-process-env */
 //! CHALK DOESNT SUPPORT EDGE RUNTIME (ex: middleware)
 /// <reference lib="dom" />
 
