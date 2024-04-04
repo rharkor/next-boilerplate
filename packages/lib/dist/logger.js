@@ -2,7 +2,7 @@
 /// <reference lib="dom" />
 import chalk from "chalk";
 const allowDebug = process.env.NODE_ENV !== "production";
-const console = global.console;
+const console = globalThis.console;
 // Basic Colors
 const black = "#000000";
 const text = "#CDCDCD";
