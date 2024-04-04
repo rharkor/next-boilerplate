@@ -97,17 +97,17 @@ npm install
 npm run init
 ```
 
-> If the project is already initialized just run the following command to install git hooks:
+> If the project is already initialized and your are not in a dev container just run the following command to install git hooks:
 >
 > ```bash
 > npm install --global git-conventional-commits
 > git config core.hooksPath .git-hooks
 > ```
 
-4. Install the updated dependencies:
+4. Build the base packages:
 
 ```bash
-npm install
+turbo run build --filter='@next-boilerplate/*'^...
 ```
 
 5. Run the development server:
@@ -123,11 +123,10 @@ npm run dev
 This boilerplate uses [npm workspaces](https://docs.npmjs.com/cli/v7/using-npm/workspaces) to manage multiple packages in one repository.
 The following packages are available:
 
-- `packages/app`: The main application
-- `packages/cron`: The cron jobs
-- `packages/docs`: The documentation website
-- `packages/landing`: The landing page
-- `packages/scripts`: Scripts to help you manage your project
+- `apps/app`: The main application
+- `apps/cron`: The cron jobs
+- `apps/docs`: The documentation website
+- `apps/landing`: The landing page
 
 To run a script in a package, you can use the following command:
 
@@ -138,7 +137,13 @@ npm run <script> --workspace=<package>
 For example, to run the `dev` script in the `app` package, you can use the following command:
 
 ```bash
-npm run dev --workspace=app
+npm run dev --workspace=apps/app
+```
+
+or
+
+```bash
+cd apps/app && npm run dev
 ```
 
 Each package has its own `package.json` file, so you can add dependencies specific to a package.
@@ -147,13 +152,13 @@ Please make sure to add the dependencies to the `package.json` file of the packa
 For example, if you want to add a dependency to the `app` package, you should add it to the `app/package.json` file with the following command:
 
 ```bash
-npm install <package> --workspace=packages/app
+npm install <package> --workspace=apps/app
 ```
 
 or
 
 ```bash
-cd app
+cd apps/app
 npm install <package>
 ```
 
@@ -192,7 +197,6 @@ The following scripts are available in the `package.json`:
 The boilerplate comes with a pre-configured Docker container stack and a dev container. The stack includes the following services:
 
 - **Next.js** - A React framework for building fast and scalable web applications
-- **DocuSaurus** - A modern static website generator (for documentation)
 - **PostgreSQL** - A powerful, open-source relational database system
 - **Redis** - An in-memory data structure store, used as a database, cache, and message broker
 
@@ -205,7 +209,6 @@ Ports:
 - Landing: 3002
 - PostgreSQL: 5432
 - Redis: 6379
-- Desktop (password: vscode): 6080
 
 ### Tanstack query
 

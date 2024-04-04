@@ -2,7 +2,7 @@ import { exit } from "process"
 
 import { env } from "@/lib/env"
 import { prisma } from "@/lib/prisma"
-import { logger } from "@next-boilerplate/lib/logger"
+import { logger } from "@next-boilerplate/lib"
 
 const main = async () => {
   const maxDurationWarning = 1000 * 60 * 5 // 5 minutes

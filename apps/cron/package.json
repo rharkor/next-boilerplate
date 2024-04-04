@@ -1,8 +1,8 @@
 {
   "name": "@next-boilerplate/cron",
   "scripts": {
-    "build": "rm -rf dist && npx --package typescript -y tsc && tsc-alias",
-    "sample": "node dist/apps/cron/src/sample/index.js",
+    "build": "tsc && tsc-alias",
+    "sample": "node dist/src/sample/index.js",
     "dev:sample": "npm run build && npm run sample",
     "lint": "eslint --ext .ts,.tsx .",
     "lint:fix": "eslint --fix --ext .ts,.tsx .",

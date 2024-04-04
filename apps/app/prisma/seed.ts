@@ -5,7 +5,7 @@ import { Spinner } from "cli-spinner"
 
 import { rolesAsObject } from "@/constants"
 import { hash } from "@/lib/bcrypt"
-import { logger } from "@next-boilerplate/lib/logger"
+import { logger } from "@next-boilerplate/lib"
 import { PrismaClient } from "@prisma/client"
 
 const env = {

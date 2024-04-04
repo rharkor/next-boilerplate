@@ -10,7 +10,7 @@ import { ApiError, ensureLoggedIn, handleApiError } from "@/lib/utils/server-uti
 import { apiInputFromSchema } from "@/types"
 import { DeleteObjectCommand } from "@aws-sdk/client-s3"
 import { createPresignedPost } from "@aws-sdk/s3-presigned-post"
-import { logger } from "@next-boilerplate/lib/logger"
+import { logger } from "@next-boilerplate/lib"
 
 import { presignedUrlResponseSchema, presignedUrlSchema } from "./schemas"
 

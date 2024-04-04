@@ -19,7 +19,7 @@ import { redis } from "@/lib/redis"
 import { html, plainText, subject } from "@/lib/templates/mail/verify-email"
 import { ApiError, ensureLoggedIn, generateRandomSecret, handleApiError } from "@/lib/utils/server-utils"
 import { apiInputFromSchema } from "@/types"
-import { logger } from "@next-boilerplate/lib/logger"
+import { logger } from "@next-boilerplate/lib"
 import { Prisma } from "@prisma/client"
 
 export const register = async ({ input }: apiInputFromSchema<typeof signUpSchema>) => {
