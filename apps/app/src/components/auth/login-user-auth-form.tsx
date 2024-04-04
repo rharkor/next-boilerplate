@@ -83,10 +83,10 @@ export function LoginUserAuthForm({ searchParams, ...props }: UserAuthFormProps)
               </h3>
               <div className="flex flex-col">
                 <div className="m-1 flex flex-row items-center gap-1">
-                  <p>{dictionary.email}:</p> <Copiable text={env.NEXT_PUBLIC_DEMO_EMAIL} dictionary={dictionary} />
+                  <p>{dictionary.email}:</p> <Copiable text={env.NEXT_PUBLIC_DEMO_EMAIL} />
                 </div>
                 <div className="m-1 flex flex-row items-center gap-1">
-                  <p>{dictionary.password}</p> <Copiable text={env.NEXT_PUBLIC_DEMO_PASSWORD} dictionary={dictionary} />
+                  <p>{dictionary.password}</p> <Copiable text={env.NEXT_PUBLIC_DEMO_PASSWORD} />
                 </div>
                 <div
                   className="absolute bottom-2 right-2 cursor-pointer"
