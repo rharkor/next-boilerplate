@@ -46,7 +46,6 @@
     "bip39": "^3.1.0",
     "chalk": "^5.3.0",
     "cli-spinner": "^0.2.10",
-    "client-only": "^0.0.1",
     "clsx": "^2.0.0",
     "cross-env": "^7.0.3",
     "crypto-js": "^4.2.0",

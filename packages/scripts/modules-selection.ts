@@ -148,7 +148,6 @@ const onlyFrontAppsAdaptaion: {
           "bip39",
           "chalk",
           "cli-spinner",
-          "client-only",
           "crypto-js",
           "ioredis",
           "next-auth",

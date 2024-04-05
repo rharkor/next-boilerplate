@@ -116,4 +116,8 @@ export const env = createEnv({
     logger.error(error)
     throw "Invalid environment variables"
   },
+  onInvalidAccess(variable) {
+    logger.error(`Invalid access to ${variable}`)
+    throw "Invalid environment variables"
+  },
 })
