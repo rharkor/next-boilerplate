@@ -22,12 +22,10 @@ const isBrowser = typeof window !== "undefined"
 
 const printColor =
   (bg?: string, text?: string) =>
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  (...args: any) => {
+  (...args: unknown[]) => {
     const data = args
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      .map((arg: any) => {
-        if (typeof arg === "object") {
+      .map((arg) => {
+        if (typeof arg === "object" && arg) {
           const str = arg.toString()
           if (str === "[object Object]") {
             return JSON.stringify(arg, null, 2)
@@ -37,6 +35,7 @@ const printColor =
         return arg
       })
       .join(" ")
+
     if (bg && text) return chalk.bgHex(bg).hex(text)(data)
     if (bg) return chalk.bgHex(bg)(data)
     if (text) return chalk.hex(text)(data)
@@ -61,45 +60,58 @@ const infoText = printColor(undefined, blue)
 
 const subLog = printColor(undefined, gray)
 
-export const logger: typeof console & {
+export type TLogger = typeof console & {
   success: (typeof console)["log"]
   subLog: (typeof console)["log"]
   allowDebug: boolean
-} = {
+  prefix?: string | (() => string)
+}
+
+function addPrefixToArgs(prefix: TLogger["prefix"], ...args: unknown[]) {
+  if (typeof prefix === "string") {
+    return [log(prefix), ...args]
+  }
+  if (typeof prefix === "function") {
+    return [log(prefix()), ...args]
+  }
+  return args
+}
+
+export const logger: TLogger = {
   ...console,
   allowDebug,
   log: (...args: Parameters<(typeof console)["log"]>) => {
-    if (isBrowser) return console.log(...args)
-    console.log(log(...args))
+    if (isBrowser) return console.log(...addPrefixToArgs(logger.prefix, ...args))
+    console.log(log(...addPrefixToArgs(logger.prefix, ...args)))
   },
   debug: (...args: unknown[]) => {
     if (allowDebug) {
-      if (isBrowser) return console.debug(" DEBUG ", ...args)
-      console.debug(debug(" DEBUG "), debugText(...args))
+      if (isBrowser) return console.debug(...addPrefixToArgs(logger.prefix, " DEBUG ", ...args))
+      console.debug(...addPrefixToArgs(logger.prefix, debug(" DEBUG "), debugText(...args)))
     }
   },
   warn: (...args: unknown[]) => {
-    if (isBrowser) return console.warn(" WARN ", ...args)
-    console.warn(warn(" WARN "), warnText(...args))
+    if (isBrowser) return console.warn(...addPrefixToArgs(logger.prefix, " WARN ", ...args))
+    console.warn(...addPrefixToArgs(logger.prefix, warn(" WARN "), warnText(...args)))
   },
   error: (...args: unknown[]) => {
-    if (isBrowser) return console.error(" ERROR ", ...args)
-    console.error(error(" ERROR "), errorText(...args))
+    if (isBrowser) return console.error(...addPrefixToArgs(logger.prefix, " ERROR ", ...args))
+    console.error(...addPrefixToArgs(logger.prefix, error(" ERROR "), errorText(...args)))
   },
   trace: (...args: unknown[]) => {
-    if (isBrowser) return console.trace(" ERROR ", ...args)
-    console.trace(error(" ERROR "), errorText(...args))
+    if (isBrowser) return console.trace(...addPrefixToArgs(logger.prefix, " ERROR ", ...args))
+    console.trace(...addPrefixToArgs(logger.prefix, error(" ERROR "), errorText(...args)))
   },
   success: (...args: unknown[]) => {
-    if (isBrowser) return console.log(" SUCCESS ", ...args)
-    console.log(success(" SUCCESS "), successText(...args))
+    if (isBrowser) return console.log(...addPrefixToArgs(logger.prefix, " SUCCESS ", ...args))
+    console.log(...addPrefixToArgs(logger.prefix, success(" SUCCESS "), successText(...args)))
   },
   info: (...args: unknown[]) => {
-    if (isBrowser) return console.log(" INFO ", ...args)
-    console.log(info(" INFO "), infoText(...args))
+    if (isBrowser) return console.log(...addPrefixToArgs(logger.prefix, " INFO ", ...args))
+    console.log(...addPrefixToArgs(logger.prefix, info(" INFO "), infoText(...args)))
   },
   subLog: (...args: unknown[]) => {
-    if (isBrowser) return console.log(...args)
-    console.log(subLog(...args))
+    if (isBrowser) return console.log(...addPrefixToArgs(logger.prefix, ...args))
+    console.log(...addPrefixToArgs(logger.prefix, subLog(...args)))
   },
 }

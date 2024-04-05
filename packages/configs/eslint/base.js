@@ -1,6 +1,6 @@
 module.exports = {
   extends: ["prettier", "plugin:@typescript-eslint/recommended"],
-  plugins: ["@typescript-eslint", "unused-imports", "simple-import-sort"],
+  plugins: ["@typescript-eslint", "unused-imports", "simple-import-sort", "custom-rule"],
   rules: {
     "unused-imports/no-unused-imports": "error",
     "@typescript-eslint/no-unused-vars": [

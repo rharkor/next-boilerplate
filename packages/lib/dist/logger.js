@@ -14,13 +14,10 @@ const green = "#7EE081";
 const blue = "#7DCFEA";
 const gray = "#686868";
 const isBrowser = typeof window !== "undefined";
-const printColor = (bg, text) => 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-(...args) => {
+const printColor = (bg, text) => (...args) => {
     const data = args
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         .map((arg) => {
-        if (typeof arg === "object") {
+        if (typeof arg === "object" && arg) {
             const str = arg.toString();
             if (str === "[object Object]") {
                 return JSON.stringify(arg, null, 2);
@@ -49,50 +46,59 @@ const successText = printColor(undefined, green);
 const info = printColor(blue, black);
 const infoText = printColor(undefined, blue);
 const subLog = printColor(undefined, gray);
+function addPrefixToArgs(prefix, ...args) {
+    if (typeof prefix === "string") {
+        return [log(prefix), ...args];
+    }
+    if (typeof prefix === "function") {
+        return [log(prefix()), ...args];
+    }
+    return args;
+}
 export const logger = {
     ...console,
     allowDebug,
     log: (...args) => {
         if (isBrowser)
-            return console.log(...args);
-        console.log(log(...args));
+            return console.log(...addPrefixToArgs(logger.prefix, ...args));
+        console.log(log(...addPrefixToArgs(logger.prefix, ...args)));
     },
     debug: (...args) => {
         if (allowDebug) {
             if (isBrowser)
-                return console.debug(" DEBUG ", ...args);
-            console.debug(debug(" DEBUG "), debugText(...args));
+                return console.debug(...addPrefixToArgs(logger.prefix, " DEBUG ", ...args));
+            console.debug(...addPrefixToArgs(logger.prefix, debug(" DEBUG "), debugText(...args)));
         }
     },
     warn: (...args) => {
         if (isBrowser)
-            return console.warn(" WARN ", ...args);
-        console.warn(warn(" WARN "), warnText(...args));
+            return console.warn(...addPrefixToArgs(logger.prefix, " WARN ", ...args));
+        console.warn(...addPrefixToArgs(logger.prefix, warn(" WARN "), warnText(...args)));
     },
     error: (...args) => {
         if (isBrowser)
-            return console.error(" ERROR ", ...args);
-        console.error(error(" ERROR "), errorText(...args));
+            return console.error(...addPrefixToArgs(logger.prefix, " ERROR ", ...args));
+        console.error(...addPrefixToArgs(logger.prefix, error(" ERROR "), errorText(...args)));
     },
     trace: (...args) => {
         if (isBrowser)
-            return console.trace(" ERROR ", ...args);
-        console.trace(error(" ERROR "), errorText(...args));
+            return console.trace(...addPrefixToArgs(logger.prefix, " ERROR ", ...args));
+        console.trace(...addPrefixToArgs(logger.prefix, error(" ERROR "), errorText(...args)));
     },
     success: (...args) => {
         if (isBrowser)
-            return console.log(" SUCCESS ", ...args);
-        console.log(success(" SUCCESS "), successText(...args));
+            return console.log(...addPrefixToArgs(logger.prefix, " SUCCESS ", ...args));
+        console.log(...addPrefixToArgs(logger.prefix, success(" SUCCESS "), successText(...args)));
     },
     info: (...args) => {
         if (isBrowser)
-            return console.log(" INFO ", ...args);
-        console.log(info(" INFO "), infoText(...args));
+            return console.log(...addPrefixToArgs(logger.prefix, " INFO ", ...args));
+        console.log(...addPrefixToArgs(logger.prefix, info(" INFO "), infoText(...args)));
     },
     subLog: (...args) => {
         if (isBrowser)
-            return console.log(...args);
-        console.log(subLog(...args));
+            return console.log(...addPrefixToArgs(logger.prefix, ...args));
+        console.log(...addPrefixToArgs(logger.prefix, subLog(...args)));
     },
 };
 //# sourceMappingURL=logger.js.map

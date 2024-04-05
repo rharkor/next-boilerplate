@@ -1,5 +1,6 @@
 {
   "errors": {
+    "fileNotFound": "Fichier introuvable.",
     "couldNotIdentifyIp": "Impossible d'identifier votre adresse IP.",
     "tooManyRequests": "Trop de requêtes. Veuillez réessayer dans quelques minutes.",
     "notImplemented": "Non implémenté.",

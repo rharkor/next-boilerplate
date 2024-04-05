@@ -1,3 +1,4 @@
+import { chunk } from "./chunk"
 import { logger } from "./logger"
 
-export { logger }
+export { chunk, logger }

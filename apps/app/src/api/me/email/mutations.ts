@@ -1,6 +1,7 @@
 import { randomUUID } from "crypto"
+import { z } from "zod"
 
-import { sendVerificationEmailSchema, verifyEmailSchema } from "@/api/me/schemas"
+import { sendVerificationEmailSchema, verifyEmailResponseSchema, verifyEmailSchema } from "@/api/me/schemas"
 import { emailVerificationExpiration, resendEmailVerificationExpiration } from "@/constants"
 import { env } from "@/lib/env"
 import { i18n } from "@/lib/i18n-config"
@@ -133,9 +134,10 @@ export const verifyEmail = async ({ input }: apiInputFromSchema<typeof verifyEma
       },
     })
 
-    return {
-      user,
+    const data: z.infer<ReturnType<typeof verifyEmailResponseSchema>> = {
+      success: true,
     }
+    return data
   } catch (error: unknown) {
     return handleApiError(error)
   }

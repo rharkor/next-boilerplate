@@ -106,7 +106,7 @@
   },
   "prisma": {
     "schema": "prisma/schema.prisma",
-    "seed": "tsx prisma/seed.ts"
+    "seed": "npx -y tsx prisma/seed.ts"
   },
   "license": "MIT"
 }

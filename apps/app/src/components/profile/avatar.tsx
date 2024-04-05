@@ -42,7 +42,6 @@ export default function UpdateAvatar({ account }: { account: ReturnType<typeof u
       const { url, fields } = await getPresignedUrlMutation.mutateAsync({
         filename: file.name,
         filetype: file.type,
-        kind: "avatar",
       })
 
       try {
@@ -59,7 +58,7 @@ export default function UpdateAvatar({ account }: { account: ReturnType<typeof u
 
         if (uploadResponse.ok) {
           await updateUserMutation.mutateAsync({
-            image: fields.key,
+            profilePictureKey: fields.key,
           })
 
           utils.me.getAccount.invalidate()
@@ -88,7 +87,7 @@ export default function UpdateAvatar({ account }: { account: ReturnType<typeof u
 
   const handleDelete = async () => {
     await updateUserMutation.mutateAsync({
-      image: null,
+      profilePictureKey: null,
     })
 
     utils.me.getAccount.invalidate()
@@ -111,7 +110,7 @@ export default function UpdateAvatar({ account }: { account: ReturnType<typeof u
         <Skeleton isLoaded={!account.isLoading} className={cn("rounded-full")}>
           <Avatar
             className="!size-20 text-large"
-            src={getImageUrl(account.data?.user.image) || undefined}
+            src={getImageUrl(account.data?.user.profilePicture) || undefined}
             name={account.data?.user.username || undefined}
             onClick={() => setShowModal(true)}
           />
@@ -133,7 +132,7 @@ export default function UpdateAvatar({ account }: { account: ReturnType<typeof u
           className={cn(
             "absolute right-0 top-0 h-[unset] min-w-0 rounded-full p-1.5 text-foreground opacity-0 transition-all duration-200 focus:opacity-100 group-hover:opacity-100 group-focus:opacity-100",
             {
-              hidden: account.isLoading || !account.data?.user.image,
+              hidden: account.isLoading || !account.data?.user.profilePicture,
             }
           )}
           onPress={() => handleDelete()}

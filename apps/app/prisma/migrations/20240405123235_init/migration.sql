@@ -25,7 +25,6 @@ CREATE TABLE "User" (
     "name" TEXT,
     "email" TEXT,
     "emailVerified" TIMESTAMP(3),
-    "image" TEXT,
     "username" TEXT,
     "role" "UserRole" NOT NULL DEFAULT 'USER',
     "password" TEXT,
@@ -65,6 +64,36 @@ CREATE TABLE "UserEmailVerificationToken" (
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
+-- CreateTable
+CREATE TABLE "File" (
+    "id" TEXT NOT NULL,
+    "key" TEXT NOT NULL,
+    "filetype" TEXT NOT NULL,
+    "bucket" TEXT NOT NULL,
+    "endpoint" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "userProfilePictureId" TEXT,
+    "fileUploadingId" TEXT,
+
+    CONSTRAINT "File_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "FileUploading" (
+    "id" TEXT NOT NULL,
+    "key" TEXT NOT NULL,
+    "filetype" TEXT NOT NULL,
+    "bucket" TEXT NOT NULL,
+    "endpoint" TEXT NOT NULL,
+    "expires" TIMESTAMP(3) NOT NULL,
+    "userId" TEXT,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "FileUploading_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "Account_provider_providerAccountId_key" ON "Account"("provider", "providerAccountId");
 
@@ -92,6 +121,18 @@ CREATE UNIQUE INDEX "UserEmailVerificationToken_identifier_key" ON "UserEmailVer
 -- CreateIndex
 CREATE UNIQUE INDEX "UserEmailVerificationToken_token_key" ON "UserEmailVerificationToken"("token");
 
+-- CreateIndex
+CREATE UNIQUE INDEX "File_key_key" ON "File"("key");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "File_userProfilePictureId_key" ON "File"("userProfilePictureId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "File_fileUploadingId_key" ON "File"("fileUploadingId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "FileUploading_key_key" ON "FileUploading"("key");
+
 -- AddForeignKey
 ALTER TABLE "Account" ADD CONSTRAINT "Account_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
@@ -100,3 +141,12 @@ ALTER TABLE "ResetPassordToken" ADD CONSTRAINT "ResetPassordToken_identifier_fke
 
 -- AddForeignKey
 ALTER TABLE "UserEmailVerificationToken" ADD CONSTRAINT "UserEmailVerificationToken_identifier_fkey" FOREIGN KEY ("identifier") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "File" ADD CONSTRAINT "File_userProfilePictureId_fkey" FOREIGN KEY ("userProfilePictureId") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "File" ADD CONSTRAINT "File_fileUploadingId_fkey" FOREIGN KEY ("fileUploadingId") REFERENCES "FileUploading"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "FileUploading" ADD CONSTRAINT "FileUploading_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;

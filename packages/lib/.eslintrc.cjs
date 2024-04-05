@@ -18,6 +18,7 @@ module.exports = {
         "**/tailwind.config.js",
         "**/prettier.config.js",
         "**/prettier.config.cjs",
+        "**/dist/**",
       ],
     },
   ],

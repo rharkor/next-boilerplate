@@ -8,6 +8,6 @@ export const s3Client = env.ENABLE_S3_SERVICE
         accessKeyId: env.S3_ACCESS_KEY_ID ?? "",
         secretAccessKey: env.S3_SECRET_ACCESS_KEY ?? "",
       },
-      endpoint: "https://" + env.NEXT_PUBLIC_S3_ENDPOINT,
+      endpoint: "https://" + env.S3_ENDPOINT,
     })
   : null

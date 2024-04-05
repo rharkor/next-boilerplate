@@ -7,6 +7,7 @@ import {
   desactivateTotpSchema,
   generateTotpSecretResponseSchema,
   recover2FASchema,
+  signUpResponseSchema,
   signUpSchema,
   verifyTotpSchema,
 } from "@/api/auth/schemas"
@@ -37,6 +38,9 @@ export const register = async ({ input }: apiInputFromSchema<typeof signUpSchema
         password: hashedPassword,
         lastLocale: input.locale,
       },
+      include: {
+        profilePicture: true,
+      },
     })
     await redis.setex(`lastLocale:${user.id}`, lastLocaleExpirationInSeconds, input.locale)
 
@@ -62,7 +66,8 @@ export const register = async ({ input }: apiInputFromSchema<typeof signUpSchema
       logger.debug("Email verification disabled, skipping email sending on registration")
     }
 
-    return { user }
+    const data: z.infer<ReturnType<typeof signUpResponseSchema>> = { user }
+    return data
   } catch (error: unknown) {
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
       if (error.code === "P2002") {

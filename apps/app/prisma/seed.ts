@@ -19,7 +19,7 @@ const handleAction = async (actionName: string, doneName: string, action: Promis
   spinner.start()
   await action
   spinner.stop(true)
-  logger.log(doneName)
+  logger.info(doneName)
 }
 
 async function main() {
@@ -46,7 +46,7 @@ async function main() {
         })
       )
     } else {
-      logger.info("Admin already exists")
+      logger.log("Admin already exists")
     }
   } catch (e) {
     logger.error(e)
