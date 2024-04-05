@@ -33,6 +33,7 @@ module.exports = {
     "no-console": ["error", { allow: ["warn", "error"] }],
     "custom-rule/no-use-client": "error",
     "no-process-env": "error",
+    "custom-rule/no-node-modules-import": "error",
   },
   overrides: [
     {

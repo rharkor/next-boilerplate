@@ -1,5 +1,6 @@
 "use strict";
 const noUseClient = require("./no-use-client");
+const noNodeModulesImport = require("./no-node-modules-import");
 
 module.exports = {
   meta: {
@@ -8,5 +9,6 @@ module.exports = {
   },
   rules: {
     "no-use-client": noUseClient,
+    "no-node-modules-import": noNodeModulesImport,
   },
 };
