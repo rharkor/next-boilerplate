@@ -63,6 +63,11 @@ With this template, you get all the awesomeness you need:
       - [Server side](#server-side)
       - [Loading optimization](#loading-optimization)
       - [Traduction file](#traduction-file)
+    - [File storage with S3](#file-storage-with-s3)
+      - [Upload files](#upload-files)
+        - [How it works?](#how-it-works)
+        - [What if the client do not send the file link to the server?](#what-if-the-client-do-not-send-the-file-link-to-the-server)
+      - [Dead files](#dead-files)
   - [☁️ Cloud deployment](#️-cloud-deployment)
     - [Build](#build)
     - [Build multi-architecture image](#build-multi-architecture-image)
@@ -293,8 +298,44 @@ The dictionary is loaded on the server and passed on the client only on the firs
 
 #### Traduction file
 
-The files for traduction are located in `packages/app/src/langs` or `packages/landing/src/langs` depending on the package you want to use it in.
+The files for traduction are located in `apps/app/src/langs` or `apps/landing/src/langs` depending on the package you want to use it in.
 If you want to add a new language, you can add a new file in the `langs` folder then modify the file `i18n-config.ts` and `langs.ts`.
+
+### File storage with S3
+
+#### Upload files
+
+When you want to upload files to a bucket s3 you have to main choices:
+
+1. Upload the file directly from the client to s3
+2. Upload the file to the server then to s3
+
+Both have their pros and cons. The first one is faster and more secure because the file does not pass through the server. The second one is more secure because you can check the file before uploading it to s3.
+
+In this boilerplate I choose the first solution because uploading the file to your server then to s3 can be expensive in terms of resources and time.
+
+> If you want to use the second solution you can use the `multer` library to upload the file to your server then to s3.
+
+##### How it works?
+
+1. The client sends a request to the server with the file name and file type.
+2. The server sends a signed url to the client.
+3. The client uploads the file to s3 with the signed url.
+4. The client sends the file link to the server.
+5. The server stores the file link in the database.
+
+##### What if the client do not send the file link to the server?
+
+To solve this problem I created a table named `FileUploading` and store all the upload request in it (step 2). Then I created a cron that check if the file is uploaded to s3 and used (see [Dead files](#dead-files)). If the file is not uploaded or not used within the expiration time (10 minutes) the cron delete the file from s3.
+
+#### Dead files
+
+A common problem in storing files to s3 is dead files. Dead files are files that are uploaded to s3 but not used in the application. To solve this problem. It's very hard to detect them manually if you do not set correctly your database.
+
+For example, I upload a profile picture to s3 and I store the link in the database. If I delete the link in the database, the file is still in s3 and not used anymore.
+
+To solve this I add a `File` table in the database, each time you need store a file link please use this table. Now we have a table that store all of our files but what if I need to override a file (like a profile picture). What I recommend is to unlink the `File` with the concerned table (here `User`) but leave the row in the table so the cron will detect it as a dead file an delete it.
+Why not deleting the file directly? Because the logic to delete the file from s3 and the database is in the same place is complex and any error can lead to a data loss and dead files. This is why this logic is centralized in the cron and not in the api route.
 
 ## ☁️ Cloud deployment
 
