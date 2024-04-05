@@ -4,9 +4,7 @@ const globalForPrisma = global as unknown as { prisma: PrismaClient }
 
 export const prisma =
   globalForPrisma.prisma ||
-  new PrismaClient({
-    log: ["warn", "error"],
-  }).$extends({
+  new PrismaClient().$extends({
     query: {
       user: {
         async $allOperations({ args, query }) {
@@ -27,4 +25,5 @@ export const prisma =
     },
   })
 
+// eslint-disable-next-line no-process-env
 if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma

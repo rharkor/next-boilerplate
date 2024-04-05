@@ -1,4 +1,6 @@
-import { updateUserSchema } from "@/api/me/schemas"
+import { z } from "zod"
+
+import { updateUserResponseSchema, updateUserSchema } from "@/api/me/schemas"
 import { rolesAsObject } from "@/constants"
 import { env } from "@/lib/env"
 import { prisma } from "@/lib/prisma"
@@ -7,24 +9,90 @@ import { ApiError } from "@/lib/utils/server-utils"
 import { ensureLoggedIn, handleApiError } from "@/lib/utils/server-utils"
 import { apiInputFromSchema } from "@/types"
 import { DeleteObjectCommand } from "@aws-sdk/client-s3"
-import { logger } from "@next-boilerplate/lib/logger"
+import { logger } from "@next-boilerplate/lib"
 import { Prisma } from "@prisma/client"
 
 export const updateUser = async ({ input, ctx: { session } }: apiInputFromSchema<typeof updateUserSchema>) => {
   ensureLoggedIn(session)
   try {
-    const { username, image } = input
+    const { username, profilePictureKey } = input
+
+    const user = await prisma.user.findUnique({
+      where: {
+        id: session.user.id,
+      },
+      include: {
+        profilePicture: true,
+      },
+    })
+    if (!user) {
+      return ApiError("userNotFound")
+    }
+
+    const getProfilePicture = async (key: string) => {
+      const uploadingFile = await prisma.fileUploading.findUnique({
+        where: {
+          key,
+        },
+      })
+      if (!uploadingFile) {
+        return ApiError("fileNotFound")
+      }
+
+      return {
+        bucket: uploadingFile.bucket,
+        endpoint: uploadingFile.endpoint,
+        key: uploadingFile.key,
+        filetype: uploadingFile.filetype,
+        fileUploading: {
+          connect: {
+            id: uploadingFile.id,
+          },
+        },
+      }
+    }
+
+    const profilePicture =
+      profilePictureKey === null || profilePictureKey === undefined
+        ? profilePictureKey
+        : await getProfilePicture(profilePictureKey)
+
+    //* Disconnect old profile picture (when null or set)
+    if (profilePictureKey !== undefined && user.profilePicture) {
+      await prisma.file.update({
+        where: {
+          userProfilePictureId: user.id,
+        },
+        data: {
+          userProfilePictureId: null,
+        },
+      })
+    }
 
     //* Update the user
-    const user = await prisma.user.update({
+    const updatedUser = await prisma.user.update({
       where: { id: session.user.id },
       data: {
         username,
-        image,
+        profilePicture:
+          profilePicture !== undefined && profilePicture !== null
+            ? {
+                connectOrCreate: {
+                  where: { key: profilePicture.key },
+                  create: profilePicture,
+                },
+              }
+            : undefined,
+      },
+      include: {
+        profilePicture: true,
       },
     })
 
-    return { user }
+    const data: z.infer<ReturnType<typeof updateUserResponseSchema>> = {
+      user: updatedUser,
+    }
+    return data
   } catch (error: unknown) {
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
       if (error.code === "P2002") {

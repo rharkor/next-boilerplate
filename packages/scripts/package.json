@@ -5,7 +5,7 @@
     "init": "tsx init.ts",
     "init:env": "tsx init-env.ts",
     "depcheck": "tsx depcheck-test.ts",
-    "is-initialized": "tsx is-initialized.ts",
+    "is-initialized": "bash ./is-initialized.sh",
     "postinstall": "patch-package",
     "lint": "eslint --ext .ts,.tsx .",
     "lint:fix": "eslint --fix --ext .ts,.tsx ."

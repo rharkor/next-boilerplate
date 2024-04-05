@@ -26,7 +26,6 @@ With this template, you get all the awesomeness you need:
 - ⚡ **[Redis](https://redis.io/)** - An in-memory data structure store, used as a database, cache, and message broker
 - 🔑 **[Auth.js](https://authjs.dev/)** - A simple, lightweight authentication library
 - 🛠️ **[Extremely strict TypeScript](https://www.typescriptlang.org/)** - With [`ts-reset`](https://github.com/total-typescript/ts-reset) library for ultimate type safety
-- 🧪 **[Jest](https://jestjs.io/)** and **[React Testing Library](https://testing-library.com/react)** - For rock-solid unit and integration tests
 - 📝 **[Conventional commits git hook](https://www.conventionalcommits.org/)** - Keep your commit history neat and tidy
 - 🎯 **[Absolute imports](https://nextjs.org/docs/advanced-features/module-path-aliases)** - No more spaghetti imports
 - ⚕️ **[Health checks](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/)** - Kubernetes-compatible for robust deployments
@@ -56,8 +55,6 @@ With this template, you get all the awesomeness you need:
   - [🚀 Deployment](#-deployment)
   - [📃 Scripts Overview](#-scripts-overview)
   - [🐳 Container Stack](#-container-stack)
-  - [🧪 Testing](#-testing)
-    - [Running Tests](#running-tests)
     - [Tanstack query](#tanstack-query)
   - [💻 Environment Variables handling](#-environment-variables-handling)
   - [📝 Development tips](#-development-tips)
@@ -66,8 +63,14 @@ With this template, you get all the awesomeness you need:
       - [Server side](#server-side)
       - [Loading optimization](#loading-optimization)
       - [Traduction file](#traduction-file)
+    - [File storage with S3](#file-storage-with-s3)
+      - [Upload files](#upload-files)
+        - [How it works?](#how-it-works)
+        - [What if the client do not send the file link to the server?](#what-if-the-client-do-not-send-the-file-link-to-the-server)
+      - [Dead files](#dead-files)
   - [☁️ Cloud deployment](#️-cloud-deployment)
     - [Build](#build)
+    - [Build multi-architecture image](#build-multi-architecture-image)
     - [Debug in local](#debug-in-local)
     - [Deploy](#deploy)
   - [🤝 Contribution](#-contribution)
@@ -99,17 +102,17 @@ npm install
 npm run init
 ```
 
-> If the project is already initialized just run the following command to install git hooks:
+> If the project is already initialized and your are not in a dev container just run the following command to install git hooks:
 >
 > ```bash
 > npm install --global git-conventional-commits
 > git config core.hooksPath .git-hooks
 > ```
 
-4. Install the updated dependencies:
+4. Build the base packages:
 
 ```bash
-npm install
+turbo run build --filter='@next-boilerplate/*'^...
 ```
 
 5. Run the development server:
@@ -125,11 +128,10 @@ npm run dev
 This boilerplate uses [npm workspaces](https://docs.npmjs.com/cli/v7/using-npm/workspaces) to manage multiple packages in one repository.
 The following packages are available:
 
-- `packages/app`: The main application
-- `packages/cron`: The cron jobs
-- `packages/docs`: The documentation website
-- `packages/landing`: The landing page
-- `packages/scripts`: Scripts to help you manage your project
+- `apps/app`: The main application
+- `apps/cron`: The cron jobs
+- `apps/docs`: The documentation website
+- `apps/landing`: The landing page
 
 To run a script in a package, you can use the following command:
 
@@ -140,7 +142,13 @@ npm run <script> --workspace=<package>
 For example, to run the `dev` script in the `app` package, you can use the following command:
 
 ```bash
-npm run dev --workspace=app
+npm run dev --workspace=apps/app
+```
+
+or
+
+```bash
+cd apps/app && npm run dev
 ```
 
 Each package has its own `package.json` file, so you can add dependencies specific to a package.
@@ -149,13 +157,13 @@ Please make sure to add the dependencies to the `package.json` file of the packa
 For example, if you want to add a dependency to the `app` package, you should add it to the `app/package.json` file with the following command:
 
 ```bash
-npm install <package> --workspace=packages/app
+npm install <package> --workspace=apps/app
 ```
 
 or
 
 ```bash
-cd app
+cd apps/app
 npm install <package>
 ```
 
@@ -194,7 +202,6 @@ The following scripts are available in the `package.json`:
 The boilerplate comes with a pre-configured Docker container stack and a dev container. The stack includes the following services:
 
 - **Next.js** - A React framework for building fast and scalable web applications
-- **DocuSaurus** - A modern static website generator (for documentation)
 - **PostgreSQL** - A powerful, open-source relational database system
 - **Redis** - An in-memory data structure store, used as a database, cache, and message broker
 
@@ -207,17 +214,6 @@ Ports:
 - Landing: 3002
 - PostgreSQL: 5432
 - Redis: 6379
-- Desktop (password: vscode): 6080
-
-## 🧪 Testing
-
-This boilerplate comes with various testing setups to ensure your application's reliability and robustness.
-
-### Running Tests
-
-- **Unit and integration tests**: Run Jest tests using `npm run test`
-
-<img width="1392" alt="image" src="https://user-images.githubusercontent.com/28964599/233666655-93b7d08b-2fd8-406a-b43c-44d4d96cf387.png">
 
 ### Tanstack query
 
@@ -227,7 +223,7 @@ This boilerplate comes with various testing setups to ensure your application's 
 
 [T3 Env](https://env.t3.gg/) is a library that provides environmental variables checking at build time, type validation and transforming. It ensures that your application is using the correct environment variables and their values are of the expected type. You’ll never again struggle with runtime errors caused by incorrect environment variable usage.
 
-Config file is located at `env.mjs`. Simply set your client and server variables and import `env` from any file in your project.
+Config file is located at `env.ts`. Simply set your client and server variables and import `env` from any file in your project.
 
 ```ts
 export const env = createEnv({
@@ -302,8 +298,44 @@ The dictionary is loaded on the server and passed on the client only on the firs
 
 #### Traduction file
 
-The files for traduction are located in `packages/app/src/langs` or `packages/landing/src/langs` depending on the package you want to use it in.
+The files for traduction are located in `apps/app/src/langs` or `apps/landing/src/langs` depending on the package you want to use it in.
 If you want to add a new language, you can add a new file in the `langs` folder then modify the file `i18n-config.ts` and `langs.ts`.
+
+### File storage with S3
+
+#### Upload files
+
+When you want to upload files to a bucket s3 you have to main choices:
+
+1. Upload the file directly from the client to s3
+2. Upload the file to the server then to s3
+
+Both have their pros and cons. The first one is faster and more secure because the file does not pass through the server. The second one is more secure because you can check the file before uploading it to s3.
+
+In this boilerplate I choose the first solution because uploading the file to your server then to s3 can be expensive in terms of resources and time.
+
+> If you want to use the second solution you can use the `multer` library to upload the file to your server then to s3.
+
+##### How it works?
+
+1. The client sends a request to the server with the file name and file type.
+2. The server sends a signed url to the client.
+3. The client uploads the file to s3 with the signed url.
+4. The client sends the file link to the server.
+5. The server stores the file link in the database.
+
+##### What if the client do not send the file link to the server?
+
+To solve this problem I created a table named `FileUploading` and store all the upload request in it (step 2). Then I created a cron that check if the file is uploaded to s3 and used (see [Dead files](#dead-files)). If the file is not uploaded or not used within the expiration time (10 minutes) the cron delete the file from s3.
+
+#### Dead files
+
+A common problem in storing files to s3 is dead files. Dead files are files that are uploaded to s3 but not used in the application. To solve this problem. It's very hard to detect them manually if you do not set correctly your database.
+
+For example, I upload a profile picture to s3 and I store the link in the database. If I delete the link in the database, the file is still in s3 and not used anymore.
+
+To solve this I add a `File` table in the database, each time you need store a file link please use this table. Now we have a table that store all of our files but what if I need to override a file (like a profile picture). What I recommend is to unlink the `File` with the concerned table (here `User`) but leave the row in the table so the cron will detect it as a dead file an delete it.
+Why not deleting the file directly? Because the logic to delete the file from s3 and the database is in the same place is complex and any error can lead to a data loss and dead files. This is why this logic is centralized in the cron and not in the api route.
 
 ## ☁️ Cloud deployment
 
@@ -336,6 +368,14 @@ docker tag next-boilerplate/landing:latest <registry-url>/next-boilerplate/landi
 docker push <registry-url>/next-boilerplate/landing:latest
 ```
 
+### Build multi-architecture image
+
+Exemple (landing):
+
+```bash
+buildx build -t "<registry-url>/next-boilerplate/landing:latest" -f apps/landing/Dockerfile --platform linux/amd64,linux/arm64 --push .
+```
+
 ### Debug in local
 
 After the build you can run the image in local to see if everything is working as expected.
@@ -343,6 +383,9 @@ After the build you can run the image in local to see if everything is working a
 ```bash
 docker run --rm -it -p 3000:3000 <image-name>
 ```
+
+> See:
+> https://www.docker.com/blog/multi-arch-images/ > https://aws.amazon.com/fr/blogs/containers/how-to-build-your-containers-for-arm-and-save-with-graviton-and-spot-instances-on-amazon-ecs/ > https://docs.docker.com/build/drivers/docker-container/
 
 ### Deploy
 

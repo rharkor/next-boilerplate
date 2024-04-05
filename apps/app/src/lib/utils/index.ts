@@ -3,7 +3,7 @@ import { type ClassValue, clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
 
 import { authRoutes } from "@/constants/auth"
-import { logger } from "@next-boilerplate/lib/logger"
+import { logger } from "@next-boilerplate/lib"
 import { TRPCClientErrorLike } from "@trpc/client"
 
 import { AppRouter } from "../../api/_app"
@@ -167,16 +167,6 @@ export function bytesToMegabytes(bytes: number, round?: boolean): number {
   const megabytes = bytes / (1024 * 1024)
   if (round) return Math.round(megabytes * 100) / 100
   return megabytes
-}
-
-export function chunk<T>(array: T[], size: number): T[][] {
-  const result: T[][] = []
-
-  for (let i = 0; i < array.length; i += size) {
-    result.push(array.slice(i, i + size))
-  }
-
-  return result
 }
 
 export function stringToSlug(string: string): string {

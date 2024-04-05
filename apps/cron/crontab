@@ -3,4 +3,4 @@
 
 
 # Sample (every minute)
-* * * * * cd /usr/src/app && npm run sample >> /var/log/cron.log 2>&1
+* * * * * cd /usr/src/app/apps/cron && npm run -s clear-unused-uploads >> /var/log/cron.log 2>&1

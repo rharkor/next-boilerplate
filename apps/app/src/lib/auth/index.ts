@@ -14,7 +14,7 @@ import { env } from "@/lib/env"
 import { i18n, Locale } from "@/lib/i18n-config"
 import { ITrpcContext } from "@/types"
 import { PrismaAdapter } from "@next-auth/prisma-adapter"
-import { logger } from "@next-boilerplate/lib/logger"
+import { logger } from "@next-boilerplate/lib"
 
 import { signInSchema } from "../../api/auth/schemas"
 import { sessionsSchema } from "../../api/me/schemas"

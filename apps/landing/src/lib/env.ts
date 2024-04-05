@@ -1,6 +1,7 @@
+/* eslint-disable no-process-env */
 import { z } from "zod"
 
-import { logger } from "@next-boilerplate/lib/logger"
+import { logger } from "@next-boilerplate/lib"
 import { createEnv } from "@t3-oss/env-nextjs"
 
 export const env = createEnv({
@@ -19,6 +20,10 @@ export const env = createEnv({
   },
   onValidationError: (error) => {
     logger.error(error)
+    throw "Invalid environment variables"
+  },
+  onInvalidAccess(variable) {
+    logger.error(`Invalid access to ${variable}`)
     throw "Invalid environment variables"
   },
 })

@@ -4,7 +4,7 @@ import * as fs from "fs";
 import * as path from "path";
 import * as url from "url";
 
-import { logger } from "@next-boilerplate/lib/logger";
+import { logger } from "@next-boilerplate/lib";
 
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 const rootPath = path.join(__dirname, "..");
@@ -77,7 +77,8 @@ const main = async () => {
         "eslint-config-react-app",
         "eslint-plugin-simple-import-sort",
         "eslint-plugin-tailwindcss",
-        "eslint-plugin-unused-imports"
+        "eslint-plugin-unused-imports",
+        "eslint-plugin-custom-rule"
       );
     }
 

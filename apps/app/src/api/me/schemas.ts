@@ -1,6 +1,7 @@
 import { z } from "zod"
 
 import { queriesOptionPage, queriesOptionPerPage } from "@/lib/queries-options"
+import { fileSchemaMinimal } from "@/schemas/file"
 
 import { TDictionary } from "../../lib/langs"
 import { emailSchema, passwordSchemaWithRegex, usernameSchema } from "../auth/schemas"
@@ -11,7 +12,7 @@ export const userSchema = (dictionary?: TDictionary) =>
     name: z.string().nullable(),
     email: z.string().nullable(),
     emailVerified: z.date().nullable(),
-    image: z.string().nullable(),
+    profilePicture: fileSchemaMinimal().nullable(),
     username: usernameSchema(dictionary).nullable(),
     role: z.string(),
     hasPassword: z.boolean(),
@@ -22,12 +23,12 @@ export const userSchema = (dictionary?: TDictionary) =>
 export const updateUserSchema = (dictionary?: TDictionary) =>
   z.object({
     username: usernameSchema(dictionary).or(z.literal("")).optional(),
-    image: z.string().optional().nullable(),
+    profilePictureKey: z.string().optional().nullable(),
   })
 
-export const updateUserResponseSchema = (dictionary?: TDictionary) =>
+export const updateUserResponseSchema = () =>
   z.object({
-    user: userSchema(dictionary),
+    user: userSchema(),
   })
 
 export const sessionsSchema = () =>
@@ -105,13 +106,18 @@ export const resetPasswordSchema = (dictionary?: TDictionary) =>
 
 export const resetPasswordResponseSchema = () =>
   z.object({
-    user: userSchema(),
+    success: z.boolean(),
   })
 
 export const sendVerificationEmailSchema = (dictionary?: TDictionary) =>
   z
     .object({
-      user: userSchema(dictionary),
+      user: userSchema(dictionary).pick({
+        id: true,
+        emailVerified: true,
+        lastLocale: true,
+        email: true,
+      }),
       silent: z.boolean().optional(),
       email: z.never().optional(),
     })
@@ -135,5 +141,5 @@ export const verifyEmailSchema = () =>
 
 export const verifyEmailResponseSchema = () =>
   z.object({
-    user: userSchema(),
+    success: z.boolean(),
   })

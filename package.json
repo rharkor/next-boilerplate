@@ -10,10 +10,10 @@
     "prettier": "turbo run prettier",
     "prettier:fix": "turbo run prettier:fix",
     "test": "turbo run test",
-    "init": "npm run init -w packages/scripts",
-    "init:env": "npm run init:env -w packages/scripts",
-    "depcheck": "npm run depcheck -w packages/scripts",
-    "is-initialized": "npm run is-initialized -w packages/scripts",
+    "init": "npm run -s init -w packages/scripts",
+    "init:env": "npm run -s init:env -w packages/scripts",
+    "depcheck": "npm run -s depcheck -w packages/scripts",
+    "is-initialized": "npm run -s is-initialized -w packages/scripts",
     "preinstall": "npx --yes only-allow-many npm"
   },
   "workspaces": [
@@ -23,14 +23,14 @@
   ],
   "devDependencies": {
     "@semantic-release/changelog": "^6.0.3",
-    "@semantic-release/commit-analyzer": "^11.0.0",
+    "@semantic-release/commit-analyzer": "^12.0.0",
     "@semantic-release/git": "^10.0.1",
-    "@semantic-release/github": "^9.0.4",
-    "@semantic-release/npm": "^11.0.0",
-    "@semantic-release/release-notes-generator": "^12.0.0",
+    "@semantic-release/github": "^10.0.0",
+    "@semantic-release/npm": "^12.0.0",
+    "@semantic-release/release-notes-generator": "^13.0.0",
     "conventional-changelog-conventionalcommits": "^7.0.2",
     "semantic-release": "^23.0.0",
-    "turbo": "^1.12.5"
+    "turbo": "^1.13.2"
   },
   "license": "MIT"
 }

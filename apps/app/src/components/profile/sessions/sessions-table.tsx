@@ -4,7 +4,6 @@ import { useState } from "react"
 import { useSession } from "next-auth/react"
 
 import { ModalDescription, ModalHeader, ModalTitle } from "@/components/ui/modal"
-import { useActiveSessions } from "@/contexts/active-sessions"
 import { useDictionary } from "@/contexts/dictionary/utils"
 import { trpc } from "@/lib/trpc/client"
 import { cn } from "@/lib/utils"
@@ -28,8 +27,8 @@ export default function SessionsTable() {
     page: currentPage,
     perPage: itemsPerPageInitial,
   }
-  const activeSessions = useActiveSessions(callParams, {
-    disabled: !session.data || session.data.user.hasPassword === false,
+  const activeSessions = trpc.me.getActiveSessions.useQuery(callParams, {
+    enabled: !!session.data && session.data.user.hasPassword !== false,
   })
   const meta = activeSessions.data?.meta
 

@@ -1,7 +1,8 @@
+/* eslint-disable no-process-env */
 import { config } from "dotenv"
 import { z } from "zod"
 
-import { logger } from "@next-boilerplate/lib/logger"
+import { logger } from "@next-boilerplate/lib"
 import { createEnv } from "@t3-oss/env-nextjs"
 
 if (!process.env.ENV) {
@@ -27,7 +28,7 @@ export const env = createEnv({
     REDIS_PORT: z
       .string()
       .optional()
-      .transform((value) => (!!value ? parseInt(value) : value)),
+      .transform((value) => (!!value ? parseInt(value) : undefined)),
     REDIS_USERNAME: z.string().optional(),
     REDIS_PASSWORD: z.string().optional(),
     REDIS_USE_TLS: z
@@ -113,6 +114,10 @@ export const env = createEnv({
   },
   onValidationError: (error) => {
     logger.error(error)
+    throw "Invalid environment variables"
+  },
+  onInvalidAccess(variable) {
+    logger.error(`Invalid access to ${variable}`)
     throw "Invalid environment variables"
   },
 })

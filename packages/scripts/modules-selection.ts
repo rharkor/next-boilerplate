@@ -9,7 +9,7 @@ import * as path from "path";
 import * as url from "url";
 import YAML from "yaml";
 
-import { logger } from "@next-boilerplate/lib/logger";
+import { logger } from "@next-boilerplate/lib";
 
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 const rootDir = path.join(__dirname, "..", "..");
@@ -148,7 +148,6 @@ const onlyFrontAppsAdaptaion: {
           "bip39",
           "chalk",
           "cli-spinner",
-          "client-only",
           "crypto-js",
           "ioredis",
           "next-auth",
@@ -309,7 +308,7 @@ export const modulesSelection = async () => {
         fs.writeFileSync(path.join(rootDir, filePath), file);
       }
     }
-    logger.log(chalk.gray("Adapted unnecessary files!"));
+    logger.log(chalk.gray("Adapted some files!"));
 
     const { noUi } = await inquirer.prompt<{ noUi: boolean }>([
       {
@@ -353,7 +352,7 @@ export const modulesSelection = async () => {
           fs.writeFileSync(path.join(rootDir, filePath), file);
         }
       }
-      logger.log(chalk.gray("Adapted unnecessary files!"));
+      logger.log(chalk.gray("Adapted some files!"));
     }
   }
 };

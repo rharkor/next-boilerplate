@@ -11,15 +11,15 @@ import inquirer from "inquirer";
 import * as path from "path";
 import * as url from "url";
 
-import { logger } from "@next-boilerplate/lib/logger";
+import { logger } from "@next-boilerplate/lib";
 
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 
 const filesToCheck = [
   "../docker/docker-compose.yml",
   "../apps/app/src/api/auth/mutations.ts",
-  "../terraform/main.tf",
-  "../terraform/.auto.tfvars.example.json",
+  "../archi/ecs-ec2-project/terraform/.auto.tfvars.example.json",
+  "../archi/ecs-fargate-project/terraform/.auto.tfvars.example.json",
 ];
 
 //? Find all tokens of all the files in the root directory
@@ -126,24 +126,6 @@ export const replaceTokens = async () => {
           fs.writeFileSync(pJsonFile, newPJsonFileContent, "utf8");
           logger.log(chalk.gray(`Done for ${pJsonFile}`));
         }
-        const terraformMainFile = path.join(
-          __dirname,
-          "../../terraform/main.tf"
-        );
-        const terraformMainFileContent = fs.readFileSync(
-          terraformMainFile,
-          "utf8"
-        );
-        const newTerraformMainFileContent = terraformMainFileContent.replaceAll(
-          nameToReplace,
-          newProjectName
-        );
-        fs.writeFileSync(
-          terraformMainFile,
-          newTerraformMainFileContent,
-          "utf8"
-        );
-        logger.log(chalk.gray(`Done for ${terraformMainFile}`));
 
         //? Replace in all files from root except package-lock.json
         // Function to replace text in a file
@@ -159,12 +141,27 @@ export const replaceTokens = async () => {
         // Function to recursively search and replace in all files
         async function replaceInDirectory(dir: string) {
           const tsFiles = await glob(`${dir}/**/*.{ts,tsx}`, {
-            ignore: `${dir}/**/node_modules/**`,
+            ignore: [
+              `${dir}/**/node_modules/**`,
+              `${dir}/**/dist/**`,
+              `${dir}/**/build/**`,
+            ],
           });
           const pjsonFiles = await glob(`${dir}/**/package.json`, {
-            ignore: `${dir}/**/node_modules/**`,
+            ignore: [
+              `${dir}/**/node_modules/**`,
+              `${dir}/**/dist/**`,
+              `${dir}/**/build/**`,
+            ],
           });
-          const allFiles = tsFiles.concat(pjsonFiles);
+          const workflows = await glob(`${dir}/**/.github/workflows/*`, {
+            ignore: [
+              `${dir}/**/node_modules/**`,
+              `${dir}/**/dist/**`,
+              `${dir}/**/build/**`,
+            ],
+          });
+          const allFiles = tsFiles.concat(pjsonFiles).concat(workflows);
           await Promise.all(allFiles.map((file) => replaceTextInFile(file)));
         }
 

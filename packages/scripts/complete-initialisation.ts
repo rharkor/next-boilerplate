@@ -4,7 +4,7 @@ import * as fs from "fs/promises";
 import * as path from "path";
 import * as url from "url";
 
-import { logger } from "@next-boilerplate/lib/logger";
+import { logger } from "@next-boilerplate/lib";
 
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 const rootPath = path.join(__dirname, "..");
@@ -22,6 +22,7 @@ export const completeInitialisation = async () => {
   });
   logger.log(chalk.green("Done!"));
 
+  // eslint-disable-next-line no-process-env
   if (process.env.SKIP_INIT_CHECK !== "true") {
     await fs
       .unlink(path.join(rootPath, "scripts", ".init-todo"))

@@ -1,17 +1,15 @@
 "use client"
 import React, { useState } from "react"
 import { useRouter } from "next/navigation"
-import SuperJSON from "superjson"
 
 import { AppRouter } from "@/api/_app"
 import { useDictionary } from "@/contexts/dictionary/utils"
 import { MutationCache, QueryCache, QueryClient, QueryClientProvider } from "@tanstack/react-query"
-import { httpBatchLink, loggerLink, TRPCClientErrorLike } from "@trpc/client"
+import { TRPCClientErrorLike } from "@trpc/client"
 
 import { handleMutationError, handleQueryError } from "../utils/client-utils"
 
-import { trpc } from "./client"
-import { getUrl } from "./utils"
+import { trpc, trpcClient } from "./client"
 
 const testNoDefaultErrorHandling = (query: unknown) =>
   typeof query === "object" &&
@@ -44,33 +42,6 @@ export default function TrpcProvider({ children }: { children: React.ReactNode }
       })
   )
 
-  const [trpcClient] = useState(() =>
-    trpc.createClient({
-      transformer: SuperJSON,
-      links: [
-        // adds pretty logs to your console in development and logs errors in production
-        loggerLink({
-          enabled: (opts) =>
-            (process.env.NODE_ENV === "development" && typeof window !== "undefined") ||
-            (opts.direction === "down" && opts.result instanceof Error),
-        }),
-        // splitLink({
-        //   condition(op) {
-        //     return op.type === "subscription"
-        //   },
-        //   true: wsLink({
-        //     client: wsClient,
-        //   }),
-        //   false: httpBatchLink({
-        //     url: getUrl(),
-        //   }),
-        // }),
-        httpBatchLink({
-          url: getUrl(),
-        }),
-      ],
-    })
-  )
   return (
     <trpc.Provider client={trpcClient} queryClient={queryClient}>
       <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
