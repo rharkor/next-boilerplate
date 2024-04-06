@@ -63,4 +63,5 @@ module.exports = {
       },
     },
   ],
+  ignorePatterns: ["node_modules", ".next", "dist"],
 }

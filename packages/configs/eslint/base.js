@@ -1,3 +1,4 @@
+/** @type {import("eslint").Linter.Config} */
 module.exports = {
   extends: ["prettier", "plugin:@typescript-eslint/recommended"],
   plugins: ["@typescript-eslint", "unused-imports", "simple-import-sort", "custom-rule"],
@@ -45,4 +46,5 @@ module.exports = {
       },
     },
   ],
+  ignorePatterns: ["node_modules", ".next", "dist"],
 }
