@@ -3,6 +3,6 @@
   "version": "1.0.0",
   "main": "index.js",
   "devDependencies": {
-    "eslint": "^9.0.0"
+    "eslint": "^8.45.0"
   }
 }
