@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc && tsc-alias",
     "lint": "eslint .",
-    "lint:fix": "eslint . --fix",
+    "lint:fix": "eslint --fix .",
     "prettier": "prettier --check \"src/**/*.{js,jsx,ts,tsx}\"",
     "prettier:fix": "prettier --write \"src/**/*.{js,jsx,ts,tsx}\""
   },

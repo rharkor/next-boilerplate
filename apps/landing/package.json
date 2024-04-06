@@ -5,7 +5,7 @@
     "build": "next build",
     "start": "next start --port ${PORT:-3000}",
     "lint": "next lint && eslint .",
-    "lint:fix": "next lint --fix && eslint . --fix",
+    "lint:fix": "next lint --fix && eslint --fix .",
     "prettier": "prettier --check \"**/*.{js,jsx,ts,tsx}\"",
     "prettier:fix": "prettier --write \"**/*.{js,jsx,ts,tsx}\"",
     "analyze": "ANALYZE=true npm run build && cd .next/analyze && npx -y serve",
