@@ -5,8 +5,8 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc && tsc-alias",
-    "lint": "eslint . --ext .ts,.tsx",
-    "lint:fix": "eslint . --fix --ext .ts,.tsx",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "prettier": "prettier --check \"src/**/*.{js,jsx,ts,tsx}\"",
     "prettier:fix": "prettier --write \"src/**/*.{js,jsx,ts,tsx}\""
   },
