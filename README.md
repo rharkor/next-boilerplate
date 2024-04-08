@@ -107,19 +107,13 @@ npm install
 npm run init
 ```
 
-4. Build the base packages:
-
-```bash
-turbo run build --filter='@next-boilerplate/*'^...
-```
-
-5. Run the development server:
+4. Run the development server:
 
 ```bash
 npm run dev
 ```
 
-6. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+5. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 ### Usage within a team
 
@@ -128,7 +122,7 @@ After initializing the project and pushing the changes to the repository, the ot
 1. Clone the repository:
 
 ```bash
-git clone --depth 1 --filter=blob:none --no-checkout https://github.com/rharkor/next-boilerplate && git sparse-checkout init --cone && git checkout main
+git clone --depth 1 --filter=blob:none --no-checkout https://github.com/rharkor/next-boilerplate && cd next-boilerplate && git sparse-checkout init --cone && git checkout main
 ```
 
 > See more about the clone optimizations [here](#git-optimization).
@@ -155,16 +149,10 @@ Possible values for `<team_name>` are:
 npm install
 ```
 
-4. Build the base packages:
+4. Initialize the project locally:
 
 ```bash
-turbo run build --filter='@next-boilerplate/*'^...
-```
-
-5. Run the development server:
-
-```bash
-npm run dev
+npm run init
 ```
 
 ## 🗄️ Monorepo packages

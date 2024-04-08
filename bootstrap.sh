@@ -52,3 +52,7 @@ FOLDERS=${FOLDERS# }
 
 echo "Running 'git sparse-checkout set $FOLDERS'"
 git sparse-checkout set $FOLDERS
+
+BASE_FOLDERS=".devcontainer .github .git-hooks .vscode docker"
+echo "Running 'git sparse-checkout add $BASE_FOLDERS'"
+git sparse-checkout add $BASE_FOLDERS
