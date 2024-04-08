@@ -51,6 +51,8 @@ With this template, you get all the awesomeness you need:
   - [📚 Features](#-features)
   - [Table of Contents](#table-of-contents)
   - [🎯 Getting Started](#-getting-started)
+    - [Initialize the project](#initialize-the-project)
+    - [Usage within a team](#usage-within-a-team)
   - [🗄️ Monorepo packages](#️-monorepo-packages)
   - [🚀 Deployment](#-deployment)
   - [📃 Scripts Overview](#-scripts-overview)
@@ -82,18 +84,16 @@ With this template, you get all the awesomeness you need:
 
 _If you want to use the dev container, please follow the [container stack](#-container-stack) instructions._
 
-To get started with this boilerplate, follow these steps:
+### Initialize the project
 
 1. Fork & clone repository:
 
 ```bash
 ## Don't forget to ⭐ star and fork it first :)
-git clone --depth 1 --no-checkout https://github.com/rharkor/next-boilerplate
+git clone --depth 1 https://github.com/rharkor/next-boilerplate
 ```
 
-> See more about the clone options [here](#git-optimization).
-
-1. Install the dependencies:
+2. Install the dependencies:
 
 ```bash
 npm install
@@ -104,13 +104,6 @@ npm install
 ```bash
 npm run init
 ```
-
-> If the project is already initialized and your are not in a dev container just run the following command to install git hooks:
->
-> ```bash
-> npm install --global git-conventional-commits
-> git config core.hooksPath .git-hooks
-> ```
 
 4. Build the base packages:
 
@@ -125,6 +118,52 @@ npm run dev
 ```
 
 6. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+### Usage within a team
+
+After initializing the project and pushing the changes to the repository, the other team members can follow the following steps:
+
+1. Clone the repository:
+
+```bash
+git clone --depth 1 --filter=blob:none --no-checkout https://github.com/rharkor/next-boilerplate && git sparse-checkout init --cone && git checkout main
+```
+
+> See more about the clone optimizations [here](#git-optimization).
+
+2. Select the apps you want to work on:
+   As a team member you may not need to work on all the apps, you can select the apps you want to work on by running the following command (for all the repository enter `full` as the team name):
+
+```bash
+./bootstrap.sh <team_name>
+```
+
+Possible values for `<team_name>` are:
+
+- full
+- app
+- cron
+- docs
+- landing
+- infra
+
+3. Install the dependencies:
+
+```bash
+npm install
+```
+
+4. Build the base packages:
+
+```bash
+turbo run build --filter='@next-boilerplate/*'^...
+```
+
+5. Run the development server:
+
+```bash
+npm run dev
+```
 
 ## 🗄️ Monorepo packages
 
