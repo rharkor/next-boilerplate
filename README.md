@@ -68,6 +68,7 @@ With this template, you get all the awesomeness you need:
         - [How it works?](#how-it-works)
         - [What if the client do not send the file link to the server?](#what-if-the-client-do-not-send-the-file-link-to-the-server)
       - [Dead files](#dead-files)
+    - [Git optimization](#git-optimization)
   - [☁️ Cloud deployment](#️-cloud-deployment)
     - [Build](#build)
     - [Build multi-architecture image](#build-multi-architecture-image)
@@ -87,10 +88,12 @@ To get started with this boilerplate, follow these steps:
 
 ```bash
 ## Don't forget to ⭐ star and fork it first :)
-git clone --depth 1 https://github.com/rharkor/next-boilerplate
+git clone --depth 1 --no-checkout https://github.com/rharkor/next-boilerplate
 ```
 
-2. Install the dependencies:
+> See more about the clone options [here](#git-optimization).
+
+1. Install the dependencies:
 
 ```bash
 npm install
@@ -336,6 +339,10 @@ For example, I upload a profile picture to s3 and I store the link in the databa
 
 To solve this I add a `File` table in the database, each time you need store a file link please use this table. Now we have a table that store all of our files but what if I need to override a file (like a profile picture). What I recommend is to unlink the `File` with the concerned table (here `User`) but leave the row in the table so the cron will detect it as a dead file an delete it.
 Why not deleting the file directly? Because the logic to delete the file from s3 and the database is in the same place is complex and any error can lead to a data loss and dead files. This is why this logic is centralized in the cron and not in the api route.
+
+### Git optimization
+
+https://github.blog/2020-01-17-bring-your-monorepo-down-to-size-with-sparse-checkout/
 
 ## ☁️ Cloud deployment
 
