@@ -71,6 +71,8 @@ With this template, you get all the awesomeness you need:
         - [What if the client do not send the file link to the server?](#what-if-the-client-do-not-send-the-file-link-to-the-server)
       - [Dead files](#dead-files)
     - [Git optimization](#git-optimization)
+      - [Depth clone](#depth-clone)
+      - [Sparse checkout](#sparse-checkout)
   - [☁️ Cloud deployment](#️-cloud-deployment)
     - [Build](#build)
     - [Build multi-architecture image](#build-multi-architecture-image)
@@ -381,7 +383,58 @@ Why not deleting the file directly? Because the logic to delete the file from s3
 
 ### Git optimization
 
-https://github.blog/2020-01-17-bring-your-monorepo-down-to-size-with-sparse-checkout/
+#### Depth clone
+
+When you clone a repository, you can specify the depth of the clone. The depth is the number of commits from the tip of the branch. The depth is useful when you want to clone a repository but you don't need the full history.
+
+Example:
+
+```bash
+git clone --depth 1 <repository-url>
+```
+
+In the (Getting Started)[#getting-started] section, I use the depth clone to clone the repository with only the last commit because you may not need the full history of the repository.
+
+Here are good resources to learn more about the depth clone:
+
+- https://github.blog/2020-12-21-get-up-to-speed-with-partial-clone-and-shallow-clone/
+- https://stackoverflow.com/questions/24107485/how-to-checkout-remote-branch-with-git-clone-depth-1
+
+#### Sparse checkout
+
+When you clone a repository, you can specify the files you want to clone. This is useful when you want to clone a repository but you don't need all the files.
+
+Example:
+
+```bash
+git clone <repository-url> --no-checkout
+```
+
+In case of using this boilerplate with a team I specify the `--no-checkout` flag to clone the repository without the files. Then I use the `git sparse-checkout` command to select the files I want to work on. This is useful when you don't need to work on all the packages.
+
+For example if you only want to work on the `app` package:
+
+```bash
+git sparse-checkout init --cone
+git sparse-checkout set apps/app
+```
+
+In order to avoid knowing all the commands you can use the `bootstrap.sh` script to select the team you want to work on.
+Example with the `app` team:
+
+```bash
+./bootstrap.sh app
+```
+
+You can revert the sparse checkout with the following command:
+
+```bash
+git sparse-checkout disable
+```
+
+Here are good resources to learn more about the sparse checkout:
+
+- https://github.blog/2020-01-17-bring-your-monorepo-down-to-size-with-sparse-checkout/
 
 ## ☁️ Cloud deployment
 

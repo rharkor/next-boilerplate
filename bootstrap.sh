@@ -19,7 +19,9 @@ for TEAM in "$@"
 do
     case $TEAM in
     "full")
-        FOLDERS+=" *"
+        echo "Running 'git sparse-checkout disable'"
+        git sparse-checkout disable
+        exit 0
         ;;
     "app")
         FOLDERS+=" apps/app packages"
