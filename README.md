@@ -424,6 +424,12 @@ Here are good resources to learn more about the sparse checkout:
 
 - https://github.blog/2020-01-17-bring-your-monorepo-down-to-size-with-sparse-checkout/
 
+### Recommended extensions
+In order to install all recommended extensions please run:
+`bash ./packages/scripts/install/install-extensions.sh`
+
+> The dev container should install those extensions automatically but you can still execute the command above if there's a problem.
+
 ## ☁️ Cloud deployment
 
 _Please note that the following steps are for deploying the any application package._

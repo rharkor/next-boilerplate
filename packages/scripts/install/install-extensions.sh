@@ -1,4 +1,7 @@
+#!/bin/bash
+
 echo "Installing vscode extensions... 🚀"
+
 LIST=$(cat .devcontainer/extensions.txt)
 COMMAND_ARGS=""
 for EXTENSION in $LIST; do
