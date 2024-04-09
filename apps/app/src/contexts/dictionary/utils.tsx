@@ -10,7 +10,7 @@ import { DictionaryContext } from "./context"
  * @param subset Specific dictionary subset (optional), it can be usefull to know exactly what dictionary keys are provided by the server
  * @returns
  */
-export const useDictionary = <T extends SelectSubset<TInitialDictionary>>(subset?: T) => {
+export const useDictionary = <T extends SelectSubset<TInitialDictionary>>(subset: T) => {
   const context = useContext(DictionaryContext)
   if (context === undefined) {
     throw new Error("useDictionary must be used within a DictionaryProvider")

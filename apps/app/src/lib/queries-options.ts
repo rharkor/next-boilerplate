@@ -4,7 +4,16 @@ import { logger } from "@next-boilerplate/lib"
 
 import { TDictionary } from "./langs"
 
-export const queriesOptionPage = (dictionary?: TDictionary) =>
+export const queriesOptionPage = (dictionary?: {
+  errors: {
+    typeError: {
+      number: {
+        invalid: TDictionary["errors"]["typeError"]["number"]["invalid"]
+        required: TDictionary["errors"]["typeError"]["number"]["required"]
+      }
+    }
+  }
+}) =>
   z
     .number({
       invalid_type_error: dictionary?.errors.typeError.number.invalid(),
@@ -13,7 +22,16 @@ export const queriesOptionPage = (dictionary?: TDictionary) =>
     .positive()
     .int()
 
-export const queriesOptionPerPage = (dictionary?: TDictionary) =>
+export const queriesOptionPerPage = (dictionary?: {
+  errors: {
+    typeError: {
+      number: {
+        invalid: TDictionary["errors"]["typeError"]["number"]["invalid"]
+        required: TDictionary["errors"]["typeError"]["number"]["required"]
+      }
+    }
+  }
+}) =>
   z
     .number({
       invalid_type_error: dictionary?.errors.typeError.number.invalid(),
@@ -30,7 +48,16 @@ export const queriesOptionPerPage = (dictionary?: TDictionary) =>
       return value
     })
 
-export const queriesOptionSort = (dictionary?: TDictionary) =>
+export const queriesOptionSort = (dictionary?: {
+  errors: {
+    typeError: {
+      string: {
+        invalid: TDictionary["errors"]["typeError"]["string"]["invalid"]
+        required: TDictionary["errors"]["typeError"]["string"]["required"]
+      }
+    }
+  }
+}) =>
   z.array(
     z.object({
       field: z.string({

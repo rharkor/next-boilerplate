@@ -18,7 +18,14 @@ import FileUpload from "../ui/file-upload"
 import { ModalHeader, ModalTitle } from "../ui/modal"
 
 export default function UpdateAvatar({ account }: { account: ReturnType<typeof useAccount> }) {
-  const dictionary = useDictionary()
+  const dictionary = useDictionary({
+    updateAvatar: true,
+    errors: {
+      noFileSelected: true,
+      fileTooLarge: true,
+      unknownError: true,
+    },
+  })
   const utils = trpc.useUtils()
 
   const getPresignedUrlMutation = trpc.upload.presignedUrl.useMutation()

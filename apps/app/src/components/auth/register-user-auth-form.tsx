@@ -27,7 +27,15 @@ type UserAuthFormProps = React.HTMLAttributes<HTMLFormElement> & {
   locale: string
 }
 
-export const formSchema = (dictionary: TDictionary) =>
+export const formSchema = (
+  dictionary: Parameters<typeof signUpSchema>[0] & {
+    errors: {
+      password: {
+        dontMatch: TDictionary["errors"]["password"]["dontMatch"]
+      }
+    }
+  }
+) =>
   signUpSchema(dictionary)
     .extend({
       confirmPassword: z.string(),
@@ -43,19 +51,39 @@ export const formSchema = (dictionary: TDictionary) =>
       }
     })
 
-export const formMinizedSchema = (dictionary: TDictionary) =>
+export const formMinizedSchema = (dictionary: Parameters<typeof signUpSchema>[0]) =>
   signUpSchema(dictionary).pick({
     email: true,
   })
 
-export const getFormSchema = ({ dictionary, isMinimized }: { dictionary: TDictionary; isMinimized?: boolean }) =>
-  isMinimized ? formMinizedSchema(dictionary) : formSchema(dictionary)
+export const getFormSchema = ({
+  dictionary,
+  isMinimized,
+}: {
+  dictionary: Parameters<typeof formMinizedSchema>[0] & Parameters<typeof formSchema>[0]
+  isMinimized?: boolean
+}) => (isMinimized ? formMinizedSchema(dictionary) : formSchema(dictionary))
 
 export type IForm = z.infer<ReturnType<typeof formSchema>>
 export type IFormMinimized = z.infer<ReturnType<typeof formMinizedSchema>>
 
 export function RegisterUserAuthForm({ isMinimized, searchParams, locale, ...props }: UserAuthFormProps) {
-  const dictionary = useDictionary()
+  const dictionary = useDictionary({
+    email: true,
+    username: true,
+    password: true,
+    confirmPassword: true,
+    signUp: true,
+    edit: true,
+    cancel: true,
+    totp: {
+      desactivateTitle: true,
+      desactivate: true,
+      lostYourDevice: true,
+    },
+    errors: true,
+    withEmail: true,
+  })
   const router = useRouter()
 
   const [isDesactivate2FAModalOpen, setDesactivate2FAModalOpen] = React.useState(false)

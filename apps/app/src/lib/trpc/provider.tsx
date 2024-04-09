@@ -22,7 +22,9 @@ const testNoDefaultErrorHandling = (query: unknown) =>
 
 export default function TrpcProvider({ children }: { children: React.ReactNode }) {
   const router = useRouter()
-  const dictionary = useDictionary()
+  const dictionary = useDictionary({
+    errors: true,
+  })
 
   const [queryClient] = useState(
     () =>

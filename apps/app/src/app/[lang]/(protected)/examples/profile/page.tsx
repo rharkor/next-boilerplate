@@ -6,9 +6,9 @@ import VerifyEmailButton from "@/components/auth/verify-email-button"
 import ProfileDetails from "@/components/profile/profile-details"
 import UserActiveSessions from "@/components/profile/sessions/user-active-sessions"
 import CardTitle from "@/components/ui/card"
+import { getDictionary } from "@/contexts/dictionary/server-utils"
 import { nextAuthOptions } from "@/lib/auth"
 import { Locale } from "@/lib/i18n-config"
-import { getDictionary } from "@/lib/langs"
 import { Card, CardBody, CardHeader } from "@nextui-org/react"
 
 export default async function Profile({
@@ -23,6 +23,40 @@ export default async function Profile({
     profile: true,
     deleteAccount: true,
     signOut: true,
+    emailVerificationSentDescription: true,
+    emailAlreadyVerified: true,
+    resendVerificationEmail: true,
+    deleteAccountSuccessDescription: true,
+    deleteAccountConfirmationTitle: true,
+    deleteAccountConfirmationDescription: true,
+    cancel: true,
+    deleteAccountConfirm: true,
+    needSavePopup: true,
+    reset: true,
+    saveChanges: true,
+    updateAvatar: true,
+    totp: {
+      generate: true,
+      desactivate: true,
+      generateTitle: true,
+      generateDescription: true,
+      desactivateTitle: true,
+      generateStep1: true,
+      generateStep1Description: true,
+      generateStep2: true,
+      generateStep2Description: true,
+      generateStep3: true,
+      generateStep4: true,
+      totpDesactivated: true,
+      lostYourDevice: true,
+    },
+    urlCopiedToClipboard: true,
+    totpEnabled: true,
+    continue: true,
+    confirm: true,
+    back: true,
+    areYouAbsolutelySure: true,
+    timeUnit: true,
   })
   const session = await getServerSession(nextAuthOptions)
 

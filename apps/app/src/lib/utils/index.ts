@@ -120,7 +120,12 @@ export const findNestedKeyInDictionary = (key: string, dictionaryErrors: TDictio
   return currentObject as string | undefined
 }
 
-export const translateError = (error: string, dictionary: TDictionary): string => {
+export const translateError = (
+  error: string,
+  dictionary: {
+    errors: TDictionary["errors"]
+  }
+): string => {
   const errorTranslated = findNestedKeyInDictionary(error, dictionary.errors)
   if (!errorTranslated) {
     logger.error(new Error(`Error not found in dictionary: ${error}`))
@@ -131,7 +136,9 @@ export const translateError = (error: string, dictionary: TDictionary): string =
 
 export const handleApiError = <T extends TRPCClientErrorLike<AppRouter>>(
   error: T,
-  dictionary: TDictionary,
+  dictionary: {
+    errors: TDictionary["errors"]
+  },
   router: AppRouterInstance
 ): T => {
   try {
@@ -183,18 +190,55 @@ export function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms))
 }
 
-export function pickFromSubset<T extends object, K extends SelectSubset<T>>(obj: T, subset: K): PickFromSubset<T, K> {
+export function pickFromSubset<T extends object, K extends SelectSubset<T>>(
+  obj: T,
+  subset: K,
+  keySum?: string
+): PickFromSubset<T, K> {
   const result = {} as PickFromSubset<T, K>
+  if (!subset) {
+    throw new Error("The subset is undefined. Please provide a subset to pick from the dictionary.")
+  }
   Object.keys(subset).forEach((_key) => {
     const key = _key as keyof typeof subset
+    if (!obj[key as keyof T]) {
+      throw new Error(
+        `The key "${(keySum ? keySum + "." : "") + key.toString()}" not found in dictionary. Maybe you forgot to import it from the server component. see the docs for more information.`
+      )
+    }
     if (subset[key] === true) {
       result[key] = obj[key as keyof T] as PickFromSubset<T, K>[keyof K]
     } else if (typeof subset[key] === "object") {
       result[key] = pickFromSubset(
         obj[key as keyof T] as object,
-        subset[key] as SelectSubset<T[keyof T]>
+        subset[key] as SelectSubset<T[keyof T]>,
+        keySum ? keySum + "." + key.toString() : key.toString()
       ) as PickFromSubset<T, K>[keyof K]
     }
   })
   return result
+}
+
+export function isObject(item: unknown) {
+  return item && typeof item === "object" && !Array.isArray(item)
+}
+
+export function mergeDeep<T extends object, K extends object>(target: T, source: K): T & K {
+  const output = { ...target }
+  if (isObject(target) && isObject(source)) {
+    Object.keys(source).forEach((_key) => {
+      const key = _key as keyof typeof source
+      if (isObject(source[key])) {
+        if (!(key in target)) Object.assign(output, { [key]: source[key] })
+        else
+          output[key as unknown as keyof T] = mergeDeep(
+            target[key as unknown as keyof T] as object,
+            source[key] as object
+          ) as T[keyof T]
+      } else {
+        Object.assign(output, { [key]: source[key] })
+      }
+    })
+  }
+  return output as T & K
 }

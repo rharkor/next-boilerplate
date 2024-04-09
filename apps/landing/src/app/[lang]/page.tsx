@@ -1,6 +1,6 @@
 import { env } from "@/lib/env"
 import { Locale } from "@/lib/i18n-config"
-import { getDictionary } from "@/lib/langs"
+import { getDictionary } from "@/contexts/dictionary/server-utils"
 
 import Blob from "./blob"
 

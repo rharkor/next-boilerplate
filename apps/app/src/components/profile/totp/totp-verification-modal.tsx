@@ -7,7 +7,11 @@ import { trpc } from "@/lib/trpc/client"
 import { Button, Link, Modal, ModalBody, ModalContent, ModalFooter } from "@nextui-org/react"
 
 export type TotpVerificationModalProps = {
-  dictionary: TDictionary
+  dictionary: {
+    totp: {
+      lostYourDevice: TDictionary["totp"]["lostYourDevice"]
+    }
+  }
   isOpen: boolean
   onOpenChange: (open: boolean) => void
   onSuccessfulVerification?: () => void

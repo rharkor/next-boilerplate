@@ -13,7 +13,13 @@ import { ModalDescription, ModalHeader, ModalTitle } from "../ui/modal"
 
 export default function DeleteAccountButton({ children }: { children: React.ReactNode }) {
   const router = useRouter()
-  const dictionary = useDictionary()
+  const dictionary = useDictionary({
+    deleteAccountSuccessDescription: true,
+    deleteAccountConfirmationTitle: true,
+    deleteAccountConfirmationDescription: true,
+    cancel: true,
+    deleteAccountConfirm: true,
+  })
   const deleteAccountMutation = trpc.me.deleteAccount.useMutation({
     onSuccess: () => {
       toast.success(dictionary.deleteAccountSuccessDescription())

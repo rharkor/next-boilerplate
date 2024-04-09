@@ -15,7 +15,26 @@ const itemsPerPageInitial = 5
 
 export default function SessionsTable() {
   const session = useSession()
-  const dictionary = useDictionary()
+  const dictionary = useDictionary({
+    areYouAbsolutelySure: true,
+    cancel: true,
+    continue: true,
+    profilePage: {
+      profileDetails: {
+        deleteLoggedDevice: {
+          description: true,
+        },
+        lastUsed: true,
+        created: true,
+        expires: true,
+        in: true,
+      },
+    },
+    errors: {
+      unavailableWithOAuth: true,
+    },
+    timeUnit: true,
+  })
   const utils = trpc.useUtils()
 
   const isDisabled = !!session.data && session.data.user.hasPassword === false

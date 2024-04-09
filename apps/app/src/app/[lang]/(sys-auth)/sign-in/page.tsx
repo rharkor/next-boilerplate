@@ -3,15 +3,15 @@ import { getServerSession } from "next-auth"
 
 import { LoginUserAuthForm } from "@/components/auth/login-user-auth-form"
 import { authRoutes } from "@/constants/auth"
+import { getDictionary } from "@/contexts/dictionary/server-utils"
 import { nextAuthOptions } from "@/lib/auth"
 import { env } from "@/lib/env"
 import { Locale } from "@/lib/i18n-config"
-import { getDictionary } from "@/lib/langs"
 import { cn } from "@/lib/utils"
 import { Button } from "@nextui-org/react"
 
 import PrivacyAcceptance from "../privacy-acceptance"
-import Providers from "../providers"
+import AuthProviders from "../providers"
 
 export default async function SignInPage({
   searchParams,
@@ -27,14 +27,29 @@ export default async function SignInPage({
       loginToYourAccount: true,
       enterDetails: true,
     },
-    auth: {
-      orContinueWith: true,
-      termsOfService: true,
-      clickingAggreement: true,
-      privacyPolicy: true,
-    },
     toSignUp: true,
     and: true,
+    errors: {
+      wrongProvider: true,
+      password: true,
+      email: true,
+      invalidCredentials: true,
+      unknownError: true,
+      otpInvalid: true,
+    },
+    auth: true,
+    email: true,
+    password: true,
+    forgotPassword: true,
+    signIn: true,
+    totp: {
+      enterCode: true,
+      lostYourDevice: true,
+    },
+    confirm: true,
+    cancel: true,
+    copiedToClipboard: true,
+    copyToClipboard: true,
   })
   const session = await getServerSession(nextAuthOptions)
 
@@ -69,7 +84,7 @@ export default async function SignInPage({
                     <span className="bg-background px-2 text-muted-foreground">{dictionary.auth.orContinueWith()}</span>
                   </div>
                 </div>
-                <Providers searchParams={searchParams} session={session} />
+                <AuthProviders searchParams={searchParams} session={session} />
               </>
             )}
           </div>

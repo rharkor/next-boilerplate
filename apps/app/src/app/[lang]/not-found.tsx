@@ -1,8 +1,8 @@
 import React from "react"
 import { cookies } from "next/headers"
 
+import { getDictionary } from "@/contexts/dictionary/server-utils"
 import { Locale } from "@/lib/i18n-config"
-import { getDictionary } from "@/lib/langs"
 import { Button, Link } from "@nextui-org/react"
 
 export default async function Page404MatchAll() {

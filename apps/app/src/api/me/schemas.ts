@@ -6,7 +6,7 @@ import { fileSchemaMinimal } from "@/schemas/file"
 import { TDictionary } from "../../lib/langs"
 import { emailSchema, passwordSchemaWithRegex, usernameSchema } from "../auth/schemas"
 
-export const userSchema = (dictionary?: TDictionary) =>
+export const userSchema = (dictionary?: Parameters<typeof usernameSchema>[0]) =>
   z.object({
     id: z.string(),
     name: z.string().nullable(),
@@ -20,7 +20,7 @@ export const userSchema = (dictionary?: TDictionary) =>
     lastLocale: z.string().nullable(),
   })
 
-export const updateUserSchema = (dictionary?: TDictionary) =>
+export const updateUserSchema = (dictionary?: Parameters<typeof usernameSchema>[0]) =>
   z.object({
     username: usernameSchema(dictionary).or(z.literal("")).optional(),
     profilePictureKey: z.string().optional().nullable(),
@@ -43,7 +43,9 @@ export const sessionsSchema = () =>
     createdAt: z.coerce.date(),
   })
 
-export const getActiveSessionsSchema = (dictionary?: TDictionary) =>
+export const getActiveSessionsSchema = (
+  dictionary?: Parameters<typeof queriesOptionPage>[0] & Parameters<typeof queriesOptionPerPage>[0]
+) =>
   z.object({
     page: queriesOptionPage(dictionary),
     perPage: queriesOptionPerPage(dictionary),
@@ -70,7 +72,7 @@ export const deleteSessionResponseSchema = () =>
     id: z.string(),
   })
 
-export const getAccountResponseSchema = (dictionary?: TDictionary) =>
+export const getAccountResponseSchema = (dictionary?: Parameters<typeof usernameSchema>[0]) =>
   z.object({
     user: userSchema(dictionary),
   })
@@ -82,7 +84,7 @@ export const deleteAccountResponseSchema = () =>
     }),
   })
 
-export const forgotPasswordSchema = (dictionary?: TDictionary) =>
+export const forgotPasswordSchema = (dictionary?: Parameters<typeof emailSchema>[0]) =>
   z.object({
     email: emailSchema(dictionary),
   })
@@ -92,7 +94,13 @@ export const forgotPasswordResponseSchema = () =>
     email: z.string(),
   })
 
-export const resetPasswordSchema = (dictionary?: TDictionary) =>
+export const resetPasswordSchema = (
+  dictionary?: {
+    errors: {
+      passwordsDoNotMatch: TDictionary["errors"]["passwordsDoNotMatch"]
+    }
+  } & Parameters<typeof passwordSchemaWithRegex>[0]
+) =>
   z
     .object({
       token: z.string(),

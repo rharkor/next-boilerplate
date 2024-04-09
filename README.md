@@ -305,7 +305,7 @@ export default function Home() {
 ```tsx
 import { Locale } from "@/lib/i18n-config";
 
-import { getDictionary } from "@/lib/langs";
+import { getDictionary } from "@/contexts/dictionary/server-utils";
 
 export default async function Home({
   params: { lang },
@@ -425,6 +425,7 @@ Here are good resources to learn more about the sparse checkout:
 - https://github.blog/2020-01-17-bring-your-monorepo-down-to-size-with-sparse-checkout/
 
 ### Recommended extensions
+
 In order to install all recommended extensions please run:
 `bash ./packages/scripts/install/install-extensions.sh`
 

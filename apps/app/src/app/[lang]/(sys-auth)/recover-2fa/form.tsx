@@ -19,7 +19,19 @@ const formSchema = recover2FASchema
 type IForm = z.infer<ReturnType<typeof formSchema>>
 
 export default function Recover2FAForm({ email }: { email?: string }) {
-  const dictionary = useDictionary()
+  const dictionary = useDictionary({
+    totp: {
+      totpDesactivated: true,
+    },
+    mnemonic: true,
+    errors: {
+      email: true,
+    },
+    email: true,
+    recover2FA: true,
+    recover2FADescription: true,
+    reset: true,
+  })
   const router = useRouter()
 
   const recover2FAMutation = trpc.auth.recover2FA.useMutation({

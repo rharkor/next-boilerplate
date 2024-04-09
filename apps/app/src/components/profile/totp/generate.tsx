@@ -16,7 +16,29 @@ import { Button, Modal, ModalBody, ModalContent, ModalFooter, Skeleton } from "@
 import TotpVerificationModal from "./totp-verification-modal"
 
 export default function GenerateTotp({ account }: { account: ReturnType<typeof useAccount> }) {
-  const dictionary = useDictionary()
+  const dictionary = useDictionary({
+    totp: {
+      generate: true,
+      desactivate: true,
+      generateTitle: true,
+      generateDescription: true,
+      desactivateTitle: true,
+      generateStep1: true,
+      generateStep1Description: true,
+      generateStep2: true,
+      generateStep2Description: true,
+      generateStep3: true,
+      generateStep4: true,
+      totpDesactivated: true,
+      lostYourDevice: true,
+    },
+    urlCopiedToClipboard: true,
+    totpEnabled: true,
+    continue: true,
+    confirm: true,
+    cancel: true,
+    back: true,
+  })
   const hasOtpVerified = account.data?.user.otpVerified
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [modalIndex, setModalIndex] = useState(0)

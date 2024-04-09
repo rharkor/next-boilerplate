@@ -19,7 +19,9 @@ export default function ImageCrop({
   isOpen: boolean
   onOpenChange: () => void
 }) {
-  const dictionary = useDictionary()
+  const dictionary = useDictionary({
+    cropImage: true,
+  })
 
   return (
     <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="2xl">
@@ -46,7 +48,12 @@ function CropContent({
   setFile: (file: File) => void
   onOpenChange: () => void
 }) {
-  const dictionary = useDictionary()
+  const dictionary = useDictionary({
+    cancel: true,
+    reset: true,
+    save: true,
+    loading: true,
+  })
 
   const [isTouched, setIsTouched] = useState(false)
   const [isProcessing, setIsProcessing] = useState(false)

@@ -17,7 +17,16 @@ const formSchema = resetPasswordSchema
 type IForm = z.infer<ReturnType<typeof formSchema>>
 
 export default function ResetPasswordForm({ token }: { token: string }) {
-  const dictionary = useDictionary()
+  const dictionary = useDictionary({
+    resetPasswordSuccessDescription: true,
+    password: true,
+    passwordConfirmation: true,
+    reset: true,
+    errors: {
+      passwordsDoNotMatch: true,
+      password: true,
+    },
+  })
   const router = useRouter()
 
   const resetPasswordMutation = trpc.me.resetPassword.useMutation({

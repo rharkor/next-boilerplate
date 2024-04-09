@@ -21,16 +21,15 @@ export const passwordSchema = (dictionary?: {
     .min(minPasswordLength, dictionary && dictionary.errors.password.min8())
     .max(maxPasswordLength, dictionary && dictionary.errors.password.max25())
 
-export const passwordSchemaWithRegex = (dictionary?: {
-  errors: {
-    password: {
-      regex: TDictionary["errors"]["password"]["regex"]
-      required: TDictionary["errors"]["password"]["required"]
-      min8: TDictionary["errors"]["password"]["min8"]
-      max25: TDictionary["errors"]["password"]["max25"]
+export const passwordSchemaWithRegex = (
+  dictionary?: {
+    errors: {
+      password: {
+        regex: TDictionary["errors"]["password"]["regex"]
+      }
     }
-  }
-}) =>
+  } & Parameters<typeof passwordSchema>[0]
+) =>
   passwordSchema(dictionary).regex(
     /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*\.]).{8,}$/,
     dictionary && dictionary.errors.password.regex()
@@ -66,31 +65,33 @@ export const emailSchema = (dictionary?: {
     })
     .email(dictionary && dictionary.errors.email.invalid())
 
-export const signInSchema = (dictionary?: {
-  errors: {
-    password: {
-      max25: TDictionary["errors"]["password"]["max25"]
+export const signInSchema = (
+  dictionary?: {
+    errors: {
+      password: {
+        max25: TDictionary["errors"]["password"]["max25"]
+      }
     }
-    email: {
-      required: TDictionary["errors"]["email"]["required"]
-      invalid: TDictionary["errors"]["email"]["invalid"]
-    }
-  }
-}) =>
+  } & Parameters<typeof emailSchema>[0]
+) =>
   z.object({
     email: emailSchema(dictionary),
     password: z.string().max(maxPasswordLength, dictionary && dictionary.errors.password.max25()), //? Do not use the password schema because we don't want to tell why the password is invalid
     otp: z.string().optional(),
   })
 
-export const signUpSchema = (dictionary?: TDictionary) =>
+export const signUpSchema = (
+  dictionary?: Parameters<typeof signInSchema>[0] &
+    Parameters<typeof usernameSchema>[0] &
+    Parameters<typeof passwordSchemaWithRegex>[0]
+) =>
   signInSchema(dictionary).extend({
     username: usernameSchema(dictionary),
     password: passwordSchemaWithRegex(dictionary),
     locale: z.string(),
   })
 
-export const signUpResponseSchema = (dictionary?: TDictionary) =>
+export const signUpResponseSchema = (dictionary?: Parameters<typeof userSchema>[0]) =>
   z.object({
     user: userSchema(dictionary),
   })
@@ -122,7 +123,13 @@ export const desactivateTotpResponseSchema = () =>
     success: z.boolean(),
   })
 
-export const recover2FASchema = (dictionary?: TDictionary) =>
+export const recover2FASchema = (
+  dictionary?: {
+    mnemonic: {
+      invalid: TDictionary["mnemonic"]["invalid"]
+    }
+  } & Parameters<typeof emailSchema>[0]
+) =>
   z.object({
     email: emailSchema(dictionary),
     mnemonic: z.string().refine((value) => value.split(" ").filter((v) => !!v).length === 12, {

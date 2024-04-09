@@ -22,7 +22,10 @@ export default function Copiable({
     icon?: string
   }
 }) {
-  const dictionary = useDictionary()
+  const dictionary = useDictionary({
+    copiedToClipboard: true,
+    copyToClipboard: true,
+  })
 
   const [isCopied, setIsCopied] = useState(false)
   const [isTooltipOpen, setIsTooltipOpen] = useState(false)

@@ -25,7 +25,13 @@ const WithPasswordStrenghPopover = <
   isFocused: boolean
 }) => {
   const inputRef = useRef<HTMLInputElement>(null)
-  const dictionary = useDictionary()
+  const dictionary = useDictionary({
+    min8Chars: true,
+    containsNumber: true,
+    containsLowercase: true,
+    containsUppercase: true,
+    containsSpecial: true,
+  })
   const popoverRef = useRef<HTMLDivElement>(null)
 
   const passwordValue = form.watch(name)

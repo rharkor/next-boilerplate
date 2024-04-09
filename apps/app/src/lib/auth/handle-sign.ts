@@ -10,7 +10,14 @@ import { logger } from "@next-boilerplate/lib"
 import { signInSchema } from "../../api/auth/schemas"
 import { TDictionary } from "../langs"
 
-export const handleSignError = (error: string, dictionary: TDictionary) => {
+export const handleSignError = (
+  error: string,
+  dictionary: {
+    errors: {
+      wrongProvider: TDictionary["errors"]["wrongProvider"]
+    }
+  }
+) => {
   if (error == "OAuthAccountNotLinked") {
     toast.error(dictionary.errors.wrongProvider())
   } else {
@@ -29,7 +36,14 @@ export const handleSignIn = async ({
   data: z.infer<ReturnType<typeof signInSchema>>
   callbackUrl: string
   router: AppRouterInstance
-  dictionary: TDictionary
+  dictionary: {
+    errors: {
+      invalidCredentials: TDictionary["errors"]["invalidCredentials"]
+      unknownError: TDictionary["errors"]["unknownError"]
+      otpInvalid: TDictionary["errors"]["otpInvalid"]
+      wrongProvider: TDictionary["errors"]["wrongProvider"]
+    }
+  }
   depth?: number
   getOtpCode: () => Promise<string | null>
 }) => {

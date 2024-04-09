@@ -10,14 +10,19 @@ import { authRoutes } from "@/constants/auth"
 import { useDictionary } from "@/contexts/dictionary/utils"
 import { logger } from "@next-boilerplate/lib"
 
-export default function Providers({
+export default function AuthProviders({
   searchParams,
   session,
 }: {
   searchParams: { [key: string]: string | string[] | undefined }
   session: Session | null
 }) {
-  const dictionary = useDictionary()
+  const dictionary = useDictionary({
+    errors: {
+      wrongProvider: true,
+      unknownError: true,
+    },
+  })
   const callbackUrl = searchParams.callbackUrl ? searchParams.callbackUrl.toString() : undefined
 
   //? If session and callbackUrl, redirect to callbackUrl

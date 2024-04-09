@@ -11,7 +11,11 @@ import { logger } from "@next-boilerplate/lib"
 import { Button } from "@nextui-org/react"
 
 export default function VerifyEmailButton({ session }: { session: Session }) {
-  const dictionary = useDictionary()
+  const dictionary = useDictionary({
+    emailVerificationSentDescription: true,
+    emailAlreadyVerified: true,
+    resendVerificationEmail: true,
+  })
   const account = useAccount()
   const hasVerifiedEmail = session.user.emailVerified || !!account.data?.user.emailVerified
 

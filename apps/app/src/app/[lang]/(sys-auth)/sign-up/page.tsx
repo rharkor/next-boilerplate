@@ -3,14 +3,14 @@ import { getServerSession } from "next-auth"
 
 import { RegisterUserAuthForm } from "@/components/auth/register-user-auth-form"
 import { authRoutes } from "@/constants/auth"
+import { getDictionary } from "@/contexts/dictionary/server-utils"
 import { nextAuthOptions } from "@/lib/auth"
 import { Locale } from "@/lib/i18n-config"
-import { getDictionary } from "@/lib/langs"
 import { cn } from "@/lib/utils"
 import { Button } from "@nextui-org/react"
 
 import PrivacyAcceptance from "../privacy-acceptance"
-import Providers from "../providers"
+import AuthProviders from "../providers"
 
 export default async function SignUpPage({
   searchParams,
@@ -64,7 +64,7 @@ export default async function SignUpPage({
                 <span className="bg-background px-2 text-muted-foreground">{dictionary.auth.orContinueWith()}</span>
               </div>
             </div>
-            <Providers searchParams={searchParams} session={session} />
+            <AuthProviders searchParams={searchParams} session={session} />
           </div>
           <PrivacyAcceptance dictionary={dictionary} />
         </div>

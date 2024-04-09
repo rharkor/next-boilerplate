@@ -1,4 +1,3 @@
-import { loadDictionary } from "@/contexts/dictionary/server-utils"
 import { Locale } from "@/lib/i18n-config"
 import { ValueOf } from "@/types"
 
@@ -40,6 +39,3 @@ export const _getDictionary = async (locale: Locale) => {
     original: loadedDictionary,
   }
 }
-
-// Alias of loadDictionary
-export const getDictionary = loadDictionary

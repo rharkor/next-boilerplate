@@ -25,7 +25,20 @@ const nonSensibleSchema = updateUserSchema
 type INonSensibleForm = z.infer<ReturnType<typeof nonSensibleSchema>>
 
 export default function UpdateAccount({ sessionHasVerifiedEmail }: { sessionHasVerifiedEmail: boolean }) {
-  const dictionary = useDictionary()
+  const dictionary = useDictionary({
+    profilePage: {
+      profileDetails: {
+        username: true,
+      },
+    },
+    errors: {
+      emailNotVerified: true,
+      username: true,
+    },
+    needSavePopup: true,
+    reset: true,
+    saveChanges: true,
+  })
   const utils = trpc.useUtils()
 
   const { update } = useSession()

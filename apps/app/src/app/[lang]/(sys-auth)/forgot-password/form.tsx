@@ -19,7 +19,16 @@ const formSchema = forgotPasswordSchema
 type IForm = z.infer<ReturnType<typeof formSchema>>
 
 export default function ForgotPasswordForm() {
-  const dictionary = useDictionary()
+  const dictionary = useDictionary({
+    forgotPasswordSuccessDescription: true,
+    emailPlaceholder: true,
+    email: true,
+    errors: {
+      email: true,
+    },
+    send: true,
+    timeUntilYouCanRequestAnotherEmail: true,
+  })
   const [latestEmailSentAt, setLatestEmailSentAt] = useState<number | null>(null)
 
   const forgotPasswordMutation = trpc.me.forgotPassword.useMutation({

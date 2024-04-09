@@ -2,8 +2,8 @@ import Link from "next/link"
 
 import NavSettings from "@/components/nav-settings"
 import { authRoutes } from "@/constants/auth"
+import { getDictionary } from "@/contexts/dictionary/server-utils"
 import { Locale } from "@/lib/i18n-config"
-import { getDictionary } from "@/lib/langs"
 
 import VerifyEmailButton from "./form"
 
@@ -19,6 +19,9 @@ export default async function VerifyEmail({
     emailVerificationTitle: true,
     emailVerificationDescription: true,
     goToSignInPage: true,
+    emailVerificationSentDescription: true,
+    emailAlreadyVerified: true,
+    resendVerificationEmail: true,
   })
 
   return (

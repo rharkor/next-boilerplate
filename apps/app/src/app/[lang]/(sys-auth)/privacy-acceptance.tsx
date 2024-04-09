@@ -1,3 +1,4 @@
+import { TDictionary } from "@/lib/langs"
 import { Link } from "@nextui-org/react"
 
 export default function PrivacyAcceptance({
@@ -5,11 +6,11 @@ export default function PrivacyAcceptance({
 }: {
   dictionary: {
     auth: {
-      clickingAggreement: () => string
-      termsOfService: () => string
-      privacyPolicy: () => string
+      clickingAggreement: TDictionary["auth"]["clickingAggreement"]
+      termsOfService: TDictionary["auth"]["termsOfService"]
+      privacyPolicy: TDictionary["auth"]["privacyPolicy"]
     }
-    and: () => string
+    and: TDictionary["and"]
   }
 }) {
   return (

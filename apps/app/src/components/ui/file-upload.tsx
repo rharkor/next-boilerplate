@@ -72,7 +72,9 @@ export default function FileUpload({
   maxFiles,
   ...props
 }: TFileUploadProps) {
-  const dictionary = useDictionary()
+  const dictionary = useDictionary({
+    uploadDescription: true,
+  })
   const { acceptedFiles, getRootProps, getInputProps, isDragAccept, isDragReject } = useDropzone({
     accept,
     maxFiles,

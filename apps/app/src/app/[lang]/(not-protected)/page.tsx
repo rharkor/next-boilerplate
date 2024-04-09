@@ -1,5 +1,5 @@
 import NavSettings from "@/components/nav-settings"
-import { loadDictionary } from "@/contexts/dictionary/server-utils"
+import { getDictionary } from "@/contexts/dictionary/server-utils"
 import { Locale } from "@/lib/i18n-config"
 import { Button, Link } from "@nextui-org/react"
 
@@ -10,7 +10,7 @@ export default async function Home({
     lang: Locale
   }
 }) {
-  const dictionary = await loadDictionary(lang, {
+  const dictionary = await getDictionary(lang, {
     homePage: true,
     profile: true,
     test: true,

@@ -2,7 +2,7 @@
 
 import { Locale } from "@/lib/i18n-config"
 import { _getDictionary, TDictionary, TInitialDictionary } from "@/lib/langs"
-import { pickFromSubset } from "@/lib/utils"
+import { mergeDeep, pickFromSubset } from "@/lib/utils"
 import { SelectSubset } from "@/types"
 import { logger } from "@next-boilerplate/lib"
 
@@ -19,18 +19,28 @@ const _loadDictionary = async (lang: Locale) => {
 }
 
 export const withDictionary = async (children: React.ReactNode, { lang }: { lang: Locale }) => {
-  if (!loadedDictionary) {
-    await _loadDictionary(lang)
-  }
+  await getDictionary(
+    lang,
+    // Default needs
+    {
+      somethingWentWrong: true,
+      tryAgain: true,
+      // All errors needed for trpc, will be removed soon
+      //TODO Rewrite trpc error handling
+      errors: true,
+    }
+  )
 
   return <DictionaryProvider dictionary={reducedDictionary}>{children}</DictionaryProvider>
 }
 
-export const loadDictionary = async <T extends SelectSubset<TInitialDictionary>>(lang: Locale, subset: T) => {
+let previousSubset = {} as SelectSubset<TInitialDictionary>
+export const getDictionary = async <T extends SelectSubset<TInitialDictionary>>(lang: Locale, _subset: T) => {
   if (!loadedDictionary) {
     loadedDictionary = await _loadDictionary(lang)
   }
-
+  const subset = mergeDeep(previousSubset, _subset)
+  previousSubset = subset
   reducedDictionary = pickFromSubset(loadedDictionary.original, subset) as TInitialDictionary
   return pickFromSubset(loadedDictionary.parsed, subset)
 }

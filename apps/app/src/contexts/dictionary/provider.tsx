@@ -20,13 +20,8 @@ export default function DictionaryProvider({
     return transformDictionaryWithFunction(dictionary)
   }, [dictionary])
 
-  const getParsedDictionary = <T extends SelectSubset<TInitialDictionary> | undefined = undefined>(
-    subset?: T
-  ): useDictionaryReturnType<T> => {
-    if (subset !== undefined) {
-      return pickFromSubset(parsedDictionary, subset) as useDictionaryReturnType<T>
-    }
-    return parsedDictionary as useDictionaryReturnType<T>
+  const getParsedDictionary = <T extends SelectSubset<TInitialDictionary>>(subset: T): useDictionaryReturnType<T> => {
+    return pickFromSubset(parsedDictionary, subset) as useDictionaryReturnType<T>
   }
 
   return (

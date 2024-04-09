@@ -28,7 +28,27 @@ const formSchema = signInSchema
 type IForm = z.infer<ReturnType<typeof formSchema>>
 
 export function LoginUserAuthForm({ searchParams, ...props }: UserAuthFormProps) {
-  const dictionary = useDictionary()
+  const dictionary = useDictionary({
+    errors: {
+      wrongProvider: true,
+      password: true,
+      email: true,
+      invalidCredentials: true,
+      unknownError: true,
+      otpInvalid: true,
+    },
+    auth: true,
+    email: true,
+    password: true,
+    forgotPassword: true,
+    signIn: true,
+    totp: {
+      enterCode: true,
+      lostYourDevice: true,
+    },
+    confirm: true,
+    cancel: true,
+  })
   const router = useRouter()
 
   const callbackUrl = ensureRelativeUrl(searchParams.callbackUrl?.toString()) || authRoutes.redirectAfterSignIn

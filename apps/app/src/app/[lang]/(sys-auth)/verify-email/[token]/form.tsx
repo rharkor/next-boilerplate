@@ -9,7 +9,10 @@ import { trpc } from "@/lib/trpc/client"
 import { Button } from "@nextui-org/react"
 
 export default function VerifyEmailButton({ token }: { token: string }) {
-  const dictionary = useDictionary()
+  const dictionary = useDictionary({
+    verifyEmail: true,
+    verifyEmailSuccessDescription: true,
+  })
   const router = useRouter()
 
   const verifyEmail = trpc.me.verifyEmail.useMutation({
