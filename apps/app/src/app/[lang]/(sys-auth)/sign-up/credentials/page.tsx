@@ -18,7 +18,11 @@ export default async function SignupByCredentials({
     lang: Locale
   }
 }) {
-  const dictionary = await getDictionary(lang)
+  const dictionary = await getDictionary(lang, {
+    signUpPage: {
+      createAnAccount: true,
+    },
+  })
 
   //? If there is no email in the search params, redirect to the sign-up page
   if (!searchParams.email) {
@@ -34,7 +38,7 @@ export default async function SignupByCredentials({
       </Link>
       <Card className="w-[500px] max-w-full">
         <CardHeader>
-          <CardTitle>{dictionary.signUpPage.createAnAccount}</CardTitle>
+          <CardTitle>{dictionary.signUpPage.createAnAccount()}</CardTitle>
         </CardHeader>
         <CardBody>
           <RegisterUserAuthForm className="gap-3" searchParams={searchParams} locale={lang} />

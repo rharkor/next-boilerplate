@@ -45,7 +45,7 @@ export default function GenerateTotp({ account }: { account: ReturnType<typeof u
   const copyToClipboard = (value?: string) => {
     if (!value) return
     navigator.clipboard.writeText(value)
-    toast(dictionary.urlCopiedToClipboard)
+    toast(dictionary.urlCopiedToClipboard())
   }
 
   const [mnemonicVerif, setMnemonicVerif] = useState<string>("")
@@ -69,7 +69,7 @@ export default function GenerateTotp({ account }: { account: ReturnType<typeof u
     setMnemonicVerif("")
     setTotpSecretData(undefined)
     account.refetch()
-    toast.success(dictionary.totpEnabled)
+    toast.success(dictionary.totpEnabled())
   }
 
   const [isDesactivate2FAModalOpen, setDesactivate2FAModalOpen] = useState(false)
@@ -79,15 +79,15 @@ export default function GenerateTotp({ account }: { account: ReturnType<typeof u
   const handleDesactivate2FA = async (token: string) => {
     await desactivate2FAMutation.mutateAsync({ token })
     account.refetch()
-    toast.success(dictionary.totp.totpDesactivated)
+    toast.success(dictionary.totp.totpDesactivated())
     setDesactivate2FAModalOpen(false)
   }
 
   return (
     <div className="flex flex-col gap-2">
       <div className="-mx-2 flex flex-col px-2">
-        <h3 className="text-medium font-medium">{dictionary.totp.generateTitle}</h3>
-        <p className="text-sm text-muted-foreground">{dictionary.totp.generateDescription}</p>
+        <h3 className="text-medium font-medium">{dictionary.totp.generateTitle()}</h3>
+        <p className="text-sm text-muted-foreground">{dictionary.totp.generateDescription()}</p>
       </div>
       <Button
         color={hasOtpVerified ? "danger" : "primary"}
@@ -99,14 +99,14 @@ export default function GenerateTotp({ account }: { account: ReturnType<typeof u
         isDisabled={account.isLoading || desactivate2FAMutation.isLoading || generateTotpSecretMutation.isLoading}
         className="w-max"
       >
-        {hasOtpVerified ? dictionary.totp.desactivate : dictionary.totp.generate}
+        {hasOtpVerified ? dictionary.totp.desactivate() : dictionary.totp.generate()}
       </Button>
       <Modal isOpen={isModalOpen} onOpenChange={setIsModalOpen}>
         <ModalContent>
           {(onClose) => (
             <>
               <ModalHeader>
-                <ModalTitle>{dictionary.totp.generateTitle}</ModalTitle>
+                <ModalTitle>{dictionary.totp.generateTitle()}</ModalTitle>
               </ModalHeader>
               <ModalBody className="overflow-hidden p-0">
                 <div
@@ -122,7 +122,8 @@ export default function GenerateTotp({ account }: { account: ReturnType<typeof u
                     className={cn("flex h-full min-w-full flex-col items-center justify-center gap-4 overflow-auto")}
                   >
                     <h4 className="w-full text-medium">
-                      <span className="text-lg font-semibold text-foreground">1.</span> {dictionary.totp.generateStep1}
+                      <span className="text-lg font-semibold text-foreground">1.</span>{" "}
+                      {dictionary.totp.generateStep1()}
                     </h4>
                     <Skeleton
                       isLoaded={!!totpSecretData}
@@ -146,16 +147,16 @@ export default function GenerateTotp({ account }: { account: ReturnType<typeof u
                         "rounded-medium": !totpSecretData,
                       })}
                     >
-                      <p className="text-xs text-muted-foreground">({dictionary.totp.generateStep1Description})</p>
+                      <p className="text-xs text-muted-foreground">({dictionary.totp.generateStep1Description()})</p>
                     </Skeleton>
                   </section>
                   <section className={cn("flex h-full min-w-full flex-col items-center gap-4 overflow-auto")}>
                     <div className="flex w-full flex-col">
                       <h4 className="text-medium">
                         <span className="text-lg font-semibold text-foreground">2.</span>{" "}
-                        {dictionary.totp.generateStep2}
+                        {dictionary.totp.generateStep2()}
                       </h4>
-                      <p className="text-sm text-muted-foreground">{dictionary.totp.generateStep2Description}</p>
+                      <p className="text-sm text-muted-foreground">{dictionary.totp.generateStep2Description()}</p>
                     </div>
                     <div className="flex flex-1 items-center justify-center">
                       <p className="rounded-medium bg-muted p-2 text-lg">{totpSecretData?.mnemonic}</p>
@@ -163,7 +164,8 @@ export default function GenerateTotp({ account }: { account: ReturnType<typeof u
                   </section>
                   <section className="flex h-full min-w-full flex-col items-center gap-4 overflow-auto">
                     <h4 className="w-full text-medium">
-                      <span className="text-lg font-semibold text-foreground">3.</span> {dictionary.totp.generateStep3}
+                      <span className="text-lg font-semibold text-foreground">3.</span>{" "}
+                      {dictionary.totp.generateStep3()}
                     </h4>
                     <div className={cn("flex flex-col gap-4")}>
                       <div className="grid grid-cols-3 gap-x-6 gap-y-2">
@@ -228,7 +230,8 @@ export default function GenerateTotp({ account }: { account: ReturnType<typeof u
                   </section>
                   <section className="flex h-full min-w-full flex-col items-center gap-4">
                     <h4 className="w-full text-medium">
-                      <span className="text-lg font-semibold text-foreground">4.</span> {dictionary.totp.generateStep4}
+                      <span className="text-lg font-semibold text-foreground">4.</span>{" "}
+                      {dictionary.totp.generateStep4()}
                     </h4>
                     <div className={cn("flex flex-1 items-center justify-center")}>
                       <OtpInput isFocusable={modalIndex === 3} otp={otp} setOtp={setOtp} />
@@ -247,7 +250,7 @@ export default function GenerateTotp({ account }: { account: ReturnType<typeof u
                     }
                   }}
                 >
-                  {modalIndex === 0 ? dictionary.cancel : dictionary.back}
+                  {modalIndex === 0 ? dictionary.cancel() : dictionary.back()}
                 </Button>
                 <Button
                   color="primary"
@@ -265,7 +268,7 @@ export default function GenerateTotp({ account }: { account: ReturnType<typeof u
                   }
                   isLoading={verifyTotpMutation.isLoading}
                 >
-                  {modalIndex !== 3 ? dictionary.continue : dictionary.confirm}
+                  {modalIndex !== 3 ? dictionary.continue() : dictionary.confirm()}
                 </Button>
               </ModalFooter>
             </>
@@ -277,9 +280,9 @@ export default function GenerateTotp({ account }: { account: ReturnType<typeof u
         isOpen={isDesactivate2FAModalOpen}
         onOpenChange={setDesactivate2FAModalOpen}
         onConfirm={handleDesactivate2FA}
-        title={dictionary.totp.desactivateTitle}
-        submitText={dictionary.totp.desactivate}
-        closeText={dictionary.cancel}
+        title={dictionary.totp.desactivateTitle()}
+        submitText={dictionary.totp.desactivate()}
+        closeText={dictionary.cancel()}
         onlyPrompt
         isDanger
         isLoading={desactivate2FAMutation.isLoading}

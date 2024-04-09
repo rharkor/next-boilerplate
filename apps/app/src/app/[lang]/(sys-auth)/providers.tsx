@@ -35,9 +35,9 @@ export default function Providers({
         logger.debug("SignIn result", res)
         if (res.error) {
           if (res.error === "OAuthAccountNotLinked") {
-            toast.error(dictionary.errors.wrongProvider)
+            toast.error(dictionary.errors.wrongProvider())
           } else {
-            throw new Error(dictionary.errors.unknownError)
+            throw new Error(dictionary.errors.unknownError())
           }
         }
       }
@@ -48,7 +48,7 @@ export default function Providers({
       if (error instanceof Error) {
         toast.error(error.message)
       } else {
-        toast(dictionary.errors.unknownError)
+        toast(dictionary.errors.unknownError())
       }
       return false
     }

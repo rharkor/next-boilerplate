@@ -17,7 +17,7 @@ export default function VerifyEmailButton({ session }: { session: Session }) {
 
   const resendVerificationEmailMutation = trpc.me.sendVerificationEmail.useMutation({
     onSuccess: () => {
-      toast(dictionary.emailVerificationSentDescription)
+      toast(dictionary.emailVerificationSentDescription())
     },
   })
 
@@ -35,7 +35,7 @@ export default function VerifyEmailButton({ session }: { session: Session }) {
     return (
       <p className="flex w-max flex-1 items-center space-x-2 font-medium text-primary">
         <BadgeCheck className="inline-block size-5" />
-        <span>{dictionary.emailAlreadyVerified}</span>
+        <span>{dictionary.emailAlreadyVerified()}</span>
       </p>
     )
   }
@@ -48,7 +48,7 @@ export default function VerifyEmailButton({ session }: { session: Session }) {
       variant="flat"
       color="primary"
     >
-      {dictionary.resendVerificationEmail}
+      {dictionary.resendVerificationEmail()}
     </Button>
   )
 }

@@ -16,7 +16,7 @@ export default function DeleteAccountButton({ children }: { children: React.Reac
   const dictionary = useDictionary()
   const deleteAccountMutation = trpc.me.deleteAccount.useMutation({
     onSuccess: () => {
-      toast.success(dictionary.deleteAccountSuccessDescription)
+      toast.success(dictionary.deleteAccountSuccessDescription())
       router.push(authRoutes.signIn[0])
     },
   })
@@ -37,15 +37,15 @@ export default function DeleteAccountButton({ children }: { children: React.Reac
           {(onClose) => (
             <>
               <ModalHeader>
-                <ModalTitle>{dictionary.deleteAccountConfirmationTitle}</ModalTitle>
-                <ModalDescription>{dictionary.deleteAccountConfirmationDescription}</ModalDescription>
+                <ModalTitle>{dictionary.deleteAccountConfirmationTitle()}</ModalTitle>
+                <ModalDescription>{dictionary.deleteAccountConfirmationDescription()}</ModalDescription>
               </ModalHeader>
               <ModalFooter>
                 <Button onPress={onClose} variant="flat">
-                  {dictionary.cancel}
+                  {dictionary.cancel()}
                 </Button>
                 <Button color="danger" onPress={handleDeleteAccount} isLoading={deleteAccountMutation.isLoading}>
-                  {dictionary.deleteAccountConfirm}
+                  {dictionary.deleteAccountConfirm()}
                 </Button>
               </ModalFooter>
             </>

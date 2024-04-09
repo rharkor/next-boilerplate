@@ -26,7 +26,7 @@ export default function ImageCrop({
       <ModalContent>
         {(onClose) => (
           <>
-            <ModalHeader className="flex flex-col gap-1">{dictionary.cropImage}</ModalHeader>
+            <ModalHeader className="flex flex-col gap-1">{dictionary.cropImage()}</ModalHeader>
             <CropContent onClose={onClose} originalFile={originalFile} setFile={setFile} onOpenChange={onOpenChange} />
           </>
         )}
@@ -522,7 +522,7 @@ function CropContent({
           {isImageLoading && (
             <div className="absolute inset-0 flex flex-col items-center justify-center gap-1 bg-content1/50">
               <Spinner color="primary" />
-              <span className="text-base font-bold text-foreground">{dictionary.loading}</span>
+              <span className="text-base font-bold text-foreground">{dictionary.loading()}</span>
             </div>
           )}
         </div>
@@ -544,7 +544,7 @@ function CropContent({
             }
           }}
         >
-          {!isTouched ? dictionary.cancel : dictionary.reset}
+          {!isTouched ? dictionary.cancel() : dictionary.reset()}
         </Button>
         <Button
           color="primary"
@@ -553,7 +553,7 @@ function CropContent({
           }}
           isLoading={isProcessing}
         >
-          {dictionary.save}
+          {dictionary.save()}
         </Button>
       </ModalFooter>
     </>

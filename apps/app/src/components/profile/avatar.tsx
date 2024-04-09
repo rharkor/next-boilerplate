@@ -30,11 +30,11 @@ export default function UpdateAvatar({ account }: { account: ReturnType<typeof u
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (!file) {
-      toast.error(dictionary.errors.noFileSelected)
+      toast.error(dictionary.errors.noFileSelected())
       return
     }
     if (file.size > maxUploadSize) {
-      toast.error(dictionary.errors.fileTooLarge)
+      toast.error(dictionary.errors.fileTooLarge())
       return
     }
     setUploading(true)
@@ -70,14 +70,14 @@ export default function UpdateAvatar({ account }: { account: ReturnType<typeof u
           const xmlDoc = parser.parseFromString(xml, "text/xml")
           const error = xmlDoc.getElementsByTagName("Message")[0]
           if (error.textContent === "Your proposed upload exceeds the maximum allowed size") {
-            toast.error(dictionary.errors.fileTooLarge)
+            toast.error(dictionary.errors.fileTooLarge())
           } else {
-            toast.error(dictionary.errors.unknownError)
+            toast.error(dictionary.errors.unknownError())
           }
         }
       } catch (e) {
         logger.error(e)
-        toast.error(dictionary.errors.unknownError)
+        toast.error(dictionary.errors.unknownError())
       }
     } catch {
     } finally {
@@ -153,7 +153,7 @@ export default function UpdateAvatar({ account }: { account: ReturnType<typeof u
       <Modal isOpen={showModal} onOpenChange={(open) => setShowModal(open)}>
         <ModalContent>
           <ModalHeader>
-            <ModalTitle>{dictionary.updateAvatar}</ModalTitle>
+            <ModalTitle>{dictionary.updateAvatar()}</ModalTitle>
           </ModalHeader>
           <ModalBody>
             <form onSubmit={handleSubmit} className="flex flex-col gap-2">
@@ -169,7 +169,7 @@ export default function UpdateAvatar({ account }: { account: ReturnType<typeof u
                 disabled={uploading}
               />
               <Button color="primary" type="submit" isDisabled={uploading || !file} isLoading={uploading}>
-                {dictionary.updateAvatar}
+                {dictionary.updateAvatar()}
               </Button>
             </form>
           </ModalBody>

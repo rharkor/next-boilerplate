@@ -122,7 +122,7 @@ export default function FileUpload({
       >
         <input type="file" {...getInputProps()} disabled={disabled} {...props} />
         <Upload className="size-12" />
-        <p className="text-center text-sm text-foreground/80">{dictionary.uploadDescription}</p>
+        <p className="text-center text-sm text-foreground/80">{dictionary.uploadDescription()}</p>
       </div>
       <ul className="flex flex-col gap-2">
         {croppedFiles.map((file, i) => (

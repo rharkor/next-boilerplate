@@ -1,4 +1,5 @@
 {
+  "test": "Test {myTest}",
   "errors": {
     "fileNotFound": "Fichier introuvable.",
     "couldNotIdentifyIp": "Impossible d'identifier votre adresse IP.",

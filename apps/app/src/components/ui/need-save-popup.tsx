@@ -1,3 +1,4 @@
+import { TDictionary } from "@/lib/langs"
 import { cn } from "@/lib/utils"
 import { Button } from "@nextui-org/react"
 
@@ -8,8 +9,8 @@ export type INeedSavePopupProps = {
   text: string
   isSubmitting?: boolean
   dictionary: {
-    reset: string
-    saveChanges: string
+    reset: TDictionary["reset"]
+    saveChanges: TDictionary["saveChanges"]
   }
 }
 
@@ -31,10 +32,10 @@ export default function NeedSavePopup({ show, onReset, onSave, text, isSubmittin
         <p className="text-sm text-foreground">{text}</p>
         <div className="flex flex-row gap-2">
           <Button onPress={onReset} className="!bg-transparent px-2 text-primary" color="primary" type="button">
-            {dictionary.reset}
+            {dictionary.reset()}
           </Button>
           <Button onPress={onSave} isLoading={isSubmitting} color="primary" type="submit">
-            {dictionary.saveChanges}
+            {dictionary.saveChanges()}
           </Button>
         </div>
       </div>

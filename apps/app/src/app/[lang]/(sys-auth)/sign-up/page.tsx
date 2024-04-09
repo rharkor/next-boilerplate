@@ -21,7 +21,20 @@ export default async function SignUpPage({
     lang: Locale
   }
 }) {
-  const dictionary = await getDictionary(lang)
+  const dictionary = await getDictionary(lang, {
+    signUpPage: {
+      createAnAccount: true,
+      enterEmail: true,
+    },
+    auth: {
+      orContinueWith: true,
+      termsOfService: true,
+      clickingAggreement: true,
+      privacyPolicy: true,
+    },
+    login: true,
+    and: true,
+  })
   const session = await getServerSession(nextAuthOptions)
 
   return (
@@ -32,14 +45,14 @@ export default async function SignUpPage({
         className={cn("absolute right-4 top-4 md:right-8 md:top-8")}
         variant="ghost"
       >
-        {dictionary.login}
+        {dictionary.login()}
       </Button>
       <div className="hidden h-full bg-muted lg:block"></div>
       <div className="lg:p-8">
         <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
           <div className="flex flex-col space-y-2 text-center">
-            <h1 className="text-2xl font-semibold tracking-tight">{dictionary.signUpPage.createAnAccount}</h1>
-            <p className="text-sm text-muted-foreground">{dictionary.signUpPage.enterEmail}</p>
+            <h1 className="text-2xl font-semibold tracking-tight">{dictionary.signUpPage.createAnAccount()}</h1>
+            <p className="text-sm text-muted-foreground">{dictionary.signUpPage.enterEmail()}</p>
           </div>
           <div className="grid gap-6">
             <RegisterUserAuthForm isMinimized searchParams={searchParams} locale={lang} />
@@ -48,7 +61,7 @@ export default async function SignUpPage({
                 <span className="w-full border-t" />
               </div>
               <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-background px-2 text-muted-foreground">{dictionary.auth.orContinueWith}</span>
+                <span className="bg-background px-2 text-muted-foreground">{dictionary.auth.orContinueWith()}</span>
               </div>
             </div>
             <Providers searchParams={searchParams} session={session} />

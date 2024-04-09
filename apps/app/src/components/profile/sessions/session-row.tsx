@@ -70,7 +70,7 @@ export default function SessionRow({ session, setSelectedSession, skeleton, skel
         )}
       </div>
       <div className="flex flex-col space-y-1">
-        <p className="text-xs text-muted-foreground">{dictionary.profilePage.profileDetails.lastUsed}</p>
+        <p className="text-xs text-muted-foreground">{dictionary.profilePage.profileDetails.lastUsed()}</p>
         {skeleton ? (
           <Skeleton className="h-4 w-8 rounded-full" disableAnimation={!skeletonAnimation} />
         ) : (
@@ -84,7 +84,7 @@ export default function SessionRow({ session, setSelectedSession, skeleton, skel
         )}
       </div>
       <div className="flex flex-col space-y-1">
-        <p className="text-xs text-muted-foreground">{dictionary.profilePage.profileDetails.created}</p>
+        <p className="text-xs text-muted-foreground">{dictionary.profilePage.profileDetails.created()}</p>
         {skeleton ? (
           <Skeleton className="h-4 w-10 rounded-full" disableAnimation={!skeletonAnimation} />
         ) : (
@@ -92,12 +92,12 @@ export default function SessionRow({ session, setSelectedSession, skeleton, skel
         )}
       </div>
       <div className="flex flex-col space-y-1">
-        <p className="text-xs text-muted-foreground">{dictionary.profilePage.profileDetails.expires}</p>
+        <p className="text-xs text-muted-foreground">{dictionary.profilePage.profileDetails.expires()}</p>
         {skeleton ? (
           <Skeleton className="h-4 w-10 rounded-full" disableAnimation={!skeletonAnimation} />
         ) : (
           <p className="text-xs text-muted-foreground">
-            {dictionary.profilePage.profileDetails.in}{" "}
+            {dictionary.profilePage.profileDetails.in()}{" "}
             {getTimeBetween(new Date(session.expires), new Date(), {
               dictionary,
             })}

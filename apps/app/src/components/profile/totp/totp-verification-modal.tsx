@@ -72,7 +72,7 @@ export default function TotpVerificationModal({
             <ModalBody className="py-6">
               <OtpInput otp={otp} setOtp={setOtp} withAutoFocus />
               <Link className="ml-auto" href={`/recover-2fa${curEmail ? `?email=${curEmail}` : ""}`}>
-                {dictionary.totp.lostYourDevice}
+                {dictionary.totp.lostYourDevice()}
               </Link>
             </ModalBody>
             <ModalFooter>

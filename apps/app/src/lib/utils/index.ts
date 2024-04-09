@@ -3,6 +3,7 @@ import { type ClassValue, clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
 
 import { authRoutes } from "@/constants/auth"
+import { PickFromSubset, SelectSubset } from "@/types"
 import { logger } from "@next-boilerplate/lib"
 import { TRPCClientErrorLike } from "@trpc/client"
 
@@ -28,16 +29,18 @@ export const getTimeBetween = (
   secondDate: Date,
   options: {
     markAsNowSince?: number
-    dictionary: TDictionary
+    dictionary: {
+      timeUnit: TDictionary["timeUnit"]
+    }
   }
-) => {
+): string => {
   // Time difference in milliseconds
   const timeDiff = Math.abs(firstDate.getTime() - secondDate.getTime()) // in milliseconds
 
   // Check for the markAsNowSince
   const markAsNowSince = options.markAsNowSince || 1000 * 60
   if (timeDiff < markAsNowSince) {
-    return options.dictionary.timeUnit.now
+    return options.dictionary.timeUnit.now()
   }
 
   // Define time intervals in milliseconds
@@ -62,22 +65,22 @@ export const getTimeBetween = (
   let timeUnit
   let timeValue
   if (elapsed.year > 0) {
-    timeUnit = elapsed.year > 1 ? options.dictionary.timeUnit.years : options.dictionary.timeUnit.year
+    timeUnit = elapsed.year > 1 ? options.dictionary.timeUnit.years() : options.dictionary.timeUnit.year()
     timeValue = elapsed.year
   } else if (elapsed.month > 0) {
-    timeUnit = elapsed.month > 1 ? options.dictionary.timeUnit.months : options.dictionary.timeUnit.month
+    timeUnit = elapsed.month > 1 ? options.dictionary.timeUnit.months() : options.dictionary.timeUnit.month()
     timeValue = elapsed.month
   } else if (elapsed.day > 0) {
-    timeUnit = elapsed.day > 1 ? options.dictionary.timeUnit.days : options.dictionary.timeUnit.day
+    timeUnit = elapsed.day > 1 ? options.dictionary.timeUnit.days() : options.dictionary.timeUnit.day()
     timeValue = elapsed.day
   } else if (elapsed.hour > 0) {
-    timeUnit = elapsed.hour > 1 ? options.dictionary.timeUnit.hours : options.dictionary.timeUnit.hour
+    timeUnit = elapsed.hour > 1 ? options.dictionary.timeUnit.hours() : options.dictionary.timeUnit.hour()
     timeValue = elapsed.hour
   } else if (elapsed.minute > 0) {
-    timeUnit = elapsed.minute > 1 ? options.dictionary.timeUnit.minutes : options.dictionary.timeUnit.minute
+    timeUnit = elapsed.minute > 1 ? options.dictionary.timeUnit.minutes() : options.dictionary.timeUnit.minute()
     timeValue = elapsed.minute
   } else {
-    timeUnit = elapsed.second > 1 ? options.dictionary.timeUnit.seconds : options.dictionary.timeUnit.second
+    timeUnit = elapsed.second > 1 ? options.dictionary.timeUnit.seconds() : options.dictionary.timeUnit.second()
     timeValue = elapsed.second
   }
   // Construct and return the time elapsed string
@@ -105,7 +108,7 @@ export const formatCouldNotMessage = async ({
   return couldNotMessage.replace("{action}", action).replace("{subject}", subject)
 }
 
-type TDictKey = { [key: string]: TDictKey } | undefined | string
+type TDictKey = { [key: string]: TDictKey } | undefined | (() => string)
 export const findNestedKeyInDictionary = (key: string, dictionaryErrors: TDictionary["errors"]): string | undefined => {
   const keys = key.split(".")
   let currentKey = keys.shift()
@@ -121,7 +124,7 @@ export const translateError = (error: string, dictionary: TDictionary): string =
   const errorTranslated = findNestedKeyInDictionary(error, dictionary.errors)
   if (!errorTranslated) {
     logger.error(new Error(`Error not found in dictionary: ${error}`))
-    return dictionary.errors.unknownError
+    return dictionary.errors.unknownError()
   }
   return errorTranslated.toString()
 }
@@ -178,4 +181,20 @@ export function stringToSlug(string: string): string {
 
 export function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms))
+}
+
+export function pickFromSubset<T extends object, K extends SelectSubset<T>>(obj: T, subset: K): PickFromSubset<T, K> {
+  const result = {} as PickFromSubset<T, K>
+  Object.keys(subset).forEach((_key) => {
+    const key = _key as keyof typeof subset
+    if (subset[key] === true) {
+      result[key] = obj[key as keyof T] as PickFromSubset<T, K>[keyof K]
+    } else if (typeof subset[key] === "object") {
+      result[key] = pickFromSubset(
+        obj[key as keyof T] as object,
+        subset[key] as SelectSubset<T[keyof T]>
+      ) as PickFromSubset<T, K>[keyof K]
+    }
+  })
+  return result
 }

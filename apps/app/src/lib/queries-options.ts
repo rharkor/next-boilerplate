@@ -7,8 +7,8 @@ import { TDictionary } from "./langs"
 export const queriesOptionPage = (dictionary?: TDictionary) =>
   z
     .number({
-      invalid_type_error: dictionary?.errors.typeError.number.invalid,
-      required_error: dictionary?.errors.typeError.number.required,
+      invalid_type_error: dictionary?.errors.typeError.number.invalid(),
+      required_error: dictionary?.errors.typeError.number.required(),
     })
     .positive()
     .int()
@@ -16,8 +16,8 @@ export const queriesOptionPage = (dictionary?: TDictionary) =>
 export const queriesOptionPerPage = (dictionary?: TDictionary) =>
   z
     .number({
-      invalid_type_error: dictionary?.errors.typeError.number.invalid,
-      required_error: dictionary?.errors.typeError.number.required,
+      invalid_type_error: dictionary?.errors.typeError.number.invalid(),
+      required_error: dictionary?.errors.typeError.number.required(),
     })
     .positive()
     .int()
@@ -34,8 +34,8 @@ export const queriesOptionSort = (dictionary?: TDictionary) =>
   z.array(
     z.object({
       field: z.string({
-        invalid_type_error: dictionary?.errors.typeError.string.invalid,
-        required_error: dictionary?.errors.typeError.string.required,
+        invalid_type_error: dictionary?.errors.typeError.string.invalid(),
+        required_error: dictionary?.errors.typeError.string.required(),
       }),
       direction: z.enum(["asc", "desc"]),
     })

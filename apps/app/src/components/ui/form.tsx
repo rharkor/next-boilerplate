@@ -97,27 +97,27 @@ const WithPasswordStrenghPopover = <
             <ul className="flex flex-col">
               <li>
                 <Checkbox isSelected={passwordValue.length >= 8} isDisabled color="success" size="sm">
-                  {dictionary.min8Chars}
+                  {dictionary.min8Chars()}
                 </Checkbox>
               </li>
               <li>
                 <Checkbox isSelected={numberRegex.test(passwordValue)} isDisabled color="success" size="sm">
-                  {dictionary.containsNumber}
+                  {dictionary.containsNumber()}
                 </Checkbox>
               </li>
               <li>
                 <Checkbox isSelected={lowercaseRegex.test(passwordValue)} isDisabled color="success" size="sm">
-                  {dictionary.containsLowercase}
+                  {dictionary.containsLowercase()}
                 </Checkbox>
               </li>
               <li>
                 <Checkbox isSelected={uppercaseRegex.test(passwordValue)} isDisabled color="success" size="sm">
-                  {dictionary.containsUppercase}
+                  {dictionary.containsUppercase()}
                 </Checkbox>
               </li>
               <li>
                 <Checkbox isSelected={specialRegex.test(passwordValue)} isDisabled color="success" size="sm">
-                  {dictionary.containsSpecial}
+                  {dictionary.containsSpecial()}
                 </Checkbox>
               </li>
             </ul>

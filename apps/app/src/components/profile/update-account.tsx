@@ -83,7 +83,7 @@ export default function UpdateAccount({ sessionHasVerifiedEmail }: { sessionHasV
             <FormField
               form={form}
               name="username"
-              label={dictionary.profilePage.profileDetails.username.label}
+              label={dictionary.profilePage.profileDetails.username.label()}
               type="text"
               isDisabled={updateUserMutation.isLoading || account.isLoading || !hasVerifiedEmail}
             />
@@ -91,7 +91,7 @@ export default function UpdateAccount({ sessionHasVerifiedEmail }: { sessionHasV
               show={isNotSensibleInformationsUpdated}
               onReset={resetForm}
               isSubmitting={updateUserMutation.isLoading}
-              text={dictionary.needSavePopup}
+              text={dictionary.needSavePopup()}
               dictionary={dictionary}
             />
           </form>
@@ -101,7 +101,7 @@ export default function UpdateAccount({ sessionHasVerifiedEmail }: { sessionHasV
       {!hasVerifiedEmail && (
         <div className="absolute -inset-2 z-10 !m-0 flex items-center justify-center backdrop-blur-sm">
           <p className="text-center text-sm font-semibold text-muted-foreground">
-            {dictionary.errors.emailNotVerified}
+            {dictionary.errors.emailNotVerified()}
           </p>
         </div>
       )}

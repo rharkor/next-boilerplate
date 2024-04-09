@@ -15,16 +15,20 @@ export default async function ForgotPassword({
     token: string
   }
 }) {
-  const dictionary = await getDictionary(lang)
+  const dictionary = await getDictionary(lang, {
+    resetPasswordTitle: true,
+    resetPasswordDescription: true,
+    goToSignInPage: true,
+  })
 
   return (
     <main className="container m-auto flex min-h-screen flex-1 flex-col items-center justify-center space-y-2">
       <NavSettings lang={lang} />
-      <h1 className="text-2xl font-semibold tracking-tight">{dictionary.resetPasswordTitle}</h1>
-      <p className="text-sm text-muted-foreground">{dictionary.resetPasswordDescription}</p>
+      <h1 className="text-2xl font-semibold tracking-tight">{dictionary.resetPasswordTitle()}</h1>
+      <p className="text-sm text-muted-foreground">{dictionary.resetPasswordDescription()}</p>
       <ResetPasswordForm token={token} />
       <Link href={authRoutes.signIn[0]} className="text-sm text-muted-foreground hover:text-primary">
-        {dictionary.goToSignInPage}
+        {dictionary.goToSignInPage()}
       </Link>
     </main>
   )

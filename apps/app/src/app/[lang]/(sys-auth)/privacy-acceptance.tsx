@@ -1,16 +1,26 @@
-import { TDictionary } from "@/lib/langs"
 import { Link } from "@nextui-org/react"
 
-export default function PrivacyAcceptance({ dictionary }: { dictionary: TDictionary }) {
+export default function PrivacyAcceptance({
+  dictionary,
+}: {
+  dictionary: {
+    auth: {
+      clickingAggreement: () => string
+      termsOfService: () => string
+      privacyPolicy: () => string
+    }
+    and: () => string
+  }
+}) {
   return (
     <p className="px-8 text-center text-sm text-muted-foreground">
-      {dictionary.auth.clickingAggreement}{" "}
+      {dictionary.auth.clickingAggreement()}{" "}
       <Link href="/terms" className="inline text-sm underline underline-offset-4 hover:text-primary">
-        {dictionary.auth.termsOfService}
+        {dictionary.auth.termsOfService()}
       </Link>{" "}
-      {dictionary.and}{" "}
+      {dictionary.and()}{" "}
       <Link href="/privacy" className="inline text-sm underline underline-offset-4 hover:text-primary">
-        {dictionary.auth.privacyPolicy}
+        {dictionary.auth.privacyPolicy()}
       </Link>
       .
     </p>

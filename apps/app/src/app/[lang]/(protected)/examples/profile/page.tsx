@@ -18,7 +18,12 @@ export default async function Profile({
     lang: Locale
   }
 }) {
-  const dictionary = await getDictionary(lang)
+  const dictionary = await getDictionary(lang, {
+    profilePage: true,
+    profile: true,
+    deleteAccount: true,
+    signOut: true,
+  })
   const session = await getServerSession(nextAuthOptions)
 
   const hasVerifiedEmail = Boolean(session?.user.emailVerified)
@@ -28,17 +33,17 @@ export default async function Profile({
       <div className="flex w-full max-w-max flex-col">
         <Card className="relative z-10 m-auto max-w-full">
           <CardHeader>
-            <CardTitle>{dictionary.profile}</CardTitle>
+            <CardTitle>{dictionary.profile()}</CardTitle>
           </CardHeader>
           <CardBody>
-            <p className="text-muted-foreground">{dictionary.profilePage.serverSideData}</p>
+            <p className="text-muted-foreground">{dictionary.profilePage.serverSideData()}</p>
             <pre className="mt-2 w-[40rem] max-w-full overflow-auto rounded bg-muted p-2">
               {JSON.stringify(session, null, 2)}
             </pre>
             <div className="mt-4 flex flex-col items-center space-y-2 md:mr-0 md:w-full md:flex-row md:justify-end md:space-x-2 md:space-y-0">
               {session && <VerifyEmailButton session={session} />}
-              <DeleteAccountButton>{dictionary.deleteAccount}</DeleteAccountButton>
-              <SignoutButton>{dictionary.signOut}</SignoutButton>
+              <DeleteAccountButton>{dictionary.deleteAccount()}</DeleteAccountButton>
+              <SignoutButton>{dictionary.signOut()}</SignoutButton>
             </div>
             <ProfileDetails dictionary={dictionary} hasVerifiedEmail={hasVerifiedEmail} />
             <UserActiveSessions dictionary={dictionary} />

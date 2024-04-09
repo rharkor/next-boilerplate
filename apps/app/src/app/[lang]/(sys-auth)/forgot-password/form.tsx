@@ -25,7 +25,7 @@ export default function ForgotPasswordForm() {
   const forgotPasswordMutation = trpc.me.forgotPassword.useMutation({
     onSuccess: () => {
       setLatestEmailSentAt(Date.now())
-      toast.success(dictionary.forgotPasswordSuccessDescription)
+      toast.success(dictionary.forgotPasswordSuccessDescription())
     },
   })
 
@@ -51,8 +51,8 @@ export default function ForgotPasswordForm() {
       <FormField
         form={form}
         name="email"
-        placeholder={dictionary.emailPlaceholder}
-        aria-label={dictionary.email}
+        placeholder={dictionary.emailPlaceholder()}
+        aria-label={dictionary.email()}
         type="email"
         autoCapitalize="none"
         autoComplete="email"
@@ -60,10 +60,10 @@ export default function ForgotPasswordForm() {
         isDisabled={isDisabled}
       />
       <Button type="submit" isLoading={isLoading} isDisabled={isDisabled} color="primary">
-        {dictionary.send}
+        {dictionary.send()}
       </Button>
       {latestEmailSentAt !== null && (
-        <Tooltip content={dictionary.timeUntilYouCanRequestAnotherEmail}>
+        <Tooltip content={dictionary.timeUntilYouCanRequestAnotherEmail()}>
           <AutoRefresh
             callback={() => {
               const retryInValue = retryIn()

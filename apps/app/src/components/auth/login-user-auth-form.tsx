@@ -79,14 +79,14 @@ export function LoginUserAuthForm({ searchParams, ...props }: UserAuthFormProps)
             <CardBody>
               <h3 className="flex flex-row items-center gap-1">
                 <BadgeInfo className="size-4" />
-                {dictionary.auth.demoMode}
+                {dictionary.auth.demoMode()}
               </h3>
               <div className="flex flex-col">
                 <div className="m-1 flex flex-row items-center gap-1">
-                  <p>{dictionary.email}:</p> <Copiable text={env.NEXT_PUBLIC_DEMO_EMAIL} />
+                  <p>{dictionary.email()}:</p> <Copiable text={env.NEXT_PUBLIC_DEMO_EMAIL} />
                 </div>
                 <div className="m-1 flex flex-row items-center gap-1">
-                  <p>{dictionary.password}</p> <Copiable text={env.NEXT_PUBLIC_DEMO_PASSWORD} />
+                  <p>{dictionary.password()}</p> <Copiable text={env.NEXT_PUBLIC_DEMO_PASSWORD} />
                 </div>
                 <div
                   className="absolute bottom-2 right-2 cursor-pointer"
@@ -104,7 +104,7 @@ export function LoginUserAuthForm({ searchParams, ...props }: UserAuthFormProps)
         <FormField
           form={form}
           name="email"
-          label={dictionary.email}
+          label={dictionary.email()}
           type="email"
           autoCapitalize="none"
           autoComplete="username"
@@ -114,17 +114,17 @@ export function LoginUserAuthForm({ searchParams, ...props }: UserAuthFormProps)
         <FormField
           form={form}
           name={"password"}
-          label={dictionary.password}
+          label={dictionary.password()}
           type="password-eye-slash"
           autoComplete="current-password"
           autoCorrect="off"
           isDisabled={isLoading}
         />
         <Link className="ml-auto text-sm text-muted-foreground hover:text-primary" href={"/forgot-password"}>
-          {dictionary.forgotPassword}
+          {dictionary.forgotPassword()}
         </Link>
         <Button type="submit" isLoading={isLoading} color="primary">
-          {dictionary.signIn}
+          {dictionary.signIn()}
         </Button>
       </form>
       <TotpVerificationModal
@@ -142,9 +142,9 @@ export function LoginUserAuthForm({ searchParams, ...props }: UserAuthFormProps)
             setDesactivate2FAModalOpen(false)
           }
         }}
-        title={dictionary.totp.enterCode}
-        submitText={dictionary.confirm}
-        closeText={dictionary.cancel}
+        title={dictionary.totp.enterCode()}
+        submitText={dictionary.confirm()}
+        closeText={dictionary.cancel()}
         onlyPrompt
         curEmail={form.watch("email")}
       />

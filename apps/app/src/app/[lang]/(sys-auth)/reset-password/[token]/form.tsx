@@ -22,7 +22,7 @@ export default function ResetPasswordForm({ token }: { token: string }) {
 
   const resetPasswordMutation = trpc.me.resetPassword.useMutation({
     onSuccess: () => {
-      toast.success(dictionary.resetPasswordSuccessDescription)
+      toast.success(dictionary.resetPasswordSuccessDescription())
       router.push(authRoutes.signIn[0])
     },
   })
@@ -48,20 +48,20 @@ export default function ResetPasswordForm({ token }: { token: string }) {
         form={form}
         name="password"
         type="password-eye-slash"
-        aria-label={dictionary.password}
-        placeholder={dictionary.password}
+        aria-label={dictionary.password()}
+        placeholder={dictionary.password()}
         autoComplete="new-password"
       />
       <FormField
         form={form}
         name="passwordConfirmation"
         type="password"
-        aria-label={dictionary.passwordConfirmation}
-        placeholder={dictionary.passwordConfirmation}
+        aria-label={dictionary.passwordConfirmation()}
+        placeholder={dictionary.passwordConfirmation()}
         autoComplete="new-password"
       />
       <Button type="submit" color="primary" isLoading={isLoading}>
-        {dictionary.reset}
+        {dictionary.reset()}
       </Button>
     </form>
   )

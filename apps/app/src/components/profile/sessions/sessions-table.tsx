@@ -88,17 +88,17 @@ export default function SessionsTable() {
           {(onClose) => (
             <>
               <ModalHeader>
-                <ModalTitle>{dictionary.areYouAbsolutelySure}</ModalTitle>
+                <ModalTitle>{dictionary.areYouAbsolutelySure()}</ModalTitle>
                 <ModalDescription>
-                  {dictionary.profilePage.profileDetails.deleteLoggedDevice.description}
+                  {dictionary.profilePage.profileDetails.deleteLoggedDevice.description()}
                 </ModalDescription>
               </ModalHeader>
               <ModalFooter>
                 <Button variant="flat" onClick={onClose}>
-                  {dictionary.cancel}
+                  {dictionary.cancel()}
                 </Button>
                 <Button color="primary" onClick={deleteSession}>
-                  {dictionary.continue}
+                  {dictionary.continue()}
                 </Button>
               </ModalFooter>
             </>
@@ -107,7 +107,7 @@ export default function SessionsTable() {
       </Modal>
       {isDisabled && (
         <div className="absolute -inset-2 !mt-0 flex flex-col items-center justify-center backdrop-blur-sm">
-          <p className="text-sm font-semibold text-muted-foreground">{dictionary.errors.unavailableWithOAuth}</p>
+          <p className="text-sm font-semibold text-muted-foreground">{dictionary.errors.unavailableWithOAuth()}</p>
         </div>
       )}
     </div>

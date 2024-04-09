@@ -5,13 +5,13 @@ import React from "react"
 import { useDictionary } from "@/contexts/dictionary/utils"
 import { Button } from "@nextui-org/react"
 
-export default function Page404MatchAll({ reset }: { reset: () => void }) {
+export default function ErrorPage({ reset }: { reset: () => void }) {
   const dictionary = useDictionary()
   return (
     <main className="container m-auto flex min-h-screen flex-1 flex-col items-center justify-center gap-3">
-      <h1 className="text-4xl font-bold">{dictionary.somethingWentWrong}</h1>
+      <h1 className="text-4xl font-bold">{dictionary.somethingWentWrong()}</h1>
       <Button onPress={reset} color="primary" variant="flat">
-        {dictionary.tryAgain}
+        {dictionary.tryAgain()}
       </Button>
     </main>
   )

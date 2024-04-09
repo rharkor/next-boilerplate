@@ -12,7 +12,7 @@ import { TDictionary } from "../langs"
 
 export const handleSignError = (error: string, dictionary: TDictionary) => {
   if (error == "OAuthAccountNotLinked") {
-    toast.error(dictionary.errors.wrongProvider)
+    toast.error(dictionary.errors.wrongProvider())
   } else {
     toast(error)
   }
@@ -55,7 +55,7 @@ export const handleSignIn = async ({
         if (res.error === "OTP_REQUIRED") {
           logger.debug("OTP_REQUIRED")
           if (depth > 0) {
-            throw new Error(dictionary.errors.unknownError)
+            throw new Error(dictionary.errors.unknownError())
           }
           const otp = await getOtpCode()
           if (otp === null) {
@@ -72,12 +72,12 @@ export const handleSignIn = async ({
           resolve(res)
           return
         } else if (res.error === "OTP_INVALID") {
-          throw new Error(dictionary.errors.otpInvalid)
+          throw new Error(dictionary.errors.otpInvalid())
         }
         if (typeof res.error === "string") {
-          if (res.error === dictionary.errors.wrongProvider) throw new Error(res.error)
+          if (res.error === dictionary.errors.wrongProvider()) throw new Error(res.error)
         }
-        throw new Error(dictionary.errors.invalidCredentials)
+        throw new Error(dictionary.errors.invalidCredentials())
       }
     } catch (error) {
       if (depth > 0) {
@@ -88,7 +88,7 @@ export const handleSignIn = async ({
       if (error instanceof Error) {
         toast.error(error.message)
       } else {
-        toast.error(dictionary.errors.unknownError)
+        toast.error(dictionary.errors.unknownError())
       }
       reject(error)
     } finally {

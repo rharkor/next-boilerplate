@@ -36,7 +36,7 @@ export const formSchema = (dictionary: TDictionary) =>
       if (data.password !== data.confirmPassword) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
-          message: dictionary.errors.password.dontMatch,
+          message: dictionary.errors.password.dontMatch(),
           path: ["confirmPassword"],
           fatal: true,
         })
@@ -164,7 +164,7 @@ export function RegisterUserAuthForm({ isMinimized, searchParams, locale, ...pro
           <FormField
             form={form}
             name="email"
-            label={dictionary.email}
+            label={dictionary.email()}
             type="email"
             autoCapitalize="none"
             autoComplete="username"
@@ -177,7 +177,7 @@ export function RegisterUserAuthForm({ isMinimized, searchParams, locale, ...pro
               href={`${authRoutes.signUp[0]}?email=${form.getValues("email")}`}
               className="absolute right-2 top-2 z-10"
             >
-              {dictionary.edit}
+              {dictionary.edit()}
             </Button>
           )}
         </div>
@@ -187,7 +187,7 @@ export function RegisterUserAuthForm({ isMinimized, searchParams, locale, ...pro
             <FormField
               form={form}
               name="username"
-              label={dictionary.username}
+              label={dictionary.username()}
               type="text"
               autoCapitalize="none"
               autoComplete="none"
@@ -197,7 +197,7 @@ export function RegisterUserAuthForm({ isMinimized, searchParams, locale, ...pro
             <FormField
               form={form}
               name="password"
-              label={dictionary.password}
+              label={dictionary.password()}
               type="password-eye-slash"
               autoComplete="new-password"
               autoCorrect="off"
@@ -207,7 +207,7 @@ export function RegisterUserAuthForm({ isMinimized, searchParams, locale, ...pro
             <FormField
               form={form}
               name="confirmPassword"
-              label={dictionary.confirmPassword}
+              label={dictionary.confirmPassword()}
               type="password"
               autoComplete="new-password"
               autoCorrect="off"
@@ -216,7 +216,7 @@ export function RegisterUserAuthForm({ isMinimized, searchParams, locale, ...pro
           </>
         )}
         <Button type="submit" isLoading={isLoading} color="primary">
-          {dictionary.signUp} {isMinimized && dictionary.withEmail}
+          {dictionary.signUp()} {isMinimized && dictionary.withEmail()}
         </Button>
       </form>
       <TotpVerificationModal
@@ -234,9 +234,9 @@ export function RegisterUserAuthForm({ isMinimized, searchParams, locale, ...pro
             setDesactivate2FAModalOpen(false)
           }
         }}
-        title={dictionary.totp.desactivateTitle}
-        submitText={dictionary.totp.desactivate}
-        closeText={dictionary.cancel}
+        title={dictionary.totp.desactivateTitle()}
+        submitText={dictionary.totp.desactivate()}
+        closeText={dictionary.cancel()}
         onlyPrompt
       />
     </>

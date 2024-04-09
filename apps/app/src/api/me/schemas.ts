@@ -100,7 +100,7 @@ export const resetPasswordSchema = (dictionary?: TDictionary) =>
       passwordConfirmation: z.string(),
     })
     .refine((data) => data.password === data.passwordConfirmation, {
-      message: dictionary?.errors.passwordsDoNotMatch ?? "Passwords do not match",
+      message: dictionary?.errors.passwordsDoNotMatch() ?? "Passwords do not match",
       path: ["passwordConfirmation"],
     })
 

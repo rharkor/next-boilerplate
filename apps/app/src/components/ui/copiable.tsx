@@ -67,7 +67,7 @@ export default function Copiable({
       <Tooltip
         isOpen={isTooltipOpen}
         onOpenChange={(open) => setIsTooltipOpen(open)}
-        content={isCopied ? dictionary.copiedToClipboard : dictionary.copyToClipboard}
+        content={isCopied ? dictionary.copiedToClipboard() : dictionary.copyToClipboard()}
         isDisabled={isDisabled}
       >
         <Button

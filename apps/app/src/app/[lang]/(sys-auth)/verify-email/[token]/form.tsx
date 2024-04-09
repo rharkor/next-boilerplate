@@ -14,7 +14,7 @@ export default function VerifyEmailButton({ token }: { token: string }) {
 
   const verifyEmail = trpc.me.verifyEmail.useMutation({
     onSuccess: () => {
-      toast.success(dictionary.verifyEmailSuccessDescription)
+      toast.success(dictionary.verifyEmailSuccessDescription())
       router.push(authRoutes.redirectAfterSignIn)
     },
   })
@@ -28,7 +28,7 @@ export default function VerifyEmailButton({ token }: { token: string }) {
   return (
     <div className={"!mt-5 grid w-[350px] space-y-2"}>
       <Button onClick={onSubmit} isLoading={isLoading} color="primary">
-        {dictionary.verifyEmail}
+        {dictionary.verifyEmail()}
       </Button>
     </div>
   )
