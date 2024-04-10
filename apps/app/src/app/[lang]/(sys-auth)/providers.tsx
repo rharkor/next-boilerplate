@@ -7,22 +7,20 @@ import { toast } from "react-toastify"
 
 import GithubSignIn from "@/components/auth/github-sign-in"
 import { authRoutes } from "@/constants/auth"
-import { useDictionary } from "@/contexts/dictionary/utils"
+import { TDictionary } from "@/lib/langs"
 import { logger } from "@next-boilerplate/lib"
+
+import { AuthProvidersDr } from "./providers.dr"
 
 export default function AuthProviders({
   searchParams,
   session,
+  dictionary,
 }: {
   searchParams: { [key: string]: string | string[] | undefined }
   session: Session | null
+  dictionary: TDictionary<typeof AuthProvidersDr>
 }) {
-  const dictionary = useDictionary({
-    errors: {
-      wrongProvider: true,
-      unknownError: true,
-    },
-  })
   const callbackUrl = searchParams.callbackUrl ? searchParams.callbackUrl.toString() : undefined
 
   //? If session and callbackUrl, redirect to callbackUrl
@@ -40,9 +38,9 @@ export default function AuthProviders({
         logger.debug("SignIn result", res)
         if (res.error) {
           if (res.error === "OAuthAccountNotLinked") {
-            toast.error(dictionary.errors.wrongProvider())
+            toast.error(dictionary.errors.wrongProvider)
           } else {
-            throw new Error(dictionary.errors.unknownError())
+            throw new Error(dictionary.errors.unknownError)
           }
         }
       }
@@ -53,7 +51,7 @@ export default function AuthProviders({
       if (error instanceof Error) {
         toast.error(error.message)
       } else {
-        toast(dictionary.errors.unknownError())
+        toast(dictionary.errors.unknownError)
       }
       return false
     }

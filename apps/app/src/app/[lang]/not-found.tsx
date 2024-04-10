@@ -1,8 +1,8 @@
 import React from "react"
 import { cookies } from "next/headers"
 
-import { getDictionary } from "@/contexts/dictionary/server-utils"
 import { Locale } from "@/lib/i18n-config"
+import { getDictionary } from "@/lib/langs"
 import { Button, Link } from "@nextui-org/react"
 
 export default async function Page404MatchAll() {
@@ -15,9 +15,9 @@ export default async function Page404MatchAll() {
   })
   return (
     <main className="container m-auto flex min-h-screen flex-1 flex-col items-center justify-center gap-3">
-      <h1 className="text-4xl font-bold">{dictionary.notFound()}</h1>
+      <h1 className="text-4xl font-bold">{dictionary.notFound}</h1>
       <Button as={Link} href="/" color="primary" variant="flat">
-        {dictionary.goHome()}
+        {dictionary.goHome}
       </Button>
     </main>
   )

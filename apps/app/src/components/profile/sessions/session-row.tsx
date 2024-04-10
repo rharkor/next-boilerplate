@@ -11,17 +11,17 @@ import { Button, Skeleton as NSkeleton } from "@nextui-org/react"
 import GetDeviceIcon from "../get-device-icon"
 
 export type InitialRowProps = {
-  dictionary: {
+  dictionary: TDictionary<{
     profilePage: {
       profileDetails: {
-        lastUsed: TDictionary["profilePage"]["profileDetails"]["lastUsed"]
-        created: TDictionary["profilePage"]["profileDetails"]["created"]
-        expires: TDictionary["profilePage"]["profileDetails"]["expires"]
-        in: TDictionary["profilePage"]["profileDetails"]["in"]
+        lastUsed: true
+        created: true
+        expires: true
+        in: true
       }
     }
-    timeUnit: TDictionary["timeUnit"]
-  }
+    timeUnit: true
+  }>
 }
 
 export type RowProps = InitialRowProps &
@@ -80,7 +80,7 @@ export default function SessionRow({ session, setSelectedSession, skeleton, skel
         )}
       </div>
       <div className="flex flex-col space-y-1">
-        <p className="text-xs text-muted-foreground">{dictionary.profilePage.profileDetails.lastUsed()}</p>
+        <p className="text-xs text-muted-foreground">{dictionary.profilePage.profileDetails.lastUsed}</p>
         {skeleton ? (
           <Skeleton className="h-4 w-8 rounded-full" disableAnimation={!skeletonAnimation} />
         ) : (
@@ -94,7 +94,7 @@ export default function SessionRow({ session, setSelectedSession, skeleton, skel
         )}
       </div>
       <div className="flex flex-col space-y-1">
-        <p className="text-xs text-muted-foreground">{dictionary.profilePage.profileDetails.created()}</p>
+        <p className="text-xs text-muted-foreground">{dictionary.profilePage.profileDetails.created}</p>
         {skeleton ? (
           <Skeleton className="h-4 w-10 rounded-full" disableAnimation={!skeletonAnimation} />
         ) : (
@@ -102,12 +102,12 @@ export default function SessionRow({ session, setSelectedSession, skeleton, skel
         )}
       </div>
       <div className="flex flex-col space-y-1">
-        <p className="text-xs text-muted-foreground">{dictionary.profilePage.profileDetails.expires()}</p>
+        <p className="text-xs text-muted-foreground">{dictionary.profilePage.profileDetails.expires}</p>
         {skeleton ? (
           <Skeleton className="h-4 w-10 rounded-full" disableAnimation={!skeletonAnimation} />
         ) : (
           <p className="text-xs text-muted-foreground">
-            {dictionary.profilePage.profileDetails.in()}{" "}
+            {dictionary.profilePage.profileDetails.in}{" "}
             {getTimeBetween(new Date(session.expires), new Date(), {
               dictionary,
             })}

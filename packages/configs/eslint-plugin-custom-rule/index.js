@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 "use strict";
 const noUseClient = require("./no-use-client");
 const noNodeModulesImport = require("./no-node-modules-import");

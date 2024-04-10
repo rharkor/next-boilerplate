@@ -1,7 +1,7 @@
 import { Locale } from "@/lib/i18n-config"
-import { ValueOf } from "@/types"
+import { PickFromSubset, SelectSubset, UnionToIntersection, ValueOf } from "@/types"
 
-import { DictionaryWithFunction, transformDictionaryWithFunction } from "./utils/dictionary"
+import { merge, pickFromSubset } from "./utils"
 
 const dictionaries = {
   en: () => import("../langs/en.json").then((module) => module.default),
@@ -16,26 +16,35 @@ for (const locale of allLocales) {
   }
 }
 
-export type TInitialDictionary = Awaited<ReturnType<ValueOf<typeof dictionaries>>>
-export type TDictionary = DictionaryWithFunction<TInitialDictionary>
+export type TBaseDict = Awaited<ReturnType<ValueOf<typeof dictionaries>>>
+// Do not specify a default value for P in order to force users to specify the dictionary subset
+export type TDictionary<P extends SelectSubset<TBaseDict> | undefined> =
+  P extends SelectSubset<TBaseDict> ? PickFromSubset<TBaseDict, P> : TBaseDict
 
-const dictionaryCache = new Map<Locale, { parsed: TDictionary; original: TInitialDictionary }>()
+const dictionaryCache = new Map<Locale, TDictionary<undefined>>()
 
-export const _getDictionary = async (locale: Locale) => {
+export const getDictionary = async <
+  P1 extends SelectSubset<TBaseDict>,
+  P2 extends SelectSubset<TBaseDict>[],
+  P extends P2 extends [] ? P1 : P1 & UnionToIntersection<P2[number]>,
+>(
+  locale: Locale,
+  dictionaryRequirement: P1,
+  ...dictionaryRequirements: P2
+): Promise<PickFromSubset<TDictionary<undefined>, P>> => {
+  const requirements =
+    dictionaryRequirements.length > 0
+      ? merge(dictionaryRequirement, ...dictionaryRequirements)
+      : (dictionaryRequirement as unknown as P)
+
   const cached = dictionaryCache.get(locale)
-  if (cached) return cached
+  if (cached) return pickFromSubset(cached, requirements) as PickFromSubset<TDictionary<undefined>, P>
 
   const loadedDictionary = await ((dictionaries[locale] as ValueOf<typeof dictionaries> | undefined)?.() ??
     dictionaries.en())
-  const transformedDictionary = transformDictionaryWithFunction(loadedDictionary)
 
-  dictionaryCache.set(locale, {
-    parsed: transformedDictionary,
-    original: loadedDictionary,
-  })
+  dictionaryCache.set(locale, loadedDictionary)
 
-  return {
-    parsed: transformedDictionary,
-    original: loadedDictionary,
-  }
+  const parsedDictionary = pickFromSubset(loadedDictionary, requirements)
+  return parsedDictionary as PickFromSubset<TDictionary<undefined>, P>
 }

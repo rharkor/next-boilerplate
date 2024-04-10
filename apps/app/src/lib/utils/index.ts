@@ -29,9 +29,9 @@ export const getTimeBetween = (
   secondDate: Date,
   options: {
     markAsNowSince?: number
-    dictionary: {
-      timeUnit: TDictionary["timeUnit"]
-    }
+    dictionary: TDictionary<{
+      timeUnit: true
+    }>
   }
 ): string => {
   // Time difference in milliseconds
@@ -40,7 +40,7 @@ export const getTimeBetween = (
   // Check for the markAsNowSince
   const markAsNowSince = options.markAsNowSince || 1000 * 60
   if (timeDiff < markAsNowSince) {
-    return options.dictionary.timeUnit.now()
+    return options.dictionary.timeUnit.now
   }
 
   // Define time intervals in milliseconds
@@ -65,22 +65,22 @@ export const getTimeBetween = (
   let timeUnit
   let timeValue
   if (elapsed.year > 0) {
-    timeUnit = elapsed.year > 1 ? options.dictionary.timeUnit.years() : options.dictionary.timeUnit.year()
+    timeUnit = elapsed.year > 1 ? options.dictionary.timeUnit.years : options.dictionary.timeUnit.year
     timeValue = elapsed.year
   } else if (elapsed.month > 0) {
-    timeUnit = elapsed.month > 1 ? options.dictionary.timeUnit.months() : options.dictionary.timeUnit.month()
+    timeUnit = elapsed.month > 1 ? options.dictionary.timeUnit.months : options.dictionary.timeUnit.month
     timeValue = elapsed.month
   } else if (elapsed.day > 0) {
-    timeUnit = elapsed.day > 1 ? options.dictionary.timeUnit.days() : options.dictionary.timeUnit.day()
+    timeUnit = elapsed.day > 1 ? options.dictionary.timeUnit.days : options.dictionary.timeUnit.day
     timeValue = elapsed.day
   } else if (elapsed.hour > 0) {
-    timeUnit = elapsed.hour > 1 ? options.dictionary.timeUnit.hours() : options.dictionary.timeUnit.hour()
+    timeUnit = elapsed.hour > 1 ? options.dictionary.timeUnit.hours : options.dictionary.timeUnit.hour
     timeValue = elapsed.hour
   } else if (elapsed.minute > 0) {
-    timeUnit = elapsed.minute > 1 ? options.dictionary.timeUnit.minutes() : options.dictionary.timeUnit.minute()
+    timeUnit = elapsed.minute > 1 ? options.dictionary.timeUnit.minutes : options.dictionary.timeUnit.minute
     timeValue = elapsed.minute
   } else {
-    timeUnit = elapsed.second > 1 ? options.dictionary.timeUnit.seconds() : options.dictionary.timeUnit.second()
+    timeUnit = elapsed.second > 1 ? options.dictionary.timeUnit.seconds : options.dictionary.timeUnit.second
     timeValue = elapsed.second
   }
   // Construct and return the time elapsed string
@@ -108,8 +108,11 @@ export const formatCouldNotMessage = async ({
   return couldNotMessage.replace("{action}", action).replace("{subject}", subject)
 }
 
-type TDictKey = { [key: string]: TDictKey } | undefined | (() => string)
-export const findNestedKeyInDictionary = (key: string, dictionaryErrors: TDictionary["errors"]): string | undefined => {
+type TDictKey = { [key: string]: TDictKey } | undefined | string
+export const findNestedKeyInDictionary = (
+  key: string,
+  dictionaryErrors: TDictionary<{ errors: true }>["errors"]
+): string | undefined => {
   const keys = key.split(".")
   let currentKey = keys.shift()
   let currentObject: TDictKey = dictionaryErrors
@@ -122,23 +125,23 @@ export const findNestedKeyInDictionary = (key: string, dictionaryErrors: TDictio
 
 export const translateError = (
   error: string,
-  dictionary: {
-    errors: TDictionary["errors"]
-  }
+  dictionary: TDictionary<{
+    errors: true
+  }>
 ): string => {
   const errorTranslated = findNestedKeyInDictionary(error, dictionary.errors)
   if (!errorTranslated) {
     logger.error(new Error(`Error not found in dictionary: ${error}`))
-    return dictionary.errors.unknownError()
+    return dictionary.errors.unknownError
   }
   return errorTranslated.toString()
 }
 
 export const handleApiError = <T extends TRPCClientErrorLike<AppRouter>>(
   error: T,
-  dictionary: {
-    errors: TDictionary["errors"]
-  },
+  dictionary: TDictionary<{
+    errors: true
+  }>,
   router: AppRouterInstance
 ): T => {
   try {
@@ -197,7 +200,8 @@ export function pickFromSubset<T extends object, K extends SelectSubset<T>>(
 ): PickFromSubset<T, K> {
   const result = {} as PickFromSubset<T, K>
   if (!subset) {
-    throw new Error("The subset is undefined. Please provide a subset to pick from the dictionary.")
+    // throw new Error("The subset is undefined. Please provide a subset to pick from the dictionary.")
+    return obj as PickFromSubset<T, K>
   }
   Object.keys(subset).forEach((_key) => {
     const key = _key as keyof typeof subset
@@ -223,22 +227,31 @@ export function isObject(item: unknown) {
   return item && typeof item === "object" && !Array.isArray(item)
 }
 
-export function mergeDeep<T extends object, K extends object>(target: T, source: K): T & K {
-  const output = { ...target }
-  if (isObject(target) && isObject(source)) {
-    Object.keys(source).forEach((_key) => {
-      const key = _key as keyof typeof source
-      if (isObject(source[key])) {
-        if (!(key in target)) Object.assign(output, { [key]: source[key] })
-        else
-          output[key as unknown as keyof T] = mergeDeep(
-            target[key as unknown as keyof T] as object,
-            source[key] as object
-          ) as T[keyof T]
-      } else {
-        Object.assign(output, { [key]: source[key] })
-      }
-    })
+export function merge<T extends object, R extends object[]>(target: T, ...sources: R): T & R[number] {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const isObject = (obj: any): obj is object => !!obj && typeof obj === "object" && !Array.isArray(obj)
+
+  const mergeTwo = <T extends object, K extends object>(target: T, source: K): T & K => {
+    if ((target as T | boolean) === true) return true as unknown as T & K
+    const output = { ...target }
+    if (isObject(target) && isObject(source)) {
+      Object.keys(source).forEach((_key) => {
+        const key = _key as keyof typeof source
+        if (isObject(source[key])) {
+          if (!(key in target)) Object.assign(output, { [key]: source[key] })
+          else
+            output[key as unknown as keyof T] = mergeTwo(
+              target[key as unknown as keyof T] as object,
+              source[key] as object
+            ) as T[keyof T]
+        } else {
+          Object.assign(output, { [key]: source[key] })
+        }
+      })
+    }
+    return output as T & K
   }
-  return output as T & K
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return sources.reduce((acc, curr) => mergeTwo(acc, curr as any), target) as T
 }

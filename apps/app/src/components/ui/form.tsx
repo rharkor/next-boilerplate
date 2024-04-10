@@ -4,13 +4,15 @@ import { Ref, useCallback, useEffect, useRef, useState } from "react"
 import { createPortal } from "react-dom"
 import { Controller, FieldPath, FieldValues, UseFormReturn } from "react-hook-form"
 
-import { useDictionary } from "@/contexts/dictionary/utils"
+import { TDictionary } from "@/lib/langs"
 import { cn, stringToSlug } from "@/lib/utils"
 import { Checkbox, Input, InputProps, Tooltip } from "@nextui-org/react"
 
 import { Icons } from "../icons"
 
-const WithPasswordStrenghPopover = <
+import { FormFieldDr, WithPasswordStrengthPopoverDr } from "./form.dr"
+
+const WithPasswordStrengthPopover = <
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >({
@@ -18,20 +20,15 @@ const WithPasswordStrenghPopover = <
   form,
   name,
   isFocused,
+  dictionary,
 }: {
   children: React.ReactNode
   form: UseFormReturn<TFieldValues>
   name: TName
   isFocused: boolean
+  dictionary: TDictionary<typeof WithPasswordStrengthPopoverDr>
 }) => {
   const inputRef = useRef<HTMLInputElement>(null)
-  const dictionary = useDictionary({
-    min8Chars: true,
-    containsNumber: true,
-    containsLowercase: true,
-    containsUppercase: true,
-    containsSpecial: true,
-  })
   const popoverRef = useRef<HTMLDivElement>(null)
 
   const passwordValue = form.watch(name)
@@ -103,27 +100,27 @@ const WithPasswordStrenghPopover = <
             <ul className="flex flex-col">
               <li>
                 <Checkbox isSelected={passwordValue.length >= 8} isDisabled color="success" size="sm">
-                  {dictionary.min8Chars()}
+                  {dictionary.min8Chars}
                 </Checkbox>
               </li>
               <li>
                 <Checkbox isSelected={numberRegex.test(passwordValue)} isDisabled color="success" size="sm">
-                  {dictionary.containsNumber()}
+                  {dictionary.containsNumber}
                 </Checkbox>
               </li>
               <li>
                 <Checkbox isSelected={lowercaseRegex.test(passwordValue)} isDisabled color="success" size="sm">
-                  {dictionary.containsLowercase()}
+                  {dictionary.containsLowercase}
                 </Checkbox>
               </li>
               <li>
                 <Checkbox isSelected={uppercaseRegex.test(passwordValue)} isDisabled color="success" size="sm">
-                  {dictionary.containsUppercase()}
+                  {dictionary.containsUppercase}
                 </Checkbox>
               </li>
               <li>
                 <Checkbox isSelected={specialRegex.test(passwordValue)} isDisabled color="success" size="sm">
-                  {dictionary.containsSpecial()}
+                  {dictionary.containsSpecial}
                 </Checkbox>
               </li>
             </ul>
@@ -134,12 +131,14 @@ const WithPasswordStrenghPopover = <
   )
 }
 
-type IWithPasswordStrenghProps =
+type IWithPasswordStrengthProps =
   | {
       passwordStrength?: never | false
+      dictionary?: never
     }
   | {
       passwordStrength: true
+      dictionary: TDictionary<typeof FormFieldDr>
     }
 
 export type FormFieldProps<
@@ -150,7 +149,7 @@ export type FormFieldProps<
   name: TName //? Required
   tooltip?: string
   type: InputProps["type"] | "password-eye-slash" | "slug"
-} & IWithPasswordStrenghProps
+} & IWithPasswordStrengthProps
 
 const numberRegex = /[\d]/
 const lowercaseRegex = /[a-z]/
@@ -167,8 +166,11 @@ export default function FormField<
   type,
   passwordStrength,
   inputRef,
+  dictionary,
   ...props
-}: FormFieldProps<TFieldValues, TName> & { inputRef?: Ref<HTMLInputElement> }) {
+}: FormFieldProps<TFieldValues, TName> & {
+  inputRef?: Ref<HTMLInputElement>
+}) {
   const [isVisible, setIsVisible] = useState(false)
   const [isFocused, setIsFocused] = useState(false)
 
@@ -228,9 +230,9 @@ export default function FormField<
 
   if (passwordStrength) {
     input = (
-      <WithPasswordStrenghPopover form={form} name={name} isFocused={isFocused}>
+      <WithPasswordStrengthPopover form={form} name={name} isFocused={isFocused} dictionary={dictionary}>
         {input}
-      </WithPasswordStrenghPopover>
+      </WithPasswordStrengthPopover>
     )
   }
 

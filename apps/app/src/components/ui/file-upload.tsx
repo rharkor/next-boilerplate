@@ -4,12 +4,13 @@ import { InputHTMLAttributes, useCallback, useEffect, useState } from "react"
 import { Crop, Upload } from "lucide-react"
 import { Accept, useDropzone } from "react-dropzone"
 
-import { useDictionary } from "@/contexts/dictionary/utils"
+import { TDictionary } from "@/lib/langs"
 import { bytesToMegabytes, cn } from "@/lib/utils"
 import { Button, useDisclosure } from "@nextui-org/react"
 
 import { Icons } from "../icons"
 
+import { FileDr, FileUploadDr } from "./file-upload.dr"
 import ImageCrop from "./image-crop"
 
 function File({
@@ -17,11 +18,13 @@ function File({
   i,
   removeFile,
   handleCrop,
+  dictionary,
 }: {
   file: File
   i: number
   removeFile: (index: number) => void
   handleCrop: (index: number, file: File) => void
+  dictionary: TDictionary<typeof FileDr>
 }) {
   const { isOpen: isCroppingOpen, onOpen: onCroppingOpen, onOpenChange: onCroppingOpenChange } = useDisclosure()
 
@@ -48,20 +51,27 @@ function File({
           </Button>
         </div>
       </div>
-      <ImageCrop originalFile={file} setFile={setFile} onOpenChange={onCroppingOpenChange} isOpen={isCroppingOpen} />
+      <ImageCrop
+        originalFile={file}
+        setFile={setFile}
+        onOpenChange={onCroppingOpenChange}
+        isOpen={isCroppingOpen}
+        dictionary={dictionary}
+      />
     </li>
   )
 }
 
 export type TFileUploadProps = Omit<
   InputHTMLAttributes<HTMLInputElement>,
-  "className" | "onFilesChange" | "dictionary" | "disabled" | "accept"
+  "className" | "onFilesChange" | "dictionary" | "disabled" | "accept" | "dictionary"
 > & {
   className?: string
   onFilesChange?: (files: File[]) => void
   disabled?: boolean
   accept?: Accept //? See: https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types
   maxFiles?: number
+  dictionary: TDictionary<typeof FileUploadDr>
 }
 
 export default function FileUpload({
@@ -70,11 +80,9 @@ export default function FileUpload({
   disabled,
   accept,
   maxFiles,
+  dictionary,
   ...props
 }: TFileUploadProps) {
-  const dictionary = useDictionary({
-    uploadDescription: true,
-  })
   const { acceptedFiles, getRootProps, getInputProps, isDragAccept, isDragReject } = useDropzone({
     accept,
     maxFiles,
@@ -124,11 +132,11 @@ export default function FileUpload({
       >
         <input type="file" {...getInputProps()} disabled={disabled} {...props} />
         <Upload className="size-12" />
-        <p className="text-center text-sm text-foreground/80">{dictionary.uploadDescription()}</p>
+        <p className="text-center text-sm text-foreground/80">{dictionary.uploadDescription}</p>
       </div>
       <ul className="flex flex-col gap-2">
         {croppedFiles.map((file, i) => (
-          <File file={file} i={i} removeFile={removeFile} handleCrop={handleCrop} key={i} />
+          <File file={file} i={i} removeFile={removeFile} handleCrop={handleCrop} key={i} dictionary={dictionary} />
         ))}
       </ul>
     </div>

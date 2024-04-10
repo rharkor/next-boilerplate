@@ -1,14 +1,18 @@
 import { getServerSession } from "next-auth"
 
 import DeleteAccountButton from "@/components/auth/delete-account-button"
+import { DeleteAccountButtonDr } from "@/components/auth/delete-account-button.dr"
 import SignoutButton from "@/components/auth/sign-out-button"
 import VerifyEmailButton from "@/components/auth/verify-email-button"
+import { VerifyEmailButtonDr } from "@/components/auth/verify-email-button.dr"
 import ProfileDetails from "@/components/profile/profile-details"
+import { ProfileDetailsDr } from "@/components/profile/profile-details.dr"
 import UserActiveSessions from "@/components/profile/sessions/user-active-sessions"
+import { UserActiveSessionsDr } from "@/components/profile/sessions/user-active-sessions.dr"
 import CardTitle from "@/components/ui/card"
-import { getDictionary } from "@/contexts/dictionary/server-utils"
 import { nextAuthOptions } from "@/lib/auth"
 import { Locale } from "@/lib/i18n-config"
+import { getDictionary } from "@/lib/langs"
 import { Card, CardBody, CardHeader } from "@nextui-org/react"
 
 export default async function Profile({
@@ -18,47 +22,21 @@ export default async function Profile({
     lang: Locale
   }
 }) {
-  const dictionary = await getDictionary(lang, {
-    profilePage: true,
-    profile: true,
-    deleteAccount: true,
-    signOut: true,
-    emailVerificationSentDescription: true,
-    emailAlreadyVerified: true,
-    resendVerificationEmail: true,
-    deleteAccountSuccessDescription: true,
-    deleteAccountConfirmationTitle: true,
-    deleteAccountConfirmationDescription: true,
-    cancel: true,
-    deleteAccountConfirm: true,
-    needSavePopup: true,
-    reset: true,
-    saveChanges: true,
-    updateAvatar: true,
-    totp: {
-      generate: true,
-      desactivate: true,
-      generateTitle: true,
-      generateDescription: true,
-      desactivateTitle: true,
-      generateStep1: true,
-      generateStep1Description: true,
-      generateStep2: true,
-      generateStep2Description: true,
-      generateStep3: true,
-      generateStep4: true,
-      totpDesactivated: true,
-      lostYourDevice: true,
+  const dictionary = await getDictionary(
+    lang,
+    {
+      profile: true,
+      profilePage: {
+        serverSideData: true,
+      },
+      deleteAccount: true,
+      signOut: true,
     },
-    urlCopiedToClipboard: true,
-    totpEnabled: true,
-    continue: true,
-    confirm: true,
-    back: true,
-    areYouAbsolutelySure: true,
-    timeUnit: true,
-    uploadDescription: true,
-  })
+    UserActiveSessionsDr,
+    DeleteAccountButtonDr,
+    VerifyEmailButtonDr,
+    ProfileDetailsDr
+  )
   const session = await getServerSession(nextAuthOptions)
 
   const hasVerifiedEmail = Boolean(session?.user.emailVerified)
@@ -68,17 +46,17 @@ export default async function Profile({
       <div className="flex w-full max-w-max flex-col">
         <Card className="relative z-10 m-auto max-w-full">
           <CardHeader>
-            <CardTitle>{dictionary.profile()}</CardTitle>
+            <CardTitle>{dictionary.profile}</CardTitle>
           </CardHeader>
           <CardBody>
-            <p className="text-muted-foreground">{dictionary.profilePage.serverSideData()}</p>
+            <p className="text-muted-foreground">{dictionary.profilePage.serverSideData}</p>
             <pre className="mt-2 w-[40rem] max-w-full overflow-auto rounded bg-muted p-2">
               {JSON.stringify(session, null, 2)}
             </pre>
             <div className="mt-4 flex flex-col items-center space-y-2 md:mr-0 md:w-full md:flex-row md:justify-end md:space-x-2 md:space-y-0">
-              {session && <VerifyEmailButton session={session} />}
-              <DeleteAccountButton>{dictionary.deleteAccount()}</DeleteAccountButton>
-              <SignoutButton>{dictionary.signOut()}</SignoutButton>
+              {session && <VerifyEmailButton session={session} dictionary={dictionary} />}
+              <DeleteAccountButton dictionary={dictionary}>{dictionary.deleteAccount}</DeleteAccountButton>
+              <SignoutButton>{dictionary.signOut}</SignoutButton>
             </div>
             <ProfileDetails dictionary={dictionary} hasVerifiedEmail={hasVerifiedEmail} />
             <UserActiveSessions dictionary={dictionary} />

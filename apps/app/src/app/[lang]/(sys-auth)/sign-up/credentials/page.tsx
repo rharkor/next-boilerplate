@@ -3,10 +3,11 @@ import { redirect } from "next/navigation"
 import { ChevronRight } from "lucide-react"
 
 import { RegisterUserAuthForm } from "@/components/auth/register-user-auth-form"
+import { RegisterUserAuthFormDr } from "@/components/auth/register-user-auth-form.dr"
 import CardTitle from "@/components/ui/card"
 import { authRoutes } from "@/constants/auth"
-import { getDictionary } from "@/contexts/dictionary/server-utils"
 import { Locale } from "@/lib/i18n-config"
+import { getDictionary } from "@/lib/langs"
 import { Button, Card, CardBody, CardHeader } from "@nextui-org/react"
 
 export default async function SignupByCredentials({
@@ -18,11 +19,15 @@ export default async function SignupByCredentials({
     lang: Locale
   }
 }) {
-  const dictionary = await getDictionary(lang, {
-    signUpPage: {
-      createAnAccount: true,
+  const dictionary = await getDictionary(
+    lang,
+    {
+      signUpPage: {
+        createAnAccount: true,
+      },
     },
-  })
+    RegisterUserAuthFormDr
+  )
 
   //? If there is no email in the search params, redirect to the sign-up page
   if (!searchParams.email) {
@@ -38,10 +43,10 @@ export default async function SignupByCredentials({
       </Link>
       <Card className="w-[500px] max-w-full">
         <CardHeader>
-          <CardTitle>{dictionary.signUpPage.createAnAccount()}</CardTitle>
+          <CardTitle>{dictionary.signUpPage.createAnAccount}</CardTitle>
         </CardHeader>
         <CardBody>
-          <RegisterUserAuthForm className="gap-3" searchParams={searchParams} locale={lang} />
+          <RegisterUserAuthForm dictionary={dictionary} className="gap-3" searchParams={searchParams} locale={lang} />
         </CardBody>
       </Card>
     </main>

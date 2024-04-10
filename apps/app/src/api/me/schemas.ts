@@ -1,12 +1,26 @@
 import { z } from "zod"
 
-import { queriesOptionPage, queriesOptionPerPage } from "@/lib/queries-options"
+import {
+  queriesOptionPage,
+  queriesOptionPageDr,
+  queriesOptionPerPage,
+  queriesOptionPerPageDr,
+} from "@/lib/queries-options"
+import { dictionaryRequirements } from "@/lib/utils/dictionary"
 import { fileSchemaMinimal } from "@/schemas/file"
 
 import { TDictionary } from "../../lib/langs"
-import { emailSchema, passwordSchemaWithRegex, usernameSchema } from "../auth/schemas"
+import {
+  emailSchema,
+  emailSchemaDr,
+  passwordSchemaWithRegex,
+  passwordSchemaWithRegexDr,
+  usernameSchema,
+  usernameSchemaDr,
+} from "../auth/schemas"
 
-export const userSchema = (dictionary?: Parameters<typeof usernameSchema>[0]) =>
+export const userSchemaDr = dictionaryRequirements(usernameSchemaDr)
+export const userSchema = (dictionary?: TDictionary<typeof userSchemaDr>) =>
   z.object({
     id: z.string(),
     name: z.string().nullable(),
@@ -20,7 +34,8 @@ export const userSchema = (dictionary?: Parameters<typeof usernameSchema>[0]) =>
     lastLocale: z.string().nullable(),
   })
 
-export const updateUserSchema = (dictionary?: Parameters<typeof usernameSchema>[0]) =>
+export const updateUserSchemaDr = dictionaryRequirements(usernameSchemaDr)
+export const updateUserSchema = (dictionary?: TDictionary<typeof updateUserSchemaDr>) =>
   z.object({
     username: usernameSchema(dictionary).or(z.literal("")).optional(),
     profilePictureKey: z.string().optional().nullable(),
@@ -43,9 +58,8 @@ export const sessionsSchema = () =>
     createdAt: z.coerce.date(),
   })
 
-export const getActiveSessionsSchema = (
-  dictionary?: Parameters<typeof queriesOptionPage>[0] & Parameters<typeof queriesOptionPerPage>[0]
-) =>
+export const getActiveSessionsSchemaDr = dictionaryRequirements(queriesOptionPageDr, queriesOptionPerPageDr)
+export const getActiveSessionsSchema = (dictionary?: TDictionary<typeof getActiveSessionsSchemaDr>) =>
   z.object({
     page: queriesOptionPage(dictionary),
     perPage: queriesOptionPerPage(dictionary),
@@ -72,7 +86,8 @@ export const deleteSessionResponseSchema = () =>
     id: z.string(),
   })
 
-export const getAccountResponseSchema = (dictionary?: Parameters<typeof usernameSchema>[0]) =>
+export const getAccountResponseSchemaDr = dictionaryRequirements(usernameSchemaDr)
+export const getAccountResponseSchema = (dictionary?: TDictionary<typeof getAccountResponseSchemaDr>) =>
   z.object({
     user: userSchema(dictionary),
   })
@@ -84,7 +99,8 @@ export const deleteAccountResponseSchema = () =>
     }),
   })
 
-export const forgotPasswordSchema = (dictionary?: Parameters<typeof emailSchema>[0]) =>
+export const forgotPasswordSchemaDr = dictionaryRequirements(emailSchemaDr)
+export const forgotPasswordSchema = (dictionary?: TDictionary<typeof forgotPasswordSchemaDr>) =>
   z.object({
     email: emailSchema(dictionary),
   })
@@ -94,13 +110,15 @@ export const forgotPasswordResponseSchema = () =>
     email: z.string(),
   })
 
-export const resetPasswordSchema = (
-  dictionary?: {
+export const resetPasswordSchemaDr = dictionaryRequirements(
+  {
     errors: {
-      passwordsDoNotMatch: TDictionary["errors"]["passwordsDoNotMatch"]
-    }
-  } & Parameters<typeof passwordSchemaWithRegex>[0]
-) =>
+      passwordsDoNotMatch: true,
+    },
+  },
+  passwordSchemaWithRegexDr
+)
+export const resetPasswordSchema = (dictionary?: TDictionary<typeof resetPasswordSchemaDr>) =>
   z
     .object({
       token: z.string(),
@@ -108,7 +126,7 @@ export const resetPasswordSchema = (
       passwordConfirmation: z.string(),
     })
     .refine((data) => data.password === data.passwordConfirmation, {
-      message: dictionary?.errors.passwordsDoNotMatch() ?? "Passwords do not match",
+      message: dictionary?.errors.passwordsDoNotMatch ?? "Passwords do not match",
       path: ["passwordConfirmation"],
     })
 
@@ -117,7 +135,8 @@ export const resetPasswordResponseSchema = () =>
     success: z.boolean(),
   })
 
-export const sendVerificationEmailSchema = (dictionary?: TDictionary) =>
+export const sendVerificationEmailSchemaDr = dictionaryRequirements(emailSchemaDr, userSchemaDr)
+export const sendVerificationEmailSchema = (dictionary?: TDictionary<typeof sendVerificationEmailSchemaDr>) =>
   z
     .object({
       user: userSchema(dictionary).pick({
@@ -150,4 +169,10 @@ export const verifyEmailSchema = () =>
 export const verifyEmailResponseSchema = () =>
   z.object({
     success: z.boolean(),
+  })
+
+export const signUpResponseSchemaDr = dictionaryRequirements(userSchemaDr)
+export const signUpResponseSchema = (dictionary?: TDictionary<typeof signUpResponseSchemaDr>) =>
+  z.object({
+    user: userSchema(dictionary),
   })

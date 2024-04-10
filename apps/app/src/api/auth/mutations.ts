@@ -7,7 +7,6 @@ import {
   desactivateTotpSchema,
   generateTotpSecretResponseSchema,
   recover2FASchema,
-  signUpResponseSchema,
   signUpSchema,
   verifyTotpSchema,
 } from "@/api/auth/schemas"
@@ -22,6 +21,8 @@ import { ApiError, ensureLoggedIn, generateRandomSecret, handleApiError } from "
 import { apiInputFromSchema } from "@/types"
 import { logger } from "@next-boilerplate/lib"
 import { Prisma } from "@prisma/client"
+
+import { signUpResponseSchema } from "../me/schemas"
 
 export const register = async ({ input }: apiInputFromSchema<typeof signUpSchema>) => {
   const { email, password, username } = input

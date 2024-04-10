@@ -2,25 +2,25 @@ import { ReactNode } from "react"
 
 import { NextAuthProvider } from "@/components/auth/provider"
 import { ThemeProvider } from "@/components/theme/theme-provider"
-import { withDictionary } from "@/contexts/dictionary/server-utils"
 import { Locale } from "@/lib/i18n-config"
+import { getDictionary } from "@/lib/langs"
 import TrpcProvider from "@/lib/trpc/provider"
 
+import { RootProvidersDr } from "./providers.dr"
 import Toaster from "./toaster"
 import UIProvider from "./ui-provider"
 
-export default function RootProviders({ children, lang }: { children: ReactNode; lang: Locale }) {
-  return withDictionary(
+export default async function RootProviders({ children, lang }: { children: ReactNode; lang: Locale }) {
+  const dictionary = await getDictionary(lang, RootProvidersDr)
+
+  return (
     <UIProvider>
       <NextAuthProvider>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <TrpcProvider>{children}</TrpcProvider>
+          <TrpcProvider dictionary={dictionary}>{children}</TrpcProvider>
           <Toaster />
         </ThemeProvider>
       </NextAuthProvider>
-    </UIProvider>,
-    {
-      lang,
-    }
+    </UIProvider>
   )
 }

@@ -7,11 +7,11 @@ import { trpc } from "@/lib/trpc/client"
 import { Button, Link, Modal, ModalBody, ModalContent, ModalFooter } from "@nextui-org/react"
 
 export type TotpVerificationModalProps = {
-  dictionary: {
+  dictionary: TDictionary<{
     totp: {
-      lostYourDevice: TDictionary["totp"]["lostYourDevice"]
+      lostYourDevice: true
     }
-  }
+  }>
   isOpen: boolean
   onOpenChange: (open: boolean) => void
   onSuccessfulVerification?: () => void
@@ -76,7 +76,7 @@ export default function TotpVerificationModal({
             <ModalBody className="py-6">
               <OtpInput otp={otp} setOtp={setOtp} withAutoFocus />
               <Link className="ml-auto" href={`/recover-2fa${curEmail ? `?email=${curEmail}` : ""}`}>
-                {dictionary.totp.lostYourDevice()}
+                {dictionary.totp.lostYourDevice}
               </Link>
             </ModalBody>
             <ModalFooter>

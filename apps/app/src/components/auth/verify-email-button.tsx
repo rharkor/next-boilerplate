@@ -5,23 +5,26 @@ import { BadgeCheck } from "lucide-react"
 import { toast } from "react-toastify"
 
 import { useAccount } from "@/contexts/account"
-import { useDictionary } from "@/contexts/dictionary/utils"
+import { TDictionary } from "@/lib/langs"
 import { trpc } from "@/lib/trpc/client"
 import { logger } from "@next-boilerplate/lib"
 import { Button } from "@nextui-org/react"
 
-export default function VerifyEmailButton({ session }: { session: Session }) {
-  const dictionary = useDictionary({
-    emailVerificationSentDescription: true,
-    emailAlreadyVerified: true,
-    resendVerificationEmail: true,
-  })
+import { VerifyEmailButtonDr } from "./verify-email-button.dr"
+
+export default function VerifyEmailButton({
+  session,
+  dictionary,
+}: {
+  session: Session
+  dictionary: TDictionary<typeof VerifyEmailButtonDr>
+}) {
   const account = useAccount()
   const hasVerifiedEmail = session.user.emailVerified || !!account.data?.user.emailVerified
 
   const resendVerificationEmailMutation = trpc.me.sendVerificationEmail.useMutation({
     onSuccess: () => {
-      toast(dictionary.emailVerificationSentDescription())
+      toast(dictionary.emailVerificationSentDescription)
     },
   })
 
@@ -39,7 +42,7 @@ export default function VerifyEmailButton({ session }: { session: Session }) {
     return (
       <p className="flex w-max flex-1 items-center space-x-2 font-medium text-primary">
         <BadgeCheck className="inline-block size-5" />
-        <span>{dictionary.emailAlreadyVerified()}</span>
+        <span>{dictionary.emailAlreadyVerified}</span>
       </p>
     )
   }
@@ -52,7 +55,7 @@ export default function VerifyEmailButton({ session }: { session: Session }) {
       variant="flat"
       color="primary"
     >
-      {dictionary.resendVerificationEmail()}
+      {dictionary.resendVerificationEmail}
     </Button>
   )
 }

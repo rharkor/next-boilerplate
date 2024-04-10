@@ -2,16 +2,19 @@ import Link from "next/link"
 import { getServerSession } from "next-auth"
 
 import { LoginUserAuthForm } from "@/components/auth/login-user-auth-form"
+import { LoginUserAuthFormDr } from "@/components/auth/login-user-auth-form.dr"
 import { authRoutes } from "@/constants/auth"
-import { getDictionary } from "@/contexts/dictionary/server-utils"
 import { nextAuthOptions } from "@/lib/auth"
 import { env } from "@/lib/env"
 import { Locale } from "@/lib/i18n-config"
+import { getDictionary } from "@/lib/langs"
 import { cn } from "@/lib/utils"
 import { Button } from "@nextui-org/react"
 
 import PrivacyAcceptance from "../privacy-acceptance"
+import { PrivacyAcceptanceDr } from "../privacy-acceptance.dr"
 import AuthProviders from "../providers"
+import { AuthProvidersDr } from "../providers.dr"
 
 export default async function SignInPage({
   searchParams,
@@ -22,35 +25,22 @@ export default async function SignInPage({
     lang: Locale
   }
 }) {
-  const dictionary = await getDictionary(lang, {
-    signInPage: {
-      loginToYourAccount: true,
-      enterDetails: true,
+  const dictionary = await getDictionary(
+    lang,
+    {
+      signInPage: {
+        loginToYourAccount: true,
+        enterDetails: true,
+      },
+      toSignUp: true,
+      auth: {
+        orContinueWith: true,
+      },
     },
-    toSignUp: true,
-    and: true,
-    errors: {
-      wrongProvider: true,
-      password: true,
-      email: true,
-      invalidCredentials: true,
-      unknownError: true,
-      otpInvalid: true,
-    },
-    auth: true,
-    email: true,
-    password: true,
-    forgotPassword: true,
-    signIn: true,
-    totp: {
-      enterCode: true,
-      lostYourDevice: true,
-    },
-    confirm: true,
-    cancel: true,
-    copiedToClipboard: true,
-    copyToClipboard: true,
-  })
+    AuthProvidersDr,
+    PrivacyAcceptanceDr,
+    LoginUserAuthFormDr
+  )
   const session = await getServerSession(nextAuthOptions)
 
   return (
@@ -62,18 +52,18 @@ export default async function SignInPage({
           className={cn("absolute right-4 top-4 md:right-8 md:top-8")}
           variant="ghost"
         >
-          {dictionary.toSignUp()}
+          {dictionary.toSignUp}
         </Button>
       )}
       <div className="hidden h-full bg-muted lg:block"></div>
       <div className="lg:p-8">
         <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
           <div className="flex flex-col space-y-2 text-center">
-            <h1 className="text-2xl font-semibold tracking-tight">{dictionary.signInPage.loginToYourAccount()}</h1>
-            <p className="text-sm text-muted-foreground">{dictionary.signInPage.enterDetails()}</p>
+            <h1 className="text-2xl font-semibold tracking-tight">{dictionary.signInPage.loginToYourAccount}</h1>
+            <p className="text-sm text-muted-foreground">{dictionary.signInPage.enterDetails}</p>
           </div>
           <div className="grid gap-6">
-            <LoginUserAuthForm searchParams={searchParams} />
+            <LoginUserAuthForm dictionary={dictionary} searchParams={searchParams} />
             {env.ENABLE_REGISTRATION && (
               <>
                 <div className="relative">
@@ -81,10 +71,10 @@ export default async function SignInPage({
                     <span className="w-full border-t" />
                   </div>
                   <div className="relative flex justify-center text-xs uppercase">
-                    <span className="bg-background px-2 text-muted-foreground">{dictionary.auth.orContinueWith()}</span>
+                    <span className="bg-background px-2 text-muted-foreground">{dictionary.auth.orContinueWith}</span>
                   </div>
                 </div>
-                <AuthProviders searchParams={searchParams} session={session} />
+                <AuthProviders dictionary={dictionary} searchParams={searchParams} session={session} />
               </>
             )}
           </div>

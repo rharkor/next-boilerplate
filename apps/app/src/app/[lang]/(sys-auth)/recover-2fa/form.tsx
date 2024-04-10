@@ -9,34 +9,29 @@ import { z } from "zod"
 import { recover2FASchema } from "@/api/auth/schemas"
 import FormField from "@/components/ui/form"
 import { authRoutes } from "@/constants/auth"
-import { useDictionary } from "@/contexts/dictionary/utils"
+import { TDictionary } from "@/lib/langs"
 import { trpc } from "@/lib/trpc/client"
 import { cn } from "@/lib/utils"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Button } from "@nextui-org/react"
 
+import { Recover2FAFormDr } from "./form.dr"
+
 const formSchema = recover2FASchema
 type IForm = z.infer<ReturnType<typeof formSchema>>
 
-export default function Recover2FAForm({ email }: { email?: string }) {
-  const dictionary = useDictionary({
-    totp: {
-      totpDesactivated: true,
-    },
-    mnemonic: true,
-    errors: {
-      email: true,
-    },
-    email: true,
-    recover2FA: true,
-    recover2FADescription: true,
-    reset: true,
-  })
+export default function Recover2FAForm({
+  email,
+  dictionary,
+}: {
+  email?: string
+  dictionary: TDictionary<typeof Recover2FAFormDr>
+}) {
   const router = useRouter()
 
   const recover2FAMutation = trpc.auth.recover2FA.useMutation({
     onSuccess: () => {
-      toast.success(dictionary.totp.totpDesactivated())
+      toast.success(dictionary.totp.totpDesactivated)
       router.push(authRoutes.signIn[0])
     },
   })
@@ -106,11 +101,11 @@ export default function Recover2FAForm({ email }: { email?: string }) {
         form={form}
         name="email"
         type="email"
-        aria-label={dictionary.email()}
-        placeholder={dictionary.email()}
+        aria-label={dictionary.email}
+        placeholder={dictionary.email}
         autoComplete="email"
       />
-      <p className="mt-6 text-sm text-muted-foreground">{dictionary.recover2FADescription()}</p>
+      <p className="mt-6 text-sm text-muted-foreground">{dictionary.recover2FADescription}</p>
       <div className="flex flex-col">
         <div className="grid grid-cols-3 gap-x-6 gap-y-2" ref={divRef}>
           {mnemonic.map((data, index) => {
@@ -133,17 +128,17 @@ export default function Recover2FAForm({ email }: { email?: string }) {
                   name={`mnemonic-${index}`}
                   placeholder={
                     index === 0
-                      ? dictionary.mnemonic.write()
+                      ? dictionary.mnemonic.write
                       : index === 1
-                        ? dictionary.mnemonic.down()
+                        ? dictionary.mnemonic.down
                         : index === 2
-                          ? dictionary.mnemonic.your()
+                          ? dictionary.mnemonic.your
                           : index === 3
-                            ? dictionary.mnemonic.mnemonic()
+                            ? dictionary.mnemonic.mnemonic
                             : index === 4
-                              ? dictionary.mnemonic.phrase()
+                              ? dictionary.mnemonic.phrase
                               : index === 5
-                                ? dictionary.mnemonic.here()
+                                ? dictionary.mnemonic.here
                                 : ""
                   }
                   value={data}
@@ -186,7 +181,7 @@ export default function Recover2FAForm({ email }: { email?: string }) {
         )}
       </div>
       <Button type="submit" color="primary" isLoading={isLoading} className="mt-2">
-        {dictionary.reset()}
+        {dictionary.reset}
       </Button>
     </form>
   )

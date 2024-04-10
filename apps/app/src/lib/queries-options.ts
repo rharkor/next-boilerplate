@@ -2,40 +2,43 @@ import { z } from "zod"
 
 import { logger } from "@next-boilerplate/lib"
 
+import { dictionaryRequirements } from "./utils/dictionary"
 import { TDictionary } from "./langs"
 
-export const queriesOptionPage = (dictionary?: {
+export const queriesOptionPageDr = dictionaryRequirements({
   errors: {
     typeError: {
       number: {
-        invalid: TDictionary["errors"]["typeError"]["number"]["invalid"]
-        required: TDictionary["errors"]["typeError"]["number"]["required"]
-      }
-    }
-  }
-}) =>
+        invalid: true,
+        required: true,
+      },
+    },
+  },
+})
+export const queriesOptionPage = (dictionary?: TDictionary<typeof queriesOptionPageDr>) =>
   z
     .number({
-      invalid_type_error: dictionary?.errors.typeError.number.invalid(),
-      required_error: dictionary?.errors.typeError.number.required(),
+      invalid_type_error: dictionary?.errors.typeError.number.invalid,
+      required_error: dictionary?.errors.typeError.number.required,
     })
     .positive()
     .int()
 
-export const queriesOptionPerPage = (dictionary?: {
+export const queriesOptionPerPageDr = dictionaryRequirements({
   errors: {
     typeError: {
       number: {
-        invalid: TDictionary["errors"]["typeError"]["number"]["invalid"]
-        required: TDictionary["errors"]["typeError"]["number"]["required"]
-      }
-    }
-  }
-}) =>
+        invalid: true,
+        required: true,
+      },
+    },
+  },
+})
+export const queriesOptionPerPage = (dictionary?: TDictionary<typeof queriesOptionPerPageDr>) =>
   z
     .number({
-      invalid_type_error: dictionary?.errors.typeError.number.invalid(),
-      required_error: dictionary?.errors.typeError.number.required(),
+      invalid_type_error: dictionary?.errors.typeError.number.invalid,
+      required_error: dictionary?.errors.typeError.number.required,
     })
     .positive()
     .int()
@@ -48,21 +51,22 @@ export const queriesOptionPerPage = (dictionary?: {
       return value
     })
 
-export const queriesOptionSort = (dictionary?: {
+export const queriesOptionSortDr = dictionaryRequirements({
   errors: {
     typeError: {
       string: {
-        invalid: TDictionary["errors"]["typeError"]["string"]["invalid"]
-        required: TDictionary["errors"]["typeError"]["string"]["required"]
-      }
-    }
-  }
-}) =>
+        invalid: true,
+        required: true,
+      },
+    },
+  },
+})
+export const queriesOptionSort = (dictionary?: TDictionary<typeof queriesOptionSortDr>) =>
   z.array(
     z.object({
       field: z.string({
-        invalid_type_error: dictionary?.errors.typeError.string.invalid(),
-        required_error: dictionary?.errors.typeError.string.required(),
+        invalid_type_error: dictionary?.errors.typeError.string.invalid,
+        required_error: dictionary?.errors.typeError.string.required,
       }),
       direction: z.enum(["asc", "desc"]),
     })

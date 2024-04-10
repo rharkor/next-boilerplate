@@ -6,7 +6,7 @@ import { toast } from "react-toastify"
 
 import { maxUploadSize } from "@/constants"
 import { useAccount } from "@/contexts/account"
-import { useDictionary } from "@/contexts/dictionary/utils"
+import { TDictionary } from "@/lib/langs"
 import { trpc } from "@/lib/trpc/client"
 import { cn } from "@/lib/utils"
 import { getImageUrl } from "@/lib/utils/client-utils"
@@ -17,15 +17,15 @@ import { Icons } from "../icons"
 import FileUpload from "../ui/file-upload"
 import { ModalHeader, ModalTitle } from "../ui/modal"
 
-export default function UpdateAvatar({ account }: { account: ReturnType<typeof useAccount> }) {
-  const dictionary = useDictionary({
-    updateAvatar: true,
-    errors: {
-      noFileSelected: true,
-      fileTooLarge: true,
-      unknownError: true,
-    },
-  })
+import { UpdateAvatarDr } from "./avatar.dr"
+
+export default function UpdateAvatar({
+  account,
+  dictionary,
+}: {
+  account: ReturnType<typeof useAccount>
+  dictionary: TDictionary<typeof UpdateAvatarDr>
+}) {
   const utils = trpc.useUtils()
 
   const getPresignedUrlMutation = trpc.upload.presignedUrl.useMutation()
@@ -37,11 +37,11 @@ export default function UpdateAvatar({ account }: { account: ReturnType<typeof u
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (!file) {
-      toast.error(dictionary.errors.noFileSelected())
+      toast.error(dictionary.errors.noFileSelected)
       return
     }
     if (file.size > maxUploadSize) {
-      toast.error(dictionary.errors.fileTooLarge())
+      toast.error(dictionary.errors.fileTooLarge)
       return
     }
     setUploading(true)
@@ -77,14 +77,14 @@ export default function UpdateAvatar({ account }: { account: ReturnType<typeof u
           const xmlDoc = parser.parseFromString(xml, "text/xml")
           const error = xmlDoc.getElementsByTagName("Message")[0]
           if (error.textContent === "Your proposed upload exceeds the maximum allowed size") {
-            toast.error(dictionary.errors.fileTooLarge())
+            toast.error(dictionary.errors.fileTooLarge)
           } else {
-            toast.error(dictionary.errors.unknownError())
+            toast.error(dictionary.errors.unknownError)
           }
         }
       } catch (e) {
         logger.error(e)
-        toast.error(dictionary.errors.unknownError())
+        toast.error(dictionary.errors.unknownError)
       }
     } catch {
     } finally {
@@ -160,11 +160,12 @@ export default function UpdateAvatar({ account }: { account: ReturnType<typeof u
       <Modal isOpen={showModal} onOpenChange={(open) => setShowModal(open)}>
         <ModalContent>
           <ModalHeader>
-            <ModalTitle>{dictionary.updateAvatar()}</ModalTitle>
+            <ModalTitle>{dictionary.updateAvatar}</ModalTitle>
           </ModalHeader>
           <ModalBody>
             <form onSubmit={handleSubmit} className="flex flex-col gap-2">
               <FileUpload
+                dictionary={dictionary}
                 onFilesChange={(files) => {
                   setFile(files[0])
                 }}
@@ -176,7 +177,7 @@ export default function UpdateAvatar({ account }: { account: ReturnType<typeof u
                 disabled={uploading}
               />
               <Button color="primary" type="submit" isDisabled={uploading || !file} isLoading={uploading}>
-                {dictionary.updateAvatar()}
+                {dictionary.updateAvatar}
               </Button>
             </form>
           </ModalBody>

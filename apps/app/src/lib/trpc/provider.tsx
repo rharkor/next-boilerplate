@@ -3,13 +3,14 @@ import React, { useState } from "react"
 import { useRouter } from "next/navigation"
 
 import { AppRouter } from "@/api/_app"
-import { useDictionary } from "@/contexts/dictionary/utils"
 import { MutationCache, QueryCache, QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { TRPCClientErrorLike } from "@trpc/client"
 
+import { TDictionary } from "../langs"
 import { handleMutationError, handleQueryError } from "../utils/client-utils"
 
 import { trpc, trpcClient } from "./client"
+import { TrpcProviderDr } from "./provider.dr"
 
 const testNoDefaultErrorHandling = (query: unknown) =>
   typeof query === "object" &&
@@ -20,11 +21,14 @@ const testNoDefaultErrorHandling = (query: unknown) =>
   "noDefaultErrorHandling" in query.meta &&
   query.meta.noDefaultErrorHandling
 
-export default function TrpcProvider({ children }: { children: React.ReactNode }) {
+export default function TrpcProvider({
+  children,
+  dictionary,
+}: {
+  children: React.ReactNode
+  dictionary: TDictionary<typeof TrpcProviderDr>
+}) {
   const router = useRouter()
-  const dictionary = useDictionary({
-    errors: true,
-  })
 
   const [queryClient] = useState(
     () =>

@@ -11,8 +11,8 @@ module.exports = {
     schema: [], // no options
   },
   create: function (context) {
-    const handleProgram = (node) => {
-      const sourceCode = context.getSourceCode();
+    const handleProgram = () => {
+      const sourceCode = context.sourceCode;
 
       const importNodes = sourceCode.ast.body.filter(
         (node) => node.type === "ImportDeclaration"

@@ -4,37 +4,18 @@ import { useState } from "react"
 import { useSession } from "next-auth/react"
 
 import { ModalDescription, ModalHeader, ModalTitle } from "@/components/ui/modal"
-import { useDictionary } from "@/contexts/dictionary/utils"
+import { TDictionary } from "@/lib/langs"
 import { trpc } from "@/lib/trpc/client"
 import { cn } from "@/lib/utils"
 import { Button, Modal, ModalContent, ModalFooter, Pagination } from "@nextui-org/react"
 
 import SessionRow from "./session-row"
+import { SessionsTableDr } from "./sessions-table.dr"
 
 const itemsPerPageInitial = 5
 
-export default function SessionsTable() {
+export default function SessionsTable({ dictionary }: { dictionary: TDictionary<typeof SessionsTableDr> }) {
   const session = useSession()
-  const dictionary = useDictionary({
-    areYouAbsolutelySure: true,
-    cancel: true,
-    continue: true,
-    profilePage: {
-      profileDetails: {
-        deleteLoggedDevice: {
-          description: true,
-        },
-        lastUsed: true,
-        created: true,
-        expires: true,
-        in: true,
-      },
-    },
-    errors: {
-      unavailableWithOAuth: true,
-    },
-    timeUnit: true,
-  })
   const utils = trpc.useUtils()
 
   const isDisabled = !!session.data && session.data.user.hasPassword === false
@@ -107,17 +88,17 @@ export default function SessionsTable() {
           {(onClose) => (
             <>
               <ModalHeader>
-                <ModalTitle>{dictionary.areYouAbsolutelySure()}</ModalTitle>
+                <ModalTitle>{dictionary.areYouAbsolutelySure}</ModalTitle>
                 <ModalDescription>
-                  {dictionary.profilePage.profileDetails.deleteLoggedDevice.description()}
+                  {dictionary.profilePage.profileDetails.deleteLoggedDevice.description}
                 </ModalDescription>
               </ModalHeader>
               <ModalFooter>
                 <Button variant="flat" onClick={onClose}>
-                  {dictionary.cancel()}
+                  {dictionary.cancel}
                 </Button>
                 <Button color="primary" onClick={deleteSession}>
-                  {dictionary.continue()}
+                  {dictionary.continue}
                 </Button>
               </ModalFooter>
             </>
@@ -126,7 +107,7 @@ export default function SessionsTable() {
       </Modal>
       {isDisabled && (
         <div className="absolute -inset-2 !mt-0 flex flex-col items-center justify-center backdrop-blur-sm">
-          <p className="text-sm font-semibold text-muted-foreground">{dictionary.errors.unavailableWithOAuth()}</p>
+          <p className="text-sm font-semibold text-muted-foreground">{dictionary.errors.unavailableWithOAuth}</p>
         </div>
       )}
     </div>

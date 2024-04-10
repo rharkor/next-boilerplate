@@ -10,31 +10,23 @@ import { forgotPasswordSchema } from "@/api/me/schemas"
 import AutoRefresh from "@/components/auto-refresh"
 import FormField from "@/components/ui/form"
 import { resendResetPasswordExpiration } from "@/constants"
-import { useDictionary } from "@/contexts/dictionary/utils"
+import { TDictionary } from "@/lib/langs"
 import { trpc } from "@/lib/trpc/client"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Button, Tooltip } from "@nextui-org/react"
 
+import { ForgotPasswordFormDr } from "./form.dr"
+
 const formSchema = forgotPasswordSchema
 type IForm = z.infer<ReturnType<typeof formSchema>>
 
-export default function ForgotPasswordForm() {
-  const dictionary = useDictionary({
-    forgotPasswordSuccessDescription: true,
-    emailPlaceholder: true,
-    email: true,
-    errors: {
-      email: true,
-    },
-    send: true,
-    timeUntilYouCanRequestAnotherEmail: true,
-  })
+export default function ForgotPasswordForm({ dictionary }: { dictionary: TDictionary<typeof ForgotPasswordFormDr> }) {
   const [latestEmailSentAt, setLatestEmailSentAt] = useState<number | null>(null)
 
   const forgotPasswordMutation = trpc.me.forgotPassword.useMutation({
     onSuccess: () => {
       setLatestEmailSentAt(Date.now())
-      toast.success(dictionary.forgotPasswordSuccessDescription())
+      toast.success(dictionary.forgotPasswordSuccessDescription)
     },
   })
 
@@ -60,8 +52,8 @@ export default function ForgotPasswordForm() {
       <FormField
         form={form}
         name="email"
-        placeholder={dictionary.emailPlaceholder()}
-        aria-label={dictionary.email()}
+        placeholder={dictionary.emailPlaceholder}
+        aria-label={dictionary.email}
         type="email"
         autoCapitalize="none"
         autoComplete="email"
@@ -69,10 +61,10 @@ export default function ForgotPasswordForm() {
         isDisabled={isDisabled}
       />
       <Button type="submit" isLoading={isLoading} isDisabled={isDisabled} color="primary">
-        {dictionary.send()}
+        {dictionary.send}
       </Button>
       {latestEmailSentAt !== null && (
-        <Tooltip content={dictionary.timeUntilYouCanRequestAnotherEmail()}>
+        <Tooltip content={dictionary.timeUntilYouCanRequestAnotherEmail}>
           <AutoRefresh
             callback={() => {
               const retryInValue = retryIn()

@@ -8,7 +8,6 @@ import * as z from "zod"
 
 import { signUpSchema } from "@/api/auth/schemas"
 import { authRoutes } from "@/constants/auth"
-import { useDictionary } from "@/contexts/dictionary/utils"
 import { handleSignError, handleSignIn } from "@/lib/auth/handle-sign"
 import { TDictionary } from "@/lib/langs"
 import { trpc } from "@/lib/trpc/client"
@@ -21,20 +20,17 @@ import { Button } from "@nextui-org/react"
 import TotpVerificationModal from "../profile/totp/totp-verification-modal"
 import FormField from "../ui/form"
 
+import { RegisterUserAuthFormDr } from "./register-user-auth-form.dr"
+
 type UserAuthFormProps = React.HTMLAttributes<HTMLFormElement> & {
   isMinimized?: boolean
   searchParams?: { [key: string]: string | string[] | undefined }
   locale: string
+  dictionary: TDictionary<typeof RegisterUserAuthFormDr>
 }
 
 export const formSchema = (
-  dictionary: Parameters<typeof signUpSchema>[0] & {
-    errors: {
-      password: {
-        dontMatch: TDictionary["errors"]["password"]["dontMatch"]
-      }
-    }
-  }
+  dictionary: Parameters<typeof signUpSchema>[0] & TDictionary<{ errors: { password: { dontMatch: true } } }>
 ) =>
   signUpSchema(dictionary)
     .extend({
@@ -44,7 +40,7 @@ export const formSchema = (
       if (data.password !== data.confirmPassword) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
-          message: dictionary.errors.password.dontMatch(),
+          message: dictionary.errors.password.dontMatch,
           path: ["confirmPassword"],
           fatal: true,
         })
@@ -67,23 +63,7 @@ export const getFormSchema = ({
 export type IForm = z.infer<ReturnType<typeof formSchema>>
 export type IFormMinimized = z.infer<ReturnType<typeof formMinizedSchema>>
 
-export function RegisterUserAuthForm({ isMinimized, searchParams, locale, ...props }: UserAuthFormProps) {
-  const dictionary = useDictionary({
-    email: true,
-    username: true,
-    password: true,
-    confirmPassword: true,
-    signUp: true,
-    edit: true,
-    cancel: true,
-    totp: {
-      desactivateTitle: true,
-      desactivate: true,
-      lostYourDevice: true,
-    },
-    errors: true,
-    withEmail: true,
-  })
+export function RegisterUserAuthForm({ isMinimized, searchParams, locale, dictionary, ...props }: UserAuthFormProps) {
   const router = useRouter()
 
   const [isDesactivate2FAModalOpen, setDesactivate2FAModalOpen] = React.useState(false)
@@ -192,7 +172,7 @@ export function RegisterUserAuthForm({ isMinimized, searchParams, locale, ...pro
           <FormField
             form={form}
             name="email"
-            label={dictionary.email()}
+            label={dictionary.email}
             type="email"
             autoCapitalize="none"
             autoComplete="username"
@@ -205,7 +185,7 @@ export function RegisterUserAuthForm({ isMinimized, searchParams, locale, ...pro
               href={`${authRoutes.signUp[0]}?email=${form.getValues("email")}`}
               className="absolute right-2 top-2 z-10"
             >
-              {dictionary.edit()}
+              {dictionary.edit}
             </Button>
           )}
         </div>
@@ -215,7 +195,7 @@ export function RegisterUserAuthForm({ isMinimized, searchParams, locale, ...pro
             <FormField
               form={form}
               name="username"
-              label={dictionary.username()}
+              label={dictionary.username}
               type="text"
               autoCapitalize="none"
               autoComplete="none"
@@ -225,17 +205,18 @@ export function RegisterUserAuthForm({ isMinimized, searchParams, locale, ...pro
             <FormField
               form={form}
               name="password"
-              label={dictionary.password()}
+              label={dictionary.password}
               type="password-eye-slash"
               autoComplete="new-password"
               autoCorrect="off"
               isDisabled={isLoading}
               passwordStrength
+              dictionary={dictionary}
             />
             <FormField
               form={form}
               name="confirmPassword"
-              label={dictionary.confirmPassword()}
+              label={dictionary.confirmPassword}
               type="password"
               autoComplete="new-password"
               autoCorrect="off"
@@ -244,7 +225,7 @@ export function RegisterUserAuthForm({ isMinimized, searchParams, locale, ...pro
           </>
         )}
         <Button type="submit" isLoading={isLoading} color="primary">
-          {dictionary.signUp()} {isMinimized && dictionary.withEmail()}
+          {dictionary.signUp} {isMinimized && dictionary.withEmail}
         </Button>
       </form>
       <TotpVerificationModal
@@ -262,9 +243,9 @@ export function RegisterUserAuthForm({ isMinimized, searchParams, locale, ...pro
             setDesactivate2FAModalOpen(false)
           }
         }}
-        title={dictionary.totp.desactivateTitle()}
-        submitText={dictionary.totp.desactivate()}
-        closeText={dictionary.cancel()}
+        title={dictionary.totp.desactivateTitle}
+        submitText={dictionary.totp.desactivate}
+        closeText={dictionary.cancel}
         onlyPrompt
       />
     </>

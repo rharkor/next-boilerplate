@@ -3,15 +3,18 @@
 import { useRef, useState } from "react"
 import { ClipboardList } from "lucide-react"
 
-import { useDictionary } from "@/contexts/dictionary/utils"
+import { TDictionary } from "@/lib/langs"
 import { cn } from "@/lib/utils"
 import { Button, Tooltip } from "@nextui-org/react"
+
+import { CopiableDr } from "./copiable.dr"
 
 export default function Copiable({
   text,
   isDisabled,
   className,
   classNames,
+  dictionary,
 }: {
   text: string | undefined
   isDisabled?: boolean
@@ -21,12 +24,8 @@ export default function Copiable({
     button?: string
     icon?: string
   }
+  dictionary: TDictionary<typeof CopiableDr>
 }) {
-  const dictionary = useDictionary({
-    copiedToClipboard: true,
-    copyToClipboard: true,
-  })
-
   const [isCopied, setIsCopied] = useState(false)
   const [isTooltipOpen, setIsTooltipOpen] = useState(false)
 
@@ -70,7 +69,7 @@ export default function Copiable({
       <Tooltip
         isOpen={isTooltipOpen}
         onOpenChange={(open) => setIsTooltipOpen(open)}
-        content={isCopied ? dictionary.copiedToClipboard() : dictionary.copyToClipboard()}
+        content={isCopied ? dictionary.copiedToClipboard : dictionary.copyToClipboard}
         isDisabled={isDisabled}
       >
         <Button

@@ -10,7 +10,6 @@ import { z } from "zod"
 import { sendVerificationEmail } from "@/api/me/email/mutations"
 import { otpWindow } from "@/constants"
 import { authRoutes, JWT_MAX_AGE } from "@/constants/auth"
-import { getDictionary } from "@/contexts/dictionary/server-utils"
 import { env } from "@/lib/env"
 import { i18n } from "@/lib/i18n-config"
 import { ITrpcContext } from "@/types"
@@ -20,9 +19,11 @@ import { logger } from "@next-boilerplate/lib"
 import { signInSchema } from "../../api/auth/schemas"
 import { sessionsSchema } from "../../api/me/schemas"
 import { bcryptCompare } from "../bcrypt"
+import { getDictionary } from "../langs"
 import { prisma } from "../prisma"
 import { redis } from "../redis"
 import { ensureRelativeUrl } from "../utils"
+import { dictionaryRequirements } from "../utils/dictionary"
 
 export const providers: Provider[] = [
   Credentials({
@@ -39,13 +40,25 @@ export const providers: Provider[] = [
       const referer = req.headers?.referer ?? ""
       const refererUrl = ensureRelativeUrl(referer)
       const lang = i18n.locales.find((locale) => refererUrl.startsWith(`/${locale}/`)) ?? i18n.defaultLocale
-      const dictionary = await getDictionary(lang, {
-        errors: {
-          wrongProvider: true,
-          password: true,
-          email: true,
+      const dr = dictionaryRequirements(
+        {
+          errors: {
+            password: {
+              max25: true,
+            },
+            wrongProvider: true,
+          },
         },
-      })
+        {
+          errors: {
+            email: {
+              required: true,
+              invalid: true,
+            },
+          },
+        }
+      )
+      const dictionary = await getDictionary(lang, dr)
 
       const creds = signInSchema(dictionary).parse(credentials)
 
@@ -74,7 +87,7 @@ export const providers: Provider[] = [
 
       if (!user.password) {
         //? this should happen if the user signed up with a provider
-        throw new Error(dictionary.errors.wrongProvider())
+        throw new Error(dictionary.errors.wrongProvider)
       }
 
       const isValidPassword = await bcryptCompare(creds.password, user.password)
