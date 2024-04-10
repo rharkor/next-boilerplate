@@ -57,6 +57,7 @@ export default async function Profile({
     back: true,
     areYouAbsolutelySure: true,
     timeUnit: true,
+    uploadDescription: true,
   })
   const session = await getServerSession(nextAuthOptions)
 

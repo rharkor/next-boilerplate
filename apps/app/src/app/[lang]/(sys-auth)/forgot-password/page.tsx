@@ -18,6 +18,14 @@ export default async function ForgotPassword({
     forgotPasswordTitle: true,
     forgotPasswordDescription: true,
     goToSignInPage: true,
+    forgotPasswordSuccessDescription: true,
+    emailPlaceholder: true,
+    email: true,
+    errors: {
+      email: true,
+    },
+    send: true,
+    timeUntilYouCanRequestAnotherEmail: true,
   })
 
   return (

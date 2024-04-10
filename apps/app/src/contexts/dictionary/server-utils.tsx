@@ -4,7 +4,6 @@ import { Locale } from "@/lib/i18n-config"
 import { _getDictionary, TDictionary, TInitialDictionary } from "@/lib/langs"
 import { mergeDeep, pickFromSubset } from "@/lib/utils"
 import { SelectSubset } from "@/types"
-import { logger } from "@next-boilerplate/lib"
 
 import DictionaryProvider from "./provider"
 
@@ -12,7 +11,6 @@ let loadedDictionary: { parsed: TDictionary; original: TInitialDictionary } | nu
 let reducedDictionary = {} as TInitialDictionary
 
 const _loadDictionary = async (lang: Locale) => {
-  logger.info("Loading dictionary")
   const dictionary = await _getDictionary(lang)
   loadedDictionary = dictionary
   return dictionary
