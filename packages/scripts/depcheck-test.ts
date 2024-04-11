@@ -80,6 +80,10 @@ const main = async () => {
         "eslint-plugin-unused-imports",
         "eslint-plugin-custom-rule"
       );
+    } else if (
+      pkg === path.join(rootPath, "configs", "eslint-plugin-custom-rule")
+    ) {
+      options.ignoreMatches.push("eslint-config-custom");
     }
 
     await depcheck(pkg, options).then(async (unused) => {
