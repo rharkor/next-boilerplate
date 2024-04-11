@@ -54,8 +54,7 @@ With this template, you get all the awesomeness you need:
     - [Initialize the project](#initialize-the-project)
     - [Usage within a team](#usage-within-a-team)
   - [🗄️ Monorepo packages](#️-monorepo-packages)
-  - [🚀 Deployment](#-deployment)
-  - [📃 Scripts Overview](#-scripts-overview)
+  - [� Scripts Overview](#-scripts-overview)
   - [🐳 Container Stack](#-container-stack)
     - [Tanstack query](#tanstack-query)
   - [💻 Environment Variables handling](#-environment-variables-handling)
@@ -208,12 +207,6 @@ Port for each package:
 - **App**: `3000`
 - **Docs**: `3001`
 - **Landing**: `3002`
-
-## 🚀 Deployment
-
-Easily deploy your Next.js app with [Vercel](https://vercel.com/new) by clicking the button below:
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Frharkor%2Fnext-boilerplate&env=REDIS_USE_TLS,AUTH_ADMIN_EMAIL,AUTH_ADMIN_PASSWORD,GITHUB_CLIENT_ID,GITHUB_CLIENT_SECRET,NEXTAUTH_SECRET,PASSWORD_HASHER_SECRET&envDescription=Keys%20needed%20to%20start%20the%20application%2C%20please%20see%20other%20env%20required%20like%20database%20and%20redis&envLink=https%3A%2F%2Fgithub.com%2Frharkor%2Fnext-boilerplate%2Fblob%2Fmain%2F.env.example)
 
 ## 📃 Scripts Overview
 
