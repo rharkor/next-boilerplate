@@ -9,17 +9,24 @@ import { z } from "zod"
 import { recover2FASchema } from "@/api/auth/schemas"
 import FormField from "@/components/ui/form"
 import { authRoutes } from "@/constants/auth"
-import { useDictionary } from "@/contexts/dictionary/utils"
+import { TDictionary } from "@/lib/langs"
 import { trpc } from "@/lib/trpc/client"
 import { cn } from "@/lib/utils"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Button } from "@nextui-org/react"
 
+import { Recover2FAFormDr } from "./form.dr"
+
 const formSchema = recover2FASchema
 type IForm = z.infer<ReturnType<typeof formSchema>>
 
-export default function Recover2FAForm({ email }: { email?: string }) {
-  const dictionary = useDictionary()
+export default function Recover2FAForm({
+  email,
+  dictionary,
+}: {
+  email?: string
+  dictionary: TDictionary<typeof Recover2FAFormDr>
+}) {
   const router = useRouter()
 
   const recover2FAMutation = trpc.auth.recover2FA.useMutation({

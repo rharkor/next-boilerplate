@@ -11,7 +11,17 @@ import { Button, Skeleton as NSkeleton } from "@nextui-org/react"
 import GetDeviceIcon from "../get-device-icon"
 
 export type InitialRowProps = {
-  dictionary: TDictionary
+  dictionary: TDictionary<{
+    profilePage: {
+      profileDetails: {
+        lastUsed: true
+        created: true
+        expires: true
+        in: true
+      }
+    }
+    timeUnit: true
+  }>
 }
 
 export type RowProps = InitialRowProps &

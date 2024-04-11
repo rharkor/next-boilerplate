@@ -1,8 +1,13 @@
 import { TDictionary } from "@/lib/langs"
 
 import SessionsTable from "./sessions-table"
+import { UserActiveSessionsDr } from "./user-active-sessions.dr"
 
-export default async function UserActiveSessions({ dictionary }: { dictionary: TDictionary }) {
+export default async function UserActiveSessions({
+  dictionary,
+}: {
+  dictionary: TDictionary<typeof UserActiveSessionsDr>
+}) {
   return (
     <section className="p-2 text-foreground">
       <header>
@@ -11,7 +16,7 @@ export default async function UserActiveSessions({ dictionary }: { dictionary: T
           {dictionary.profilePage.profileDetails.loggedDevicesDescription}
         </p>
       </header>
-      <SessionsTable />
+      <SessionsTable dictionary={dictionary} />
     </section>
   )
 }

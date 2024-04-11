@@ -11,20 +11,19 @@ import { sendVerificationEmail } from "@/api/me/email/mutations"
 import { otpWindow } from "@/constants"
 import { authRoutes, JWT_MAX_AGE } from "@/constants/auth"
 import { env } from "@/lib/env"
-import { i18n, Locale } from "@/lib/i18n-config"
+import { i18n } from "@/lib/i18n-config"
 import { ITrpcContext } from "@/types"
 import { PrismaAdapter } from "@next-auth/prisma-adapter"
-import { logger } from "@next-boilerplate/lib/logger"
+import { logger } from "@next-boilerplate/lib"
 
 import { signInSchema } from "../../api/auth/schemas"
 import { sessionsSchema } from "../../api/me/schemas"
 import { bcryptCompare } from "../bcrypt"
-import { getDictionary, TDictionary } from "../langs"
+import { getDictionary } from "../langs"
 import { prisma } from "../prisma"
 import { redis } from "../redis"
 import { ensureRelativeUrl } from "../utils"
-
-const loadedDictionary: Map<Locale, TDictionary> = new Map()
+import { dictionaryRequirements } from "../utils/dictionary"
 
 export const providers: Provider[] = [
   Credentials({
@@ -41,14 +40,25 @@ export const providers: Provider[] = [
       const referer = req.headers?.referer ?? ""
       const refererUrl = ensureRelativeUrl(referer)
       const lang = i18n.locales.find((locale) => refererUrl.startsWith(`/${locale}/`)) ?? i18n.defaultLocale
-      const dictionary =
-        loadedDictionary.get(lang) ??
-        (await (async () => {
-          //? Load the dictionary
-          const dictionary = await getDictionary(lang)
-          loadedDictionary.set(lang, dictionary)
-          return dictionary
-        })())
+      const dr = dictionaryRequirements(
+        {
+          errors: {
+            password: {
+              max25: true,
+            },
+            wrongProvider: true,
+          },
+        },
+        {
+          errors: {
+            email: {
+              required: true,
+              invalid: true,
+            },
+          },
+        }
+      )
+      const dictionary = await getDictionary(lang, dr)
 
       const creds = signInSchema(dictionary).parse(credentials)
 

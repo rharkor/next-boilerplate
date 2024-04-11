@@ -1,11 +1,11 @@
 {
   "name": "@next-boilerplate/cron",
   "scripts": {
-    "build": "rm -rf dist && npx --package typescript -y tsc && tsc-alias",
-    "sample": "node dist/apps/cron/src/sample/index.js",
+    "build": "tsc && tsc-alias",
+    "sample": "node dist/cron/clear-unused-uploads/index.js",
     "dev:sample": "npm run build && npm run sample",
-    "lint": "eslint --ext .ts,.tsx .",
-    "lint:fix": "eslint --fix --ext .ts,.tsx .",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix .",
     "prettier": "prettier --check \"**/*.{js,jsx,ts,tsx}\"",
     "prettier:fix": "prettier --write \"**/*.{js,jsx,ts,tsx}\""
   },
@@ -13,12 +13,13 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.549.0",
+    "@next-boilerplate/lib": "*",
     "@prisma/client": "^5.9.1",
     "@t3-oss/env-core": "^0.9.2",
     "@types/node": "^20.11.19",
     "chalk": "^5.3.0",
     "custom-prettier-config": "*",
-    "@next-boilerplate/lib": "*",
     "dotenv": "^16.4.4",
     "eslint-config-custom": "*",
     "tsc-alias": "^1.8.8",

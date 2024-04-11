@@ -19,8 +19,10 @@ import { redis } from "@/lib/redis"
 import { html, plainText, subject } from "@/lib/templates/mail/verify-email"
 import { ApiError, ensureLoggedIn, generateRandomSecret, handleApiError } from "@/lib/utils/server-utils"
 import { apiInputFromSchema } from "@/types"
-import { logger } from "@next-boilerplate/lib/logger"
+import { logger } from "@next-boilerplate/lib"
 import { Prisma } from "@prisma/client"
+
+import { signUpResponseSchema } from "../me/schemas"
 
 export const register = async ({ input }: apiInputFromSchema<typeof signUpSchema>) => {
   const { email, password, username } = input
@@ -36,6 +38,9 @@ export const register = async ({ input }: apiInputFromSchema<typeof signUpSchema
         username,
         password: hashedPassword,
         lastLocale: input.locale,
+      },
+      include: {
+        profilePicture: true,
       },
     })
     await redis.setex(`lastLocale:${user.id}`, lastLocaleExpirationInSeconds, input.locale)
@@ -62,7 +67,8 @@ export const register = async ({ input }: apiInputFromSchema<typeof signUpSchema
       logger.debug("Email verification disabled, skipping email sending on registration")
     }
 
-    return { user }
+    const data: z.infer<ReturnType<typeof signUpResponseSchema>> = { user }
+    return data
   } catch (error: unknown) {
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
       if (error.code === "P2002") {

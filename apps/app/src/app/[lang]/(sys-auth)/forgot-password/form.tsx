@@ -10,16 +10,17 @@ import { forgotPasswordSchema } from "@/api/me/schemas"
 import AutoRefresh from "@/components/auto-refresh"
 import FormField from "@/components/ui/form"
 import { resendResetPasswordExpiration } from "@/constants"
-import { useDictionary } from "@/contexts/dictionary/utils"
+import { TDictionary } from "@/lib/langs"
 import { trpc } from "@/lib/trpc/client"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Button, Tooltip } from "@nextui-org/react"
 
+import { ForgotPasswordFormDr } from "./form.dr"
+
 const formSchema = forgotPasswordSchema
 type IForm = z.infer<ReturnType<typeof formSchema>>
 
-export default function ForgotPasswordForm() {
-  const dictionary = useDictionary()
+export default function ForgotPasswordForm({ dictionary }: { dictionary: TDictionary<typeof ForgotPasswordFormDr> }) {
   const [latestEmailSentAt, setLatestEmailSentAt] = useState<number | null>(null)
 
   const forgotPasswordMutation = trpc.me.forgotPassword.useMutation({

@@ -32,6 +32,8 @@ module.exports = {
     "tailwindcss/no-custom-classname": "off",
     "no-console": ["error", { allow: ["warn", "error"] }],
     "custom-rule/no-use-client": "error",
+    "no-process-env": "error",
+    "custom-rule/no-node-modules-import": "error",
   },
   overrides: [
     {
@@ -61,4 +63,5 @@ module.exports = {
       },
     },
   ],
+  ignorePatterns: ["node_modules", ".next", "dist"],
 }

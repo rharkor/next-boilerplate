@@ -8,9 +8,8 @@ import { s3Client } from "@/lib/s3"
 import { stringToSlug } from "@/lib/utils"
 import { ApiError, ensureLoggedIn, handleApiError } from "@/lib/utils/server-utils"
 import { apiInputFromSchema } from "@/types"
-import { DeleteObjectCommand } from "@aws-sdk/client-s3"
 import { createPresignedPost } from "@aws-sdk/s3-presigned-post"
-import { logger } from "@next-boilerplate/lib/logger"
+import { logger } from "@next-boilerplate/lib"
 
 import { presignedUrlResponseSchema, presignedUrlSchema } from "./schemas"
 
@@ -21,13 +20,35 @@ export const presignedUrl = async ({ input, ctx: { session } }: apiInputFromSche
       ApiError("s3ServiceDisabled")
     }
 
-    const { filename, filetype, kind } = input
+    const { filename, filetype } = input
     //? Slug and max length
     const filenameFormatted = stringToSlug(filename).slice(0, 50)
     const Key = randomUUID() + "-" + filenameFormatted
+    const expiresInSeconds = 600 //? 10 minutes
+    const expires = new Date(Date.now() + expiresInSeconds * 1000)
+    const bucket = env.NEXT_PUBLIC_S3_BUCKET_NAME
+    const endpoint = env.NEXT_PUBLIC_S3_ENDPOINT
+    if (!endpoint || !bucket) {
+      logger.error("S3 endpoint or bucket is not defined")
+      ApiError("s3ServiceDisabled")
+    }
 
+    await prisma.fileUploading.create({
+      data: {
+        key: Key,
+        user: {
+          connect: {
+            id: session.user.id,
+          },
+        },
+        expires,
+        bucket,
+        endpoint,
+        filetype,
+      },
+    })
     const { url, fields } = await createPresignedPost(s3Client, {
-      Bucket: env.NEXT_PUBLIC_S3_BUCKET_NAME ?? "",
+      Bucket: bucket,
       Key,
       Conditions: [
         ["content-length-range", 0, maxUploadSize], // up to 10 MB
@@ -37,29 +58,8 @@ export const presignedUrl = async ({ input, ctx: { session } }: apiInputFromSche
         acl: "public-read",
         "Content-Type": filetype,
       },
-      Expires: 600, //? Seconds before the presigned post expires. 3600 by default.
+      Expires: expiresInSeconds, //? Seconds before the presigned post expires. 3600 by default.
     })
-
-    if (kind === "avatar") {
-      //? Delete the old one
-      if (session.user.image) {
-        const command = new DeleteObjectCommand({
-          Bucket: env.NEXT_PUBLIC_S3_BUCKET_NAME,
-          Key: session.user.image,
-        })
-        await s3Client.send(command).catch((e) => {
-          logger.error(e)
-        })
-        await prisma.user.update({
-          where: {
-            id: session.user.id,
-          },
-          data: {
-            image: null,
-          },
-        })
-      }
-    }
 
     const response: z.infer<ReturnType<typeof presignedUrlResponseSchema>> = {
       url,

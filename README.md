@@ -51,6 +51,8 @@ With this template, you get all the awesomeness you need:
   - [📚 Features](#-features)
   - [Table of Contents](#table-of-contents)
   - [🎯 Getting Started](#-getting-started)
+    - [Initialize the project](#initialize-the-project)
+    - [Usage within a team](#usage-within-a-team)
   - [🗄️ Monorepo packages](#️-monorepo-packages)
   - [🚀 Deployment](#-deployment)
   - [📃 Scripts Overview](#-scripts-overview)
@@ -59,10 +61,20 @@ With this template, you get all the awesomeness you need:
   - [💻 Environment Variables handling](#-environment-variables-handling)
   - [📝 Development tips](#-development-tips)
     - [Internationalization](#internationalization)
-      - [Client-side](#client-side)
-      - [Server side](#server-side)
-      - [Loading optimization](#loading-optimization)
+      - [Optimization](#optimization)
+      - [Usage](#usage)
+        - [Server-Side usage](#server-side-usage)
+        - [Client-Side usage](#client-side-usage)
       - [Traduction file](#traduction-file)
+    - [File storage with S3](#file-storage-with-s3)
+      - [Upload files](#upload-files)
+        - [How it works?](#how-it-works)
+        - [What if the client do not send the file link to the server?](#what-if-the-client-do-not-send-the-file-link-to-the-server)
+      - [Dead files](#dead-files)
+    - [Git optimization](#git-optimization)
+      - [Depth clone](#depth-clone)
+      - [Sparse checkout](#sparse-checkout)
+    - [Recommended extensions](#recommended-extensions)
   - [☁️ Cloud deployment](#️-cloud-deployment)
     - [Build](#build)
     - [Build multi-architecture image](#build-multi-architecture-image)
@@ -76,7 +88,7 @@ With this template, you get all the awesomeness you need:
 
 _If you want to use the dev container, please follow the [container stack](#-container-stack) instructions._
 
-To get started with this boilerplate, follow these steps:
+### Initialize the project
 
 1. Fork & clone repository:
 
@@ -97,37 +109,63 @@ npm install
 npm run init
 ```
 
-> If the project is already initialized just run the following command to install git hooks:
->
-> ```bash
-> npm install --global git-conventional-commits
-> git config core.hooksPath .git-hooks
-> ```
-
-4. Install the updated dependencies:
-
-```bash
-npm install
-```
-
-5. Run the development server:
+4. Run the development server:
 
 ```bash
 npm run dev
 ```
 
-6. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+5. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+### Usage within a team
+
+After initializing the project and pushing the changes to the repository, the other team members can follow the following steps:
+
+1. Clone the repository:
+
+```bash
+git clone --depth 1 --filter=blob:none --no-checkout https://github.com/rharkor/next-boilerplate && cd next-boilerplate && git sparse-checkout init --cone && git checkout main
+```
+
+> See more about the clone optimizations [here](#git-optimization).
+
+2. Select the apps you want to work on:
+   As a team member you may not need to work on all the apps, you can select the apps you want to work on by running the following command (for all the repository enter `full` as the team name):
+
+```bash
+./bootstrap.sh <team_name>
+```
+
+Possible values for `<team_name>` are:
+
+- full
+- app
+- cron
+- docs
+- landing
+- infra
+
+3. Install the dependencies:
+
+```bash
+npm install
+```
+
+4. Initialize the project locally:
+
+```bash
+npm run init
+```
 
 ## 🗄️ Monorepo packages
 
 This boilerplate uses [npm workspaces](https://docs.npmjs.com/cli/v7/using-npm/workspaces) to manage multiple packages in one repository.
 The following packages are available:
 
-- `packages/app`: The main application
-- `packages/cron`: The cron jobs
-- `packages/docs`: The documentation website
-- `packages/landing`: The landing page
-- `packages/scripts`: Scripts to help you manage your project
+- `apps/app`: The main application
+- `apps/cron`: The cron jobs
+- `apps/docs`: The documentation website
+- `apps/landing`: The landing page
 
 To run a script in a package, you can use the following command:
 
@@ -138,7 +176,13 @@ npm run <script> --workspace=<package>
 For example, to run the `dev` script in the `app` package, you can use the following command:
 
 ```bash
-npm run dev --workspace=app
+npm run dev --workspace=apps/app
+```
+
+or
+
+```bash
+cd apps/app && npm run dev
 ```
 
 Each package has its own `package.json` file, so you can add dependencies specific to a package.
@@ -147,13 +191,13 @@ Please make sure to add the dependencies to the `package.json` file of the packa
 For example, if you want to add a dependency to the `app` package, you should add it to the `app/package.json` file with the following command:
 
 ```bash
-npm install <package> --workspace=packages/app
+npm install <package> --workspace=apps/app
 ```
 
 or
 
 ```bash
-cd app
+cd apps/app
 npm install <package>
 ```
 
@@ -192,7 +236,6 @@ The following scripts are available in the `package.json`:
 The boilerplate comes with a pre-configured Docker container stack and a dev container. The stack includes the following services:
 
 - **Next.js** - A React framework for building fast and scalable web applications
-- **DocuSaurus** - A modern static website generator (for documentation)
 - **PostgreSQL** - A powerful, open-source relational database system
 - **Redis** - An in-memory data structure store, used as a database, cache, and message broker
 
@@ -205,7 +248,6 @@ Ports:
 - Landing: 3002
 - PostgreSQL: 5432
 - Redis: 6379
-- Desktop (password: vscode): 6080
 
 ### Tanstack query
 
@@ -245,53 +287,205 @@ If the required environment variables are not set, you'll get an error message:
 
 ### Internationalization
 
-#### Client-side
+#### Optimization
 
-```tsx
-import { useDictionary } from "@/contexts/dictionary/utils";
+In order to optimize the dictionary in client side you need to provide some information about what keys you really need from the dictionary. Then it will provide you a dictionary with only the required keys and not all the dictionary.
 
-export default function Home() {
-  const dictionary = useDictionary();
-  return (
-    <div>
-      <h1>{dictionary.hello}</h1>
-    </div>
-  );
-}
+#### Usage
+
+You can define the requirements for the dictionary like the example below. You can either import single keys like `myTitle` or import a whole object like `mySecondPage`.
+
+_When importing a whole object make sure you use almost all the keys inside in order to optimize the dictionary. If that's not the case, just define the needed keys one by one._
+
+```ts
+dictionaryRequirements({
+  myTitle: true,
+  myPage: {
+    title: true,
+  },
+  mySecondPage: true,
+});
 ```
 
-#### Server side
+##### Server-Side usage
 
 ```tsx
+import { MyComponentDr } from "@/components/my-component.dr";
+import MyComponent from "@/components/my-component";
 import { Locale } from "@/lib/i18n-config";
-
 import { getDictionary } from "@/lib/langs";
 
-export default async function Home({
+export default async function Profile({
   params: { lang },
 }: {
   params: {
     lang: Locale;
   };
 }) {
-  const dictionary = await getDictionary(lang);
+  const dictionary = await getDictionary(
+    lang,
+    {
+      profile: true,
+    },
+    MyComponentDr
+  );
 
   return (
-    <div>
-      <h1>{dictionary.hello}</h1>
-    </div>
+    <main className="container m-auto flex flex-1 flex-col items-center justify-center p-6 pb-20">
+      {dictionary.profile}
+      <MyComponent dictionary={dictionary} />
+    </main>
   );
 }
 ```
 
-#### Loading optimization
+In this example we load dictionary for two usages, one for the local component usage and the other for an external component usage.
+To make your life easier we suggest that for each component you create a `my-component.dr.ts` file and define the **dictionary requirements** inside (see Client-Side usage).
 
-The dictionary is loaded on the server and passed on the client only on the first load. If you make any changes to the dictionary, the server will see the difference and send the new dictionary to the client.
+##### Client-Side usage
+
+For each component that require the use of dictionary create a file named `my-component.dr.ts`.
+Then define the requirements inside:
+
+```tsx
+import { dictionaryRequirements } from "@/lib/utils/dictionary";
+
+import { OtherComponentDr } from "./other-component.dr";
+
+export const MyComponentDr = dictionaryRequirements(
+  {
+    profilePage: true,
+  },
+  OtherComponent
+);
+```
+
+In order to use it in your component your can import the Dr definition file and use it with `TDictionary`:
+
+```tsx
+import { TDictionary } from "@/lib/langs";
+
+import OtherComponent from "./other-component";
+import { MyComponentDr } from "./my-component.dr";
+
+export default async function MyComponent({
+  dictionary,
+}: {
+  dictionary: TDictionary<typeof MyComponentDr>;
+}) {
+  return (
+    <section className="p-2 text-foreground">
+      <header>
+        <h3 className="text-lg font-medium">{dictionary.profilePage.title}</h3>
+      </header>
+      <OtherComponent dictionary={dictionary} />
+    </section>
+  );
+}
+```
 
 #### Traduction file
 
-The files for traduction are located in `packages/app/src/langs` or `packages/landing/src/langs` depending on the package you want to use it in.
+The files for traduction are located in `apps/app/src/langs` or `apps/landing/src/langs` depending on the package you want to use it in.
 If you want to add a new language, you can add a new file in the `langs` folder then modify the file `i18n-config.ts` and `langs.ts`.
+
+### File storage with S3
+
+#### Upload files
+
+When you want to upload files to a bucket s3 you have to main choices:
+
+1. Upload the file directly from the client to s3
+2. Upload the file to the server then to s3
+
+Both have their pros and cons. The first one is faster and more secure because the file does not pass through the server. The second one is more secure because you can check the file before uploading it to s3.
+
+In this boilerplate I choose the first solution because uploading the file to your server then to s3 can be expensive in terms of resources and time.
+
+> If you want to use the second solution you can use the `multer` library to upload the file to your server then to s3.
+
+##### How it works?
+
+1. The client sends a request to the server with the file name and file type.
+2. The server sends a signed url to the client.
+3. The client uploads the file to s3 with the signed url.
+4. The client sends the file link to the server.
+5. The server stores the file link in the database.
+
+##### What if the client do not send the file link to the server?
+
+To solve this problem I created a table named `FileUploading` and store all the upload request in it (step 2). Then I created a cron that check if the file is uploaded to s3 and used (see [Dead files](#dead-files)). If the file is not uploaded or not used within the expiration time (10 minutes) the cron delete the file from s3.
+
+#### Dead files
+
+A common problem in storing files to s3 is dead files. Dead files are files that are uploaded to s3 but not used in the application. To solve this problem. It's very hard to detect them manually if you do not set correctly your database.
+
+For example, I upload a profile picture to s3 and I store the link in the database. If I delete the link in the database, the file is still in s3 and not used anymore.
+
+To solve this I add a `File` table in the database, each time you need store a file link please use this table. Now we have a table that store all of our files but what if I need to override a file (like a profile picture). What I recommend is to unlink the `File` with the concerned table (here `User`) but leave the row in the table so the cron will detect it as a dead file an delete it.
+Why not deleting the file directly? Because the logic to delete the file from s3 and the database is in the same place is complex and any error can lead to a data loss and dead files. This is why this logic is centralized in the cron and not in the api route.
+
+### Git optimization
+
+#### Depth clone
+
+When you clone a repository, you can specify the depth of the clone. The depth is the number of commits from the tip of the branch. The depth is useful when you want to clone a repository but you don't need the full history.
+
+Example:
+
+```bash
+git clone --depth 1 <repository-url>
+```
+
+In the (Getting Started)[#getting-started] section, I use the depth clone to clone the repository with only the last commit because you may not need the full history of the repository.
+
+Here are good resources to learn more about the depth clone:
+
+- https://github.blog/2020-12-21-get-up-to-speed-with-partial-clone-and-shallow-clone/
+- https://stackoverflow.com/questions/24107485/how-to-checkout-remote-branch-with-git-clone-depth-1
+
+#### Sparse checkout
+
+When you clone a repository, you can specify the files you want to clone. This is useful when you want to clone a repository but you don't need all the files.
+
+Example:
+
+```bash
+git clone <repository-url> --no-checkout
+```
+
+In case of using this boilerplate with a team I specify the `--no-checkout` flag to clone the repository without the files. Then I use the `git sparse-checkout` command to select the files I want to work on. This is useful when you don't need to work on all the packages.
+
+For example if you only want to work on the `app` package:
+
+```bash
+git sparse-checkout init --cone
+git sparse-checkout set apps/app
+```
+
+In order to avoid knowing all the commands you can use the `bootstrap.sh` script to select the team you want to work on.
+Example with the `app` team:
+
+```bash
+./bootstrap.sh app
+```
+
+You can revert the sparse checkout with the following command:
+
+```bash
+git sparse-checkout disable
+```
+
+Here are good resources to learn more about the sparse checkout:
+
+- https://github.blog/2020-01-17-bring-your-monorepo-down-to-size-with-sparse-checkout/
+
+### Recommended extensions
+
+In order to install all recommended extensions please run:
+`bash ./packages/scripts/install/install-extensions.sh`
+
+> The dev container should install those extensions automatically but you can still execute the command above if there's a problem.
 
 ## ☁️ Cloud deployment
 

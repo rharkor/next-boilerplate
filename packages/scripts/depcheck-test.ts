@@ -4,7 +4,7 @@ import * as fs from "fs";
 import * as path from "path";
 import * as url from "url";
 
-import { logger } from "@next-boilerplate/lib/logger";
+import { logger } from "@next-boilerplate/lib";
 
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 const rootPath = path.join(__dirname, "..");
@@ -80,6 +80,10 @@ const main = async () => {
         "eslint-plugin-unused-imports",
         "eslint-plugin-custom-rule"
       );
+    } else if (
+      pkg === path.join(rootPath, "configs", "eslint-plugin-custom-rule")
+    ) {
+      options.ignoreMatches.push("eslint-config-custom");
     }
 
     await depcheck(pkg, options).then(async (unused) => {

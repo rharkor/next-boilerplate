@@ -7,17 +7,20 @@ import { toast } from "react-toastify"
 
 import GithubSignIn from "@/components/auth/github-sign-in"
 import { authRoutes } from "@/constants/auth"
-import { useDictionary } from "@/contexts/dictionary/utils"
-import { logger } from "@next-boilerplate/lib/logger"
+import { TDictionary } from "@/lib/langs"
+import { logger } from "@next-boilerplate/lib"
 
-export default function Providers({
+import { AuthProvidersDr } from "./providers.dr"
+
+export default function AuthProviders({
   searchParams,
   session,
+  dictionary,
 }: {
   searchParams: { [key: string]: string | string[] | undefined }
   session: Session | null
+  dictionary: TDictionary<typeof AuthProvidersDr>
 }) {
-  const dictionary = useDictionary()
   const callbackUrl = searchParams.callbackUrl ? searchParams.callbackUrl.toString() : undefined
 
   //? If session and callbackUrl, redirect to callbackUrl
