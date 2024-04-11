@@ -61,9 +61,10 @@ With this template, you get all the awesomeness you need:
   - [💻 Environment Variables handling](#-environment-variables-handling)
   - [📝 Development tips](#-development-tips)
     - [Internationalization](#internationalization)
-      - [Client-side](#client-side)
-      - [Server side](#server-side)
-      - [Loading optimization](#loading-optimization)
+      - [Optimization](#optimization)
+      - [Usage](#usage)
+        - [Server-Side usage](#server-side-usage)
+        - [Client-Side usage](#client-side-usage)
       - [Traduction file](#traduction-file)
     - [File storage with S3](#file-storage-with-s3)
       - [Upload files](#upload-files)
@@ -73,6 +74,7 @@ With this template, you get all the awesomeness you need:
     - [Git optimization](#git-optimization)
       - [Depth clone](#depth-clone)
       - [Sparse checkout](#sparse-checkout)
+    - [Recommended extensions](#recommended-extensions)
   - [☁️ Cloud deployment](#️-cloud-deployment)
     - [Build](#build)
     - [Build multi-architecture image](#build-multi-architecture-image)
@@ -285,48 +287,102 @@ If the required environment variables are not set, you'll get an error message:
 
 ### Internationalization
 
-#### Client-side
+#### Optimization
 
-```tsx
-import { useDictionary } from "@/contexts/dictionary/utils";
+In order to optimize the dictionary in client side you need to provide some information about what keys you really need from the dictionary. Then it will provide you a dictionary with only the required keys and not all the dictionary.
 
-export default function Home() {
-  const dictionary = useDictionary();
-  return (
-    <div>
-      <h1>{dictionary.hello}</h1>
-    </div>
-  );
-}
+#### Usage
+
+You can define the requirements for the dictionary like the example below. You can either import single keys like `myTitle` or import a whole object like `mySecondPage`.
+
+_When importing a whole object make sure you use almost all the keys inside in order to optimize the dictionary. If that's not the case, just define the needed keys one by one._
+
+```ts
+dictionaryRequirements({
+  myTitle: true,
+  myPage: {
+    title: true,
+  },
+  mySecondPage: true,
+});
 ```
 
-#### Server side
+##### Server-Side usage
 
 ```tsx
+import { MyComponentDr } from "@/components/my-component.dr";
+import MyComponent from "@/components/my-component";
 import { Locale } from "@/lib/i18n-config";
+import { getDictionary } from "@/lib/langs";
 
-import { getDictionary } from "@/contexts/dictionary/server-utils";
-
-export default async function Home({
+export default async function Profile({
   params: { lang },
 }: {
   params: {
     lang: Locale;
   };
 }) {
-  const dictionary = await getDictionary(lang);
+  const dictionary = await getDictionary(
+    lang,
+    {
+      profile: true,
+    },
+    MyComponentDr
+  );
 
   return (
-    <div>
-      <h1>{dictionary.hello}</h1>
-    </div>
+    <main className="container m-auto flex flex-1 flex-col items-center justify-center p-6 pb-20">
+      {dictionary.profile}
+      <MyComponent dictionary={dictionary} />
+    </main>
   );
 }
 ```
 
-#### Loading optimization
+In this example we load dictionary for two usages, one for the local component usage and the other for an external component usage.
+To make your life easier we suggest that for each component you create a `my-component.dr.ts` file and define the **dictionary requirements** inside (see Client-Side usage).
 
-The dictionary is loaded on the server and passed on the client only on the first load. If you make any changes to the dictionary, the server will see the difference and send the new dictionary to the client.
+##### Client-Side usage
+
+For each component that require the use of dictionary create a file named `my-component.dr.ts`.
+Then define the requirements inside:
+
+```tsx
+import { dictionaryRequirements } from "@/lib/utils/dictionary";
+
+import { OtherComponentDr } from "./other-component.dr";
+
+export const MyComponentDr = dictionaryRequirements(
+  {
+    profilePage: true,
+  },
+  OtherComponent
+);
+```
+
+In order to use it in your component your can import the Dr definition file and use it with `TDictionary`:
+
+```tsx
+import { TDictionary } from "@/lib/langs";
+
+import OtherComponent from "./other-component";
+import { MyComponentDr } from "./my-component.dr";
+
+export default async function MyComponent({
+  dictionary,
+}: {
+  dictionary: TDictionary<typeof MyComponentDr>;
+}) {
+  return (
+    <section className="p-2 text-foreground">
+      <header>
+        <h3 className="text-lg font-medium">{dictionary.profilePage.title}</h3>
+      </header>
+      <OtherComponent dictionary={dictionary} />
+    </section>
+  );
+}
+```
 
 #### Traduction file
 
