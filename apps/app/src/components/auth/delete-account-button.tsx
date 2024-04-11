@@ -5,15 +5,22 @@ import { useRouter } from "next/navigation"
 import { toast } from "react-toastify"
 
 import { authRoutes } from "@/constants/auth"
-import { useDictionary } from "@/contexts/dictionary/utils"
+import { TDictionary } from "@/lib/langs"
 import { trpc } from "@/lib/trpc/client"
 import { Button, Modal, ModalContent, ModalFooter } from "@nextui-org/react"
 
 import { ModalDescription, ModalHeader, ModalTitle } from "../ui/modal"
 
-export default function DeleteAccountButton({ children }: { children: React.ReactNode }) {
+import { DeleteAccountButtonDr } from "./delete-account-button.dr"
+
+export default function DeleteAccountButton({
+  children,
+  dictionary,
+}: {
+  children: React.ReactNode
+  dictionary: TDictionary<typeof DeleteAccountButtonDr>
+}) {
   const router = useRouter()
-  const dictionary = useDictionary()
   const deleteAccountMutation = trpc.me.deleteAccount.useMutation({
     onSuccess: () => {
       toast.success(dictionary.deleteAccountSuccessDescription)

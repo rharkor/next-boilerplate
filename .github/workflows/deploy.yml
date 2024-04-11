@@ -1,4 +1,4 @@
-name: Deployment example
+name: Deployment
 
 on:
   push:
@@ -8,9 +8,29 @@ on:
       - main
 
   workflow_dispatch:
+    inputs:
+      FORCE_APP_DEPLOY:
+        description: "Force deploy app"
+        required: false
+        default: "false"
+      FORCE_DOCS_DEPLOY:
+        description: "Force deploy docs"
+        required: false
+        default: "false"
+      FORCE_CRON_DEPLOY:
+        description: "Force deploy cron"
+        required: false
+        default: "false"
+      FORCE_LANDING_DEPLOY:
+        description: "Force deploy landing"
+        required: false
+        default: "false"
 
 env:
-  TURBO_RUN_FILTER: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.sha || github.event.before }}
+  # push => github.event.before
+  # pull_request => github.event.pull_request.base.sha
+  # workflow_dispatch => HEAD^
+  TURBO_RUN_FILTER: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.sha || github.event_name == 'push' && github.event.before || 'HEAD^' }}
 
 jobs:
   checks:
@@ -50,24 +70,22 @@ jobs:
           path: ${{ github.workspace }}/result.json
       - name: Changed app?
         id: changed-app
-        # 1. Using the 'output' of the 'changeset' step inside the `if` to check if the specific app has changed
-        # 2. When `true`, we store it in the 'output' of the current step.
-        if: ${{ contains(fromJSON(steps.changeset.outputs.result).packages, '@next-boilerplate/app') }}
+        if: ${{ contains(fromJSON(steps.changeset.outputs.result).packages, '@next-boilerplate/app') || github.event.inputs.FORCE_APP_DEPLOY == 'true' }}
         run: |
           echo "result=true" >> $GITHUB_OUTPUT
       - name: Changed docs?
         id: changed-docs
-        if: ${{ contains(fromJSON(steps.changeset.outputs.result).packages, '@next-boilerplate/docs') }}
+        if: ${{ contains(fromJSON(steps.changeset.outputs.result).packages, '@next-boilerplate/docs') || github.event.inputs.FORCE_DOCS_DEPLOY == 'true' }}
         run: |
           echo "result=true" >> $GITHUB_OUTPUT
       - name: Changed cron?
         id: changed-cron
-        if: ${{ contains(fromJSON(steps.changeset.outputs.result).packages, '@next-boilerplate/cron') }}
+        if: ${{ contains(fromJSON(steps.changeset.outputs.result).packages, '@next-boilerplate/cron') || github.event.inputs.FORCE_CRON_DEPLOY == 'true' }}
         run: |
           echo "result=true" >> $GITHUB_OUTPUT
       - name: Changed landing?
         id: changed-landing
-        if: ${{ contains(fromJSON(steps.changeset.outputs.result).packages, '@next-boilerplate/landing') }}
+        if: ${{ contains(fromJSON(steps.changeset.outputs.result).packages, '@next-boilerplate/landing') || github.event.inputs.FORCE_LANDING_DEPLOY == 'true' }}
         run: |
           echo "result=true" >> $GITHUB_OUTPUT
 

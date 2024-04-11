@@ -8,26 +8,30 @@ import * as z from "zod"
 
 import { signUpSchema } from "@/api/auth/schemas"
 import { authRoutes } from "@/constants/auth"
-import { useDictionary } from "@/contexts/dictionary/utils"
 import { handleSignError, handleSignIn } from "@/lib/auth/handle-sign"
 import { TDictionary } from "@/lib/langs"
 import { trpc } from "@/lib/trpc/client"
 import { cn } from "@/lib/utils"
 import { handleMutationError } from "@/lib/utils/client-utils"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { logger } from "@next-boilerplate/lib/logger"
+import { logger } from "@next-boilerplate/lib"
 import { Button } from "@nextui-org/react"
 
 import TotpVerificationModal from "../profile/totp/totp-verification-modal"
 import FormField from "../ui/form"
 
+import { RegisterUserAuthFormDr } from "./register-user-auth-form.dr"
+
 type UserAuthFormProps = React.HTMLAttributes<HTMLFormElement> & {
   isMinimized?: boolean
   searchParams?: { [key: string]: string | string[] | undefined }
   locale: string
+  dictionary: TDictionary<typeof RegisterUserAuthFormDr>
 }
 
-export const formSchema = (dictionary: TDictionary) =>
+export const formSchema = (
+  dictionary: Parameters<typeof signUpSchema>[0] & TDictionary<{ errors: { password: { dontMatch: true } } }>
+) =>
   signUpSchema(dictionary)
     .extend({
       confirmPassword: z.string(),
@@ -43,19 +47,23 @@ export const formSchema = (dictionary: TDictionary) =>
       }
     })
 
-export const formMinizedSchema = (dictionary: TDictionary) =>
+export const formMinizedSchema = (dictionary: Parameters<typeof signUpSchema>[0]) =>
   signUpSchema(dictionary).pick({
     email: true,
   })
 
-export const getFormSchema = ({ dictionary, isMinimized }: { dictionary: TDictionary; isMinimized?: boolean }) =>
-  isMinimized ? formMinizedSchema(dictionary) : formSchema(dictionary)
+export const getFormSchema = ({
+  dictionary,
+  isMinimized,
+}: {
+  dictionary: Parameters<typeof formMinizedSchema>[0] & Parameters<typeof formSchema>[0]
+  isMinimized?: boolean
+}) => (isMinimized ? formMinizedSchema(dictionary) : formSchema(dictionary))
 
 export type IForm = z.infer<ReturnType<typeof formSchema>>
 export type IFormMinimized = z.infer<ReturnType<typeof formMinizedSchema>>
 
-export function RegisterUserAuthForm({ isMinimized, searchParams, locale, ...props }: UserAuthFormProps) {
-  const dictionary = useDictionary()
+export function RegisterUserAuthForm({ isMinimized, searchParams, locale, dictionary, ...props }: UserAuthFormProps) {
   const router = useRouter()
 
   const [isDesactivate2FAModalOpen, setDesactivate2FAModalOpen] = React.useState(false)
@@ -203,6 +211,7 @@ export function RegisterUserAuthForm({ isMinimized, searchParams, locale, ...pro
               autoCorrect="off"
               isDisabled={isLoading}
               passwordStrength
+              dictionary={dictionary}
             />
             <FormField
               form={form}

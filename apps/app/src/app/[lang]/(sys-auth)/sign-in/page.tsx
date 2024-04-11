@@ -2,6 +2,7 @@ import Link from "next/link"
 import { getServerSession } from "next-auth"
 
 import { LoginUserAuthForm } from "@/components/auth/login-user-auth-form"
+import { LoginUserAuthFormDr } from "@/components/auth/login-user-auth-form.dr"
 import { authRoutes } from "@/constants/auth"
 import { nextAuthOptions } from "@/lib/auth"
 import { env } from "@/lib/env"
@@ -11,7 +12,9 @@ import { cn } from "@/lib/utils"
 import { Button } from "@nextui-org/react"
 
 import PrivacyAcceptance from "../privacy-acceptance"
-import Providers from "../providers"
+import { PrivacyAcceptanceDr } from "../privacy-acceptance.dr"
+import AuthProviders from "../providers"
+import { AuthProvidersDr } from "../providers.dr"
 
 export default async function SignInPage({
   searchParams,
@@ -22,7 +25,22 @@ export default async function SignInPage({
     lang: Locale
   }
 }) {
-  const dictionary = await getDictionary(lang)
+  const dictionary = await getDictionary(
+    lang,
+    {
+      signInPage: {
+        loginToYourAccount: true,
+        enterDetails: true,
+      },
+      toSignUp: true,
+      auth: {
+        orContinueWith: true,
+      },
+    },
+    AuthProvidersDr,
+    PrivacyAcceptanceDr,
+    LoginUserAuthFormDr
+  )
   const session = await getServerSession(nextAuthOptions)
 
   return (
@@ -45,7 +63,7 @@ export default async function SignInPage({
             <p className="text-sm text-muted-foreground">{dictionary.signInPage.enterDetails}</p>
           </div>
           <div className="grid gap-6">
-            <LoginUserAuthForm searchParams={searchParams} />
+            <LoginUserAuthForm dictionary={dictionary} searchParams={searchParams} />
             {env.ENABLE_REGISTRATION && (
               <>
                 <div className="relative">
@@ -56,7 +74,7 @@ export default async function SignInPage({
                     <span className="bg-background px-2 text-muted-foreground">{dictionary.auth.orContinueWith}</span>
                   </div>
                 </div>
-                <Providers searchParams={searchParams} session={session} />
+                <AuthProviders dictionary={dictionary} searchParams={searchParams} session={session} />
               </>
             )}
           </div>

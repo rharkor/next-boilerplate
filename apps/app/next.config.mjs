@@ -1,10 +1,11 @@
+/* eslint-disable no-process-env */
 import bunldeAnalyzer from "@next/bundle-analyzer"
 
 /**
  * @type {import('next').NextConfig}
  */
 const config = {
-  output: 'standalone',
+  output: "standalone",
   reactStrictMode: true,
   rewrites() {
     return [

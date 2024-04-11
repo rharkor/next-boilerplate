@@ -36,12 +36,12 @@ enum UserRole {
 }
 
 model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String?   @unique
-  emailVerified DateTime?
-  image         String?
-  accounts      Account[]
+  id             String    @id @default(cuid())
+  name           String?
+  email          String?   @unique
+  emailVerified  DateTime?
+  profilePicture File?
+  accounts       Account[]
 
   // Custom fields
   username                   String?                     @unique
@@ -54,6 +54,7 @@ model User {
   otpSecret                  String                      @default("")
   otpMnemonic                String                      @default("")
   otpVerified                Boolean                     @default(false)
+  uploadsInProgress          FileUploading[]
 
   // Timestamps
   createdAt DateTime @default(now())
@@ -87,4 +88,38 @@ model UserEmailVerificationToken {
   expires    DateTime
   user       User     @relation(fields: [identifier], references: [id], onDelete: Cascade)
   createdAt  DateTime @default(now())
+}
+
+model File {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  filetype  String
+  bucket    String
+  endpoint  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userProfilePictureId String? @unique
+  userProfilePicture   User?   @relation(fields: [userProfilePictureId], references: [id], onDelete: SetNull)
+
+  fileUploadingId String?        @unique
+  fileUploading   FileUploading? @relation(fields: [fileUploadingId], references: [id], onDelete: SetNull)
+}
+
+// Upload in progress
+model FileUploading {
+  id       String   @id @default(cuid())
+  key      String   @unique
+  filetype String
+  bucket   String
+  endpoint String
+  expires  DateTime
+
+  file File?
+
+  userId String?
+  user   User?   @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

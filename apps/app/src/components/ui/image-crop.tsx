@@ -2,52 +2,27 @@
 
 import { ReactEventHandler, useCallback, useEffect, useRef, useState } from "react"
 
-import { useDictionary } from "@/contexts/dictionary/utils"
+import { TDictionary } from "@/lib/langs"
 import { cn } from "@/lib/utils"
 import { Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Spinner } from "@nextui-org/react"
 
+import { CropContentDr, ImageCropDr } from "./image-crop.dr"
+
 type TPosition = "n" | "s" | "w" | "e" | "nw" | "ne" | "sw" | "se"
-
-export default function ImageCrop({
-  originalFile,
-  setFile,
-  isOpen,
-  onOpenChange,
-}: {
-  originalFile: File
-  setFile: (file: File) => void
-  isOpen: boolean
-  onOpenChange: () => void
-}) {
-  const dictionary = useDictionary()
-
-  return (
-    <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="2xl">
-      <ModalContent>
-        {(onClose) => (
-          <>
-            <ModalHeader className="flex flex-col gap-1">{dictionary.cropImage}</ModalHeader>
-            <CropContent onClose={onClose} originalFile={originalFile} setFile={setFile} onOpenChange={onOpenChange} />
-          </>
-        )}
-      </ModalContent>
-    </Modal>
-  )
-}
 
 function CropContent({
   onClose,
   originalFile,
   setFile,
   onOpenChange,
+  dictionary,
 }: {
   onClose: () => void
   originalFile: File
   setFile: (file: File) => void
   onOpenChange: () => void
+  dictionary: TDictionary<typeof CropContentDr>
 }) {
-  const dictionary = useDictionary()
-
   const [isTouched, setIsTouched] = useState(false)
   const [isProcessing, setIsProcessing] = useState(false)
   const imageRef = useRef<HTMLImageElement | null>(null)
@@ -557,5 +532,38 @@ function CropContent({
         </Button>
       </ModalFooter>
     </>
+  )
+}
+
+export default function ImageCrop({
+  originalFile,
+  setFile,
+  isOpen,
+  onOpenChange,
+  dictionary,
+}: {
+  originalFile: File
+  setFile: (file: File) => void
+  isOpen: boolean
+  onOpenChange: () => void
+  dictionary: TDictionary<typeof ImageCropDr>
+}) {
+  return (
+    <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="2xl">
+      <ModalContent>
+        {(onClose) => (
+          <>
+            <ModalHeader className="flex flex-col gap-1">{dictionary.cropImage}</ModalHeader>
+            <CropContent
+              onClose={onClose}
+              originalFile={originalFile}
+              setFile={setFile}
+              onOpenChange={onOpenChange}
+              dictionary={dictionary}
+            />
+          </>
+        )}
+      </ModalContent>
+    </Modal>
   )
 }

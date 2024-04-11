@@ -8,9 +8,9 @@ import * as z from "zod"
 
 import { signInSchema } from "@/api/auth/schemas"
 import { authRoutes } from "@/constants/auth"
-import { useDictionary } from "@/contexts/dictionary/utils"
 import { handleSignError, handleSignIn } from "@/lib/auth/handle-sign"
 import { env } from "@/lib/env"
+import { TDictionary } from "@/lib/langs"
 import { cn, ensureRelativeUrl } from "@/lib/utils"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Button, Card, CardBody, Link } from "@nextui-org/react"
@@ -19,16 +19,18 @@ import TotpVerificationModal from "../profile/totp/totp-verification-modal"
 import Copiable from "../ui/copiable"
 import FormField from "../ui/form"
 
+import { LoginUserAuthFormDr } from "./login-user-auth-form.dr"
+
 type UserAuthFormProps = React.HTMLAttributes<HTMLFormElement> & {
   searchParams: { [key: string]: string | string[] | undefined }
+  dictionary: TDictionary<typeof LoginUserAuthFormDr>
 }
 
 const formSchema = signInSchema
 
 type IForm = z.infer<ReturnType<typeof formSchema>>
 
-export function LoginUserAuthForm({ searchParams, ...props }: UserAuthFormProps) {
-  const dictionary = useDictionary()
+export function LoginUserAuthForm({ searchParams, dictionary, ...props }: UserAuthFormProps) {
   const router = useRouter()
 
   const callbackUrl = ensureRelativeUrl(searchParams.callbackUrl?.toString()) || authRoutes.redirectAfterSignIn

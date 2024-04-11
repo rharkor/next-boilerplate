@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # ZSH
 echo "Installing ZSH... 🚀"
 cp .devcontainer/.zshrc ${ZDOTDIR:-$HOME}/.zshrc

@@ -10,7 +10,12 @@ export default async function Home({
     lang: Locale
   }
 }) {
-  const dictionary = await getDictionary(lang)
+  const dictionary = await getDictionary(lang, {
+    homePage: {
+      title: true,
+    },
+    profile: true,
+  })
 
   return (
     <main className="container m-auto flex min-h-screen flex-1 flex-col items-center justify-center gap-3">

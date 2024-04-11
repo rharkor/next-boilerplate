@@ -4,12 +4,20 @@ import { useRouter } from "next/navigation"
 import { toast } from "react-toastify"
 
 import { authRoutes } from "@/constants/auth"
-import { useDictionary } from "@/contexts/dictionary/utils"
+import { TDictionary } from "@/lib/langs"
 import { trpc } from "@/lib/trpc/client"
 import { Button } from "@nextui-org/react"
 
-export default function VerifyEmailButton({ token }: { token: string }) {
-  const dictionary = useDictionary()
+export default function VerifyEmailButton({
+  token,
+  dictionary,
+}: {
+  token: string
+  dictionary: TDictionary<{
+    verifyEmail: true
+    verifyEmailSuccessDescription: true
+  }>
+}) {
   const router = useRouter()
 
   const verifyEmail = trpc.me.verifyEmail.useMutation({

@@ -2,6 +2,7 @@ import Link from "next/link"
 import { getServerSession } from "next-auth"
 
 import { RegisterUserAuthForm } from "@/components/auth/register-user-auth-form"
+import { RegisterUserAuthFormDr } from "@/components/auth/register-user-auth-form.dr"
 import { authRoutes } from "@/constants/auth"
 import { nextAuthOptions } from "@/lib/auth"
 import { Locale } from "@/lib/i18n-config"
@@ -10,7 +11,9 @@ import { cn } from "@/lib/utils"
 import { Button } from "@nextui-org/react"
 
 import PrivacyAcceptance from "../privacy-acceptance"
-import Providers from "../providers"
+import { PrivacyAcceptanceDr } from "../privacy-acceptance.dr"
+import AuthProviders from "../providers"
+import { AuthProvidersDr } from "../providers.dr"
 
 export default async function SignUpPage({
   searchParams,
@@ -21,7 +24,22 @@ export default async function SignUpPage({
     lang: Locale
   }
 }) {
-  const dictionary = await getDictionary(lang)
+  const dictionary = await getDictionary(
+    lang,
+    {
+      login: true,
+      signUpPage: {
+        createAnAccount: true,
+        enterEmail: true,
+      },
+      auth: {
+        orContinueWith: true,
+      },
+    },
+    AuthProvidersDr,
+    PrivacyAcceptanceDr,
+    RegisterUserAuthFormDr
+  )
   const session = await getServerSession(nextAuthOptions)
 
   return (
@@ -42,7 +60,7 @@ export default async function SignUpPage({
             <p className="text-sm text-muted-foreground">{dictionary.signUpPage.enterEmail}</p>
           </div>
           <div className="grid gap-6">
-            <RegisterUserAuthForm isMinimized searchParams={searchParams} locale={lang} />
+            <RegisterUserAuthForm dictionary={dictionary} isMinimized searchParams={searchParams} locale={lang} />
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
                 <span className="w-full border-t" />
@@ -51,7 +69,7 @@ export default async function SignUpPage({
                 <span className="bg-background px-2 text-muted-foreground">{dictionary.auth.orContinueWith}</span>
               </div>
             </div>
-            <Providers searchParams={searchParams} session={session} />
+            <AuthProviders dictionary={dictionary} searchParams={searchParams} session={session} />
           </div>
           <PrivacyAcceptance dictionary={dictionary} />
         </div>
