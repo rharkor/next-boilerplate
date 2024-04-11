@@ -6,19 +6,26 @@ import { toast } from "react-toastify"
 
 import { maxUploadSize } from "@/constants"
 import { useAccount } from "@/contexts/account"
-import { useDictionary } from "@/contexts/dictionary/utils"
+import { TDictionary } from "@/lib/langs"
 import { trpc } from "@/lib/trpc/client"
 import { cn } from "@/lib/utils"
 import { getImageUrl } from "@/lib/utils/client-utils"
-import { logger } from "@next-boilerplate/lib/logger"
+import { logger } from "@next-boilerplate/lib"
 import { Avatar, Button, Modal, ModalBody, ModalContent, Skeleton, Spinner } from "@nextui-org/react"
 
 import { Icons } from "../icons"
 import FileUpload from "../ui/file-upload"
 import { ModalHeader, ModalTitle } from "../ui/modal"
 
-export default function UpdateAvatar({ account }: { account: ReturnType<typeof useAccount> }) {
-  const dictionary = useDictionary()
+import { UpdateAvatarDr } from "./avatar.dr"
+
+export default function UpdateAvatar({
+  account,
+  dictionary,
+}: {
+  account: ReturnType<typeof useAccount>
+  dictionary: TDictionary<typeof UpdateAvatarDr>
+}) {
   const utils = trpc.useUtils()
 
   const getPresignedUrlMutation = trpc.upload.presignedUrl.useMutation()
@@ -42,7 +49,6 @@ export default function UpdateAvatar({ account }: { account: ReturnType<typeof u
       const { url, fields } = await getPresignedUrlMutation.mutateAsync({
         filename: file.name,
         filetype: file.type,
-        kind: "avatar",
       })
 
       try {
@@ -59,7 +65,7 @@ export default function UpdateAvatar({ account }: { account: ReturnType<typeof u
 
         if (uploadResponse.ok) {
           await updateUserMutation.mutateAsync({
-            image: fields.key,
+            profilePictureKey: fields.key,
           })
 
           utils.me.getAccount.invalidate()
@@ -88,7 +94,7 @@ export default function UpdateAvatar({ account }: { account: ReturnType<typeof u
 
   const handleDelete = async () => {
     await updateUserMutation.mutateAsync({
-      image: null,
+      profilePictureKey: null,
     })
 
     utils.me.getAccount.invalidate()
@@ -111,7 +117,7 @@ export default function UpdateAvatar({ account }: { account: ReturnType<typeof u
         <Skeleton isLoaded={!account.isLoading} className={cn("rounded-full")}>
           <Avatar
             className="!size-20 text-large"
-            src={getImageUrl(account.data?.user.image) || undefined}
+            src={getImageUrl(account.data?.user.profilePicture) || undefined}
             name={account.data?.user.username || undefined}
             onClick={() => setShowModal(true)}
           />
@@ -133,7 +139,7 @@ export default function UpdateAvatar({ account }: { account: ReturnType<typeof u
           className={cn(
             "absolute right-0 top-0 h-[unset] min-w-0 rounded-full p-1.5 text-foreground opacity-0 transition-all duration-200 focus:opacity-100 group-hover:opacity-100 group-focus:opacity-100",
             {
-              hidden: account.isLoading || !account.data?.user.image,
+              hidden: account.isLoading || !account.data?.user.profilePicture,
             }
           )}
           onPress={() => handleDelete()}
@@ -159,6 +165,7 @@ export default function UpdateAvatar({ account }: { account: ReturnType<typeof u
           <ModalBody>
             <form onSubmit={handleSubmit} className="flex flex-col gap-2">
               <FileUpload
+                dictionary={dictionary}
                 onFilesChange={(files) => {
                   setFile(files[0])
                 }}

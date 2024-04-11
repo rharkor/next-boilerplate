@@ -3,7 +3,7 @@ import requestIp from "request-ip"
 
 import { RATE_LIMIT_DURATION, RATE_LIMIT_PER_INTERVAL } from "@/constants/rate-limit"
 import { env } from "@/lib/env"
-import { logger } from "@next-boilerplate/lib/logger"
+import { logger } from "@next-boilerplate/lib"
 
 import { ApiError } from "./utils/server-utils"
 import { redis as client } from "./redis"

@@ -7,25 +7,31 @@ import * as z from "zod"
 
 import { updateUserSchema } from "@/api/me/schemas"
 import { useAccount } from "@/contexts/account"
-import { useDictionary } from "@/contexts/dictionary/utils"
 import { env } from "@/lib/env"
+import { TDictionary } from "@/lib/langs"
 import { trpc } from "@/lib/trpc/client"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { logger } from "@next-boilerplate/lib/logger"
+import { logger } from "@next-boilerplate/lib"
 
 import FormField from "../ui/form"
 import NeedSavePopup from "../ui/need-save-popup"
 
 import GenerateTotp from "./totp/generate"
 import UpdateAvatar from "./avatar"
+import { UpdateAccountDr } from "./update-account.dr"
 
 //? Put only the fields you can update withou password confirmation
 const nonSensibleSchema = updateUserSchema
 
 type INonSensibleForm = z.infer<ReturnType<typeof nonSensibleSchema>>
 
-export default function UpdateAccount({ sessionHasVerifiedEmail }: { sessionHasVerifiedEmail: boolean }) {
-  const dictionary = useDictionary()
+export default function UpdateAccount({
+  sessionHasVerifiedEmail,
+  dictionary,
+}: {
+  sessionHasVerifiedEmail: boolean
+  dictionary: TDictionary<typeof UpdateAccountDr>
+}) {
   const utils = trpc.useUtils()
 
   const { update } = useSession()
@@ -77,7 +83,7 @@ export default function UpdateAccount({ sessionHasVerifiedEmail }: { sessionHasV
   return (
     <div className="relative mt-2 flex flex-col gap-4">
       <div className="mt-3 flex flex-row items-center gap-3">
-        <UpdateAvatar account={account} />
+        <UpdateAvatar account={account} dictionary={dictionary} />
         <div className="flex flex-1 flex-col gap-2">
           <form onSubmit={form.handleSubmit(onUpdateNonSensibleInforation)} className="grid gap-2">
             <FormField
@@ -97,7 +103,7 @@ export default function UpdateAccount({ sessionHasVerifiedEmail }: { sessionHasV
           </form>
         </div>
       </div>
-      <GenerateTotp account={account} />
+      <GenerateTotp account={account} dictionary={dictionary} />
       {!hasVerifiedEmail && (
         <div className="absolute -inset-2 z-10 !m-0 flex items-center justify-center backdrop-blur-sm">
           <p className="text-center text-sm font-semibold text-muted-foreground">

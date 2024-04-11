@@ -3,6 +3,7 @@ import { redirect } from "next/navigation"
 import { ChevronRight } from "lucide-react"
 
 import { RegisterUserAuthForm } from "@/components/auth/register-user-auth-form"
+import { RegisterUserAuthFormDr } from "@/components/auth/register-user-auth-form.dr"
 import CardTitle from "@/components/ui/card"
 import { authRoutes } from "@/constants/auth"
 import { Locale } from "@/lib/i18n-config"
@@ -18,7 +19,15 @@ export default async function SignupByCredentials({
     lang: Locale
   }
 }) {
-  const dictionary = await getDictionary(lang)
+  const dictionary = await getDictionary(
+    lang,
+    {
+      signUpPage: {
+        createAnAccount: true,
+      },
+    },
+    RegisterUserAuthFormDr
+  )
 
   //? If there is no email in the search params, redirect to the sign-up page
   if (!searchParams.email) {
@@ -37,7 +46,7 @@ export default async function SignupByCredentials({
           <CardTitle>{dictionary.signUpPage.createAnAccount}</CardTitle>
         </CardHeader>
         <CardBody>
-          <RegisterUserAuthForm className="gap-3" searchParams={searchParams} locale={lang} />
+          <RegisterUserAuthForm dictionary={dictionary} className="gap-3" searchParams={searchParams} locale={lang} />
         </CardBody>
       </Card>
     </main>

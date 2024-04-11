@@ -4,12 +4,13 @@ import {
   generateTotpSecretResponseSchema,
   recover2FAResponseSchema,
   recover2FASchema,
-  signUpResponseSchema,
   signUpSchema,
   verifyTotpResponseSchema,
   verifyTotpSchema,
 } from "@/api/auth/schemas"
 import { authenticatedProcedure, publicProcedure, router } from "@/lib/server/trpc"
+
+import { signUpResponseSchema } from "../me/schemas"
 
 import { desactivateTotp, generateTotpSecret, recover2FA, register, verifyTotp } from "./mutations"
 

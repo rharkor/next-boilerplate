@@ -1,5 +1,7 @@
 {
+  "test": "Test {myTest}",
   "errors": {
+    "fileNotFound": "File not found.",
     "couldNotIdentifyIp": "Could not identify your IP address.",
     "tooManyRequests": "Too many requests. Please try again in a few minutes.",
     "notImplemented": "Not implemented.",

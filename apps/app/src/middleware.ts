@@ -29,6 +29,10 @@ function getLocale(request: NextRequest): string | undefined {
 export function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname
 
+  // Inject the current url in the headers
+  const rHeaders = new Headers(request.headers)
+  rHeaders.set("x-url", request.url)
+
   // `/_next/` and `/api/` are ignored by the watcher, but we need to ignore files in `public` manually.
   // If you have one
   if (
@@ -51,11 +55,16 @@ export function middleware(request: NextRequest) {
     const localeInPathname =
       i18n.locales.find((locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`) || ""
     const presentLocale = getLocale(request) || i18n.defaultLocale
-    const response = NextResponse.next()
+    const response = NextResponse.next({
+      request: {
+        headers: rHeaders,
+      },
+    })
     if (localeInPathname !== presentLocale) {
       response.cookies.set("saved-locale", localeInPathname, {
         path: "/",
         sameSite: "lax",
+        // eslint-disable-next-line no-process-env
         secure: process.env.NODE_ENV === "production",
       })
     }
@@ -74,6 +83,12 @@ export function middleware(request: NextRequest) {
     const redirectUrl = new URL(`/${locale}${pathname.startsWith("/") ? "" : "/"}${pathname}?${params}`, request.url)
     return NextResponse.redirect(redirectUrl)
   }
+
+  return NextResponse.next({
+    request: {
+      headers: rHeaders,
+    },
+  })
 }
 
 export const config = {

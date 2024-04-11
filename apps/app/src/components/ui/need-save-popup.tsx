@@ -1,3 +1,4 @@
+import { TDictionary } from "@/lib/langs"
 import { cn } from "@/lib/utils"
 import { Button } from "@nextui-org/react"
 
@@ -7,10 +8,10 @@ export type INeedSavePopupProps = {
   onSave?: () => void
   text: string
   isSubmitting?: boolean
-  dictionary: {
-    reset: string
-    saveChanges: string
-  }
+  dictionary: TDictionary<{
+    reset: true
+    saveChanges: true
+  }>
 }
 
 export default function NeedSavePopup({ show, onReset, onSave, text, isSubmitting, dictionary }: INeedSavePopupProps) {

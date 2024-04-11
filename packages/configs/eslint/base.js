@@ -1,6 +1,7 @@
+/** @type {import("eslint").Linter.Config} */
 module.exports = {
   extends: ["prettier", "plugin:@typescript-eslint/recommended"],
-  plugins: ["@typescript-eslint", "unused-imports", "simple-import-sort"],
+  plugins: ["@typescript-eslint", "unused-imports", "simple-import-sort", "custom-rule"],
   rules: {
     "unused-imports/no-unused-imports": "error",
     "@typescript-eslint/no-unused-vars": [
@@ -14,6 +15,8 @@ module.exports = {
     "simple-import-sort/imports": "error",
     "simple-import-sort/exports": "error",
     "no-console": ["error", { allow: ["warn", "error"] }],
+    "no-process-env": "error",
+    "custom-rule/no-node-modules-import": "error",
   },
   overrides: [
     {
@@ -43,4 +46,5 @@ module.exports = {
       },
     },
   ],
+  ignorePatterns: ["node_modules", ".next", "dist"],
 }

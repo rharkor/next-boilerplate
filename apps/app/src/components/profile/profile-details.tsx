@@ -1,12 +1,12 @@
 import { TDictionary } from "@/lib/langs"
 
+import { ProfileDetailsDr } from "./profile-details.dr"
 import UpdateAccount from "./update-account"
-
 export default async function ProfileDetails({
   dictionary,
   hasVerifiedEmail,
 }: {
-  dictionary: TDictionary
+  dictionary: TDictionary<typeof ProfileDetailsDr>
   hasVerifiedEmail: boolean
 }) {
   return (
@@ -17,7 +17,7 @@ export default async function ProfileDetails({
           {dictionary.profilePage.profileDetails.updateAccountDescription}
         </p>
       </header>
-      <UpdateAccount sessionHasVerifiedEmail={hasVerifiedEmail} />
+      <UpdateAccount sessionHasVerifiedEmail={hasVerifiedEmail} dictionary={dictionary} />
     </section>
   )
 }
