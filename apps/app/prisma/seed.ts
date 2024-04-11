@@ -5,19 +5,9 @@ import { Spinner } from "cli-spinner"
 
 import { rolesAsObject } from "@/constants"
 import { hash } from "@/lib/bcrypt"
-import { logger } from "@next-boilerplate/lib/logger"
+import { env } from "@/lib/env"
+import { logger } from "@next-boilerplate/lib"
 import { PrismaClient } from "@prisma/client"
-
-const env = {
-  AUTH_ADMIN_EMAIL: process.env.AUTH_ADMIN_EMAIL,
-  AUTH_ADMIN_PASSWORD: process.env.AUTH_ADMIN_PASSWORD,
-  PASSWORD_HASHER_SECRET: process.env.PASSWORD_HASHER_SECRET,
-}
-
-if (!env.AUTH_ADMIN_EMAIL || !env.AUTH_ADMIN_PASSWORD || !env.PASSWORD_HASHER_SECRET) {
-  logger.error("Missing AUTH_ADMIN_EMAIL or AUTH_ADMIN_PASSWORD or PASSWORD_HASHER_SECRET")
-  process.exit(1)
-}
 
 let spinner: Spinner | null = null
 
@@ -29,7 +19,7 @@ const handleAction = async (actionName: string, doneName: string, action: Promis
   spinner.start()
   await action
   spinner.stop(true)
-  logger.log(doneName)
+  logger.info(doneName)
 }
 
 async function main() {
@@ -55,6 +45,8 @@ async function main() {
           },
         })
       )
+    } else {
+      logger.log("Admin already exists")
     }
   } catch (e) {
     logger.error(e)

@@ -1,6 +1,13 @@
-Dockerfile
-.dockerignore
+*Dockerfile*
 node_modules
 npm-debug.log
-dist
-.docusaurus
+**/dist
+**/.docusaurus
+**/build
+**/.next
+.dockerignore
+.git
+**/.gitignore
+README.md
+LICENSE
+.vscode

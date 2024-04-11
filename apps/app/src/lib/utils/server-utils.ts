@@ -3,7 +3,7 @@ import base32Encode from "base32-encode"
 import { z } from "zod"
 
 import { Path } from "@/types"
-import { logger } from "@next-boilerplate/lib/logger"
+import { logger } from "@next-boilerplate/lib"
 import { Prisma } from "@prisma/client"
 import { TRPCError } from "@trpc/server"
 import { TRPC_ERROR_CODE_KEY } from "@trpc/server/rpc"
@@ -17,7 +17,7 @@ export const parseRequestBody = async <T>(
   const reqData = (await req.json()) as T
   const bodyParsedResult = schema.safeParse(reqData)
   if (!bodyParsedResult.success)
-    return { error: ApiError(bodyParsedResult.error.message as Path<TDictionary["errors"]>) }
+    return { error: ApiError(bodyParsedResult.error.message as Path<TDictionary<{ errors: true }>["errors"]>) }
   return { data: bodyParsedResult.data }
 }
 
@@ -29,7 +29,7 @@ export const handleApiError = (error: unknown) => {
     if (error instanceof Prisma.PrismaClientValidationError || error instanceof Prisma.PrismaClientKnownRequestError)
       ApiError("unknownError", "INTERNAL_SERVER_ERROR")
     else if (error instanceof Error)
-      return ApiError(error.message as Path<TDictionary["errors"]>, "INTERNAL_SERVER_ERROR")
+      return ApiError(error.message as Path<TDictionary<{ errors: true }>["errors"]>, "INTERNAL_SERVER_ERROR")
     return ApiError("unknownError", "INTERNAL_SERVER_ERROR")
   }
 }
@@ -43,7 +43,11 @@ export type TErrorMessage = {
   extra?: object
 }
 
-export function ApiError(message: Path<TDictionary["errors"]>, code?: TRPC_ERROR_CODE_KEY, extra?: object): never {
+export function ApiError(
+  message: Path<TDictionary<{ errors: true }>["errors"]>,
+  code?: TRPC_ERROR_CODE_KEY,
+  extra?: object
+): never {
   const data: TErrorMessage = { message, extra }
   throw new TRPCError({
     code: code ?? "BAD_REQUEST",

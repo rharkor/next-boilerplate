@@ -25,4 +25,5 @@ export const prisma =
     },
   })
 
+// eslint-disable-next-line no-process-env
 if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma

@@ -1,6 +1,7 @@
 import { randomUUID } from "crypto"
+import { z } from "zod"
 
-import { forgotPasswordSchema, resetPasswordSchema } from "@/api/me/schemas"
+import { forgotPasswordSchema, resetPasswordResponseSchema, resetPasswordSchema } from "@/api/me/schemas"
 import { resendResetPasswordExpiration, resetPasswordExpiration, rolesAsObject } from "@/constants"
 import { hash } from "@/lib/bcrypt"
 import { env } from "@/lib/env"
@@ -10,7 +11,7 @@ import { prisma } from "@/lib/prisma"
 import { html, plainText, subject } from "@/lib/templates/mail/reset-password"
 import { ApiError, handleApiError } from "@/lib/utils/server-utils"
 import { apiInputFromSchema } from "@/types"
-import { logger } from "@next-boilerplate/lib/logger"
+import { logger } from "@next-boilerplate/lib"
 
 export const forgotPassword = async ({ input }: apiInputFromSchema<typeof forgotPasswordSchema>) => {
   try {
@@ -113,7 +114,8 @@ export const resetPassword = async ({ input }: apiInputFromSchema<typeof resetPa
       },
     })
 
-    return { user: resetPassordToken.user }
+    const data: z.infer<ReturnType<typeof resetPasswordResponseSchema>> = { success: true }
+    return data
   } catch (error: unknown) {
     return handleApiError(error)
   }

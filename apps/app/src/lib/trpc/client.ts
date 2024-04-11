@@ -13,6 +13,7 @@ export const trpcClient = trpc.createClient({
     // adds pretty logs to your console in development and logs errors in production
     loggerLink({
       enabled: (opts) =>
+        // eslint-disable-next-line no-process-env
         (process.env.NODE_ENV === "development" && typeof window !== "undefined") ||
         (opts.direction === "down" && opts.result instanceof Error),
     }),

@@ -10,10 +10,12 @@
     "prettier": "turbo run prettier",
     "prettier:fix": "turbo run prettier:fix",
     "test": "turbo run test",
-    "init": "npm run init -w packages/scripts",
-    "init:env": "npm run init:env -w packages/scripts",
-    "depcheck": "npm run depcheck -w packages/scripts",
-    "is-initialized": "npm run is-initialized -w packages/scripts",
+    "init": "npm run -s init -w packages/scripts && npm run -s init:env && npm run -s init:build && npm run -s init:coding-env",
+    "init:env": "npm run -s init:env -w packages/scripts",
+    "init:build": "turbo run build --filter='@next-boilerplate/*'^...",
+    "init:coding-env": "bash ./packages/scripts/install/install.sh devcontainer",
+    "depcheck": "npm run -s depcheck -w packages/scripts",
+    "is-initialized": "npm run -s is-initialized -w packages/scripts",
     "preinstall": "npx --yes only-allow-many npm"
   },
   "workspaces": [
@@ -30,7 +32,7 @@
     "@semantic-release/release-notes-generator": "^13.0.0",
     "conventional-changelog-conventionalcommits": "^7.0.2",
     "semantic-release": "^23.0.0",
-    "turbo": "^1.12.5"
+    "turbo": "^1.13.2"
   },
   "license": "MIT",
   "version": "3.7.0-rec-release.6"

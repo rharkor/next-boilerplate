@@ -1,4 +1,6 @@
 FROM node:20-alpine AS base
+# Install turbo-cli
+RUN npm install turbo --global
 
 FROM base AS deps
 
@@ -10,6 +12,7 @@ ENV NODE_ENV production
 #? Copy the necessary files to install dependencies
 COPY package.json ./
 COPY package-lock.json ./
+COPY turbo.json ./
 
 COPY apps/landing/package.json ./apps/landing/package.json
 
@@ -37,7 +40,7 @@ COPY packages/configs ./packages/configs
 COPY packages/lib ./packages/lib
 
 
-RUN npm run build -w apps/landing
+RUN turbo run build --filter=@next-boilerplate/landing
 
 
 FROM base AS runner
