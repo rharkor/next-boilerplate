@@ -1,67 +1,17 @@
+#! This docker-compose is meant to be used for local development only.
+
+name: next-boilerplate
 services:
-  app:
-    build:
-      context: ..
-      dockerfile: packages/app/Dockerfile
-    container_name: #{PROJECT_NAME}#_app
-    restart: unless-stopped
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "50m"
-    ports:
-      - "3000:3000"
-
-  cron:
-    build:
-      context: ..
-      dockerfile: packages/cron/Dockerfile
-    container_name: #{PROJECT_NAME}#_cron
-    restart: unless-stopped
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "50m"
-
-  doc:
-    build:
-      context: ..
-      dockerfile: packages/docs/Dockerfile
-    container_name: #{PROJECT_NAME}#_doc
-    restart: unless-stopped
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "50m"
-    ports:
-      - "3001:3000"
-    #? You can comment the volumes section if you are not using the static files
-    volumes:
-      - .:/docs/.docusaurus
-
-  landing:
-    build:
-      context: ..
-      dockerfile: packages/landing/Dockerfile
-    container_name: #{PROJECT_NAME}#_landing
-    restart: unless-stopped
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "50m"
-    ports:
-      - "3002:3000"
-
   db:
     image: postgres:latest
-    container_name: #{PROJECT_NAME}#_db
+    container_name: next-boilerplate_db
     restart: unless-stopped
     volumes:
-      -  #{PROJECT_NAME}#-postgres-data:/var/lib/postgresql/data
+      - next-boilerplate-postgres-data:/var/lib/postgresql/data
     environment:
-      POSTGRES_USER: ${DATABASE_USER}
-      POSTGRES_PASSWORD: ${DATABASE_PASS}
-      POSTGRES_DB: ${DATABASE_NAME}
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
 
     logging:
       driver: "json-file"
@@ -73,17 +23,17 @@ services:
   redis:
     image: redis:latest
     restart: unless-stopped
-    container_name: #{PROJECT_NAME}#_redis
-    command: /bin/sh -c "redis-server --requirepass ${REDIS_PASSWORD}"
+    container_name: next-boilerplate_redis
+    command: /bin/sh -c "redis-server"
     logging:
       driver: "json-file"
       options:
         max-size: "50m"
     volumes:
-      -  #{PROJECT_NAME}#-redis-data:/data
+      - next-boilerplate-redis-data:/data
     ports:
       - "6379:6379"
 
 volumes:
-  #{PROJECT_NAME}#-postgres-data:
-  #{PROJECT_NAME}#-redis-data:
+  next-boilerplate-postgres-data:
+  next-boilerplate-redis-data:

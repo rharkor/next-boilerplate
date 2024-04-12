@@ -1,16 +1,17 @@
 import chalk from "chalk";
-import { completeInitialisation } from "complete-initialisation";
 import { config } from "dotenv";
-import { envSetup } from "env-setup";
 import * as fs from "fs/promises";
-import { modulesSelection } from "modules-selection";
 import { exit } from "node:process";
-import { packagesSelection } from "packages-selection";
 import * as path from "path";
-import { replaceTokens } from "replace-tokens";
 import * as url from "url";
 
 import { logger } from "@next-boilerplate/lib";
+
+import { completeInitialisation } from "./complete-initialisation";
+import { dbSetup } from "./db-setup";
+import { modulesSelection } from "./modules-selection";
+import { packagesSelection } from "./packages-selection";
+import { replaceTokens } from "./replace-tokens";
 
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 const rootPath = path.join(__dirname, "..");
@@ -40,7 +41,7 @@ async function main() {
     await replaceTokens();
     logger.log(chalk.green("Done!"));
   } else {
-    logger.log(chalk.yellow("Skipping replaceTokens()"));
+    logger.log(chalk.gray("Skipping replaceTokens()"));
   }
 
   if (!alreadyInitialized) {
@@ -51,8 +52,8 @@ async function main() {
     logger.log(chalk.gray("Skipping packagesSelection()"));
   }
 
-  logger.log(chalk.blue('Starting the "env setup" script...'));
-  await envSetup();
+  logger.log(chalk.blue('Starting the "db setup" script...'));
+  await dbSetup();
   logger.log(chalk.green("Done!"));
 
   logger.log(chalk.blue('Starting the "complete initialisation" script...'));
