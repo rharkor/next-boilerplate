@@ -86,30 +86,11 @@ export const replaceTokens = async () => {
         `${dir}/package-lock.json`,
         `${dir}/**/replace-tokens.ts`,
       ];
-      const tsFiles = await glob(`${dir}/**/*.{ts,tsx}`, {
+      const files = await glob(`${dir}/**`, {
         ignore,
+        nodir: true,
       });
-      const pjsonFiles = await glob(`${dir}/**/package.json`, {
-        ignore,
-      });
-      const workflows = await glob(`${dir}/**/.github/workflows/*`, {
-        ignore,
-      });
-      const docker = await glob(`${dir}/docker/*`, {
-        ignore,
-      });
-      const infra = await glob(`${dir}/infra/*`, {
-        ignore,
-      });
-      const allFiles = Array.from(
-        new Set(
-          tsFiles
-            .concat(pjsonFiles)
-            .concat(workflows)
-            .concat(docker)
-            .concat(infra)
-        )
-      );
+      const allFiles = files;
       await Promise.all(allFiles.map((file) => replaceTextInFile(file)));
     }
 
