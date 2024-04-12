@@ -73,6 +73,7 @@ With this template, you get all the awesomeness you need:
       - [Depth clone](#depth-clone)
       - [Sparse checkout](#sparse-checkout)
     - [Recommended extensions](#recommended-extensions)
+    - [Database \& Redis](#database--redis)
   - [☁️ Cloud deployment](#️-cloud-deployment)
     - [Build](#build)
     - [Build multi-architecture image](#build-multi-architecture-image)
@@ -471,6 +472,18 @@ In order to install all recommended extensions please run:
 `bash ./packages/scripts/install/install-extensions.sh`
 
 > The dev container should install those extensions automatically but you can still execute the command above if there's a problem.
+
+### Database & Redis
+
+By default the boilerplate needs a PostgreSQL and Redis database to work.
+
+If you are using the devcontainer those services will start automatically when opening the project in vsCode.
+
+If you are not using the devcontainer you can start the services with the following command:
+
+```bash
+docker-compose up -f ./docker/docker-compose.local.yml -d
+```
 
 ## ☁️ Cloud deployment
 
