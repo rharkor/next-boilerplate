@@ -94,11 +94,15 @@ export const replaceTokens = async () => {
       const infra = await glob(`${dir}/infra/*`, {
         ignore,
       });
-      const allFiles = tsFiles
-        .concat(pjsonFiles)
-        .concat(workflows)
-        .concat(docker)
-        .concat(infra);
+      const allFiles = Array.from(
+        new Set(
+          tsFiles
+            .concat(pjsonFiles)
+            .concat(workflows)
+            .concat(docker)
+            .concat(infra)
+        )
+      );
       await Promise.all(allFiles.map((file) => replaceTextInFile(file)));
     }
 
