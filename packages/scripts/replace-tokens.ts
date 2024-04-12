@@ -51,7 +51,7 @@ export const replaceTokens = async () => {
     // Function to replace text in a file
     const search = token.token;
     const value = token.answer;
-    async function replaceTextInFile(filePath: string) {
+    async function replaceTextInFile(filePath: string, baseDir: string) {
       const getFileContent = async () => {
         if (filesCache[filePath]) return filesCache[filePath];
         try {
@@ -68,9 +68,9 @@ export const replaceTokens = async () => {
         if (content.includes(search)) {
           const replacedContent = content.replaceAll(search, value);
           await fs.promises.writeFile(filePath, replacedContent, "utf8");
-          logger.log(chalk.gray(`Done for ${filePath}`));
+          logger.log(chalk.gray(`Done for ${filePath.replace(baseDir, "")}`));
         } else {
-          logger.log(chalk.gray(`Checked ${filePath}`));
+          logger.log(chalk.gray(`Checked ${filePath.replace(baseDir, "")}`));
         }
       }
     }
@@ -78,6 +78,7 @@ export const replaceTokens = async () => {
     // Function to recursively search and replace in all files
     async function replaceInDirectory(dir: string) {
       const ignore = [
+        // Common ignore
         `${dir}/**/node_modules/**`,
         `${dir}/**/dist/**`,
         `${dir}/**/build/**`,
@@ -87,6 +88,7 @@ export const replaceTokens = async () => {
         `${dir}/**/.idea/**`,
         `${dir}/**/.vscode/**`,
         `${dir}/**/.turbo/**`,
+        // Custom ignore
         `${dir}/README.md`,
         `${dir}/package-lock.json`,
         `${dir}/**/replace-tokens.ts`,
@@ -97,7 +99,7 @@ export const replaceTokens = async () => {
         dot: true,
       });
       const allFiles = files;
-      await Promise.all(allFiles.map((file) => replaceTextInFile(file)));
+      await Promise.all(allFiles.map((file) => replaceTextInFile(file, dir)));
     }
 
     const rootDir = path.join(__dirname, "..", "..");
