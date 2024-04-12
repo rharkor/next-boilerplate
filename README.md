@@ -89,7 +89,7 @@ With this template, you get all the awesomeness you need:
 1. Fork & clone repository:
 
 ```bash
-## Don't forget to ⭐ star and fork it first :)
+# Don't forget to ⭐ star and fork it first :)
 git clone --depth 1 https://github.com/rharkor/next-boilerplate && cd next-boilerplate
 ```
 
