@@ -482,7 +482,7 @@ If you are using the devcontainer those services will start automatically when o
 If you are not using the devcontainer you can start the services with the following command:
 
 ```bash
-docker-compose up -f ./docker/docker-compose.local.yml -d
+docker compose -f ./docker/docker-compose.local.yml up -d
 ```
 
 ## ☁️ Cloud deployment
