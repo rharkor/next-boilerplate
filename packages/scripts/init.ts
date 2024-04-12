@@ -1,16 +1,17 @@
 import chalk from "chalk";
-import { completeInitialisation } from "complete-initialisation";
-import { dbSetup } from "db-setup";
 import { config } from "dotenv";
 import * as fs from "fs/promises";
-import { modulesSelection } from "modules-selection";
 import { exit } from "node:process";
-import { packagesSelection } from "packages-selection";
 import * as path from "path";
-import { replaceTokens } from "replace-tokens";
 import * as url from "url";
 
 import { logger } from "@next-boilerplate/lib";
+
+import { completeInitialisation } from "./complete-initialisation";
+import { dbSetup } from "./db-setup";
+import { modulesSelection } from "./modules-selection";
+import { packagesSelection } from "./packages-selection";
+import { replaceTokens } from "./replace-tokens";
 
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 const rootPath = path.join(__dirname, "..");
