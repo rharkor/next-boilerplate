@@ -27,6 +27,8 @@ jobs:
           cache: "npm"
       - name: Install dependencies
         run: npm install
+      - name: Init build
+        run: npm run init:build
       - name: Set example env
         run: npm run init:env
       - name: Lint check
@@ -56,6 +58,8 @@ jobs:
           cache: "npm"
       - name: Install dependencies
         run: npm install
+      - name: Init build
+        run: npm run init:build
       - name: Set example env
         run: npm run init:env
       - name: Build
