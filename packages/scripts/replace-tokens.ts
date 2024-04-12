@@ -17,6 +17,7 @@ const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 
 const filesToCheck = [
   "../docker/docker-compose.yml",
+  "../docker/docker-compose.local.yml",
   "../apps/app/src/api/auth/mutations.ts",
   "../archi/ecs-ec2-project/terraform/.auto.tfvars.example.json",
   "../archi/ecs-fargate-project/terraform/.auto.tfvars.example.json",
