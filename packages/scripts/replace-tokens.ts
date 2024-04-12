@@ -54,17 +54,24 @@ export const replaceTokens = async () => {
     async function replaceTextInFile(filePath: string) {
       const getFileContent = async () => {
         if (filesCache[filePath]) return filesCache[filePath];
-        const content = await fs.promises.readFile(filePath, "utf8");
-        filesCache[filePath] = content;
-        return content;
+        try {
+          const content = await fs.promises.readFile(filePath, "utf8");
+          filesCache[filePath] = content;
+          return content;
+        } catch (error) {
+          logger.error(`Error reading file ${filePath}`);
+          return null;
+        }
       };
       const content = await getFileContent();
-      if (content.includes(search)) {
-        const replacedContent = content.replaceAll(search, value);
-        await fs.promises.writeFile(filePath, replacedContent, "utf8");
-        logger.log(chalk.gray(`Done for ${filePath}`));
-      } else {
-        logger.log(chalk.gray(`Checked ${filePath}`));
+      if (content) {
+        if (content.includes(search)) {
+          const replacedContent = content.replaceAll(search, value);
+          await fs.promises.writeFile(filePath, replacedContent, "utf8");
+          logger.log(chalk.gray(`Done for ${filePath}`));
+        } else {
+          logger.log(chalk.gray(`Checked ${filePath}`));
+        }
       }
     }
 
