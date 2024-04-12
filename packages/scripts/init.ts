@@ -40,7 +40,7 @@ async function main() {
     await replaceTokens();
     logger.log(chalk.green("Done!"));
   } else {
-    logger.log(chalk.yellow("Skipping replaceTokens()"));
+    logger.log(chalk.gray("Skipping replaceTokens()"));
   }
 
   if (!alreadyInitialized) {

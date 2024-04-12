@@ -1,10 +1,10 @@
 services:
   db:
     image: postgres:latest
-    container_name: #{PROJECT_NAME}#_db
+    container_name: next-boilerplate_db
     restart: unless-stopped
     volumes:
-      -  #{PROJECT_NAME}#-postgres-data:/var/lib/postgresql/data
+      - next-boilerplate-postgres-data:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: ${DATABASE_USER}
       POSTGRES_PASSWORD: ${DATABASE_PASS}
@@ -20,17 +20,17 @@ services:
   redis:
     image: redis:latest
     restart: unless-stopped
-    container_name: #{PROJECT_NAME}#_redis
+    container_name: next-boilerplate_redis
     command: /bin/sh -c "redis-server --requirepass ${REDIS_PASSWORD}"
     logging:
       driver: "json-file"
       options:
         max-size: "50m"
     volumes:
-      -  #{PROJECT_NAME}#-redis-data:/data
+      - next-boilerplate-redis-data:/data
     ports:
       - "6379:6379"
 
 volumes:
-  #{PROJECT_NAME}#-postgres-data:
-  #{PROJECT_NAME}#-redis-data:
+  next-boilerplate-postgres-data:
+  next-boilerplate-redis-data:
