@@ -1,3 +1,5 @@
+#! This docker-compose is meant to be used for local development only.
+
 services:
   db:
     image: postgres:latest
@@ -6,9 +8,9 @@ services:
     volumes:
       - next-boilerplate-postgres-data:/var/lib/postgresql/data
     environment:
-      POSTGRES_USER: ${DATABASE_USER}
-      POSTGRES_PASSWORD: ${DATABASE_PASS}
-      POSTGRES_DB: ${DATABASE_NAME}
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
 
     logging:
       driver: "json-file"
@@ -21,7 +23,7 @@ services:
     image: redis:latest
     restart: unless-stopped
     container_name: next-boilerplate_redis
-    command: /bin/sh -c "redis-server --requirepass ${REDIS_PASSWORD}"
+    command: /bin/sh -c "redis-server"
     logging:
       driver: "json-file"
       options:
