@@ -54,9 +54,8 @@ With this template, you get all the awesomeness you need:
     - [Initialize the project](#initialize-the-project)
     - [Usage within a team](#usage-within-a-team)
   - [🗄️ Monorepo packages](#️-monorepo-packages)
-  - [� Scripts Overview](#-scripts-overview)
+  - [📃 Scripts Overview](#-scripts-overview)
   - [🐳 Container Stack](#-container-stack)
-    - [Tanstack query](#tanstack-query)
   - [💻 Environment Variables handling](#-environment-variables-handling)
   - [📝 Development tips](#-development-tips)
     - [Internationalization](#internationalization)
@@ -85,15 +84,13 @@ With this template, you get all the awesomeness you need:
 
 ## 🎯 Getting Started
 
-_If you want to use the dev container, please follow the [container stack](#-container-stack) instructions._
-
 ### Initialize the project
 
 1. Fork & clone repository:
 
 ```bash
 ## Don't forget to ⭐ star and fork it first :)
-git clone --depth 1 https://github.com/rharkor/next-boilerplate
+git clone --depth 1 https://github.com/rharkor/next-boilerplate && cd next-boilerplate
 ```
 
 2. Install the dependencies:
@@ -228,7 +225,6 @@ The following scripts are available in the `package.json`:
 
 The boilerplate comes with a pre-configured Docker container stack and a dev container. The stack includes the following services:
 
-- **Next.js** - A React framework for building fast and scalable web applications
 - **PostgreSQL** - A powerful, open-source relational database system
 - **Redis** - An in-memory data structure store, used as a database, cache, and message broker
 
@@ -241,10 +237,6 @@ Ports:
 - Landing: 3002
 - PostgreSQL: 5432
 - Redis: 6379
-
-### Tanstack query
-
-[Tanstack query](https://tanstack.com/query/latest) is a powerful, fast, and lightweight data fetching and caching library. It provides a concise, declarative API for fetching data that integrates seamlessly with React.
 
 ## 💻 Environment Variables handling
 
