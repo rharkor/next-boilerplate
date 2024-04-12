@@ -13,7 +13,7 @@
     "init": "npm run -s init:build && npm run -s init -w packages/scripts && npm run -s init:env && npm run -s init:coding-env",
     "init:env": "npm run -s init:env -w packages/scripts",
     "init:build": "turbo run build --filter='@next-boilerplate/*'^...",
-    "init:coding-env": "bash ./packages/scripts/install/install.sh devcontainer",
+    "init:coding-env": "bash ./packages/scripts/install/install.sh",
     "depcheck": "npm run -s depcheck -w packages/scripts",
     "is-initialized": "npm run -s is-initialized -w packages/scripts",
     "preinstall": "npx --yes only-allow-many npm"
