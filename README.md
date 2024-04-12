@@ -74,6 +74,7 @@ With this template, you get all the awesomeness you need:
       - [Sparse checkout](#sparse-checkout)
     - [Recommended extensions](#recommended-extensions)
     - [Database \& Redis](#database--redis)
+    - [Git flow](#git-flow)
   - [☁️ Cloud deployment](#️-cloud-deployment)
     - [Build](#build)
     - [Build multi-architecture image](#build-multi-architecture-image)
@@ -484,6 +485,16 @@ If you are not using the devcontainer you can start the services with the follow
 ```bash
 docker compose -f ./docker/docker-compose.local.yml up -d
 ```
+
+### Git flow
+
+The boilerplate uses the [Git flow](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow) workflow.
+
+The main branches are:
+
+- `main`: The main branch
+- `rec`: The staging branch
+- `develop`: The development branch
 
 ## ☁️ Cloud deployment
 
