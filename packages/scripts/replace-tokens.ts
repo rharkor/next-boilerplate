@@ -89,6 +89,7 @@ export const replaceTokens = async () => {
       const files = await glob(`${dir}/**`, {
         ignore,
         nodir: true,
+        dot: true,
       });
       const allFiles = files;
       await Promise.all(allFiles.map((file) => replaceTextInFile(file)));
