@@ -1,5 +1,6 @@
 #! This docker-compose is meant to be used for local development only.
 
+name: next-boilerplate
 services:
   db:
     image: postgres:latest

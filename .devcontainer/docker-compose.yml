@@ -1,3 +1,4 @@
+name: next-boilerplate
 services:
   app:
     build:

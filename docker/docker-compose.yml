@@ -1,3 +1,4 @@
+name: next-boilerplate
 services:
   app:
     image: DOCKER_DEPLOY_APP_IMAGE
