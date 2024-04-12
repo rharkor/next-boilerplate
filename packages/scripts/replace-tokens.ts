@@ -59,7 +59,7 @@ export const replaceTokens = async () => {
         return content;
       };
       const content = await getFileContent();
-      if (content.includes(search) !== null) {
+      if (content.includes(search)) {
         const replacedContent = content.replaceAll(search, value);
         await fs.promises.writeFile(filePath, replacedContent, "utf8");
         logger.log(chalk.gray(`Done for ${filePath}`));
