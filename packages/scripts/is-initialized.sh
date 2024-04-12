@@ -4,9 +4,11 @@
 ROOT_PATH="$(dirname "$0")"
 
 # Load environment variables from a .env file
-set -a
-. "$ROOT_PATH/.env"
-set +a
+if [ -f "$ROOT_PATH/.env" ]; then
+    set -a
+    . "$ROOT_PATH/.env"
+    set +a
+fi
 
 
 # Check if SKIP_INIT_CHECK environment variable is set to "true"

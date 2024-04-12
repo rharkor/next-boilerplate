@@ -1,12 +1,11 @@
 name: Check
 
 on:
-  push:
-    branches:
-      - main
-      - master
-      - rec
+  #? We want to run this workflow on pull requests to the dev branch
+  #? Because we use the git flow workflow, the dev branch is the one that will receive the pull requests that may be invalid
   pull_request:
+    branches:
+      - dev
   workflow_dispatch:
 
 jobs:
@@ -28,6 +27,8 @@ jobs:
           cache: "npm"
       - name: Install dependencies
         run: npm install
+      - name: Init build
+        run: npm run init:build
       - name: Set example env
         run: npm run init:env
       - name: Lint check
@@ -57,6 +58,8 @@ jobs:
           cache: "npm"
       - name: Install dependencies
         run: npm install
+      - name: Init build
+        run: npm run init:build
       - name: Set example env
         run: npm run init:env
       - name: Build

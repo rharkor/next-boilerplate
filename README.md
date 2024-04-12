@@ -54,10 +54,8 @@ With this template, you get all the awesomeness you need:
     - [Initialize the project](#initialize-the-project)
     - [Usage within a team](#usage-within-a-team)
   - [🗄️ Monorepo packages](#️-monorepo-packages)
-  - [🚀 Deployment](#-deployment)
   - [📃 Scripts Overview](#-scripts-overview)
   - [🐳 Container Stack](#-container-stack)
-    - [Tanstack query](#tanstack-query)
   - [💻 Environment Variables handling](#-environment-variables-handling)
   - [📝 Development tips](#-development-tips)
     - [Internationalization](#internationalization)
@@ -75,6 +73,8 @@ With this template, you get all the awesomeness you need:
       - [Depth clone](#depth-clone)
       - [Sparse checkout](#sparse-checkout)
     - [Recommended extensions](#recommended-extensions)
+    - [Database \& Redis](#database--redis)
+    - [Git flow](#git-flow)
   - [☁️ Cloud deployment](#️-cloud-deployment)
     - [Build](#build)
     - [Build multi-architecture image](#build-multi-architecture-image)
@@ -86,15 +86,13 @@ With this template, you get all the awesomeness you need:
 
 ## 🎯 Getting Started
 
-_If you want to use the dev container, please follow the [container stack](#-container-stack) instructions._
-
 ### Initialize the project
 
 1. Fork & clone repository:
 
 ```bash
-## Don't forget to ⭐ star and fork it first :)
-git clone --depth 1 https://github.com/rharkor/next-boilerplate
+# Don't forget to ⭐ star and fork it first :)
+git clone --depth 1 https://github.com/rharkor/next-boilerplate && cd next-boilerplate
 ```
 
 2. Install the dependencies:
@@ -209,12 +207,6 @@ Port for each package:
 - **Docs**: `3001`
 - **Landing**: `3002`
 
-## 🚀 Deployment
-
-Easily deploy your Next.js app with [Vercel](https://vercel.com/new) by clicking the button below:
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Frharkor%2Fnext-boilerplate&env=REDIS_USE_TLS,AUTH_ADMIN_EMAIL,AUTH_ADMIN_PASSWORD,GITHUB_CLIENT_ID,GITHUB_CLIENT_SECRET,NEXTAUTH_SECRET,PASSWORD_HASHER_SECRET&envDescription=Keys%20needed%20to%20start%20the%20application%2C%20please%20see%20other%20env%20required%20like%20database%20and%20redis&envLink=https%3A%2F%2Fgithub.com%2Frharkor%2Fnext-boilerplate%2Fblob%2Fmain%2F.env.example)
-
 ## 📃 Scripts Overview
 
 The following scripts are available in the `package.json`:
@@ -235,7 +227,6 @@ The following scripts are available in the `package.json`:
 
 The boilerplate comes with a pre-configured Docker container stack and a dev container. The stack includes the following services:
 
-- **Next.js** - A React framework for building fast and scalable web applications
 - **PostgreSQL** - A powerful, open-source relational database system
 - **Redis** - An in-memory data structure store, used as a database, cache, and message broker
 
@@ -248,10 +239,6 @@ Ports:
 - Landing: 3002
 - PostgreSQL: 5432
 - Redis: 6379
-
-### Tanstack query
-
-[Tanstack query](https://tanstack.com/query/latest) is a powerful, fast, and lightweight data fetching and caching library. It provides a concise, declarative API for fetching data that integrates seamlessly with React.
 
 ## 💻 Environment Variables handling
 
@@ -486,6 +473,28 @@ In order to install all recommended extensions please run:
 `bash ./packages/scripts/install/install-extensions.sh`
 
 > The dev container should install those extensions automatically but you can still execute the command above if there's a problem.
+
+### Database & Redis
+
+By default the boilerplate needs a PostgreSQL and Redis database to work.
+
+If you are using the devcontainer those services will start automatically when opening the project in vsCode.
+
+If you are not using the devcontainer you can start the services with the following command:
+
+```bash
+docker compose -f ./docker/docker-compose.local.yml up -d
+```
+
+### Git flow
+
+The boilerplate uses the [Git flow](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow) workflow.
+
+The main branches are:
+
+- `main`: The main branch
+- `rec`: The staging branch
+- `develop`: The development branch
 
 ## ☁️ Cloud deployment
 

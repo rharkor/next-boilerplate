@@ -33,9 +33,9 @@ yarn-error.log*
 /playwright/.cache/
 
 .turbo
-build/**
-dist/**
-.next/**
+build
+dist
+.next
 
 output.json
 *.terraform*
