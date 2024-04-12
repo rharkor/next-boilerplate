@@ -59,10 +59,13 @@ export const replaceTokens = async () => {
         return content;
       };
       const content = await getFileContent();
-      if (content.includes(search) === null) return;
-      const replacedContent = content.replaceAll(search, value);
-      await fs.promises.writeFile(filePath, replacedContent, "utf8");
-      logger.log(chalk.gray(`Done for ${filePath}`));
+      if (content.includes(search) !== null) {
+        const replacedContent = content.replaceAll(search, value);
+        await fs.promises.writeFile(filePath, replacedContent, "utf8");
+        logger.log(chalk.gray(`Done for ${filePath}`));
+      } else {
+        logger.log(chalk.gray(`Checked ${filePath}`));
+      }
     }
 
     // Function to recursively search and replace in all files
