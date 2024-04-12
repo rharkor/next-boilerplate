@@ -162,7 +162,25 @@ export const replaceTokens = async () => {
               `${dir}/**/build/**`,
             ],
           });
-          const allFiles = tsFiles.concat(pjsonFiles).concat(workflows);
+          const dockerfiles = await glob(`${dir}/**/Dockerfile`, {
+            ignore: [
+              `${dir}/**/node_modules/**`,
+              `${dir}/**/dist/**`,
+              `${dir}/**/build/**`,
+            ],
+          });
+          const terraform = await glob(`${dir}/infra/*.tf`, {
+            ignore: [
+              `${dir}/**/node_modules/**`,
+              `${dir}/**/dist/**`,
+              `${dir}/**/build/**`,
+            ],
+          });
+          const allFiles = tsFiles
+            .concat(pjsonFiles)
+            .concat(workflows)
+            .concat(dockerfiles)
+            .concat(terraform);
           await Promise.all(allFiles.map((file) => replaceTextInFile(file)));
         }
 
