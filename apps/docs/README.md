@@ -1,3 +1,5 @@
+Made with nextra
+
 ## Getting Started
 
 Run the development server:
