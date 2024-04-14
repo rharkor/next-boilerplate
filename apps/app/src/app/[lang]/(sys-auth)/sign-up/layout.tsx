@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 }
 
 export default function SignupLayout({ children }: { children: React.ReactNode }) {
-  if (!env.ENABLE_REGISTRATION) {
+  if (env.DISABLE_REGISTRATION === true) {
     redirect(authRoutes.signIn[0])
   }
   return <>{children}</>

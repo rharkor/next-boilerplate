@@ -27,7 +27,7 @@ import { signUpResponseSchema } from "../me/schemas"
 export const register = async ({ input }: apiInputFromSchema<typeof signUpSchema>) => {
   const { email, password, username } = input
   try {
-    if (env.ENABLE_REGISTRATION === false) {
+    if (env.DISABLE_REGISTRATION === true) {
       return ApiError("registrationDisabled")
     }
     const hashedPassword = await hash(password, 12)

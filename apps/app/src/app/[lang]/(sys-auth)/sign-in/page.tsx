@@ -45,7 +45,7 @@ export default async function SignInPage({
 
   return (
     <main className="container relative m-auto grid min-h-screen flex-1 flex-col items-center justify-center px-2 lg:max-w-none lg:grid-cols-2 lg:px-0">
-      {env.ENABLE_REGISTRATION && (
+      {env.DISABLE_REGISTRATION !== true && (
         <Button
           as={Link}
           href={authRoutes.signUp[0]}
@@ -64,7 +64,7 @@ export default async function SignInPage({
           </div>
           <div className="grid gap-6">
             <LoginUserAuthForm dictionary={dictionary} searchParams={searchParams} />
-            {env.ENABLE_REGISTRATION && (
+            {env.DISABLE_REGISTRATION !== true && (
               <>
                 <div className="relative">
                   <div className="absolute inset-0 flex items-center">

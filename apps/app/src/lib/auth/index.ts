@@ -132,7 +132,7 @@ export const providers: Provider[] = [
   }),
 ]
 
-if (env.ENABLE_REGISTRATION) {
+if (env.DISABLE_REGISTRATION !== true) {
   providers.push(
     GithubProvider({
       clientId: env.GITHUB_CLIENT_ID,

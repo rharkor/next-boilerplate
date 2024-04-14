@@ -54,7 +54,7 @@ export const env = createEnv({
       .enum(["true", "false"])
       .optional()
       .transform((value) => value === "true"),
-    ENABLE_REGISTRATION: z
+    DISABLE_REGISTRATION: z
       .enum(["true", "false"])
       .optional()
       .transform((value) => value === "true"),
@@ -110,7 +110,7 @@ export const env = createEnv({
     S3_SECRET_ACCESS_KEY: process.env.S3_SECRET_ACCESS_KEY,
     NEXT_PUBLIC_S3_ENDPOINT: process.env.NEXT_PUBLIC_S3_ENDPOINT,
     ENABLE_S3_SERVICE: process.env.ENABLE_S3_SERVICE,
-    ENABLE_REGISTRATION: process.env.ENABLE_REGISTRATION,
+    DISABLE_REGISTRATION: process.env.DISABLE_REGISTRATION,
   },
   onValidationError: (error) => {
     logger.error(error)
