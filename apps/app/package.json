@@ -1,5 +1,6 @@
 {
   "name": "@next-boilerplate/app",
+  "license": "MIT",
   "scripts": {
     "dev": "npm run is-initialized && prisma migrate dev && cross-env FORCE_COLOR=1 next dev",
     "build": "next build",
@@ -105,6 +106,5 @@
   "prisma": {
     "schema": "prisma/schema.prisma",
     "seed": "npx -y tsx prisma/seed.ts"
-  },
-  "license": "MIT"
+  }
 }

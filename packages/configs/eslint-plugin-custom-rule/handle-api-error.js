@@ -12,7 +12,7 @@ module.exports = {
   },
   create: function (context) {
     const handleProgram = (node) => {
-      const sourceCode = context.getSourceCode();
+      const sourceCode = context.sourceCode;
       const text = sourceCode.getText();
 
       const apiErrorRegex = new RegExp(/(\w*)\s+ApiError\(/, "g");

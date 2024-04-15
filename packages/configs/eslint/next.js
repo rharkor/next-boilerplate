@@ -12,6 +12,7 @@ module.exports = {
     babelOptions: {
       presets: [require.resolve("next/babel")],
     },
+    extraFileExtensions: [".json"],
   },
   plugins: ["@typescript-eslint", "unused-imports", "simple-import-sort", "custom-rule"],
   rules: {
@@ -35,6 +36,7 @@ module.exports = {
     "no-process-env": "error",
     "custom-rule/no-node-modules-import": "error",
     "custom-rule/handle-api-error": "error",
+    "custom-rule/sort-collection": "error",
   },
   overrides: [
     {
@@ -64,5 +66,15 @@ module.exports = {
       },
     },
   ],
-  ignorePatterns: ["node_modules", ".next", "dist"],
+  ignorePatterns: [
+    "node_modules",
+    ".next",
+    "dist",
+    "**/.eslintrc.js",
+    "**/.eslintrc.cjs",
+    "**/postcss.config.js",
+    "**/tailwind.config.js",
+    "**/prettier.config.js",
+    "**/prettier.config.cjs",
+  ],
 }
