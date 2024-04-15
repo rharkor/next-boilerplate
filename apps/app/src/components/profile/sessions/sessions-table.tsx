@@ -27,6 +27,7 @@ export default function SessionsTable({ dictionary }: { dictionary: TDictionary<
     page: currentPage,
     perPage: itemsPerPageInitial,
   }
+
   const activeSessions = trpc.me.getActiveSessions.useQuery(callParams, {
     enabled: !!session.data && session.data.user.hasPassword !== false,
   })
