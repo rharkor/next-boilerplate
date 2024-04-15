@@ -20,7 +20,11 @@ type AppRouterInstance = ReturnType<typeof useRouter>
 export const handleQueryError = <T extends TRPCClientErrorLike<AppRouter>>(
   error: T,
   dictionary: {
-    errors: TDictionary<{ errors: true }>["errors"]
+    errors: TDictionary<{
+      errors: {
+        unknownError: true
+      }
+    }>["errors"]
   },
   router: AppRouterInstance,
   opts: TOptions = { showNotification: true }
@@ -38,7 +42,11 @@ export const handleQueryError = <T extends TRPCClientErrorLike<AppRouter>>(
 export const handleMutationError = <T extends TRPCClientErrorLike<AppRouter>>(
   error: T,
   dictionary: {
-    errors: TDictionary<{ errors: true }>["errors"]
+    errors: TDictionary<{
+      errors: {
+        unknownError: true
+      }
+    }>["errors"]
   },
   router: AppRouterInstance,
   opts: TOptions = { showNotification: true }

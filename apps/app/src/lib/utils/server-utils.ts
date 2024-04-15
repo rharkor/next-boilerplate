@@ -1,3 +1,4 @@
+import { cookies } from "next/headers"
 import { Session } from "next-auth"
 import base32Encode from "base32-encode"
 import { z } from "zod"
@@ -8,7 +9,10 @@ import { Prisma } from "@prisma/client"
 import { TRPCError } from "@trpc/server"
 import { TRPC_ERROR_CODE_KEY } from "@trpc/server/rpc"
 
-import { TDictionary } from "../langs"
+import { i18n, Locale } from "../i18n-config"
+import { getDictionary, TDictionary } from "../langs"
+
+import { findNestedKeyInDictionary } from "."
 
 export const parseRequestBody = async <T>(
   req: Request,
@@ -40,15 +44,24 @@ export function ensureLoggedIn(session: Session | null | undefined): asserts ses
 
 export type TErrorMessage = {
   message: string
+  code: string
   extra?: object
 }
 
-export function ApiError(
-  message: Path<TDictionary<{ errors: true }>["errors"]>,
+export async function ApiError(
+  messageCode: Path<TDictionary<{ errors: true }>["errors"]>,
   code?: TRPC_ERROR_CODE_KEY,
   extra?: object
-): never {
-  const data: TErrorMessage = { message, extra }
+): Promise<never> {
+  const cookiesStore = cookies()
+  const lang = cookiesStore.get("saved-locale")?.value ?? i18n.defaultLocale
+  const dictionary = await getDictionary(lang as Locale, { errors: true })
+  let message = findNestedKeyInDictionary(messageCode, dictionary.errors)
+  if (!message) {
+    logger.error(new Error(`Error not found in dictionary: ${messageCode}`))
+    message = dictionary.errors.unknownError
+  }
+  const data: TErrorMessage = { message, code: messageCode, extra }
   throw new TRPCError({
     code: code ?? "BAD_REQUEST",
     message: JSON.stringify(data),
