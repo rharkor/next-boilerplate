@@ -4,7 +4,7 @@ module.exports = {
   meta: {
     type: "problem",
     docs: {
-      description: "await or return ApiError because it's a promise",
+      description: "await ApiError because it's a promise",
       category: "Best Practices",
       recommended: false,
     },
@@ -16,7 +16,7 @@ module.exports = {
       const text = sourceCode.getText();
 
       const apiErrorRegex = new RegExp(/(\w*)\s+ApiError\(/, "g");
-      const prefixMatch = ["await", "return", "function"];
+      const prefixMatch = ["await", "function"];
 
       let match;
       while ((match = apiErrorRegex.exec(text))) {
