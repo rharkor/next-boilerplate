@@ -1,7 +1,6 @@
 import { cookies } from "next/headers"
 import { Session } from "next-auth"
 import base32Encode from "base32-encode"
-import { z } from "zod"
 
 import { Path } from "@/types"
 import { logger } from "@next-boilerplate/lib"
@@ -14,24 +13,13 @@ import { getDictionary, TDictionary } from "../langs"
 
 import { findNestedKeyInDictionary } from "."
 
-export const parseRequestBody = async <T>(
-  req: Request,
-  schema: z.Schema<T>
-): Promise<{ data?: never; error: ReturnType<typeof ApiError> } | { data: T; error?: never }> => {
-  const reqData = (await req.json()) as T
-  const bodyParsedResult = schema.safeParse(reqData)
-  if (!bodyParsedResult.success)
-    return { error: ApiError(bodyParsedResult.error.message as Path<TDictionary<{ errors: true }>["errors"]>) }
-  return { data: bodyParsedResult.data }
-}
-
 export const handleApiError = (error: unknown) => {
   if (error instanceof TRPCError) {
     throw error
   } else {
     logger.trace(error)
     if (error instanceof Prisma.PrismaClientValidationError || error instanceof Prisma.PrismaClientKnownRequestError)
-      ApiError("unknownError", "INTERNAL_SERVER_ERROR")
+      return ApiError("unknownError", "INTERNAL_SERVER_ERROR")
     else if (error instanceof Error)
       return ApiError(error.message as Path<TDictionary<{ errors: true }>["errors"]>, "INTERNAL_SERVER_ERROR")
     return ApiError("unknownError", "INTERNAL_SERVER_ERROR")
@@ -39,7 +27,13 @@ export const handleApiError = (error: unknown) => {
 }
 
 export function ensureLoggedIn(session: Session | null | undefined): asserts session is Session {
-  if (!session) throw ApiError("unauthorized", "UNAUTHORIZED")
+  if (!session) {
+    const data: TErrorMessage = { message: "You must be logged in to access this resource", code: "UNAUTHORIZED" }
+    throw new TRPCError({
+      code: "UNAUTHORIZED",
+      message: JSON.stringify(data),
+    })
+  }
 }
 
 export type TErrorMessage = {

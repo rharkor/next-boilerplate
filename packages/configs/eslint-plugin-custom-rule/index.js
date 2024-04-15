@@ -2,6 +2,7 @@
 "use strict";
 const noUseClient = require("./no-use-client");
 const noNodeModulesImport = require("./no-node-modules-import");
+const handleApiError = require("./handle-api-error");
 
 module.exports = {
   meta: {
@@ -11,5 +12,6 @@ module.exports = {
   rules: {
     "no-use-client": noUseClient,
     "no-node-modules-import": noNodeModulesImport,
+    "handle-api-error": handleApiError,
   },
 };

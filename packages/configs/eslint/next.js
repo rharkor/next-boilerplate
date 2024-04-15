@@ -34,6 +34,7 @@ module.exports = {
     "custom-rule/no-use-client": "error",
     "no-process-env": "error",
     "custom-rule/no-node-modules-import": "error",
+    "custom-rule/handle-api-error": "error",
   },
   overrides: [
     {

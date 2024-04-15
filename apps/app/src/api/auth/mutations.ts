@@ -73,7 +73,7 @@ export const register = async ({ input }: apiInputFromSchema<typeof signUpSchema
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
       if (error.code === "P2002") {
         const meta = error.meta
-        if (!meta) ApiError("accountAlreadyExists")
+        if (!meta) return ApiError("accountAlreadyExists")
         if ((meta.target as Array<string>).includes("email")) {
           return ApiError("email.exist")
         } else if ((meta.target as Array<string>).includes("username")) {
