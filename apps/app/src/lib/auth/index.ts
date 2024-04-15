@@ -299,7 +299,7 @@ export const nextAuthOptions: NextAuthOptions = {
     },
   },
   jwt: {
-    maxAge: JWT_MAX_AGE, // 30 days
+    maxAge: JWT_MAX_AGE,
   },
   pages: {
     signIn: authRoutes.signIn[0],
