@@ -1,66 +1,4 @@
 {
-  "test": "Test {myTest}",
-  "errors": {
-    "fileNotFound": "Fichier introuvable.",
-    "couldNotIdentifyIp": "Impossible d'identifier votre adresse IP.",
-    "tooManyRequests": "Trop de requêtes. Veuillez réessayer dans quelques minutes.",
-    "notImplemented": "Non implémenté.",
-    "tooManyAttempts": "Trop de tentatives. Veuillez réessayer dans quelques minutes.",
-    "otpInvalid": "Code OTP invalide.",
-    "otpSecretAlreadyExists": "Un secret OTP existe déjà.",
-    "otpSecretNotFound": "Secret OTP introuvable.",
-    "demoAdminCannotHaveOtpSecret": "L'administrateur en mode démo ne peut pas avoir de secret OTP.",
-    "typeError": {
-      "number": {
-        "invalid": "Veuillez entrer un nombre valide.",
-        "required": "Veuillez entrer un nombre."
-      },
-      "string": {
-        "invalid": "Veuillez entrer une chaîne de caractères valide.",
-        "required": "Veuillez entrer une chaîne de caractères."
-      }
-    },
-    "username": {
-      "required": "Nom d'utilisateur requis",
-      "min3": "Le nom d'utilisateur doit être au moins 3 caractères long.",
-      "max30": "Le nom d'utilisateur doit être au maximum 30 caractères long.",
-      "exist": "Le nom d'utilisateur existe déjà."
-    },
-    "password": {
-      "regex": "Le mot de passe doit contenir au moins une lettre majuscule, une lettre minuscule, un chiffre, et un caractère spécial.",
-      "required": "Mot de passe requis",
-      "dontMatch": "Les mots de passe ne correspondent pas",
-      "min8": "Le mot de passe doit être au moins 8 caractères long.",
-      "max25": "Le mot de passe doit être au maximum 25 caractères long."
-    },
-    "email": {
-      "required": "Email requis",
-      "invalid": "Email invalide",
-      "exist": "Cet email existe déjà."
-    },
-    "unknownError": "Une erreur inconnue s'est produite. Veuillez ressayer plus tard.",
-    "wrongProvider": "Vous avez déjà un compte avec un autre provider. Veuillez vous connecter avec celui-ci.",
-    "invalidCredentials": "Les informations d'identification sont invalides.",
-    "unauthorized": "Vous avez été déconnecté. Veuillez vous reconnecter.",
-    "userNotFound": "Cet utilisateur n'existe pas.",
-    "cannotDeleteAdmin": "Vous ne pouvez pas supprimer le compte administrateur.",
-    "accountAlreadyExists": "Un compte existe déjà avec cet email.",
-    "userDoesNotHaveAPassword": "L'utilisateur n'a pas de mot de passe.",
-    "pleaseTryAgainInFewMinutes": "Veuillez ressayer dans quelques minutes.",
-    "emailAlreadySentPleaseTryAgainInFewMinutes": "Un email a déjà été envoyé. Veuillez ressayer dans quelques minutes.",
-    "tokenNotFound": "Token invalide ou déjà utilisé.",
-    "tokenExpired": "Token a expiré.",
-    "passwordsDoNotMatch": "Les mots de passe ne correspondent pas.",
-    "cannotResetAdminPasswordInDemoMode": "Vous ne pouvez pas réinitialiser le mot de passe de l'administrateur en mode démo.",
-    "emailNotVerified": "Veuillez vérifier votre email.",
-    "emailAlreadyVerified": "Email vérifié",
-    "emailServiceDisabled": "Le service d'email est désactivé.",
-    "unavailableWithOAuth": "Cette fonctionnalité n'est pas disponible avec ce type de connexion.",
-    "s3ServiceDisabled": "Le service S3 est désactivé.",
-    "noFileSelected": "Aucun fichier sélectionné.",
-    "registrationDisabled": "L'inscription est désactivée.",
-    "fileTooLarge": "Le fichier est trop volumineux."
-  },
   "home": "Accueil",
   "homePage": {
     "title": "Accueil"
@@ -233,5 +171,6 @@
   "copyToClipboard": "Copier dans le presse-papier",
   "somethingWentWrong": "Quelque chose s'est mal passé",
   "tryAgain": "Ressayer",
-  "goHome": "Aller à l'accueil"
+  "goHome": "Aller à l'accueil",
+  "unknownError": "Erreur inconnue"
 }

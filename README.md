@@ -75,6 +75,8 @@ With this template, you get all the awesomeness you need:
     - [Recommended extensions](#recommended-extensions)
     - [Database \& Redis](#database--redis)
     - [Git flow](#git-flow)
+    - [Api development](#api-development)
+      - [Api errors](#api-errors)
   - [❌ Common issues](#-common-issues)
     - [Cannot commit](#cannot-commit)
   - [☁️ Cloud deployment](#️-cloud-deployment)
@@ -497,6 +499,14 @@ The main branches are:
 - `main`: The main branch
 - `rec`: The staging branch
 - `develop`: The development branchs
+
+### Api development
+
+For the interaction with the api you can use the `trpc` library. It's a library that allows you to create typesafe APIs with ease. See [trpc](https://trpc.io/).
+
+#### Api errors
+
+All the possible errors are defined in `apps/app/src/langs/errors/<lang>.json`
 
 ## ❌ Common issues
 

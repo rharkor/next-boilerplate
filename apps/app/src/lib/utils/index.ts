@@ -110,7 +110,7 @@ export const formatCouldNotMessage = async ({
 type TDictKey = { [key: string]: TDictKey } | undefined | string
 export const findNestedKeyInDictionary = (
   key: string,
-  dictionaryErrors: TDictionary<{ errors: true }>["errors"]
+  dictionaryErrors: TDictionary<undefined, "errors">
 ): string | undefined => {
   const keys = key.split(".")
   let currentKey = keys.shift()
@@ -125,9 +125,7 @@ export const findNestedKeyInDictionary = (
 export const handleApiError = <T extends TRPCClientErrorLike<AppRouter>>(
   error: T,
   dictionary: TDictionary<{
-    errors: {
-      unknownError: true
-    }
+    unknownError: true
   }>,
   router: AppRouterInstance
 ): T => {
@@ -155,7 +153,7 @@ export const handleApiError = <T extends TRPCClientErrorLike<AppRouter>>(
       message: translatedError,
     }
   } catch (e) {
-    const translatedError = dictionary.errors.unknownError
+    const translatedError = dictionary.unknownError
     return {
       ...error,
       message: translatedError,

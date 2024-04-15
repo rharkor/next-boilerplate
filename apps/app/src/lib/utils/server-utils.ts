@@ -9,7 +9,7 @@ import { TRPCError } from "@trpc/server"
 import { TRPC_ERROR_CODE_KEY } from "@trpc/server/rpc"
 
 import { i18n, Locale } from "../i18n-config"
-import { getDictionary, TDictionary } from "../langs"
+import { _getDictionary, TDictionary } from "../langs"
 
 import { findNestedKeyInDictionary } from "."
 
@@ -21,7 +21,7 @@ export const handleApiError = (error: unknown) => {
     if (error instanceof Prisma.PrismaClientValidationError || error instanceof Prisma.PrismaClientKnownRequestError)
       return ApiError("unknownError", "INTERNAL_SERVER_ERROR")
     else if (error instanceof Error)
-      return ApiError(error.message as Path<TDictionary<{ errors: true }>["errors"]>, "INTERNAL_SERVER_ERROR")
+      return ApiError(error.message as Path<TDictionary<undefined, "errors">>, "INTERNAL_SERVER_ERROR")
     return ApiError("unknownError", "INTERNAL_SERVER_ERROR")
   }
 }
@@ -43,17 +43,17 @@ export type TErrorMessage = {
 }
 
 export async function ApiError(
-  messageCode: Path<TDictionary<{ errors: true }>["errors"]>,
+  messageCode: Path<TDictionary<undefined, "errors">>,
   code?: TRPC_ERROR_CODE_KEY,
   extra?: object
 ): Promise<never> {
   const cookiesStore = cookies()
   const lang = cookiesStore.get("saved-locale")?.value ?? i18n.defaultLocale
-  const dictionary = await getDictionary(lang as Locale, { errors: true })
-  let message = findNestedKeyInDictionary(messageCode, dictionary.errors)
+  const dictionary = await _getDictionary("errors", lang as Locale, undefined)
+  let message = findNestedKeyInDictionary(messageCode, dictionary)
   if (!message) {
     logger.error(new Error(`Error not found in dictionary: ${messageCode}`))
-    message = dictionary.errors.unknownError
+    message = dictionary.unknownError
   }
   const data: TErrorMessage = { message, code: messageCode, extra }
   throw new TRPCError({
