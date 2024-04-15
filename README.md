@@ -75,6 +75,8 @@ With this template, you get all the awesomeness you need:
     - [Recommended extensions](#recommended-extensions)
     - [Database \& Redis](#database--redis)
     - [Git flow](#git-flow)
+  - [❌ Common issues](#-common-issues)
+    - [Cannot commit](#cannot-commit)
   - [☁️ Cloud deployment](#️-cloud-deployment)
     - [Build](#build)
     - [Build multi-architecture image](#build-multi-architecture-image)
@@ -494,7 +496,21 @@ The main branches are:
 
 - `main`: The main branch
 - `rec`: The staging branch
-- `develop`: The development branch
+- `develop`: The development branchs
+
+## ❌ Common issues
+
+### Cannot commit
+
+Error: `.git-hooks/commit-msg: 6: git-conventional-commits: not found`
+
+This error occurs when the `git-conventional-commits` package is not installed. To fix this issue, run the following command:
+
+```bash
+npm install -g git-conventional-commits
+```
+
+This package is used to check the commit message format.
 
 ## ☁️ Cloud deployment
 
