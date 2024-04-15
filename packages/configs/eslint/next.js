@@ -36,7 +36,6 @@ module.exports = {
     "no-process-env": "error",
     "custom-rule/no-node-modules-import": "error",
     "custom-rule/handle-api-error": "error",
-    "custom-rule/sort-collection": "error",
   },
   overrides: [
     {

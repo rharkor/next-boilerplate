@@ -20,7 +20,6 @@ module.exports = {
     "no-console": ["error", { allow: ["warn", "error"] }],
     "no-process-env": "error",
     "custom-rule/no-node-modules-import": "error",
-    "custom-rule/sort-collection": "error",
   },
   overrides: [
     {

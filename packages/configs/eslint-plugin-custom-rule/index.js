@@ -3,7 +3,6 @@
 const noUseClient = require("./no-use-client");
 const noNodeModulesImport = require("./no-node-modules-import");
 const handleApiError = require("./handle-api-error");
-const sortCollection = require("./sort-collection");
 
 module.exports = {
   meta: {
@@ -14,6 +13,5 @@ module.exports = {
     "no-use-client": noUseClient,
     "no-node-modules-import": noNodeModulesImport,
     "handle-api-error": handleApiError,
-    "sort-collection": sortCollection,
   },
 };
