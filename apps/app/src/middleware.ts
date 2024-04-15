@@ -7,11 +7,8 @@ import { match as matchLocale } from "@formatjs/intl-localematcher"
 
 const blackListedPaths = ["healthz", "api/healthz", "health", "ping", "api/ping"]
 
-function getLocale(request: NextRequest): string | undefined {
-  const cookies = request.cookies
-  const savedLocale = cookies.get("saved-locale")
-  if (savedLocale?.value) return savedLocale.value
-
+function getLocale(request: NextRequest, cookiesLocale: string | undefined): string | undefined {
+  if (cookiesLocale) return cookiesLocale
   // Negotiator expects plain object so we need to transform headers
   const negotiatorHeaders: Record<string, string> = {}
   request.headers.forEach((value, key) => (negotiatorHeaders[key] = value))
@@ -51,16 +48,20 @@ export function middleware(request: NextRequest) {
   const pathnameIsMissingLocale = i18n.locales.every(
     (locale) => !pathname.startsWith(`/${locale}/`) && pathname !== `/${locale}`
   )
+
+  const cookies = request.cookies
+  const savedLocale = cookies.get("saved-locale")
+  const cookiesLocales = savedLocale?.value
+
   if (!pathnameIsMissingLocale) {
     const localeInPathname =
       i18n.locales.find((locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`) || ""
-    const presentLocale = getLocale(request) || i18n.defaultLocale
     const response = NextResponse.next({
       request: {
         headers: rHeaders,
       },
     })
-    if (localeInPathname !== presentLocale) {
+    if (localeInPathname !== cookiesLocales) {
       response.cookies.set("saved-locale", localeInPathname, {
         path: "/",
         sameSite: "lax",
@@ -75,7 +76,7 @@ export function middleware(request: NextRequest) {
 
   // Redirect if there is no locale
   if (pathnameIsNotBlacklisted) {
-    const locale = getLocale(request)
+    const locale = getLocale(request, cookiesLocales)
 
     // e.g. incoming request is /products
     // The new URL is now /en-US/products
@@ -92,6 +93,12 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  // Matcher ignoring `/_next/` and `/api/`
+  /*
+   * Match all request paths except for the ones starting with:
+   * - api (API routes)
+   * - _next/static (static files)
+   * - _next/image (image optimization files)
+   * - favicon.ico (favicon file)
+   */
   matcher: ["/((?!api|_next/static|_next/image|favicon.ico|public).*)"],
 }
