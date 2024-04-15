@@ -8,6 +8,7 @@ import { nextAuthOptions } from "@/lib/auth"
 import { Locale } from "@/lib/i18n-config"
 import { getDictionary } from "@/lib/langs"
 import { cn } from "@/lib/utils"
+import { dictionaryRequirements } from "@/lib/utils/dictionary"
 import { Button } from "@nextui-org/react"
 
 import PrivacyAcceptance from "../privacy-acceptance"
@@ -26,19 +27,21 @@ export default async function SignUpPage({
 }) {
   const dictionary = await getDictionary(
     lang,
-    {
-      login: true,
-      signUpPage: {
-        createAnAccount: true,
-        enterEmail: true,
+    dictionaryRequirements(
+      {
+        login: true,
+        signUpPage: {
+          createAnAccount: true,
+          enterEmail: true,
+        },
+        auth: {
+          orContinueWith: true,
+        },
       },
-      auth: {
-        orContinueWith: true,
-      },
-    },
-    AuthProvidersDr,
-    PrivacyAcceptanceDr,
-    RegisterUserAuthFormDr
+      AuthProvidersDr,
+      PrivacyAcceptanceDr,
+      RegisterUserAuthFormDr
+    )
   )
   const session = await getServerSession(nextAuthOptions)
 

@@ -9,7 +9,6 @@ export const LoginUserAuthFormDr = dictionaryRequirements(
       password: true,
       email: true,
       invalidCredentials: true,
-      unknownError: true,
       otpInvalid: true,
     },
     auth: true,
@@ -23,6 +22,7 @@ export const LoginUserAuthFormDr = dictionaryRequirements(
     },
     confirm: true,
     cancel: true,
+    unknownError: true,
   },
   CopiableDr
 )

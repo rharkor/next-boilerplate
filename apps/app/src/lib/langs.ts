@@ -15,7 +15,7 @@ const dictionaries = {
   },
 }
 
-type TPossibleNamespaces = keyof typeof dictionaries
+export type TPossibleNamespaces = keyof typeof dictionaries
 export type TBaseDict<NS extends TPossibleNamespaces> = Awaited<ReturnType<(typeof dictionaries)[NS][Locale]>>
 // Just add the possibility of already cached dictionaries
 type TDictionariesWithCache = {

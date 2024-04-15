@@ -1,4 +1,40 @@
 {
+  "errors": {
+    "password": {
+      "regex": "Le mot de passe doit contenir au moins une lettre majuscule, une lettre minuscule, un chiffre, et un caractère spécial.",
+      "required": "Mot de passe requis",
+      "min8": "Le mot de passe doit être au moins 8 caractères long.",
+      "max25": "Le mot de passe doit être au maximum 25 caractères long.",
+      "dontMatch": "Les mots de passe ne correspondent pas"
+    },
+    "username": {
+      "required": "Nom d'utilisateur requis",
+      "min3": "Le nom d'utilisateur doit être au moins 3 caractères long.",
+      "max30": "Le nom d'utilisateur doit être au maximum 30 caractères long."
+    },
+    "email": {
+      "required": "Email requis",
+      "invalid": "Email invalide"
+    },
+    "typeError": {
+      "number": {
+        "invalid": "Veuillez entrer un nombre valide.",
+        "required": "Veuillez entrer un nombre."
+      },
+      "string": {
+        "invalid": "Veuillez entrer une chaîne de caractères valide.",
+        "required": "Veuillez entrer une chaîne de caractères."
+      }
+    },
+    "unavailableWithOAuth": "Cette fonctionnalité n'est pas disponible avec ce type de connexion.",
+    "noFileSelected": "Aucun fichier sélectionné.",
+    "wrongProvider": "Vous avez déjà un compte avec un autre provider. Veuillez vous connecter avec celui-ci.",
+    "invalidCredentials": "Les informations d'identification sont invalides.",
+    "otpInvalid": "Code OTP invalide.",
+    "emailNotVerified": "Veuillez vérifier votre email.",
+    "fileTooLarge": "Le fichier est trop volumineux.",
+    "passwordsDoNotMatch": "Les mots de passe ne correspondent pas."
+  },
   "home": "Accueil",
   "homePage": {
     "title": "Accueil"

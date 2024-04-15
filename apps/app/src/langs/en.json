@@ -1,4 +1,40 @@
 {
+  "errors": {
+    "password": {
+      "regex": "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character",
+      "required": "Password is required.",
+      "min8": "Password must be at least 8 characters long.",
+      "max25": "Password must be at most 25 characters long.",
+      "dontMatch": "Passwords don't match."
+    },
+    "username": {
+      "required": "Username is required.",
+      "min3": "Username must be at least 3 characters long.",
+      "max30": "Username must be at most 30 characters long."
+    },
+    "email": {
+      "required": "Email is required.",
+      "invalid": "Email is invalid."
+    },
+    "typeError": {
+      "number": {
+        "invalid": "Please enter a valid number.",
+        "required": "Please enter a number."
+      },
+      "string": {
+        "invalid": "Please enter a valid string.",
+        "required": "Please enter a string."
+      }
+    },
+    "unavailableWithOAuth": "This feature is not available with OAuth providers.",
+    "noFileSelected": "No file selected.",
+    "wrongProvider": "You already have an account with a different provider. Please sign in with it.",
+    "invalidCredentials": "Invalid credentials. Please try again.",
+    "otpInvalid": "Invalid OTP code.",
+    "emailNotVerified": "Please, verify your email.",
+    "fileTooLarge": "File too large.",
+    "passwordsDoNotMatch": "Passwords do not match."
+  },
   "home": "Home",
   "homePage": {
     "title": "Hello World!"

@@ -9,6 +9,7 @@ import { env } from "@/lib/env"
 import { Locale } from "@/lib/i18n-config"
 import { getDictionary } from "@/lib/langs"
 import { cn } from "@/lib/utils"
+import { dictionaryRequirements } from "@/lib/utils/dictionary"
 import { Button } from "@nextui-org/react"
 
 import PrivacyAcceptance from "../privacy-acceptance"
@@ -27,19 +28,21 @@ export default async function SignInPage({
 }) {
   const dictionary = await getDictionary(
     lang,
-    {
-      signInPage: {
-        loginToYourAccount: true,
-        enterDetails: true,
+    dictionaryRequirements(
+      {
+        signInPage: {
+          loginToYourAccount: true,
+          enterDetails: true,
+        },
+        toSignUp: true,
+        auth: {
+          orContinueWith: true,
+        },
       },
-      toSignUp: true,
-      auth: {
-        orContinueWith: true,
-      },
-    },
-    AuthProvidersDr,
-    PrivacyAcceptanceDr,
-    LoginUserAuthFormDr
+      AuthProvidersDr,
+      PrivacyAcceptanceDr,
+      LoginUserAuthFormDr
+    )
   )
   const session = await getServerSession(nextAuthOptions)
 

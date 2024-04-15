@@ -305,6 +305,7 @@ import { MyComponentDr } from "@/components/my-component.dr";
 import MyComponent from "@/components/my-component";
 import { Locale } from "@/lib/i18n-config";
 import { getDictionary } from "@/lib/langs";
+import { dictionaryRequirements } from "@/lib/utils/dictionary";
 
 export default async function Profile({
   params: { lang },
@@ -315,10 +316,12 @@ export default async function Profile({
 }) {
   const dictionary = await getDictionary(
     lang,
-    {
-      profile: true,
-    },
-    MyComponentDr
+    dictionaryRequirements(
+      {
+        profile: true,
+      },
+      MyComponentDr
+    )
   );
 
   return (

@@ -13,6 +13,7 @@ import CardTitle from "@/components/ui/card"
 import { nextAuthOptions } from "@/lib/auth"
 import { Locale } from "@/lib/i18n-config"
 import { getDictionary } from "@/lib/langs"
+import { dictionaryRequirements } from "@/lib/utils/dictionary"
 import { Card, CardBody, CardHeader } from "@nextui-org/react"
 
 export default async function Profile({
@@ -24,18 +25,20 @@ export default async function Profile({
 }) {
   const dictionary = await getDictionary(
     lang,
-    {
-      profile: true,
-      profilePage: {
-        serverSideData: true,
+    dictionaryRequirements(
+      {
+        profile: true,
+        profilePage: {
+          serverSideData: true,
+        },
+        deleteAccount: true,
+        signOut: true,
       },
-      deleteAccount: true,
-      signOut: true,
-    },
-    UserActiveSessionsDr,
-    DeleteAccountButtonDr,
-    VerifyEmailButtonDr,
-    ProfileDetailsDr
+      UserActiveSessionsDr,
+      DeleteAccountButtonDr,
+      VerifyEmailButtonDr,
+      ProfileDetailsDr
+    )
   )
   const session = await getServerSession(nextAuthOptions)
 
