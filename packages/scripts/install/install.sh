@@ -13,7 +13,4 @@ fi
 echo "🔨 Installing git hooks..."
 $base_dir/scripts/install/install-git-hooks.sh 1>/dev/null 2>&1
 
-echo "📦 Installing dependencies..."
-npm install -s
-
 echo "🎉 Installing done!"
