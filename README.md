@@ -121,6 +121,8 @@ npm run dev
 
 ### Usage within a team
 
+> Those steps require a version of git >= 2.43.2 due to the `space-checkout` feature.
+
 After initializing the project and pushing the changes to the repository, the other team members can follow the following steps:
 
 1. Clone the repository:
@@ -439,6 +441,8 @@ Here are good resources to learn more about the depth clone:
 - https://stackoverflow.com/questions/24107485/how-to-checkout-remote-branch-with-git-clone-depth-1
 
 #### Sparse checkout
+
+> Those steps require a version of git >= 2.43.2 due to the `space-checkout` feature.
 
 When you clone a repository, you can specify the files you want to clone. This is useful when you want to clone a repository but you don't need all the files.
 
