@@ -148,17 +148,14 @@ Possible values for `<team_name>` are:
 - landing
 - infra
 
-3. Install the dependencies:
+3. Initialize the project locally:
 
 ```bash
-npm install
+npm i -w packages && npm run init
 ```
 
-4. Initialize the project locally:
-
-```bash
-npm run init
-```
+> After those steps you can start developing. Since you do not want to install the dependecies of all the apps when doing `npm i` use the `-w` flag to install the dependencies of the selected apps.
+> For example if you run `npm i -w apps/app` at root it will install the dependencies of the app package only.
 
 ## 🗄️ Monorepo packages
 
