@@ -132,7 +132,7 @@ export const providers: Provider[] = [
   }),
 ]
 
-if (env.ENABLE_REGISTRATION) {
+if (env.DISABLE_REGISTRATION !== true) {
   providers.push(
     GithubProvider({
       clientId: env.GITHUB_CLIENT_ID,
@@ -299,7 +299,7 @@ export const nextAuthOptions: NextAuthOptions = {
     },
   },
   jwt: {
-    maxAge: JWT_MAX_AGE, // 30 days
+    maxAge: JWT_MAX_AGE,
   },
   pages: {
     signIn: authRoutes.signIn[0],

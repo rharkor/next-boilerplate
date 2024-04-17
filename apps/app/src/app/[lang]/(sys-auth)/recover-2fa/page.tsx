@@ -4,6 +4,7 @@ import NavSettings from "@/components/nav-settings"
 import { authRoutes } from "@/constants/auth"
 import { Locale } from "@/lib/i18n-config"
 import { getDictionary } from "@/lib/langs"
+import { dictionaryRequirements } from "@/lib/utils/dictionary"
 
 import Recover2FAForm from "./form"
 import { Recover2FAFormDr } from "./form.dr"
@@ -19,11 +20,13 @@ export default async function Recover2FA({
 }) {
   const dictionary = await getDictionary(
     lang,
-    {
-      recover2FA: true,
-      goToSignInPage: true,
-    },
-    Recover2FAFormDr
+    dictionaryRequirements(
+      {
+        recover2FA: true,
+        goToSignInPage: true,
+      },
+      Recover2FAFormDr
+    )
   )
   const email = searchParams.email as string | undefined
 

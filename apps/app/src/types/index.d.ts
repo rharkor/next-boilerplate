@@ -26,13 +26,13 @@ export type ValueOf<T> = T[keyof T]
  * }
  * type Result = Path<Obj> // "a" | "a.b" | "a.b.c"
  */
-export type Path<T, Prefix extends string = ""> = T extends object
-  ? {
-      [K in keyof T]-?: K extends string
-        ? `${Prefix}${Prefix extends "" ? "" : "."}${K}` | Path<T[K], `${Prefix}${Prefix extends "" ? "" : "."}${K}`>
-        : never
-    }[keyof T]
-  : never
+export type Path<T extends object, Prefix extends string = ""> = {
+  [K in keyof T]-?: K extends string
+    ? T[K] extends object
+      ? `${Prefix}${Prefix extends "" ? "" : "."}${K}` | Path<T[K], `${Prefix}${Prefix extends "" ? "" : "."}${K}`>
+      : `${Prefix}${Prefix extends "" ? "" : "."}${K}`
+    : never
+}[keyof T]
 
 /**
  * SelectSubset of an object

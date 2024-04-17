@@ -1,6 +1,6 @@
 import { SelectSubset, UnionToIntersection } from "@/types"
 
-import { TBaseDict } from "../langs"
+import { TBaseDict, TPossibleNamespaces } from "../langs"
 
 import { merge } from "."
 
@@ -8,8 +8,9 @@ import { merge } from "."
  * Used to define the dictionary requirements of a component
  */
 export const dictionaryRequirements = <
-  P1 extends SelectSubset<TBaseDict>,
-  P2 extends SelectSubset<TBaseDict>[],
+  NS extends TPossibleNamespaces,
+  P1 extends SelectSubset<TBaseDict<NS>>,
+  P2 extends SelectSubset<TBaseDict<NS>>[],
   P extends P2 extends [] ? P1 : P1 & UnionToIntersection<P2[number]>,
 >(
   subset: P1,

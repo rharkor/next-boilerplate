@@ -1,6 +1,5 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
-  "extends": "tsconfig/paths.json",
   "compilerOptions": {
     "target": "esnext",
     "lib": ["esnext"],
@@ -17,7 +16,10 @@
     "rootDir": "./src",
     "outDir": "./dist",
     "declaration": true,
-    "sourceMap": true
+    "sourceMap": true,
+    "paths": {
+      "@/*": ["./src/*"]
+    }
   },
   "include": ["src/**/*.ts"],
   "exclude": ["node_modules"],

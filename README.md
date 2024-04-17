@@ -75,6 +75,10 @@ With this template, you get all the awesomeness you need:
     - [Recommended extensions](#recommended-extensions)
     - [Database \& Redis](#database--redis)
     - [Git flow](#git-flow)
+    - [Api development](#api-development)
+      - [Api errors](#api-errors)
+  - [❌ Common issues](#-common-issues)
+    - [Cannot commit](#cannot-commit)
   - [☁️ Cloud deployment](#️-cloud-deployment)
     - [Build](#build)
     - [Build multi-architecture image](#build-multi-architecture-image)
@@ -301,6 +305,7 @@ import { MyComponentDr } from "@/components/my-component.dr";
 import MyComponent from "@/components/my-component";
 import { Locale } from "@/lib/i18n-config";
 import { getDictionary } from "@/lib/langs";
+import { dictionaryRequirements } from "@/lib/utils/dictionary";
 
 export default async function Profile({
   params: { lang },
@@ -311,10 +316,12 @@ export default async function Profile({
 }) {
   const dictionary = await getDictionary(
     lang,
-    {
-      profile: true,
-    },
-    MyComponentDr
+    dictionaryRequirements(
+      {
+        profile: true,
+      },
+      MyComponentDr
+    )
   );
 
   return (
@@ -494,7 +501,29 @@ The main branches are:
 
 - `main`: The main branch
 - `rec`: The staging branch
-- `develop`: The development branch
+- `develop`: The development branchs
+
+### Api development
+
+For the interaction with the api you can use the `trpc` library. It's a library that allows you to create typesafe APIs with ease. See [trpc](https://trpc.io/).
+
+#### Api errors
+
+All the possible errors are defined in `apps/app/src/langs/errors/<lang>.json`
+
+## ❌ Common issues
+
+### Cannot commit
+
+Error: `.git-hooks/commit-msg: 6: git-conventional-commits: not found`
+
+This error occurs when the `git-conventional-commits` package is not installed. To fix this issue, run the following command:
+
+```bash
+npm install -g git-conventional-commits
+```
+
+This package is used to check the commit message format.
 
 ## ☁️ Cloud deployment
 

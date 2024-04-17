@@ -79,12 +79,12 @@ export default function UpdateAvatar({
           if (error.textContent === "Your proposed upload exceeds the maximum allowed size") {
             toast.error(dictionary.errors.fileTooLarge)
           } else {
-            toast.error(dictionary.errors.unknownError)
+            toast.error(dictionary.unknownError)
           }
         }
       } catch (e) {
         logger.error(e)
-        toast.error(dictionary.errors.unknownError)
+        toast.error(dictionary.unknownError)
       }
     } catch {
     } finally {

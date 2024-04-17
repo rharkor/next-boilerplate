@@ -51,7 +51,7 @@ const isAuthenticated = middleware(async (opts) => {
   const { session } = await getAuthApi()
 
   if (!session) {
-    ApiError("unauthorized", "UNAUTHORIZED")
+    await ApiError("unauthorized", "UNAUTHORIZED")
   }
 
   return opts.next({
@@ -65,7 +65,7 @@ const hasVerifiedEmail = middleware(async (opts) => {
   const { ctx } = opts
   const session = ctx.session as (Session & { user: Omit<User, "password"> }) | null
   if (!session || (!session.user.emailVerified && env.NEXT_PUBLIC_ENABLE_MAILING_SERVICE === true)) {
-    ApiError("emailNotVerified", "UNAUTHORIZED", {
+    await ApiError("emailNotVerified", "UNAUTHORIZED", {
       redirect: false,
     })
   }

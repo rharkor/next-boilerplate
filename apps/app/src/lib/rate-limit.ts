@@ -64,7 +64,8 @@ export const apiRateLimiter = async (
   if (!identifier) {
     if (env.ENV !== "development") {
       logger.error("Could not identify IP address.")
-      ApiError("couldNotIdentifyIp", "INTERNAL_SERVER_ERROR")
+      await ApiError("couldNotIdentifyIp", "INTERNAL_SERVER_ERROR")
+      throw new Error("Could not identify IP address.")
     } else {
       identifier = "unknown_ip"
     }
@@ -73,7 +74,7 @@ export const apiRateLimiter = async (
   const result = await rateLimiter(identifier, options.limitPerInterval, options.duration)
 
   if (!result.success) {
-    ApiError("tooManyRequests", "TOO_MANY_REQUESTS")
+    await ApiError("tooManyRequests", "TOO_MANY_REQUESTS")
   }
 
   return {

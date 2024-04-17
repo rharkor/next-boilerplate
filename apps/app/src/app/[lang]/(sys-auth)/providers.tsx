@@ -40,7 +40,7 @@ export default function AuthProviders({
           if (res.error === "OAuthAccountNotLinked") {
             toast.error(dictionary.errors.wrongProvider)
           } else {
-            throw new Error(dictionary.errors.unknownError)
+            throw new Error(dictionary.unknownError)
           }
         }
       }
@@ -51,7 +51,7 @@ export default function AuthProviders({
       if (error instanceof Error) {
         toast.error(error.message)
       } else {
-        toast(dictionary.errors.unknownError)
+        toast(dictionary.unknownError)
       }
       return false
     }

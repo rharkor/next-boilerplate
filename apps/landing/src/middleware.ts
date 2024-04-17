@@ -7,11 +7,8 @@ import { match as matchLocale } from "@formatjs/intl-localematcher"
 
 const blackListedPaths = ["healthz", "api/healthz", "health", "ping", "api/ping"]
 
-function getLocale(request: NextRequest): string | undefined {
-  const cookies = request.cookies
-  const savedLocale = cookies.get("saved-locale")
-  if (savedLocale?.value) return savedLocale.value
-
+function getLocale(request: NextRequest, cookiesLocale: string | undefined): string | undefined {
+  if (cookiesLocale) return cookiesLocale
   // Negotiator expects plain object so we need to transform headers
   const negotiatorHeaders: Record<string, string> = {}
   request.headers.forEach((value, key) => (negotiatorHeaders[key] = value))
@@ -29,13 +26,21 @@ function getLocale(request: NextRequest): string | undefined {
 export function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname
 
+  // Inject the current url in the headers
+  const rHeaders = new Headers(request.headers)
+  rHeaders.set("x-url", request.url)
+
   // `/_next/` and `/api/` are ignored by the watcher, but we need to ignore files in `public` manually.
   // If you have one
   if (
     [
       "/favicon.ico",
+      "/favicon.webp",
+      "/robots.txt",
+      "/sitemap.xml",
       // Your other files in `public`
-    ].includes(pathname)
+    ].includes(pathname) ||
+    pathname.match(/^\/[a-z]+\/_next$/)
   )
     return
 
@@ -43,12 +48,20 @@ export function middleware(request: NextRequest) {
   const pathnameIsMissingLocale = i18n.locales.every(
     (locale) => !pathname.startsWith(`/${locale}/`) && pathname !== `/${locale}`
   )
+
+  const cookies = request.cookies
+  const savedLocale = cookies.get("saved-locale")
+  const cookiesLocales = savedLocale?.value
+
   if (!pathnameIsMissingLocale) {
     const localeInPathname =
       i18n.locales.find((locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`) || ""
-    const presentLocale = getLocale(request) || i18n.defaultLocale
-    const response = NextResponse.next()
-    if (localeInPathname !== presentLocale) {
+    const response = NextResponse.next({
+      request: {
+        headers: rHeaders,
+      },
+    })
+    if (localeInPathname !== cookiesLocales) {
       response.cookies.set("saved-locale", localeInPathname, {
         path: "/",
         sameSite: "lax",
@@ -63,7 +76,7 @@ export function middleware(request: NextRequest) {
 
   // Redirect if there is no locale
   if (pathnameIsNotBlacklisted) {
-    const locale = getLocale(request)
+    const locale = getLocale(request, cookiesLocales)
 
     // e.g. incoming request is /products
     // The new URL is now /en-US/products
@@ -71,9 +84,21 @@ export function middleware(request: NextRequest) {
     const redirectUrl = new URL(`/${locale}${pathname.startsWith("/") ? "" : "/"}${pathname}?${params}`, request.url)
     return NextResponse.redirect(redirectUrl)
   }
+
+  return NextResponse.next({
+    request: {
+      headers: rHeaders,
+    },
+  })
 }
 
 export const config = {
-  // Matcher ignoring `/_next/` and `/api/`
+  /*
+   * Match all request paths except for the ones starting with:
+   * - api (API routes)
+   * - _next/static (static files)
+   * - _next/image (image optimization files)
+   * - favicon.ico (favicon file)
+   */
   matcher: ["/((?!api|_next/static|_next/image|favicon.ico|public).*)"],
 }
