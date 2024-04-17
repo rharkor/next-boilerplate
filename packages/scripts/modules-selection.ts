@@ -151,13 +151,13 @@ const onlyFrontAppsAdaptaion: {
           "tsx",
           "ua-parser-js",
         ].map((s) => new RegExp(`\\n\\s*"${s}"\:.*\,`, "g")),
+        new RegExp(`\\n\\s*"postinstall"\:"prisma generate"\,`, "g"),
       ],
       replacements: {
         '"start": "npm run deploy-db:prod && next start --port ${PORT:-3000}",':
           '"start": "next start --port ${PORT:-3000}",',
         '"dev": "npm run is-initialized && prisma migrate dev && cross-env FORCE_COLOR=1 next dev",':
           '"dev": "npm run is-initialized && cross-env FORCE_COLOR=1 next dev",',
-        '"postinstall": "patch-package && prisma generate",': '"postinstall": "patch-package",',
       },
     },
   },
