@@ -566,7 +566,7 @@ docker push <registry-url>/next-boilerplate/landing:latest
 Exemple (landing):
 
 ```bash
-buildx build -t "<registry-url>/next-boilerplate/landing:latest" -f apps/landing/Dockerfile --platform linux/amd64,linux/arm64 --push .
+docker buildx build -t "<registry-url>/next-boilerplate/landing:latest" -f apps/landing/Dockerfile --platform linux/amd64,linux/arm64 --push .
 ```
 
 ### Debug in local
