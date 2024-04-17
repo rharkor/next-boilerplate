@@ -128,7 +128,7 @@ After initializing the project and pushing the changes to the repository, the ot
 1. Clone the repository:
 
 ```bash
-git clone --depth 1 --filter=blob:none --no-checkout https://github.com/rharkor/next-boilerplate && cd next-boilerplate && git sparse-checkout init --cone && git checkout main
+git clone --depth 1 --filter=blob:none --no-checkout https://github.com/rharkor/next-boilerplate && cd next-boilerplate && git checkout main
 ```
 
 > See more about the clone optimizations [here](#git-optimization).
@@ -457,9 +457,10 @@ In case of using this boilerplate with a team I specify the `--no-checkout` flag
 For example if you only want to work on the `app` package:
 
 ```bash
-git sparse-checkout init --cone
 git sparse-checkout set apps/app
 ```
+
+> The command above is just and example, please use the bootstrap script to select the team you want to work on.
 
 In order to avoid knowing all the commands you can use the `bootstrap.sh` script to select the team you want to work on.
 Example with the `app` team:
