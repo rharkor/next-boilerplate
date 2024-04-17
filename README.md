@@ -30,7 +30,6 @@ With this template, you get all the awesomeness you need:
 - 🎯 **[Absolute imports](https://nextjs.org/docs/advanced-features/module-path-aliases)** - No more spaghetti imports
 - ⚕️ **[Health checks](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/)** - Kubernetes-compatible for robust deployments
 - 🤖 **[Renovate BOT](https://www.whitesourcesoftware.com/free-developer-tools/renovate)** - Auto-updating dependencies, so you can focus on coding
-- 🩹 **[Patch-package](https://www.npmjs.com/package/patch-package)** - Fix external dependencies without losing your mind
 - 🚀 **[GitHub Actions](https://github.com/features/actions)** - Pre-configured actions for smooth workflows, including check tests and deployment example
 - 🚢 **[Semantic Release](https://github.com/semantic-release/semantic-release)** - for automatic changelog
 - 💻 **[T3 Env](https://env.t3.gg/)** - Manage your environment variables with ease
@@ -121,18 +120,21 @@ npm run dev
 
 ### Usage within a team
 
+> Those steps require a version of git >= 2.43.2 due to the `sparse-checkout` feature.
+
 After initializing the project and pushing the changes to the repository, the other team members can follow the following steps:
 
 1. Clone the repository:
 
 ```bash
-git clone --depth 1 --filter=blob:none --no-checkout https://github.com/rharkor/next-boilerplate && cd next-boilerplate && git sparse-checkout init --cone && git checkout main
+git clone --depth 1 --filter=blob:none --no-checkout https://github.com/rharkor/next-boilerplate && cd next-boilerplate && git checkout main
 ```
 
 > See more about the clone optimizations [here](#git-optimization).
 
 2. Select the apps you want to work on:
-   As a team member you may not need to work on all the apps, you can select the apps you want to work on by running the following command (for all the repository enter `full` as the team name):
+
+As a team member you may not need to work on all the apps, you can select the apps you want to work on by running the following command (for all the repository enter `full` as the team name):
 
 ```bash
 ./bootstrap.sh <team_name>
@@ -147,17 +149,17 @@ Possible values for `<team_name>` are:
 - landing
 - infra
 
-3. Install the dependencies:
+> **If you are the first one initializing the project please select the team_name: `full`**.
+> Otherwise the initialization script will not work correctly.
+
+3. Initialize the project locally:
 
 ```bash
-npm install
+npm i -w packages && npm run init
 ```
 
-4. Initialize the project locally:
-
-```bash
-npm run init
-```
+> After those steps you can start developing. Since you do not want to install the dependecies of all the apps when doing `npm i` use the `-w` flag to install the dependencies of the selected apps.
+> For example if you run `npm i -w apps/app` at root it will install the dependencies of the app package only.
 
 ## 🗄️ Monorepo packages
 
@@ -440,6 +442,8 @@ Here are good resources to learn more about the depth clone:
 
 #### Sparse checkout
 
+> Those steps require a version of git >= 2.43.2 due to the `space-checkout` feature.
+
 When you clone a repository, you can specify the files you want to clone. This is useful when you want to clone a repository but you don't need all the files.
 
 Example:
@@ -453,9 +457,10 @@ In case of using this boilerplate with a team I specify the `--no-checkout` flag
 For example if you only want to work on the `app` package:
 
 ```bash
-git sparse-checkout init --cone
 git sparse-checkout set apps/app
 ```
+
+> The command above is just and example, please use the bootstrap script to select the team you want to work on.
 
 In order to avoid knowing all the commands you can use the `bootstrap.sh` script to select the team you want to work on.
 Example with the `app` team:
@@ -561,7 +566,7 @@ docker push <registry-url>/next-boilerplate/landing:latest
 Exemple (landing):
 
 ```bash
-buildx build -t "<registry-url>/next-boilerplate/landing:latest" -f apps/landing/Dockerfile --platform linux/amd64,linux/arm64 --push .
+docker buildx build -t "<registry-url>/next-boilerplate/landing:latest" -f apps/landing/Dockerfile --platform linux/amd64,linux/arm64 --push .
 ```
 
 ### Debug in local
