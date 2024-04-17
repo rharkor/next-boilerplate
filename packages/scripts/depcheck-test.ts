@@ -102,7 +102,7 @@ const main = async () => {
       ? `${chalk.yellow(pkg + " Missing dependencies:")}
   ${beautify(Object.keys(unused.missing))}`
       : ""
-  }`
+  }\n`
       if (unused.dependencies.length > 0 || Object.keys(unused.missing).length > 0) {
         hasError = true
       }

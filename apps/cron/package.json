@@ -7,7 +7,8 @@
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
     "prettier": "prettier --check \"**/*.{js,jsx,ts,tsx}\"",
-    "prettier:fix": "prettier --write \"**/*.{js,jsx,ts,tsx}\""
+    "prettier:fix": "prettier --write \"**/*.{js,jsx,ts,tsx}\"",
+    "postinstall": "prisma generate"
   },
   "keywords": [],
   "author": "",
@@ -15,7 +16,7 @@
   "dependencies": {
     "@aws-sdk/client-s3": "^3.549.0",
     "@next-boilerplate/lib": "*",
-    "@prisma/client": "^5.9.1",
+    "@prisma/client": "^5.12.1",
     "@t3-oss/env-core": "^0.9.2",
     "@types/node": "^20.11.19",
     "chalk": "^5.3.0",
@@ -24,7 +25,8 @@
     "eslint-config-custom": "*",
     "tsc-alias": "^1.8.8",
     "typescript": "^5.3.3",
-    "zod": "^3.22.4"
+    "zod": "^3.22.4",
+    "prisma": "^5.12.1"
   },
   "prisma": {
     "schema": "../app/prisma/schema.prisma"
