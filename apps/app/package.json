@@ -55,7 +55,7 @@
     "eslint-config-custom": "*",
     "framer-motion": "^11.0.0",
     "ioredis": "^5.3.2",
-    "lucide-react": "^0.368.0",
+    "lucide-react": "^0.370.0",
     "negotiator": "^0.6.3",
     "next": "^14.0.0",
     "next-auth": "^4.24.5",
