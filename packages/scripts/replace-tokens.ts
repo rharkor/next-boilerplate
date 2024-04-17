@@ -111,7 +111,7 @@ export const replaceTokens = async () => {
   execSync("rm -rf node_modules", {
     cwd: rootDir,
   })
-  execSync("npm i -w packages", {
+  execSync("npm install", {
     cwd: rootDir,
     stdio: "inherit",
   })
