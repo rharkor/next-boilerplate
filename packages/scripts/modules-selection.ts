@@ -120,7 +120,7 @@ const onlyFrontAppsAdaptaion: {
         new RegExp(/\,\n.*"deploy-db\:prod"\: "prisma migrate deploy && npm run seed"/, "g"),
         new RegExp(/\,\n.*"seed"\: "cross-env NODE_ENV=development tsx prisma\/seed.ts"/, "g"),
         new RegExp(
-          /\,\n.*"prisma"\: \{\n.*"schema"\: "prisma\/schema\.prisma"\,\n.*"seed"\: "tsx prisma\/seed\.ts"\n\s*\}/,
+          /\,\n.*"prisma"\: \{\n.*"schema"\: "prisma\/schema\.prisma"\,\n.*"seed"\: "npx -y tsx prisma\/seed\.ts"\n\s*\}/,
           "g"
         ),
         ...[
@@ -161,7 +161,7 @@ const onlyFrontAppsAdaptaion: {
       replacements: {
         '"start": "npm run deploy-db:prod && next start --port ${PORT:-3000}",':
           '"start": "next start --port ${PORT:-3000}",',
-        '"dev": "npm run is-initialized && prisma migrate dev && cross-env FORCE_COLOR=1 next dev",':
+        '"dev": "npm run is-initialized && prisma migrate dev && cross-env FORCE_COLOR=1 next dev --turbo",':
           '"dev": "npm run is-initialized && cross-env FORCE_COLOR=1 next dev",',
       },
     },
