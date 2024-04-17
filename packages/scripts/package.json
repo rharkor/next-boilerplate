@@ -6,9 +6,10 @@
     "init:env": "tsx init-env.ts",
     "depcheck": "tsx depcheck-test.ts",
     "is-initialized": "bash ./is-initialized.sh",
-    "postinstall": "patch-package",
     "lint": "eslint .",
-    "lint:fix": "eslint --fix ."
+    "lint:fix": "eslint --fix .",
+    "prettier": "prettier --check \"**/*.{js,jsx,ts,tsx}\"",
+    "prettier:fix": "prettier --write \"**/*.{js,jsx,ts,tsx}\""
   },
   "dependencies": {
     "@next-boilerplate/lib": "*",
@@ -19,7 +20,6 @@
     "eslint-config-custom": "*",
     "glob": "^10.3.10",
     "inquirer": "^9.2.11",
-    "patch-package": "^8.0.0",
     "tsx": "^4.7.0",
     "yaml": "^2.3.4"
   },
