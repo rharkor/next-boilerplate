@@ -90,7 +90,6 @@ export const replaceTokens = async () => {
         // Custom ignore
         `${dir}/README.md`,
         `${dir}/package-lock.json`,
-        `${dir}/**/replace-tokens.ts`,
       ]
       const files = await glob(`${dir}/**`, {
         ignore,

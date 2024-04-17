@@ -192,7 +192,6 @@ const noUiToRemove = [
   "apps/app/src/components/icons.tsx",
   "apps/app/src/components/theme/theme-switch.tsx",
   "apps/app/src/components/nav-settings.tsx",
-  "apps/app/src/app/[lang]/not-found.tsx",
   "apps/app/src/app/[lang]/error.tsx",
 ]
 
@@ -238,6 +237,13 @@ const noUiAppsAdaptaion: {
         "framer-motion",
         "@nextui-org/react",
       ].map((s) => new RegExp(`\\n\\s*"${s}"\:.*\,`, "g")),
+    },
+  },
+  {
+    path: "apps/app/src/app/[lang]/not-found.tsx",
+    fileEdits: {
+      newContent:
+        "aW1wb3J0IFJlYWN0IGZyb20gInJlYWN0IgppbXBvcnQgeyBjb29raWVzIH0gZnJvbSAibmV4dC9oZWFkZXJzIgoKaW1wb3J0IHsgTG9jYWxlIH0gZnJvbSAiQC9saWIvaTE4bi1jb25maWciCmltcG9ydCB7IGdldERpY3Rpb25hcnkgfSBmcm9tICJAL2xpYi9sYW5ncyIKaW1wb3J0IExpbmsgZnJvbSAibmV4dC9saW5rIgoKZXhwb3J0IGRlZmF1bHQgYXN5bmMgZnVuY3Rpb24gUGFnZTQwNE1hdGNoQWxsKCkgewogIGNvbnN0IGNvb2tpZXNTdG9yZSA9IGNvb2tpZXMoKQogIGNvbnN0IHNhdmVkTG9jYWxlID0gY29va2llc1N0b3JlLmdldCgic2F2ZWQtbG9jYWxlIikKICBjb25zdCBwYXJhbXMgPSBzYXZlZExvY2FsZT8udmFsdWUgPyB7IGxhbmc6IHNhdmVkTG9jYWxlLnZhbHVlIH0gOiB1bmRlZmluZWQKICBjb25zdCBkaWN0aW9uYXJ5ID0gYXdhaXQgZ2V0RGljdGlvbmFyeShwYXJhbXMgPyAocGFyYW1zLmxhbmcgYXMgTG9jYWxlKSA6ICJlbiIsIHsKICAgIG5vdEZvdW5kOiB0cnVlLAogICAgZ29Ib21lOiB0cnVlLAogIH0pCiAgcmV0dXJuICgKICAgIDxtYWluIGNsYXNzTmFtZT0iY29udGFpbmVyIG0tYXV0byBmbGV4IG1pbi1oLXNjcmVlbiBmbGV4LTEgZmxleC1jb2wgaXRlbXMtY2VudGVyIGp1c3RpZnktY2VudGVyIGdhcC0zIj4KICAgICAgPGgxIGNsYXNzTmFtZT0idGV4dC00eGwgZm9udC1ib2xkIj57ZGljdGlvbmFyeS5ub3RGb3VuZH08L2gxPgogICAgICA8TGluayBocmVmPSIvIj4KICAgICAgICB7ZGljdGlvbmFyeS5nb0hvbWV9CiAgICAgIDwvTGluaz4KICAgIDwvbWFpbj4KICApCn0K",
     },
   },
 ]
