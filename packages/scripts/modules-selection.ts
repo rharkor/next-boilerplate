@@ -105,7 +105,12 @@ const onlyFrontAppsAdaptaion: {
         "<TrpcProvider dictionary={dictionary}>",
         "</TrpcProvider>",
         "</NextAuthProvider>",
+        "const dictionary = await getDictionary(lang, RootProvidersDr)",
       ],
+      replacements: {
+        "export default async function RootProviders({ children, lang }: { children: ReactNode; lang: Locale }) {":
+          "export default async function RootProviders({ children }: { children: ReactNode; lang: Locale }) {",
+      },
     },
   },
   {
