@@ -1,6 +1,6 @@
+import { cookies } from "next/headers"
 import { Session } from "next-auth"
 import base32Encode from "base32-encode"
-import { z } from "zod"
 
 import { Path } from "@/types"
 import { logger } from "@next-boilerplate/lib"
@@ -8,18 +8,10 @@ import { Prisma } from "@prisma/client"
 import { TRPCError } from "@trpc/server"
 import { TRPC_ERROR_CODE_KEY } from "@trpc/server/rpc"
 
-import { TDictionary } from "../langs"
+import { i18n, Locale } from "../i18n-config"
+import { _getDictionary, TDictionary } from "../langs"
 
-export const parseRequestBody = async <T>(
-  req: Request,
-  schema: z.Schema<T>
-): Promise<{ data?: never; error: ReturnType<typeof ApiError> } | { data: T; error?: never }> => {
-  const reqData = (await req.json()) as T
-  const bodyParsedResult = schema.safeParse(reqData)
-  if (!bodyParsedResult.success)
-    return { error: ApiError(bodyParsedResult.error.message as Path<TDictionary<{ errors: true }>["errors"]>) }
-  return { data: bodyParsedResult.data }
-}
+import { findNestedKeyInDictionary } from "."
 
 export const handleApiError = (error: unknown) => {
   if (error instanceof TRPCError) {
@@ -27,28 +19,43 @@ export const handleApiError = (error: unknown) => {
   } else {
     logger.trace(error)
     if (error instanceof Prisma.PrismaClientValidationError || error instanceof Prisma.PrismaClientKnownRequestError)
-      ApiError("unknownError", "INTERNAL_SERVER_ERROR")
+      return ApiError("unknownError", "INTERNAL_SERVER_ERROR")
     else if (error instanceof Error)
-      return ApiError(error.message as Path<TDictionary<{ errors: true }>["errors"]>, "INTERNAL_SERVER_ERROR")
+      return ApiError(error.message as Path<TDictionary<undefined, "errors">>, "INTERNAL_SERVER_ERROR")
     return ApiError("unknownError", "INTERNAL_SERVER_ERROR")
   }
 }
 
 export function ensureLoggedIn(session: Session | null | undefined): asserts session is Session {
-  if (!session) throw ApiError("unauthorized", "UNAUTHORIZED")
+  if (!session) {
+    const data: TErrorMessage = { message: "You must be logged in to access this resource", code: "UNAUTHORIZED" }
+    throw new TRPCError({
+      code: "UNAUTHORIZED",
+      message: JSON.stringify(data),
+    })
+  }
 }
 
 export type TErrorMessage = {
   message: string
+  code: string
   extra?: object
 }
 
-export function ApiError(
-  message: Path<TDictionary<{ errors: true }>["errors"]>,
+export async function ApiError(
+  messageCode: Path<TDictionary<undefined, "errors">>,
   code?: TRPC_ERROR_CODE_KEY,
   extra?: object
-): never {
-  const data: TErrorMessage = { message, extra }
+): Promise<never> {
+  const cookiesStore = cookies()
+  const lang = cookiesStore.get("saved-locale")?.value ?? i18n.defaultLocale
+  const dictionary = await _getDictionary("errors", lang as Locale, undefined)
+  let message = findNestedKeyInDictionary(messageCode, dictionary)
+  if (!message) {
+    logger.error(new Error(`Error not found in dictionary: ${messageCode}`))
+    message = dictionary.unknownError
+  }
+  const data: TErrorMessage = { message, code: messageCode, extra }
   throw new TRPCError({
     code: code ?? "BAD_REQUEST",
     message: JSON.stringify(data),

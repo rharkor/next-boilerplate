@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const { join } = require("path");
+const { join } = require("path")
 
 /** @type {import("eslint").Linter.Config} */
 module.exports = {
@@ -8,17 +8,4 @@ module.exports = {
     project: join(__dirname, "/tsconfig.json"),
   },
   extends: ["custom/base"],
-  overrides: [
-    {
-      extends: ["plugin:@typescript-eslint/disable-type-checked"],
-      files: [
-        "**/.eslintrc.js",
-        "**/.eslintrc.cjs",
-        "**/postcss.config.js",
-        "**/tailwind.config.js",
-        "**/prettier.config.js",
-        "**/prettier.config.cjs",
-      ],
-    },
-  ],
-};
+}

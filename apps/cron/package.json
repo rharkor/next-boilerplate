@@ -23,7 +23,6 @@
     "dotenv": "^16.4.4",
     "eslint-config-custom": "*",
     "tsc-alias": "^1.8.8",
-    "tsconfig": "*",
     "typescript": "^5.3.3",
     "zod": "^3.22.4"
   },

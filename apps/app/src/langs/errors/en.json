@@ -1,0 +1,32 @@
+{
+  "fileNotFound": "File not found.",
+  "couldNotIdentifyIp": "Could not identify your IP address.",
+  "tooManyRequests": "Too many requests. Please try again in a few minutes.",
+  "tooManyAttempts": "Too many attempts. Please try again later.",
+  "otpInvalid": "Invalid OTP code.",
+  "otpSecretAlreadyExists": "You already have an OTP secret.",
+  "otpSecretNotFound": "OTP secret not found.",
+  "demoAdminCannotHaveOtpSecret": "The administator cannot have an OTP secret in demo mode.",
+  "username": {
+    "exist": "Username already exists."
+  },
+  "email": {
+    "exist": "Email already exists."
+  },
+  "unknownError": "An unknown error has occurred. Please try again later.",
+  "invalidCredentials": "Invalid credentials. Please try again.",
+  "unauthorized": "You have been logged out. Please sign in again.",
+  "userNotFound": "This user does not exist.",
+  "cannotDeleteAdmin": "You cannot delete the admin account.",
+  "accountAlreadyExists": "An account with this email already exists.",
+  "emailAlreadySentPleaseTryAgainInFewMinutes": "An email has already been sent. Please try again in a few minutes.",
+  "tokenNotFound": "Token invalid or already used.",
+  "tokenExpired": "Token has expired.",
+  "emailNotVerified": "Please, verify your email.",
+  "emailAlreadyVerified": "Email verified",
+  "emailServiceDisabled": "Email service disabled.",
+  "s3ServiceDisabled": "S3 service disabled.",
+  "registrationDisabled": "Registration disabled.",
+  "cannotResetAdminPasswordInDemoMode": "You cannot reset the admin password in demo mode.",
+  "userDoesNotHaveAPassword": "This user does not have a password."
+}
