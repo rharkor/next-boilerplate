@@ -14,7 +14,7 @@ import { nextAuthOptions } from "@/lib/auth"
 import { Locale } from "@/lib/i18n-config"
 import { getDictionary } from "@/lib/langs"
 import { dictionaryRequirements } from "@/lib/utils/dictionary"
-import { Card, CardBody, CardHeader } from "@nextui-org/react"
+import { Card, CardBody, CardHeader } from "@nextui-org/card"
 
 export default async function Profile({
   params: { lang },

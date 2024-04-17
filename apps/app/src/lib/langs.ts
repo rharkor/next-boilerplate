@@ -1,6 +1,5 @@
 import { Locale } from "@/lib/i18n-config"
 import { PickFromSubset, SelectSubset } from "@/types"
-import { logger } from "@next-boilerplate/lib"
 
 import { pickFromSubset } from "./utils"
 
@@ -49,7 +48,7 @@ export const _getDictionary = async <
     return pickFromSubset(dict, dictionaryRequirements) as unknown as GetDictionaryReturnType<P, NS, MD>
   }
   // Load the dictionary
-  logger.info(`Loading dictionary ${subset} for locale ${locale}`)
+  // logger.info(`Loading dictionary ${subset} for locale ${locale}`)
   const loadedDictionary = await dict()
   const dTyped = dictionaries as TDictionariesWithCache
   dTyped[subset][locale] = loadedDictionary

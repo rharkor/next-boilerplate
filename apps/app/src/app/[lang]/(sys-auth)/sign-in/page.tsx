@@ -10,7 +10,7 @@ import { Locale } from "@/lib/i18n-config"
 import { getDictionary } from "@/lib/langs"
 import { cn } from "@/lib/utils"
 import { dictionaryRequirements } from "@/lib/utils/dictionary"
-import { Button } from "@nextui-org/react"
+import { Button } from "@nextui-org/button"
 
 import PrivacyAcceptance from "../privacy-acceptance"
 import { PrivacyAcceptanceDr } from "../privacy-acceptance.dr"
