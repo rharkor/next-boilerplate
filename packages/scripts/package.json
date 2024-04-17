@@ -7,7 +7,9 @@
     "depcheck": "tsx depcheck-test.ts",
     "is-initialized": "bash ./is-initialized.sh",
     "lint": "eslint .",
-    "lint:fix": "eslint --fix ."
+    "lint:fix": "eslint --fix .",
+    "prettier": "prettier --check \"**/*.{js,jsx,ts,tsx}\"",
+    "prettier:fix": "prettier --write \"**/*.{js,jsx,ts,tsx}\""
   },
   "dependencies": {
     "@next-boilerplate/lib": "*",
