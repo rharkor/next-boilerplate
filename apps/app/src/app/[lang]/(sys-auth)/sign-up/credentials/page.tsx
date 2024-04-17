@@ -8,7 +8,9 @@ import CardTitle from "@/components/ui/card"
 import { authRoutes } from "@/constants/auth"
 import { Locale } from "@/lib/i18n-config"
 import { getDictionary } from "@/lib/langs"
-import { Button, Card, CardBody, CardHeader } from "@nextui-org/react"
+import { dictionaryRequirements } from "@/lib/utils/dictionary"
+import { Button } from "@nextui-org/button"
+import { Card, CardBody, CardHeader } from "@nextui-org/card"
 
 export default async function SignupByCredentials({
   searchParams,
@@ -21,12 +23,14 @@ export default async function SignupByCredentials({
 }) {
   const dictionary = await getDictionary(
     lang,
-    {
-      signUpPage: {
-        createAnAccount: true,
+    dictionaryRequirements(
+      {
+        signUpPage: {
+          createAnAccount: true,
+        },
       },
-    },
-    RegisterUserAuthFormDr
+      RegisterUserAuthFormDr
+    )
   )
 
   //? If there is no email in the search params, redirect to the sign-up page

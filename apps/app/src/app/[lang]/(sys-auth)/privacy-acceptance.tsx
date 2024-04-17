@@ -1,5 +1,5 @@
 import { TDictionary } from "@/lib/langs"
-import { Link } from "@nextui-org/react"
+import { Link } from "@nextui-org/link"
 
 import { PrivacyAcceptanceDr } from "./privacy-acceptance.dr"
 

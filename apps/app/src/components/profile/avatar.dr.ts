@@ -8,8 +8,8 @@ export const UpdateAvatarDr = dictionaryRequirements(
     errors: {
       noFileSelected: true,
       fileTooLarge: true,
-      unknownError: true,
     },
+    unknownError: true,
   },
   FileUploadDr
 )

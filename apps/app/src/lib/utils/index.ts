@@ -4,7 +4,6 @@ import { twMerge } from "tailwind-merge"
 
 import { authRoutes } from "@/constants/auth"
 import { PickFromSubset, SelectSubset } from "@/types"
-import { logger } from "@next-boilerplate/lib"
 import { TRPCClientErrorLike } from "@trpc/client"
 
 import { AppRouter } from "../../api/_app"
@@ -111,7 +110,7 @@ export const formatCouldNotMessage = async ({
 type TDictKey = { [key: string]: TDictKey } | undefined | string
 export const findNestedKeyInDictionary = (
   key: string,
-  dictionaryErrors: TDictionary<{ errors: true }>["errors"]
+  dictionaryErrors: TDictionary<undefined, "errors">
 ): string | undefined => {
   const keys = key.split(".")
   let currentKey = keys.shift()
@@ -123,31 +122,17 @@ export const findNestedKeyInDictionary = (
   return currentObject as string | undefined
 }
 
-export const translateError = (
-  error: string,
-  dictionary: TDictionary<{
-    errors: true
-  }>
-): string => {
-  const errorTranslated = findNestedKeyInDictionary(error, dictionary.errors)
-  if (!errorTranslated) {
-    logger.error(new Error(`Error not found in dictionary: ${error}`))
-    return dictionary.errors.unknownError
-  }
-  return errorTranslated.toString()
-}
-
 export const handleApiError = <T extends TRPCClientErrorLike<AppRouter>>(
   error: T,
   dictionary: TDictionary<{
-    errors: true
+    unknownError: true
   }>,
   router: AppRouterInstance
 ): T => {
   try {
     const parsedError = JSON.parse(error.message) as TErrorMessage | string
     if (typeof parsedError === "string") {
-      const translatedError = translateError(error.message, dictionary)
+      const translatedError = parsedError
       if (error.data?.code === "UNAUTHORIZED") {
         router.push(authRoutes.redirectOnUnhauthorized)
       }
@@ -157,7 +142,7 @@ export const handleApiError = <T extends TRPCClientErrorLike<AppRouter>>(
       }
     }
 
-    const translatedError = translateError(parsedError.message, dictionary)
+    const translatedError = parsedError.message
     const avoidRedirect = parsedError.extra && "redirect" in parsedError.extra && parsedError.extra.redirect === false
     if (error.data?.code === "UNAUTHORIZED" && !avoidRedirect) {
       router.push(authRoutes.redirectOnUnhauthorized)
@@ -168,7 +153,7 @@ export const handleApiError = <T extends TRPCClientErrorLike<AppRouter>>(
       message: translatedError,
     }
   } catch (e) {
-    const translatedError = dictionary.errors.unknownError
+    const translatedError = dictionary.unknownError
     return {
       ...error,
       message: translatedError,

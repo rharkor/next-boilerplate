@@ -13,7 +13,9 @@ import { TDictionary } from "../langs"
 export const handleSignError = (
   error: string,
   dictionary: TDictionary<{
-    errors: { wrongProvider: true }
+    errors: {
+      wrongProvider: true
+    }
   }>
 ) => {
   if (error == "OAuthAccountNotLinked") {
@@ -37,10 +39,10 @@ export const handleSignIn = async ({
   dictionary: TDictionary<{
     errors: {
       invalidCredentials: true
-      unknownError: true
       otpInvalid: true
       wrongProvider: true
     }
+    unknownError: true
   }>
   depth?: number
   getOtpCode: () => Promise<string | null>
@@ -67,7 +69,7 @@ export const handleSignIn = async ({
         if (res.error === "OTP_REQUIRED") {
           logger.debug("OTP_REQUIRED")
           if (depth > 0) {
-            throw new Error(dictionary.errors.unknownError)
+            throw new Error(dictionary.unknownError)
           }
           const otp = await getOtpCode()
           if (otp === null) {
@@ -100,7 +102,7 @@ export const handleSignIn = async ({
       if (error instanceof Error) {
         toast.error(error.message)
       } else {
-        toast.error(dictionary.errors.unknownError)
+        toast.error(dictionary.unknownError)
       }
       reject(error)
     } finally {
