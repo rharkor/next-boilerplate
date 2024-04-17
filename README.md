@@ -120,7 +120,7 @@ npm run dev
 
 ### Usage within a team
 
-> Those steps require a version of git >= 2.43.2 due to the `space-checkout` feature.
+> Those steps require a version of git >= 2.43.2 due to the `sparse-checkout` feature.
 
 After initializing the project and pushing the changes to the repository, the other team members can follow the following steps:
 
@@ -133,7 +133,8 @@ git clone --depth 1 --filter=blob:none --no-checkout https://github.com/rharkor/
 > See more about the clone optimizations [here](#git-optimization).
 
 2. Select the apps you want to work on:
-   As a team member you may not need to work on all the apps, you can select the apps you want to work on by running the following command (for all the repository enter `full` as the team name):
+
+As a team member you may not need to work on all the apps, you can select the apps you want to work on by running the following command (for all the repository enter `full` as the team name):
 
 ```bash
 ./bootstrap.sh <team_name>
@@ -147,6 +148,9 @@ Possible values for `<team_name>` are:
 - docs
 - landing
 - infra
+
+> **If you are the first one initializing the project please select the team_name: `full`**.
+> Otherwise the initialization script will not work correctly.
 
 3. Initialize the project locally:
 
