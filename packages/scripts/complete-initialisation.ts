@@ -25,10 +25,10 @@ export const completeInitialisation = async () => {
   // eslint-disable-next-line no-process-env
   if (process.env.SKIP_INIT_CHECK !== "true") {
     await fs.unlink(path.join(rootPath, "scripts", ".init-todo")).catch(() => {})
-    logger.log("\n")
-    logger.log(chalk.yellow("*".repeat(50)))
-    logger.log(chalk.green("Project initialized!"))
-    logger.log(chalk.red("Don't forget to change the license for production"))
-    logger.log(chalk.yellow("*".repeat(50)))
+    // logger.log("\n")
+    // logger.log(chalk.yellow("*".repeat(50)))
+    // logger.log(chalk.green("Project initialized!"))
+    // logger.log(chalk.red("Don't forget to change the license for production"))
+    // logger.log(chalk.yellow("*".repeat(50)))
   } else logger.log(chalk.yellow("Skipping completeInitialisation()"))
 }
