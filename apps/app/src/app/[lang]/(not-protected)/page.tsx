@@ -1,7 +1,8 @@
 import NavSettings from "@/components/nav-settings"
 import { Locale } from "@/lib/i18n-config"
 import { getDictionary } from "@/lib/langs"
-import { Button, Link } from "@nextui-org/react"
+import { Button } from "@nextui-org/button"
+import { Link } from "@nextui-org/link"
 
 export default async function Home({
   params: { lang },

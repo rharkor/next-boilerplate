@@ -2,6 +2,9 @@
 module.exports = {
   extends: ["prettier", "plugin:@typescript-eslint/recommended"],
   plugins: ["@typescript-eslint", "unused-imports", "simple-import-sort", "custom-rule"],
+  parserOptions: {
+    extraFileExtensions: [".json"],
+  },
   rules: {
     "unused-imports/no-unused-imports": "error",
     "@typescript-eslint/no-unused-vars": [
@@ -46,5 +49,15 @@ module.exports = {
       },
     },
   ],
-  ignorePatterns: ["node_modules", ".next", "dist"],
+  ignorePatterns: [
+    "node_modules",
+    ".next",
+    "dist",
+    "**/.eslintrc.js",
+    "**/.eslintrc.cjs",
+    "**/postcss.config.js",
+    "**/tailwind.config.js",
+    "**/prettier.config.js",
+    "**/prettier.config.cjs",
+  ],
 }

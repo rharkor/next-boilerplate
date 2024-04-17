@@ -2,6 +2,9 @@
 
 # ZSH
 echo "Installing ZSH... 🚀"
+if [ -f "${ZDOTDIR:-$HOME}/.zshrc" ]; then
+    cp ${ZDOTDIR:-$HOME}/.zshrc ${ZDOTDIR:-$HOME}/.zshrc.bak
+fi
 cp .devcontainer/.zshrc ${ZDOTDIR:-$HOME}/.zshrc
 
 #? Install zsh syntax highlighting

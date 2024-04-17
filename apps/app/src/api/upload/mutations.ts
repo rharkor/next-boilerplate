@@ -17,7 +17,7 @@ export const presignedUrl = async ({ input, ctx: { session } }: apiInputFromSche
   ensureLoggedIn(session)
   try {
     if (!env.ENABLE_S3_SERVICE || !s3Client) {
-      ApiError("s3ServiceDisabled")
+      return ApiError("s3ServiceDisabled")
     }
 
     const { filename, filetype } = input
@@ -30,7 +30,7 @@ export const presignedUrl = async ({ input, ctx: { session } }: apiInputFromSche
     const endpoint = env.NEXT_PUBLIC_S3_ENDPOINT
     if (!endpoint || !bucket) {
       logger.error("S3 endpoint or bucket is not defined")
-      ApiError("s3ServiceDisabled")
+      return ApiError("s3ServiceDisabled")
     }
 
     await prisma.fileUploading.create({

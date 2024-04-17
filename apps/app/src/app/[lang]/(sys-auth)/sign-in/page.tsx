@@ -9,7 +9,8 @@ import { env } from "@/lib/env"
 import { Locale } from "@/lib/i18n-config"
 import { getDictionary } from "@/lib/langs"
 import { cn } from "@/lib/utils"
-import { Button } from "@nextui-org/react"
+import { dictionaryRequirements } from "@/lib/utils/dictionary"
+import { Button } from "@nextui-org/button"
 
 import PrivacyAcceptance from "../privacy-acceptance"
 import { PrivacyAcceptanceDr } from "../privacy-acceptance.dr"
@@ -27,25 +28,27 @@ export default async function SignInPage({
 }) {
   const dictionary = await getDictionary(
     lang,
-    {
-      signInPage: {
-        loginToYourAccount: true,
-        enterDetails: true,
+    dictionaryRequirements(
+      {
+        signInPage: {
+          loginToYourAccount: true,
+          enterDetails: true,
+        },
+        toSignUp: true,
+        auth: {
+          orContinueWith: true,
+        },
       },
-      toSignUp: true,
-      auth: {
-        orContinueWith: true,
-      },
-    },
-    AuthProvidersDr,
-    PrivacyAcceptanceDr,
-    LoginUserAuthFormDr
+      AuthProvidersDr,
+      PrivacyAcceptanceDr,
+      LoginUserAuthFormDr
+    )
   )
   const session = await getServerSession(nextAuthOptions)
 
   return (
     <main className="container relative m-auto grid min-h-screen flex-1 flex-col items-center justify-center px-2 lg:max-w-none lg:grid-cols-2 lg:px-0">
-      {env.ENABLE_REGISTRATION && (
+      {env.DISABLE_REGISTRATION !== true && (
         <Button
           as={Link}
           href={authRoutes.signUp[0]}
@@ -64,7 +67,7 @@ export default async function SignInPage({
           </div>
           <div className="grid gap-6">
             <LoginUserAuthForm dictionary={dictionary} searchParams={searchParams} />
-            {env.ENABLE_REGISTRATION && (
+            {env.DISABLE_REGISTRATION !== true && (
               <>
                 <div className="relative">
                   <div className="absolute inset-0 flex items-center">

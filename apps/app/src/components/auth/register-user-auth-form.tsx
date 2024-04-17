@@ -20,7 +20,12 @@ import { Button } from "@nextui-org/react"
 import TotpVerificationModal from "../profile/totp/totp-verification-modal"
 import FormField from "../ui/form"
 
-import { RegisterUserAuthFormDr } from "./register-user-auth-form.dr"
+import {
+  formMinizedSchemaDr,
+  formSchemaDr,
+  getFormSchemaDr,
+  RegisterUserAuthFormDr,
+} from "./register-user-auth-form.dr"
 
 type UserAuthFormProps = React.HTMLAttributes<HTMLFormElement> & {
   isMinimized?: boolean
@@ -29,9 +34,7 @@ type UserAuthFormProps = React.HTMLAttributes<HTMLFormElement> & {
   dictionary: TDictionary<typeof RegisterUserAuthFormDr>
 }
 
-export const formSchema = (
-  dictionary: Parameters<typeof signUpSchema>[0] & TDictionary<{ errors: { password: { dontMatch: true } } }>
-) =>
+export const formSchema = (dictionary: TDictionary<typeof formSchemaDr>) =>
   signUpSchema(dictionary)
     .extend({
       confirmPassword: z.string(),
@@ -47,7 +50,7 @@ export const formSchema = (
       }
     })
 
-export const formMinizedSchema = (dictionary: Parameters<typeof signUpSchema>[0]) =>
+export const formMinizedSchema = (dictionary: TDictionary<typeof formMinizedSchemaDr>) =>
   signUpSchema(dictionary).pick({
     email: true,
   })
@@ -56,7 +59,7 @@ export const getFormSchema = ({
   dictionary,
   isMinimized,
 }: {
-  dictionary: Parameters<typeof formMinizedSchema>[0] & Parameters<typeof formSchema>[0]
+  dictionary: TDictionary<typeof getFormSchemaDr>
   isMinimized?: boolean
 }) => (isMinimized ? formMinizedSchema(dictionary) : formSchema(dictionary))
 

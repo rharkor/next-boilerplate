@@ -1,6 +1,13 @@
+import { signUpSchemaDr } from "@/api/auth/schemas"
 import { dictionaryRequirements } from "@/lib/utils/dictionary"
 
 import { FormFieldDr } from "../ui/form.dr"
+
+export const formSchemaDr = dictionaryRequirements({ errors: { password: { dontMatch: true } } }, signUpSchemaDr)
+
+export const formMinizedSchemaDr = dictionaryRequirements(signUpSchemaDr)
+
+export const getFormSchemaDr = dictionaryRequirements(formMinizedSchemaDr, formSchemaDr)
 
 export const RegisterUserAuthFormDr = dictionaryRequirements(
   {
@@ -16,8 +23,14 @@ export const RegisterUserAuthFormDr = dictionaryRequirements(
       desactivate: true,
       lostYourDevice: true,
     },
-    errors: true,
     withEmail: true,
+    unknownError: true,
+    errors: {
+      invalidCredentials: true,
+      otpInvalid: true,
+      wrongProvider: true,
+    },
   },
-  FormFieldDr
+  FormFieldDr,
+  getFormSchemaDr
 )

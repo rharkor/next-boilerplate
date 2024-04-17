@@ -4,6 +4,7 @@ import NavSettings from "@/components/nav-settings"
 import { authRoutes } from "@/constants/auth"
 import { Locale } from "@/lib/i18n-config"
 import { getDictionary } from "@/lib/langs"
+import { dictionaryRequirements } from "@/lib/utils/dictionary"
 
 import ResetPasswordForm from "./form"
 import { ResetPasswordFormDr } from "./form.dr"
@@ -18,12 +19,14 @@ export default async function ForgotPassword({
 }) {
   const dictionary = await getDictionary(
     lang,
-    {
-      resetPasswordTitle: true,
-      resetPasswordDescription: true,
-      goToSignInPage: true,
-    },
-    ResetPasswordFormDr
+    dictionaryRequirements(
+      {
+        resetPasswordTitle: true,
+        resetPasswordDescription: true,
+        goToSignInPage: true,
+      },
+      ResetPasswordFormDr
+    )
   )
 
   return (

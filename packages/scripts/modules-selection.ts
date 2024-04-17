@@ -2,23 +2,23 @@
  * This script remove all the packages you don't want from the monorepo
  */
 
-import chalk from "chalk";
-import * as fs from "fs";
-import inquirer from "inquirer";
-import * as path from "path";
-import * as url from "url";
-import YAML from "yaml";
+import chalk from "chalk"
+import * as fs from "fs"
+import inquirer from "inquirer"
+import * as path from "path"
+import * as url from "url"
+import YAML from "yaml"
 
-import { logger } from "@next-boilerplate/lib";
+import { logger } from "@next-boilerplate/lib"
 
-const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
-const rootDir = path.join(__dirname, "..", "..");
+const __dirname = url.fileURLToPath(new URL(".", import.meta.url))
+const rootDir = path.join(__dirname, "..", "..")
 
 const dockerComposePaths = [
   path.join(rootDir, "docker", "docker-compose.yml"),
   path.join(rootDir, "docker", "docker-compose.local.yml"),
   path.join(rootDir, ".devcontainer", "docker-compose.yml"),
-];
+]
 
 const onlyFrontToRemove = [
   "apps/app/prisma",
@@ -49,18 +49,18 @@ const onlyFrontToRemove = [
   "apps/app/src/types/auth.d.ts",
   "apps/app/src/types/api.d.ts",
   "apps/app/types.d.ts",
-];
+]
 
 const onlyFrontAppsAdaptaion: {
-  path: string;
+  path: string
   fileEdits:
     | {
-        newContent: string;
+        newContent: string
       }
     | {
-        removals?: (string | RegExp)[];
-        replacements?: { [key: string]: string };
-      };
+        removals?: (string | RegExp)[]
+        replacements?: { [key: string]: string }
+      }
 }[] = [
   {
     path: "apps/app/src/lib/utils/index.ts",
@@ -79,16 +79,13 @@ const onlyFrontAppsAdaptaion: {
   {
     path: "apps/app/.env.example",
     fileEdits: {
-      newContent:
-        "UkVBQ1RfRURJVE9SPWNvZGUKTkVYVF9URUxFTUVUUllfRElTQUJMRUQ9MQpFTlY9ZGV2ZWxvcG1lbnQ=",
+      newContent: "UkVBQ1RfRURJVE9SPWNvZGUKTkVYVF9URUxFTUVUUllfRElTQUJMRUQ9MQpFTlY9ZGV2ZWxvcG1lbnQ=",
     },
   },
   {
     path: "apps/app/Dockerfile",
     fileEdits: {
-      removals: [
-        "COPY packages/app/prisma/schema.prisma ./packages/app/prisma/schema.prisma",
-      ],
+      removals: ["COPY packages/app/prisma/schema.prisma ./packages/app/prisma/schema.prisma"],
     },
   },
   {
@@ -105,7 +102,7 @@ const onlyFrontAppsAdaptaion: {
         'import { NextAuthProvider } from "@/components/auth/provider"',
         'import TrpcProvider from "@/lib/trpc/provider"',
         "<NextAuthProvider>",
-        "<TrpcProvider>",
+        "<TrpcProvider dictionary={dictionary}>",
         "</TrpcProvider>",
         "</NextAuthProvider>",
       ],
@@ -115,14 +112,8 @@ const onlyFrontAppsAdaptaion: {
     path: "apps/app/package.json",
     fileEdits: {
       removals: [
-        new RegExp(
-          /\,\n.*"deploy-db\:prod"\: "prisma migrate deploy && npm run seed"/,
-          "g"
-        ),
-        new RegExp(
-          /\,\n.*"seed"\: "cross-env NODE_ENV=development tsx prisma\/seed.ts"/,
-          "g"
-        ),
+        new RegExp(/\,\n.*"deploy-db\:prod"\: "prisma migrate deploy && npm run seed"/, "g"),
+        new RegExp(/\,\n.*"seed"\: "cross-env NODE_ENV=development tsx prisma\/seed.ts"/, "g"),
         new RegExp(
           /\,\n.*"prisma"\: \{\n.*"schema"\: "prisma\/schema\.prisma"\,\n.*"seed"\: "tsx prisma\/seed\.ts"\n\s*\}/,
           "g"
@@ -166,8 +157,7 @@ const onlyFrontAppsAdaptaion: {
           '"start": "next start --port ${PORT:-3000}",',
         '"dev": "npm run is-initialized && prisma migrate dev && cross-env FORCE_COLOR=1 next dev",':
           '"dev": "npm run is-initialized && cross-env FORCE_COLOR=1 next dev",',
-        '"postinstall": "patch-package && prisma generate",':
-          '"postinstall": "patch-package",',
+        '"postinstall": "patch-package && prisma generate",': '"postinstall": "patch-package",',
       },
     },
   },
@@ -190,7 +180,7 @@ const onlyFrontAppsAdaptaion: {
       removals: [new RegExp(/\,\n\s*"runServices": \["redis"\, "db"\]/, "g")],
     },
   },
-];
+]
 
 const noUiToRemove = [
   "apps/app/src/app/[lang]/ui-provider.tsx",
@@ -202,18 +192,18 @@ const noUiToRemove = [
   "apps/app/src/components/nav-settings.tsx",
   "apps/app/src/app/[lang]/not-found.tsx",
   "apps/app/src/app/[lang]/error.tsx",
-];
+]
 
 const noUiAppsAdaptaion: {
-  path: string;
+  path: string
   fileEdits:
     | {
-        newContent: string;
+        newContent: string
       }
     | {
-        removals?: (string | RegExp)[];
-        replacements?: { [key: string]: string };
-      };
+        removals?: (string | RegExp)[]
+        replacements?: { [key: string]: string }
+      }
 }[] = [
   {
     path: "apps/app/src/app/[lang]/(not-protected)/page.tsx",
@@ -232,11 +222,7 @@ const noUiAppsAdaptaion: {
   {
     path: "apps/app/src/app/[lang]/providers.tsx",
     fileEdits: {
-      removals: [
-        'import UIProvider from "./ui-provider"',
-        "<UIProvider>",
-        "</UIProvider>",
-      ],
+      removals: ['import UIProvider from "./ui-provider"', "<UIProvider>", "</UIProvider>"],
     },
   },
   {
@@ -252,7 +238,7 @@ const noUiAppsAdaptaion: {
       ].map((s) => new RegExp(`\\n\\s*"${s}"\:.*\,`, "g")),
     },
   },
-];
+]
 
 export const modulesSelection = async () => {
   const { onlyFront } = await inquirer.prompt<{ onlyFront: boolean }>([
@@ -262,19 +248,19 @@ export const modulesSelection = async () => {
       message: "Do you want to transform the app into a front-end only app?",
       default: false,
     },
-  ]);
+  ])
 
   if (onlyFront) {
     // Remove the docker-compose services that are not needed anymore
     for (const dockerComposePath of dockerComposePaths) {
-      const dockerCompose = fs.readFileSync(dockerComposePath).toString();
-      const dockerComposeYaml = YAML.parse(dockerCompose);
-      delete dockerComposeYaml.services.db;
-      delete dockerComposeYaml.services.redis;
-      delete dockerComposeYaml.volumes;
-      fs.writeFileSync(dockerComposePath, YAML.stringify(dockerComposeYaml));
+      const dockerCompose = fs.readFileSync(dockerComposePath).toString()
+      const dockerComposeYaml = YAML.parse(dockerCompose)
+      delete dockerComposeYaml.services.db
+      delete dockerComposeYaml.services.redis
+      delete dockerComposeYaml.volumes
+      fs.writeFileSync(dockerComposePath, YAML.stringify(dockerComposeYaml))
     }
-    logger.log(chalk.gray("Removed docker-compose services!"));
+    logger.log(chalk.gray("Removed docker-compose services!"))
 
     // Remove the files that are not needed anymore
     await Promise.all(
@@ -283,32 +269,25 @@ export const modulesSelection = async () => {
           recursive: true,
         })
       )
-    );
-    logger.log(chalk.gray("Removed unnecessary files!"));
+    )
+    logger.log(chalk.gray("Removed unnecessary files!"))
 
     // Adapt the files that are not needed anymore
     for (const { path: filePath, fileEdits } of onlyFrontAppsAdaptaion) {
-      let file = fs
-        .readFileSync(path.join(rootDir, filePath), "utf-8")
-        .toString();
+      let file = fs.readFileSync(path.join(rootDir, filePath), "utf-8").toString()
       if ("newContent" in fileEdits) {
-        fs.writeFileSync(
-          path.join(rootDir, filePath),
-          Buffer.from(fileEdits.newContent, "base64").toString()
-        );
+        fs.writeFileSync(path.join(rootDir, filePath), Buffer.from(fileEdits.newContent, "base64").toString())
       } else {
         for (const removal of fileEdits.removals ?? []) {
-          file = file.replaceAll(removal, "");
+          file = file.replaceAll(removal, "")
         }
-        for (const [key, value] of Object.entries(
-          fileEdits.replacements ?? {}
-        )) {
-          file = file.replaceAll(key, value);
+        for (const [key, value] of Object.entries(fileEdits.replacements ?? {})) {
+          file = file.replaceAll(key, value)
         }
-        fs.writeFileSync(path.join(rootDir, filePath), file);
+        fs.writeFileSync(path.join(rootDir, filePath), file)
       }
     }
-    logger.log(chalk.gray("Adapted some files!"));
+    logger.log(chalk.gray("Adapted some files!"))
 
     const { noUi } = await inquirer.prompt<{ noUi: boolean }>([
       {
@@ -317,7 +296,7 @@ export const modulesSelection = async () => {
         message: "Do you want to remove the UI from the app?",
         default: false,
       },
-    ]);
+    ])
 
     if (noUi) {
       // Remove the files that are not needed anymore
@@ -327,32 +306,25 @@ export const modulesSelection = async () => {
             recursive: true,
           })
         )
-      );
-      logger.log(chalk.gray("Removed unnecessary files!"));
+      )
+      logger.log(chalk.gray("Removed unnecessary files!"))
 
       // Adapt the files that are not needed anymore
       for (const { path: filePath, fileEdits } of noUiAppsAdaptaion) {
-        let file = fs
-          .readFileSync(path.join(rootDir, filePath), "utf-8")
-          .toString();
+        let file = fs.readFileSync(path.join(rootDir, filePath), "utf-8").toString()
         if ("newContent" in fileEdits) {
-          fs.writeFileSync(
-            path.join(rootDir, filePath),
-            Buffer.from(fileEdits.newContent, "base64").toString()
-          );
+          fs.writeFileSync(path.join(rootDir, filePath), Buffer.from(fileEdits.newContent, "base64").toString())
         } else {
           for (const removal of fileEdits.removals ?? []) {
-            file = file.replaceAll(removal, "");
+            file = file.replaceAll(removal, "")
           }
-          for (const [key, value] of Object.entries(
-            fileEdits.replacements ?? {}
-          )) {
-            file = file.replaceAll(key, value);
+          for (const [key, value] of Object.entries(fileEdits.replacements ?? {})) {
+            file = file.replaceAll(key, value)
           }
-          fs.writeFileSync(path.join(rootDir, filePath), file);
+          fs.writeFileSync(path.join(rootDir, filePath), file)
         }
       }
-      logger.log(chalk.gray("Adapted some files!"));
+      logger.log(chalk.gray("Adapted some files!"))
     }
   }
-};
+}

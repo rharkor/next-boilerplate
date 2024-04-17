@@ -1,5 +1,5 @@
 {
-  "project_name": "#{PROJECT_NAME}#",
+  "project_name": "next-boilerplate",
   "aws_profile": "enter your aws profile",
   "aws_region": "eu-west-1",
   "az_count": "3",
