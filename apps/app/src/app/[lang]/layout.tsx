@@ -1,6 +1,6 @@
 import React from "react"
 import { Metadata } from "next"
-import { redirect } from "next/navigation"
+import { notFound } from "next/navigation"
 
 import { fontSans } from "@/lib/fonts"
 import { i18n, Locale } from "@/lib/i18n-config"
@@ -27,7 +27,9 @@ export default async function RootLayout({
   params: { lang: string }
 }) {
   //? If locale is not found, return 404
-  if (!i18n.locales.includes(params.lang)) return redirect(`/${i18n.defaultLocale}/${params.lang}`)
+  if (!i18n.locales.includes(params.lang)) {
+    return notFound()
+  }
 
   return (
     <html lang={params.lang}>
