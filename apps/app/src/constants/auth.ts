@@ -1,4 +1,4 @@
-export const JWT_MAX_AGE = 90 * 24 * 60 * 60 // 90 days
+export const SESSION_MAX_AGE = 360 * 24 * 60 * 60 // 360 days
 
 export const authRoutes = {
   signIn: ["/sign-in", "/login", "/signin"],
