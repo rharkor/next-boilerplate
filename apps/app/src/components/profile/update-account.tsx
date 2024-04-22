@@ -91,6 +91,7 @@ export default function UpdateAccount({
               name="username"
               label={dictionary.profilePage.profileDetails.username.label}
               type="text"
+              autoComplete="off"
               isDisabled={updateUserMutation.isLoading || account.isLoading || !hasVerifiedEmail}
             />
             <NeedSavePopup

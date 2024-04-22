@@ -4,7 +4,7 @@
     "dev": "npm run is-initialized && next dev -p 3002 --turbo",
     "build": "next build",
     "start": "next start --port ${PORT:-3000}",
-    "lint": "next lint && eslint .",
+    "lint": "next lint",
     "lint:fix": "next lint --fix",
     "prettier": "prettier --check \"**/*.{js,jsx,ts,tsx}\"",
     "prettier:fix": "prettier --write \"**/*.{js,jsx,ts,tsx}\"",

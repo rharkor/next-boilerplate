@@ -9,7 +9,7 @@ import { z } from "zod"
 
 import { sendVerificationEmail } from "@/api/me/email/mutations"
 import { otpWindow } from "@/constants"
-import { authRoutes, JWT_MAX_AGE } from "@/constants/auth"
+import { authRoutes, SESSION_MAX_AGE } from "@/constants/auth"
 import { env } from "@/lib/env"
 import { i18n } from "@/lib/i18n-config"
 import { ITrpcContext } from "@/types"
@@ -102,7 +102,7 @@ export const providers: Provider[] = [
       try {
         const ua = req.headers?.["user-agent"] ?? ""
         const ip = requestIp.getClientIp(req) ?? ""
-        const expires = new Date(Date.now() + JWT_MAX_AGE * 1000)
+        const expires = new Date(Date.now() + SESSION_MAX_AGE * 1000)
         const body: z.infer<ReturnType<typeof sessionsSchema>> = {
           id: uuid,
           userId: user.id,
@@ -113,7 +113,7 @@ export const providers: Provider[] = [
           lastUsedAt: new Date(),
           createdAt: new Date(),
         }
-        await redis.setex(`session:${user.id}:${uuid}`, JWT_MAX_AGE, JSON.stringify(body))
+        await redis.setex(`session:${user.id}:${uuid}`, SESSION_MAX_AGE, JSON.stringify(body))
       } catch (error) {
         logger.error("Error creating session", error)
       }
@@ -298,9 +298,6 @@ export const nextAuthOptions: NextAuthOptions = {
       return true
     },
   },
-  jwt: {
-    maxAge: JWT_MAX_AGE,
-  },
   pages: {
     signIn: authRoutes.signIn[0],
     newUser: authRoutes.signUp[0],
@@ -308,6 +305,7 @@ export const nextAuthOptions: NextAuthOptions = {
   },
   session: {
     strategy: "jwt", //? Strategy database could not work with credentials provider for security reasons
+    maxAge: SESSION_MAX_AGE,
   },
   logger: {
     error(code, metadata) {

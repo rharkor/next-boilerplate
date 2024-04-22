@@ -95,7 +95,7 @@ With this template, you get all the awesomeness you need:
 
 ```bash
 # Don't forget to ⭐ star and fork it first :)
-git clone --depth 1 https://github.com/rharkor/next-boilerplate && cd next-boilerplate
+git clone --depth 1 <your_project_url> && cd next-boilerplate
 ```
 
 2. Install the dependencies:
@@ -127,7 +127,7 @@ After initializing the project and pushing the changes to the repository, the ot
 1. Clone the repository:
 
 ```bash
-git clone --depth 1 --filter=blob:none --no-checkout https://github.com/rharkor/next-boilerplate && cd next-boilerplate && git checkout main
+git clone --depth 1 --filter=blob:none --no-checkout <your_project_url> && cd next-boilerplate && git checkout main
 ```
 
 > See more about the clone optimizations [here](#git-optimization).

@@ -21,12 +21,14 @@ const WithPasswordStrengthPopover = <
   name,
   isFocused,
   dictionary,
+  showPasswordPopoverCondition,
 }: {
   children: React.ReactNode
   form: UseFormReturn<TFieldValues>
   name: TName
   isFocused: boolean
   dictionary: TDictionary<typeof WithPasswordStrengthPopoverDr>
+  showPasswordPopoverCondition?: (passwordValue: string) => boolean
 }) => {
   const inputRef = useRef<HTMLInputElement>(null)
   const popoverRef = useRef<HTMLDivElement>(null)
@@ -47,14 +49,17 @@ const WithPasswordStrengthPopover = <
         specialRegex.test(passwordValue),
       ].filter(Boolean).length
     : 0
-  const position = inputRef.current?.getBoundingClientRect()
 
   const updatePopoverPosition = useCallback(() => {
+    const inputWrapper = inputRef.current?.querySelector(".input-wrapper")
+    if (!inputWrapper) return
+    const position = inputWrapper.getBoundingClientRect()
     if (position && popoverRef.current) {
-      popoverRef.current.style.top = `${position.top + position.height + 4 - window.scrollY}px`
-      popoverRef.current.style.left = `${position.left + window.scrollX}px`
+      popoverRef.current.style.top = `${position.top + position.height + 4}px`
+      popoverRef.current.style.left = `${position.left}px`
+      popoverRef.current.style.width = `${position.width}px`
     }
-  }, [position])
+  }, [inputRef])
 
   updatePopoverPosition()
 
@@ -68,6 +73,32 @@ const WithPasswordStrengthPopover = <
     }
   }, [updatePopoverPosition])
 
+  //? Display the window only if the password has changes since the last focus
+  const [lastFocusPasswordValue, setLastFocusPasswordValue] = useState(passwordValue)
+  useEffect(() => {
+    if (isFocused) {
+      setLastFocusPasswordValue(passwordValue)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isFocused])
+
+  useEffect(() => {
+    // Update position after render
+    setTimeout(updatePopoverPosition, 0)
+  }, [passwordValue, updatePopoverPosition])
+
+  const [passwordChangedSinceLastFocus, setPasswordChangedSinceLastFocus] = useState(false)
+
+  if (lastFocusPasswordValue !== passwordValue && isFocused && !passwordChangedSinceLastFocus) {
+    setPasswordChangedSinceLastFocus(true)
+  }
+
+  const isDisplayed =
+    isFocused &&
+    (showPasswordPopoverCondition ? showPasswordPopoverCondition(passwordValue) : true) &&
+    passwordChangedSinceLastFocus &&
+    passwordStrengthValue < 5
+
   return (
     <div className="relative" ref={inputRef}>
       {children}
@@ -75,16 +106,12 @@ const WithPasswordStrengthPopover = <
         createPortal(
           <div
             className={cn(
-              "pointer-events-none fixed z-50 flex h-max flex-col gap-2 rounded-medium border border-default-100 bg-default-50 p-2 opacity-0 transition-opacity duration-200 ease-in-out",
+              "pointer-events-none fixed z-50 flex h-max flex-col gap-2 rounded-medium border border-default-100 bg-default-50 p-2 transition-all duration-200 ease-in-out",
+              "translate-y-8 opacity-0",
               {
-                "pointer-events-auto opacity-100": isFocused,
+                "pointer-events-auto translate-y-0 opacity-100": isDisplayed,
               }
             )}
-            style={
-              position && {
-                width: `${position.width}px`,
-              }
-            }
             ref={popoverRef}
           >
             <div
@@ -134,11 +161,15 @@ const WithPasswordStrengthPopover = <
 type IWithPasswordStrengthProps =
   | {
       passwordStrength?: never | false
+      passwordtoggleVisibilityProps?: never
       dictionary?: never
+      showPasswordPopoverCondition?: never
     }
   | {
       passwordStrength: true
       dictionary: TDictionary<typeof FormFieldDr>
+      passwordtoggleVisibilityProps?: React.HTMLAttributes<HTMLButtonElement>
+      showPasswordPopoverCondition?: (passwordValue: string) => boolean
     }
 
 export type FormFieldProps<
@@ -167,6 +198,8 @@ export default function FormField<
   passwordStrength,
   inputRef,
   dictionary,
+  passwordtoggleVisibilityProps,
+  showPasswordPopoverCondition,
   ...props
 }: FormFieldProps<TFieldValues, TName> & {
   inputRef?: Ref<HTMLInputElement>
@@ -201,6 +234,9 @@ export default function FormField<
             },
             props.className
           )}
+          classNames={{
+            inputWrapper: "input-wrapper",
+          }}
           ref={inputRef}
           onFocusChange={setIsFocused}
           type={typeToRealType(type)}
@@ -213,6 +249,7 @@ export default function FormField<
                 className="text-2xl text-default-400 hover:text-primary focus:text-primary focus:outline-none"
                 type="button"
                 onClick={toggleVisibility}
+                {...passwordtoggleVisibilityProps}
               >
                 {isVisible ? (
                   <Icons.eyeSlash className="pointer-events-none transition-all" />
@@ -230,7 +267,13 @@ export default function FormField<
 
   if (passwordStrength) {
     input = (
-      <WithPasswordStrengthPopover form={form} name={name} isFocused={isFocused} dictionary={dictionary}>
+      <WithPasswordStrengthPopover
+        form={form}
+        name={name}
+        isFocused={isFocused}
+        dictionary={dictionary}
+        showPasswordPopoverCondition={showPasswordPopoverCondition}
+      >
         {input}
       </WithPasswordStrengthPopover>
     )

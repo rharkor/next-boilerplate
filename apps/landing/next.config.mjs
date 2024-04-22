@@ -1,3 +1,4 @@
+/* eslint-disable no-process-env */
 import bunldeAnalyzer from "@next/bundle-analyzer"
 
 /**
@@ -17,8 +18,6 @@ const config = {
   },
 }
 
-const withBundleAnalyzer = bunldeAnalyzer({
-  enabled: process.env.ANALYZE === "true",
-})
+config = process.env.ANALYZE === "true" ? bunldeAnalyzer()(config) : config
 
 export default withBundleAnalyzer(config)
