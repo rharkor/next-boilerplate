@@ -24,7 +24,7 @@ export default function DeleteAccountButton({
   const deleteAccountMutation = trpc.me.deleteAccount.useMutation({
     onSuccess: () => {
       toast.success(dictionary.deleteAccountSuccessDescription)
-      router.push(authRoutes.signIn[0])
+      router.push(authRoutes.signUp[0])
     },
   })
 

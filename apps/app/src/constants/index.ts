@@ -1,7 +1,12 @@
+import { TDictionary } from "@/lib/langs"
+
 export const rolesAsObject = {
   admin: "ADMIN",
   user: "USER",
 } as const
+
+export const appTitle = (dictionary: TDictionary<{ app: { name: true } }>) => dictionary.app.name
+export const appDescription = (dictionary: TDictionary<{ app: { description: true } }>) => dictionary.app.description
 
 export const resetPasswordExpiration = 1000 * 60 * 60 * 24 // 24 hours
 export const resendResetPasswordExpiration = 1000 * 60 * 5 // 5 minutes

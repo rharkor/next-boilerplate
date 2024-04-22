@@ -1,6 +1,5 @@
 //! Only client-side code
 
-import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime"
 import { signIn } from "next-auth/react"
 import { toast } from "react-toastify"
 import * as z from "zod"
@@ -28,14 +27,12 @@ export const handleSignError = (
 export const handleSignIn = async ({
   data,
   callbackUrl,
-  router,
   dictionary,
   depth = 0,
   getOtpCode,
 }: {
   data: z.infer<ReturnType<typeof signInSchema>>
   callbackUrl: string
-  router: AppRouterInstance
   dictionary: TDictionary<{
     errors: {
       invalidCredentials: true
@@ -59,11 +56,8 @@ export const handleSignIn = async ({
       })
       if (!res?.error) {
         logger.debug("Sign in successful pushing to", callbackUrl)
-        router.push(callbackUrl)
-        /*
-        //? Refreshing the router is necessary due to next.js client cache, see: https://nextjs.org/docs/app/building-your-application/caching
-        // router.refresh()
-        */
+        //? Navigate without the router due to some cache issue.
+        window.location.href = callbackUrl
         resolve(true)
       } else {
         if (res.error === "OTP_REQUIRED") {
@@ -78,7 +72,6 @@ export const handleSignIn = async ({
           const res = await handleSignIn({
             data: { ...data, otp },
             callbackUrl,
-            router,
             dictionary,
             depth: depth + 1,
             getOtpCode,

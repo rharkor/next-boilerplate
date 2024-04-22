@@ -1,4 +1,8 @@
 {
+  "app": {
+    "name": "Next boilerplate",
+    "description": "Le boilerplate parfait pour démarrer votre projet Next.js."
+  },
   "errors": {
     "password": {
       "regex": "Le mot de passe doit contenir au moins une lettre majuscule, une lettre minuscule, un chiffre, et un caractère spécial.",
