@@ -103,7 +103,6 @@ export function RegisterUserAuthForm({ isMinimized, searchParams, locale, dictio
       handleSignIn({
         data: { email: vars.email, password: vars.password },
         callbackUrl: authRoutes.redirectAfterSignIn,
-        router,
         dictionary,
         getOtpCode,
       }).catch((error) => {

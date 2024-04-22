@@ -1,7 +1,6 @@
 "use client"
 
 import * as React from "react"
-import { useRouter } from "next/navigation"
 import { ArrowBigDown, BadgeInfo } from "lucide-react"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
@@ -31,8 +30,6 @@ const formSchema = signInSchema
 type IForm = z.infer<ReturnType<typeof formSchema>>
 
 export function LoginUserAuthForm({ searchParams, dictionary, ...props }: UserAuthFormProps) {
-  const router = useRouter()
-
   const callbackUrl = ensureRelativeUrl(searchParams.callbackUrl?.toString()) || authRoutes.redirectAfterSignIn
   const error = searchParams.error?.toString()
 
@@ -65,7 +62,7 @@ export function LoginUserAuthForm({ searchParams, dictionary, ...props }: UserAu
   async function onSubmit(data: IForm) {
     setIsLoading(true)
     try {
-      const isPushingRoute = await handleSignIn({ data, callbackUrl, router, dictionary, getOtpCode })
+      const isPushingRoute = await handleSignIn({ data, callbackUrl, dictionary, getOtpCode })
       //? If isPushingRoute is true, it means that the user is being redirected to the callbackUrl
       if (!isPushingRoute) setIsLoading(false)
     } catch (e) {
