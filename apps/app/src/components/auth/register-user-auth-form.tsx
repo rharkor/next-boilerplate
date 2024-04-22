@@ -220,7 +220,7 @@ export function RegisterUserAuthForm({ isMinimized, searchParams, locale, dictio
               name="confirmPassword"
               label={dictionary.confirmPassword}
               type="password"
-              autoComplete="new-password"
+              autoComplete="off"
               autoCorrect="off"
               isDisabled={isLoading}
             />
