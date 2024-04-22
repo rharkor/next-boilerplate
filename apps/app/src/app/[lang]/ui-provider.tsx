@@ -7,5 +7,9 @@ import { NextUIProvider } from "@nextui-org/react"
 export default function UIProvider({ children }: { children: React.ReactNode }) {
   const router = useRouter()
 
-  return <NextUIProvider navigate={router.push}>{children}</NextUIProvider>
+  return (
+    <NextUIProvider navigate={router.push} className="flex min-h-full flex-col">
+      {children}
+    </NextUIProvider>
+  )
 }
