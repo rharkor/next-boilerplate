@@ -2,17 +2,28 @@ import React from "react"
 import { Metadata } from "next"
 import { notFound } from "next/navigation"
 
+import { appDescription, appTitle } from "@/constants"
 import { fontSans } from "@/lib/fonts"
 import { i18n, Locale } from "@/lib/i18n-config"
+import { getDictionary } from "@/lib/langs"
 import { cn } from "@/lib/utils"
+import { logger } from "@next-boilerplate/lib"
 
 import RootProviders from "./providers"
 
 import "../globals.css"
 
-export const metadata: Metadata = {
-  title: "Home",
-  description: "Welcome to Next.js boilerplate",
+export async function generateMetadata({ params }: { params: { lang: string } }): Promise<Metadata> {
+  if (!i18n.locales.includes(params.lang)) {
+    params.lang = i18n.defaultLocale
+  }
+  const dictionary = await getDictionary(params.lang as Locale, {
+    app: { description: true, name: true },
+  })
+  return {
+    title: appTitle(dictionary),
+    description: appDescription(dictionary),
+  }
 }
 
 export async function generateStaticParams() {
@@ -28,6 +39,7 @@ export default async function RootLayout({
 }) {
   //? If locale is not found, return 404
   if (!i18n.locales.includes(params.lang)) {
+    logger.debug(`Locale not found: ${params.lang}`)
     return notFound()
   }
 
