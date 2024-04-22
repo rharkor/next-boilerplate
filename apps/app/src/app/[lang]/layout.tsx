@@ -44,8 +44,11 @@ export default async function RootLayout({
   }
 
   return (
-    <html lang={params.lang}>
-      <body className={cn("h-dvh min-h-dvh bg-background font-sans antialiased", fontSans.variable)}>
+    <html lang={params.lang} suppressHydrationWarning>
+      <body
+        className={cn("h-dvh min-h-dvh bg-background font-sans antialiased", fontSans.variable)}
+        suppressHydrationWarning
+      >
         <RootProviders lang={params.lang as Locale}>{children}</RootProviders>
       </body>
     </html>
