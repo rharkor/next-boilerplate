@@ -4,7 +4,7 @@ import bunldeAnalyzer from "@next/bundle-analyzer"
 /**
  * @type {import('next').NextConfig}
  */
-const config = {
+let config = {
   output: "standalone",
   reactStrictMode: true,
   rewrites() {
