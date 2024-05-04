@@ -3,6 +3,8 @@ import * as fs from "fs/promises"
 import { exit } from "node:process"
 import * as path from "path"
 
+import { logger } from "@next-boilerplate/lib"
+
 import { getPath } from "./utils/path"
 import { codingEnv } from "./coding-env"
 import { completeInitialisation } from "./complete-initialisation"
@@ -15,6 +17,9 @@ import { replaceTokens } from "./replace-tokens"
 config()
 
 async function main() {
+  // Clear the terminal
+  logger.clear()
+
   const alreadyInitialized = await fs
     .access(path.join(getPath(), "packages", "scripts", ".init-todo"))
     .then(() => false)
