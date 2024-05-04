@@ -2,14 +2,12 @@
  * This script remove all the packages you don't want from the monorepo
  */
 
-import chalk from "chalk"
 import * as fs from "fs"
 import inquirer from "inquirer"
 import * as path from "path"
 import YAML from "yaml"
 
-import { logger } from "@next-boilerplate/lib"
-
+import { startTask } from "./utils/cmd"
 import { getPath } from "./utils/path"
 
 const dockerComposePaths = [
@@ -267,6 +265,10 @@ const noUiAppsAdaptaion: {
 ]
 
 export const modulesSelection = async () => {
+  const task = startTask({
+    name: "Modules selection",
+    successMessage: "Modules selected!",
+  })
   const { onlyFront } = await inquirer.prompt<{ onlyFront: boolean }>([
     {
       type: "confirm",
@@ -286,7 +288,7 @@ export const modulesSelection = async () => {
       delete dockerComposeYaml.volumes
       fs.writeFileSync(dockerComposePath, YAML.stringify(dockerComposeYaml))
     }
-    logger.log(chalk.gray("Removed docker-compose services!"))
+    task.print("Removed docker-compose services!")
 
     // Remove the files that are not needed anymore
     await Promise.all(
@@ -295,6 +297,9 @@ export const modulesSelection = async () => {
           .rm(path.join(getPath(), file), {
             recursive: true,
           })
+          .then(() => {
+            task.print(`Removed ${file}`)
+          })
           .catch((e) => {
             if (e.code !== "ENOENT") {
               throw e
@@ -302,7 +307,6 @@ export const modulesSelection = async () => {
           })
       )
     )
-    logger.log(chalk.gray("Removed unnecessary files!"))
 
     // Adapt the files that are not needed anymore
     for (const { path: filePath, fileEdits } of onlyFrontAppsAdaptaion) {
@@ -317,9 +321,9 @@ export const modulesSelection = async () => {
           file = file.replaceAll(key, value)
         }
         fs.writeFileSync(path.join(getPath(), filePath), file)
+        task.print(`Adapted ${filePath}`)
       }
     }
-    logger.log(chalk.gray("Adapted some files!"))
 
     const { noUi } = await inquirer.prompt<{ noUi: boolean }>([
       {
@@ -334,12 +338,20 @@ export const modulesSelection = async () => {
       // Remove the files that are not needed anymore
       await Promise.all(
         noUiToRemove.map((file) =>
-          fs.promises.rm(path.join(getPath(), file), {
-            recursive: true,
-          })
+          fs.promises
+            .rm(path.join(getPath(), file), {
+              recursive: true,
+            })
+            .then(() => {
+              task.print(`Removed ${file}`)
+            })
+            .catch((e) => {
+              if (e.code !== "ENOENT") {
+                throw e
+              }
+            })
         )
       )
-      logger.log(chalk.gray("Removed unnecessary files!"))
 
       // Adapt the files that are not needed anymore
       for (const { path: filePath, fileEdits } of noUiAppsAdaptaion) {
@@ -354,9 +366,11 @@ export const modulesSelection = async () => {
             file = file.replaceAll(key, value)
           }
           fs.writeFileSync(path.join(getPath(), filePath), file)
+          task.print(`Adapted ${filePath}`)
         }
       }
-      logger.log(chalk.gray("Adapted some files!"))
     }
   }
+
+  task.stop()
 }
