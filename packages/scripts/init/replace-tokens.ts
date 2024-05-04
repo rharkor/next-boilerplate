@@ -3,14 +3,11 @@
  * It will replace all tokens in the project with the user's input
  */
 
-import chalk from "chalk"
-import { execSync } from "child_process"
 import * as fs from "fs"
 import { glob } from "glob"
 import inquirer from "inquirer"
 
-import { logger } from "@next-boilerplate/lib"
-
+import { exec, startTask } from "./utils/cmd"
 import { getPath } from "./utils/path"
 
 const filesCache: Record<string, string> = {}
@@ -42,6 +39,11 @@ export const replaceTokens = async () => {
     answer: answers[token.id],
   }))
 
+  const task = startTask({
+    name: "Replace tokens",
+    successMessage: "Tokens replaced",
+  })
+
   //? Replace all tokens in the files
   for (const token of tokensWithAnswers) {
     //? Replace in all files
@@ -56,7 +58,7 @@ export const replaceTokens = async () => {
           filesCache[filePath] = content
           return content
         } catch (error) {
-          logger.error(`Error reading file ${filePath}`)
+          task.print(`Error reading file ${filePath}`)
           return null
         }
       }
@@ -65,9 +67,9 @@ export const replaceTokens = async () => {
         if (content.includes(search)) {
           const replacedContent = content.replaceAll(search, value)
           await fs.promises.writeFile(filePath, replacedContent, "utf8")
-          logger.log(chalk.gray(`Done for ${filePath.replace(baseDir, "")}`))
+          task.print(`Done for ${filePath.replace(baseDir, "")}`)
         } else {
-          logger.log(chalk.gray(`Checked ${filePath.replace(baseDir, "")}`))
+          task.print(`Checked ${filePath.replace(baseDir, "")}`)
         }
       }
     }
@@ -102,15 +104,18 @@ export const replaceTokens = async () => {
     await replaceInDirectory(rootDir)
   }
 
+  task.stop()
+
   const rootDir = getPath()
   //? Reinstall dependencies
-  logger.log(chalk.blue("Reinstalling dependencies..."))
-  execSync("rm -rf node_modules", {
+  exec("rm -rf node_modules", {
     cwd: rootDir,
+    name: "Removing node_modules",
+    successMessage: "node_modules removed",
   })
-  execSync("npm install", {
+  exec("npm install", {
     cwd: rootDir,
-    stdio: "inherit",
+    name: "Installing dependencies",
+    successMessage: "Dependencies installed",
   })
-  logger.log(chalk.gray("Done!"))
 }
