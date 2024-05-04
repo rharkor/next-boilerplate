@@ -2,7 +2,9 @@
   "name": "@next-boilerplate/cron",
   "scripts": {
     "build": "tsc && tsc-alias",
-    "sample": "node dist/cron/clear-unused-uploads/index.js",
+    "clear-unused-uploads": "node dist/cron/clear-unused-uploads/index.js",
+    "dev:clear-unused-uploads": "npm run build && npm run clear-unused-uploads",
+    "sample": "node dist/cron/sample/index.js",
     "dev:sample": "npm run build && npm run sample",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
