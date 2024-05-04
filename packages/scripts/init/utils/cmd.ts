@@ -11,8 +11,8 @@ import { loggerExtra } from "@next-boilerplate/lib/dist/logger"
  */
 const clearLastLines = (count: number) => {
   for (let i = 0; i < count; i++) {
-    stderr.moveCursor(0, -1) // Move cursor up one line
-    stderr.clearLine(0) // Clear the current line
+    stderr.moveCursor?.(0, -1) // Move cursor up one line
+    stderr.clearLine?.(0) // Clear the current line
   }
 }
 
