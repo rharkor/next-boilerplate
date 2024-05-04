@@ -108,12 +108,12 @@ export const replaceTokens = async () => {
 
   const rootDir = getPath()
   //? Reinstall dependencies
-  exec("rm -rf node_modules", {
+  await exec("rm -rf node_modules", {
     cwd: rootDir,
     name: "Removing node_modules",
     successMessage: "node_modules removed",
   })
-  exec("npm install", {
+  await exec("npm install", {
     cwd: rootDir,
     name: "Installing dependencies",
     successMessage: "Dependencies installed",
