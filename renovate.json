@@ -13,5 +13,9 @@
       "automerge": true
     }
   ],
-  "platformAutomerge": true
+  "platformAutomerge": true,
+  "devcontainer": {
+    "fileMatch": ["^.devcontainer/devcontainer.json$", "^.devcontainer.json$"]
+  },
+  "branchConcurrentLimit": 3
 }
