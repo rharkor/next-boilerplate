@@ -16,7 +16,7 @@ config()
 
 async function main() {
   const alreadyInitialized = await fs
-    .access(path.join(getPath(), "scripts", ".init-todo"))
+    .access(path.join(getPath(), "paxkages", "scripts", ".init-todo"))
     .then(() => false)
     .catch(() => true)
 

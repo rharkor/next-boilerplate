@@ -86,18 +86,6 @@ export const windowLog = (
     clearLastLines(toClear)
     if (successMessage) {
       logger.success(successMessage)
-      const printable = lines.map((l) => {
-        const value = loggerExtra.printColor.log(...loggerExtra.addPrefixToArgs(logger.prefix, l)) as string
-        return value
-      })
-      // Print the lines
-      printable.forEach((l) => {
-        stderr.write(l)
-      })
-      setTimeout(() => {
-        const toClear = Math.min(numberOfLines, maxLines)
-        clearLastLines(toClear)
-      }, 1000)
     }
   }
 
