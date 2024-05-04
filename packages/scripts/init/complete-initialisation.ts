@@ -8,12 +8,12 @@ const rootPath = getPath()
 
 export const completeInitialisation = async () => {
   // Linting and formatting
-  exec("npm run lint:fix", {
+  await exec("npm run lint:fix", {
     cwd: rootPath,
     name: "Linting",
     successMessage: "Linted",
   })
-  exec("npm run prettier:fix", {
+  await exec("npm run prettier:fix", {
     cwd: rootPath,
     name: "Formatting",
     successMessage: "Formatted",

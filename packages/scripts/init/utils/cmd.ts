@@ -108,6 +108,7 @@ export function exec(command: string, options: ExecOptions): Promise<void> {
       isSilent: true,
       isEnabled: false,
     }).start()
+    stderr.write("\n")
     const window = windowLog(maxLines, {
       topPrefix: () => spinner.frame(),
       topInterval: 100,
