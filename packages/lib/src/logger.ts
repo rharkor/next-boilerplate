@@ -115,3 +115,21 @@ export const logger: TLogger = {
     console.log(...addPrefixToArgs(logger.prefix, subLog(...args)))
   },
 }
+
+export const loggerExtra = {
+  printColor: {
+    log,
+    warn,
+    warnText,
+    debug,
+    debugText,
+    error,
+    errorText,
+    success,
+    successText,
+    info,
+    infoText,
+    subLog,
+  },
+  addPrefixToArgs,
+}

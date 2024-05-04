@@ -1,7 +1,6 @@
 import { config } from "dotenv"
 config()
-import chalk from "chalk"
-import { Spinner } from "cli-spinner"
+import ora from "ora"
 
 import { rolesAsObject } from "@/constants"
 import { hash } from "@/lib/bcrypt"
@@ -9,16 +8,16 @@ import { env } from "@/lib/env"
 import { logger } from "@next-boilerplate/lib"
 import { PrismaClient } from "@prisma/client"
 
-let spinner: Spinner | null = null
+const spinner = ora()
 
 const prisma = new PrismaClient()
 
 const handleAction = async (actionName: string, doneName: string, action: Promise<unknown>) => {
-  spinner = new Spinner(chalk.blue(` ${actionName}`))
-  spinner.setSpinnerString(18)
+  spinner.text = actionName
+  spinner.color = "blue"
   spinner.start()
   await action
-  spinner.stop(true)
+  spinner.clear()
   logger.info(doneName)
 }
 
@@ -52,7 +51,7 @@ async function main() {
     logger.error(e)
     process.exit(1)
   } finally {
-    spinner?.stop(true)
+    spinner.stop()
     await prisma.$disconnect()
   }
 }
