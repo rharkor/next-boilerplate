@@ -3,6 +3,7 @@
   "main": "index.js",
   "scripts": {
     "init": "tsx ./init/init.ts",
+    "init:env": "tsx ./init/init-env.ts",
     "is-initialized": "bash ./init/is-initialized.sh",
     "depcheck": "tsx depcheck-test.ts",
     "lint": "eslint .",
