@@ -1,29 +1,26 @@
-import chalk from "chalk"
-import { execSync } from "child_process"
 import * as fs from "fs/promises"
 import * as path from "path"
-import * as url from "url"
 
-import { logger } from "@next-boilerplate/lib"
+import { exec } from "./utils/cmd"
+import { getPath } from "./utils/path"
 
-const __dirname = url.fileURLToPath(new URL(".", import.meta.url))
-const rootPath = path.join(__dirname, "..", "..")
+const rootPath = getPath()
 
 export const completeInitialisation = async () => {
   // Linting and formatting
-  logger.log(chalk.blue("Linting and formatting..."))
-  execSync("npm run lint:fix", {
-    cwd: path.join(rootPath, ".."),
-    stdio: "inherit",
+  exec("npm run lint:fix", {
+    cwd: rootPath,
+    name: "Linting",
+    successMessage: "Linted",
   })
-  execSync("npm run prettier:fix", {
-    cwd: path.join(rootPath, ".."),
-    stdio: "inherit",
+  exec("npm run prettier:fix", {
+    cwd: rootPath,
+    name: "Formatting",
+    successMessage: "Formatted",
   })
-  logger.log(chalk.green("Done!"))
 
   // eslint-disable-next-line no-process-env
   if (process.env.SKIP_INIT_CHECK !== "true") {
     await fs.unlink(path.join(rootPath, "scripts", ".init-todo")).catch(() => {})
-  } else logger.log(chalk.yellow("Skipping completeInitialisation()"))
+  }
 }
