@@ -48,15 +48,6 @@ const main = async () => {
       )
     } else if (pkg === path.join(appsRootPath, "landing")) {
       options.ignoreMatches.push("@types/react-dom")
-    } else if (pkg === path.join(rootPath, "scripts")) {
-      options.ignoreMatches.push(
-        "env-setup",
-        "packages-selection",
-        "replace-tokens",
-        "runtime",
-        "complete-initialisation",
-        "modules-selection"
-      )
     } else if (pkg === path.join(appsRootPath, "cron")) {
       options.ignoreMatches.push("chalk", "@types/node")
     } else if (pkg === path.join(rootPath, "lib")) {

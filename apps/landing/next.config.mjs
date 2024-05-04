@@ -4,7 +4,7 @@ import bunldeAnalyzer from "@next/bundle-analyzer"
 /**
  * @type {import('next').NextConfig}
  */
-const config = {
+let config = {
   output: "standalone",
   reactStrictMode: true,
   rewrites() {
@@ -20,4 +20,4 @@ const config = {
 
 config = process.env.ANALYZE === "true" ? bunldeAnalyzer()(config) : config
 
-export default withBundleAnalyzer(config)
+export default config
