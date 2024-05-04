@@ -6,18 +6,16 @@ import chalk from "chalk"
 import * as fs from "fs"
 import inquirer from "inquirer"
 import * as path from "path"
-import * as url from "url"
 import YAML from "yaml"
 
 import { logger } from "@next-boilerplate/lib"
 
-const __dirname = url.fileURLToPath(new URL(".", import.meta.url))
-const rootDir = path.join(__dirname, "..", "..")
+import { getPath } from "./utils/path"
 
 const dockerComposePaths = [
-  path.join(rootDir, "docker", "docker-compose.yml"),
-  path.join(rootDir, "docker", "docker-compose.local.yml"),
-  path.join(rootDir, ".devcontainer", "docker-compose.yml"),
+  path.join(getPath(), "docker", "docker-compose.yml"),
+  path.join(getPath(), "docker", "docker-compose.local.yml"),
+  path.join(getPath(), ".devcontainer", "docker-compose.yml"),
 ]
 
 const onlyFrontToRemove = [
@@ -50,6 +48,9 @@ const onlyFrontToRemove = [
   "apps/app/src/types/api.d.ts",
   "apps/app/types.d.ts",
   "apps/app/src/app/[lang]/providers.dr.ts",
+  "apps/cron/src/cron/clear-unused-uploads",
+  "apps/cron/src/lib/prisma.ts",
+  "apps/cron/src/lib/s3.ts",
 ]
 
 const onlyFrontAppsAdaptaion: {
@@ -131,7 +132,6 @@ const onlyFrontAppsAdaptaion: {
           "@trpc/react-query",
           "@trpc/server",
           "@types/bcryptjs",
-          "@types/cli-spinner",
           "@types/crypto-js",
           "@types/nodemailer",
           "@types/request-ip",
@@ -140,7 +140,7 @@ const onlyFrontAppsAdaptaion: {
           "bcryptjs",
           "bip39",
           "chalk",
-          "cli-spinner",
+          "ora",
           "crypto-js",
           "ioredis",
           "next-auth",
@@ -160,6 +160,24 @@ const onlyFrontAppsAdaptaion: {
           '"start": "next start --port ${PORT:-3000}",',
         '"dev": "npm run is-initialized && prisma migrate dev && cross-env FORCE_COLOR=1 next dev --turbo",':
           '"dev": "npm run is-initialized && cross-env FORCE_COLOR=1 next dev --turbo",',
+      },
+    },
+  },
+  {
+    path: "apps/cron/package.json",
+    fileEdits: {
+      removals: [
+        new RegExp(/\,\n.*"prisma"\: \{\n.*"schema"\: "\.\.\/app\/prisma\/schema\.prisma"\n\s*\}/, "g"),
+        ...["@aws-sdk/client-s3", "@prisma/client"].map((s) => new RegExp(`\\n\\s*"${s}"\:.*\,`, "g")),
+        new RegExp(`\\n\\s*"postinstall"\:"prisma generate"\,`, "g"),
+      ],
+    },
+  },
+  {
+    path: "apps/cron/crontab",
+    fileEdits: {
+      replacements: {
+        "clear-unused-uploads": "sample",
       },
     },
   },
@@ -274,7 +292,7 @@ export const modulesSelection = async () => {
     await Promise.all(
       onlyFrontToRemove.map((file) =>
         fs.promises
-          .rm(path.join(rootDir, file), {
+          .rm(path.join(getPath(), file), {
             recursive: true,
           })
           .catch((e) => {
@@ -288,9 +306,9 @@ export const modulesSelection = async () => {
 
     // Adapt the files that are not needed anymore
     for (const { path: filePath, fileEdits } of onlyFrontAppsAdaptaion) {
-      let file = fs.readFileSync(path.join(rootDir, filePath), "utf-8").toString()
+      let file = fs.readFileSync(path.join(getPath(), filePath), "utf-8").toString()
       if ("newContent" in fileEdits) {
-        fs.writeFileSync(path.join(rootDir, filePath), Buffer.from(fileEdits.newContent, "base64").toString())
+        fs.writeFileSync(path.join(getPath(), filePath), Buffer.from(fileEdits.newContent, "base64").toString())
       } else {
         for (const removal of fileEdits.removals ?? []) {
           file = file.replaceAll(removal, "")
@@ -298,7 +316,7 @@ export const modulesSelection = async () => {
         for (const [key, value] of Object.entries(fileEdits.replacements ?? {})) {
           file = file.replaceAll(key, value)
         }
-        fs.writeFileSync(path.join(rootDir, filePath), file)
+        fs.writeFileSync(path.join(getPath(), filePath), file)
       }
     }
     logger.log(chalk.gray("Adapted some files!"))
@@ -316,7 +334,7 @@ export const modulesSelection = async () => {
       // Remove the files that are not needed anymore
       await Promise.all(
         noUiToRemove.map((file) =>
-          fs.promises.rm(path.join(rootDir, file), {
+          fs.promises.rm(path.join(getPath(), file), {
             recursive: true,
           })
         )
@@ -325,9 +343,9 @@ export const modulesSelection = async () => {
 
       // Adapt the files that are not needed anymore
       for (const { path: filePath, fileEdits } of noUiAppsAdaptaion) {
-        let file = fs.readFileSync(path.join(rootDir, filePath), "utf-8").toString()
+        let file = fs.readFileSync(path.join(getPath(), filePath), "utf-8").toString()
         if ("newContent" in fileEdits) {
-          fs.writeFileSync(path.join(rootDir, filePath), Buffer.from(fileEdits.newContent, "base64").toString())
+          fs.writeFileSync(path.join(getPath(), filePath), Buffer.from(fileEdits.newContent, "base64").toString())
         } else {
           for (const removal of fileEdits.removals ?? []) {
             file = file.replaceAll(removal, "")
@@ -335,7 +353,7 @@ export const modulesSelection = async () => {
           for (const [key, value] of Object.entries(fileEdits.replacements ?? {})) {
             file = file.replaceAll(key, value)
           }
-          fs.writeFileSync(path.join(rootDir, filePath), file)
+          fs.writeFileSync(path.join(getPath(), filePath), file)
         }
       }
       logger.log(chalk.gray("Adapted some files!"))

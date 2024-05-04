@@ -6,13 +6,13 @@ import chalk from "chalk"
 import * as fs from "fs"
 import inquirer from "inquirer"
 import * as path from "path"
-import * as url from "url"
 import YAML from "yaml"
 
 import { logger } from "@next-boilerplate/lib"
 
-const __dirname = url.fileURLToPath(new URL(".", import.meta.url))
-const rootDir = path.join(__dirname, "..", "..")
+import { getPath } from "./utils/path"
+
+const rootDir = getPath()
 
 const packagesAvailable = fs
   .readdirSync(path.join(rootDir, "packages"))

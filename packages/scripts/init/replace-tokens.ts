@@ -8,12 +8,10 @@ import { execSync } from "child_process"
 import * as fs from "fs"
 import { glob } from "glob"
 import inquirer from "inquirer"
-import * as path from "path"
-import * as url from "url"
 
 import { logger } from "@next-boilerplate/lib"
 
-const __dirname = url.fileURLToPath(new URL(".", import.meta.url))
+import { getPath } from "./utils/path"
 
 const filesCache: Record<string, string> = {}
 
@@ -100,11 +98,11 @@ export const replaceTokens = async () => {
       await Promise.all(allFiles.map((file) => replaceTextInFile(file, dir)))
     }
 
-    const rootDir = path.join(__dirname, "..", "..")
+    const rootDir = getPath()
     await replaceInDirectory(rootDir)
   }
 
-  const rootDir = path.join(__dirname, "..", "..")
+  const rootDir = getPath()
   //? Reinstall dependencies
   logger.log(chalk.blue("Reinstalling dependencies..."))
   execSync("rm -rf node_modules", {
