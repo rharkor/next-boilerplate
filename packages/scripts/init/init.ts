@@ -2,8 +2,8 @@ import { config } from "dotenv"
 import * as fs from "fs/promises"
 import { exit } from "node:process"
 import * as path from "path"
-import * as url from "url"
 
+import { getPath } from "./utils/path"
 import { codingEnv } from "./coding-env"
 import { completeInitialisation } from "./complete-initialisation"
 import { dbSetup } from "./db-setup"
@@ -13,14 +13,11 @@ import { packagesSelection } from "./packages-selection"
 import { replaceTokens } from "./replace-tokens"
 import { startupRequirements } from "./startup-requirements"
 
-const __dirname = url.fileURLToPath(new URL(".", import.meta.url))
-const rootPath = path.join(__dirname, "..")
-
 config()
 
 async function main() {
   const alreadyInitialized = await fs
-    .access(path.join(rootPath, "scripts", ".init-todo"))
+    .access(path.join(getPath(), "scripts", ".init-todo"))
     .then(() => false)
     .catch(() => true)
 
