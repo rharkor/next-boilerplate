@@ -265,10 +265,6 @@ const noUiAppsAdaptaion: {
 ]
 
 export const modulesSelection = async () => {
-  const task = startTask({
-    name: "Modules selection",
-    successMessage: "Modules selected!",
-  })
   const { onlyFront } = await inquirer.prompt<{ onlyFront: boolean }>([
     {
       type: "confirm",
@@ -279,6 +275,11 @@ export const modulesSelection = async () => {
   ])
 
   if (onlyFront) {
+    let task = startTask({
+      name: "Modules selection",
+      successMessage: "Modules selected!",
+    })
+
     // Remove the docker-compose services that are not needed anymore
     for (const dockerComposePath of dockerComposePaths) {
       const dockerCompose = fs.readFileSync(dockerComposePath).toString()
@@ -324,6 +325,7 @@ export const modulesSelection = async () => {
         task.print(`Adapted ${filePath}`)
       }
     }
+    task.stop()
 
     const { noUi } = await inquirer.prompt<{ noUi: boolean }>([
       {
@@ -335,6 +337,10 @@ export const modulesSelection = async () => {
     ])
 
     if (noUi) {
+      task = startTask({
+        name: "Removing UI",
+        successMessage: "UI removed!",
+      })
       // Remove the files that are not needed anymore
       await Promise.all(
         noUiToRemove.map((file) =>
@@ -369,8 +375,8 @@ export const modulesSelection = async () => {
           task.print(`Adapted ${filePath}`)
         }
       }
+
+      task.stop()
     }
   }
-
-  task.stop()
 }
