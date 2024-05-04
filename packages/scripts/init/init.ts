@@ -11,7 +11,6 @@ import { envSetup } from "./env-setup"
 import { modulesSelection } from "./modules-selection"
 import { packagesSelection } from "./packages-selection"
 import { replaceTokens } from "./replace-tokens"
-import { startupRequirements } from "./startup-requirements"
 
 config()
 
@@ -21,7 +20,6 @@ async function main() {
     .then(() => false)
     .catch(() => true)
 
-  await startupRequirements()
   await envSetup()
 
   if (!alreadyInitialized) {
