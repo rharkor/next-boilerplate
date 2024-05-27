@@ -72,6 +72,7 @@ export type TFileUploadProps = Omit<
   accept?: Accept //? See: https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types
   maxFiles?: number
   dictionary: TDictionary<typeof FileUploadDr>
+  acceptCamera?: boolean
 }
 
 export default function FileUpload({
@@ -81,6 +82,7 @@ export default function FileUpload({
   accept,
   maxFiles,
   dictionary,
+  acceptCamera,
   ...props
 }: TFileUploadProps) {
   const { acceptedFiles, getRootProps, getInputProps, isDragAccept, isDragReject } = useDropzone({
@@ -130,7 +132,13 @@ export default function FileUpload({
           className
         )}
       >
-        <input type="file" {...getInputProps()} disabled={disabled} {...props} />
+        <input
+          type="file"
+          {...getInputProps()}
+          disabled={disabled}
+          accept={accept + (acceptCamera ? ";capture=camera" : "")}
+          {...props}
+        />
         <Upload className="size-12" />
         <p className="text-center text-sm text-foreground/80">{dictionary.uploadDescription}</p>
       </div>

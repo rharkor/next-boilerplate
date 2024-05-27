@@ -174,6 +174,7 @@ export default function UpdateAvatar({
                   "image/png": [".png"],
                   "image/jpeg": [".jpg", ".jpeg"],
                 }}
+                acceptCamera
                 disabled={uploading}
               />
               <Button color="primary" type="submit" isDisabled={uploading || !file} isLoading={uploading}>
