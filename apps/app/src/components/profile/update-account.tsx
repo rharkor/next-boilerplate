@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form"
 import * as z from "zod"
 
 import { updateUserSchema } from "@/api/me/schemas"
-import { useAccount } from "@/contexts/account"
+import { useAccount } from "@/hooks/account"
 import { env } from "@/lib/env"
 import { TDictionary } from "@/lib/langs"
 import { trpc } from "@/lib/trpc/client"

@@ -4,7 +4,7 @@ import { Session } from "next-auth"
 import { BadgeCheck } from "lucide-react"
 import { toast } from "react-toastify"
 
-import { useAccount } from "@/contexts/account"
+import { useAccount } from "@/hooks/account"
 import { TDictionary } from "@/lib/langs"
 import { trpc } from "@/lib/trpc/client"
 import { logger } from "@next-boilerplate/lib"
