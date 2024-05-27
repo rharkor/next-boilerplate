@@ -3,13 +3,13 @@
 #* Search for banned keywords in the source code. And exit with an error if any
 
 # List of keywords to check for
-keywords=("TODO")
+keywords=("TODO", "FIXME")
 
 # Directory to search for source code
 source_code_dir="../"
 
 # Exclude node_modules and .next directories
-exclude_dir="--exclude-dir=node_modules --exclude-dir=.next --exclude-dir=.git --exclude=banned-keywords.sh --exclude-dir=.terraform --exclude-dir=dist --exclude-dir=build"
+exclude_dir="--exclude-dir=node_modules --exclude-dir=.next --exclude-dir=.git --exclude=banned-keywords.sh --exclude=README.md --exclude-dir=.terraform --exclude-dir=dist --exclude-dir=build"
 
 
 echo Start searching..

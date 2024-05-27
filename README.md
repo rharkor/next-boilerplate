@@ -76,6 +76,7 @@ With this template, you get all the awesomeness you need:
     - [Git flow](#git-flow)
     - [Api development](#api-development)
       - [Api errors](#api-errors)
+    - [Banned keywords](#banned-keywords)
   - [❌ Common issues](#-common-issues)
     - [Cannot commit](#cannot-commit)
     - [S3 upload error cors](#s3-upload-error-cors)
@@ -516,6 +517,17 @@ For the interaction with the api you can use the `trpc` library. It's a library 
 #### Api errors
 
 All the possible errors are defined in `apps/app/src/langs/errors/<lang>.json`
+
+### Banned keywords
+
+In order to avoid using banned keywords in the codebase, we use the `banned-keywords.sh`. This script will check if there are any banned keywords in the codebase. By default all `TODO` and `FIXME` comments are banned.
+
+Use this rules at your advantage !
+For example if you are debugging a feature and you have commented some code you can use one of the following keywords to ensure this cannot be merged in the main branch.
+
+```ts
+// TODO: Debugging feature
+```
 
 ## ❌ Common issues
 
