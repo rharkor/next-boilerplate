@@ -6,9 +6,8 @@ import { execSync } from "child_process"
 import * as fs from "fs"
 import * as path from "path"
 
-import { logger } from "@next-boilerplate/lib"
+import { logger, startTask } from "@next-boilerplate/lib"
 
-import { startTask } from "./utils/cmd"
 import { getPath } from "./utils/path"
 
 const rootDir = getPath()

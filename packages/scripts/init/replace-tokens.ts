@@ -7,7 +7,9 @@ import * as fs from "fs"
 import { glob } from "glob"
 import inquirer from "inquirer"
 
-import { exec, startTask } from "./utils/cmd"
+import { startTask } from "@next-boilerplate/lib"
+
+import { exec } from "./utils/cmd"
 import { getPath } from "./utils/path"
 
 const filesCache: Record<string, string> = {}
