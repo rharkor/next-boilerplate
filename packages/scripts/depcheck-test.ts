@@ -44,7 +44,8 @@ const main = async () => {
         "@react-aria/ssr",
         "@react-aria/visually-hidden",
         "cron",
-        "autoprefixer"
+        "autoprefixer",
+        "@react-email/render"
       )
     } else if (pkg === path.join(appsRootPath, "landing")) {
       options.ignoreMatches.push("@types/react-dom")
