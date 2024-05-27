@@ -26,6 +26,9 @@ export const windowLog = (
   let hasPrintedTopPrefix = false
   let prefixValue = ""
   const handleLine = (line: string | null) => {
+    const rows = process.stdout.rows
+    maxLines = Math.min(maxLines, rows - 1 - (opts?.topPrefix ? 1 : 0))
+
     const toClear = Math.min(numberOfLines, maxLines)
     clearLastLines(toClear)
 
