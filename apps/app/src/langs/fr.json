@@ -7,14 +7,14 @@
     "password": {
       "regex": "Le mot de passe doit contenir au moins une lettre majuscule, une lettre minuscule, un chiffre, et un caractère spécial.",
       "required": "Mot de passe requis",
-      "min8": "Le mot de passe doit être au moins 8 caractères long.",
-      "max25": "Le mot de passe doit être au maximum 25 caractères long.",
+      "min8": "Le mot de passe doit être d'au moins 8 caractères.",
+      "max25": "Le mot de passe doit être d'au maximum 25 caractères.",
       "dontMatch": "Les mots de passe ne correspondent pas"
     },
     "username": {
       "required": "Nom d'utilisateur requis",
-      "min3": "Le nom d'utilisateur doit être au moins 3 caractères long.",
-      "max30": "Le nom d'utilisateur doit être au maximum 30 caractères long."
+      "min3": "Le nom d'utilisateur doit être d'au moins 3 caractères.",
+      "max30": "Le nom d'utilisateur doit être d'au maximum 30 caractères."
     },
     "email": {
       "required": "Email requis",
