@@ -78,6 +78,7 @@ With this template, you get all the awesomeness you need:
       - [Api errors](#api-errors)
   - [❌ Common issues](#-common-issues)
     - [Cannot commit](#cannot-commit)
+    - [S3 upload error cors](#s3-upload-error-cors)
   - [☁️ Cloud deployment](#️-cloud-deployment)
     - [Build](#build)
     - [Build multi-architecture image](#build-multi-architecture-image)
@@ -529,6 +530,32 @@ npm install -g git-conventional-commits
 ```
 
 This package is used to check the commit message format.
+
+### S3 upload error cors
+
+See: https://www.scaleway.com/en/docs/storage/object/api-cli/setting-cors-rules/
+
+Create a `cors.json` file
+
+```json
+{
+  "CORSRules": [
+    {
+      "AllowedOrigins": ["http://MY_DOMAIN_NAME", "http://www.MY_DOMAIN_NAME"],
+      "AllowedHeaders": ["*"],
+      "AllowedMethods": ["GET", "HEAD", "POST", "PUT", "DELETE"],
+      "MaxAgeSeconds": 3000,
+      "ExposeHeaders": ["Etag"]
+    }
+  ]
+}
+```
+
+Then execute the following command:
+
+```bash
+aws --endpoint https://s3.fr-par.scw.cloud --profile=scaleway s3api put-bucket-cors --bucket <bucket_name> --cors-configuration file://cors.json
+```
 
 ## ☁️ Cloud deployment
 
