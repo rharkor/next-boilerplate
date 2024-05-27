@@ -12,7 +12,7 @@
     "test": "turbo run test",
     "init": "npm run -s init:build && npm run -s init -w packages/scripts",
     "init:env": "npm run -s init:env -w packages/scripts",
-    "init:build": "turbo run build --filter='@next-boilerplate/*'^... >/dev/null",
+    "init:build": "npm run -s init:build -w packages/scripts",
     "init:coding-env": "bash ./packages/scripts/install/install.sh",
     "depcheck": "npm run -s depcheck -w packages/scripts",
     "is-initialized": "npm run -s is-initialized -w packages/scripts",
