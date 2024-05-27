@@ -385,13 +385,13 @@ function CropContent({
   return (
     <>
       <ModalBody className="flex items-center justify-center">
-        <div className="relative flex size-[500px] max-h-full max-w-full items-center justify-center overflow-hidden">
-          <div className="relative flex select-none">
+        <div className="relative flex size-[500px] max-h-full max-w-full items-center justify-center">
+          <div className="relative flex touch-none select-none">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={originalFileUrl}
               alt="Original file"
-              className="pointer-events-none size-max max-h-[478px] max-w-[478px] select-none object-contain"
+              className="pointer-events-none size-max select-none object-contain"
               ref={handleMountImage}
               onLoad={handleImageLoaded}
               draggable={false}
@@ -399,13 +399,13 @@ function CropContent({
             />
             {/* DARK LAYER */}
             <div
-              className={cn("absolute inset-0 bg-black/50", {
+              className={cn("absolute inset-0 touch-none bg-black/50", {
                 invisible: isImageLoading,
               })}
             />
             {/* CROP AREA */}
             <div
-              className={cn("absolute cursor-move outline outline-[3px] outline-primary", {
+              className={cn("absolute cursor-move touch-none outline outline-[3px] outline-primary", {
                 invisible: isImageLoading,
               })}
               style={{
@@ -416,7 +416,7 @@ function CropContent({
             {/* DOT1 | TOP-LEFT */}
             <div
               className={cn(
-                "absolute left-0 top-0 size-4 translate-x-[calc(-50%-1.5px)] translate-y-[calc(-50%-1.5px)] cursor-nw-resize rounded-full bg-primary",
+                "absolute left-0 top-0 size-4 translate-x-[calc(-50%-1.5px)] translate-y-[calc(-50%-1.5px)] cursor-nw-resize touch-none rounded-full bg-primary",
                 {
                   invisible: isImageLoading,
                 }
@@ -426,7 +426,7 @@ function CropContent({
             {/* DOT2 | TOP-RIGHT */}
             <div
               className={cn(
-                "absolute right-0 top-0 size-4 translate-x-[calc(-50%+1.5px)] translate-y-[calc(-50%-1.5px)] cursor-ne-resize rounded-full bg-primary",
+                "absolute right-0 top-0 size-4 translate-x-[calc(-50%+1.5px)] translate-y-[calc(-50%-1.5px)] cursor-ne-resize touch-none rounded-full bg-primary",
                 {
                   invisible: isImageLoading,
                 }
@@ -436,7 +436,7 @@ function CropContent({
             {/* DOT3 | BOTTOM-LEFT */}
             <div
               className={cn(
-                "absolute bottom-0 left-0 size-4 translate-x-[calc(-50%-1.5px)] translate-y-[calc(-50%+1.5px)] cursor-sw-resize rounded-full bg-primary",
+                "absolute bottom-0 left-0 size-4 translate-x-[calc(-50%-1.5px)] translate-y-[calc(-50%+1.5px)] cursor-sw-resize touch-none rounded-full bg-primary",
                 {
                   invisible: isImageLoading,
                 }
@@ -446,7 +446,7 @@ function CropContent({
             {/* DOT4 | BOTTOM-RIGHT */}
             <div
               className={cn(
-                "absolute bottom-0 right-0 size-4 translate-x-[calc(-50%+1.5px)] translate-y-[calc(-50%+1.5px)] cursor-se-resize rounded-full bg-primary",
+                "absolute bottom-0 right-0 size-4 translate-x-[calc(-50%+1.5px)] translate-y-[calc(-50%+1.5px)] cursor-se-resize touch-none rounded-full bg-primary",
                 {
                   invisible: isImageLoading,
                 }
@@ -456,7 +456,7 @@ function CropContent({
             {/* DOT5 | TOP */}
             <div
               className={cn(
-                "absolute left-1/2 top-0 size-4 -translate-x-1/2 translate-y-[calc(-50%-1.5px)] cursor-n-resize rounded-full bg-primary",
+                "absolute left-1/2 top-0 size-4 -translate-x-1/2 translate-y-[calc(-50%-1.5px)] cursor-n-resize touch-none rounded-full bg-primary",
                 {
                   invisible: isImageLoading,
                 }
@@ -466,7 +466,7 @@ function CropContent({
             {/* DOT6 | BOTTOM */}
             <div
               className={cn(
-                "absolute bottom-0 left-1/2 size-4 -translate-x-1/2 translate-y-[calc(-50%+1.5px)] cursor-s-resize rounded-full bg-primary",
+                "absolute bottom-0 left-1/2 size-4 -translate-x-1/2 translate-y-[calc(-50%+1.5px)] cursor-s-resize touch-none rounded-full bg-primary",
                 {
                   invisible: isImageLoading,
                 }
@@ -476,7 +476,7 @@ function CropContent({
             {/* DOT7 | LEFT */}
             <div
               className={cn(
-                "absolute left-0 top-1/2 size-4 -translate-y-1/2 translate-x-[calc(-50%-1.5px)] cursor-w-resize rounded-full bg-primary",
+                "absolute left-0 top-1/2 size-4 -translate-y-1/2 translate-x-[calc(-50%-1.5px)] cursor-w-resize touch-none rounded-full bg-primary",
                 {
                   invisible: isImageLoading,
                 }
@@ -486,7 +486,7 @@ function CropContent({
             {/* DOT8 | RIGHT */}
             <div
               className={cn(
-                "absolute right-0 top-1/2 size-4 -translate-y-1/2 translate-x-[calc(-50%+1.5px)] cursor-e-resize rounded-full bg-primary",
+                "absolute right-0 top-1/2 size-4 -translate-y-1/2 translate-x-[calc(-50%+1.5px)] cursor-e-resize touch-none rounded-full bg-primary",
                 {
                   invisible: isImageLoading,
                 }
@@ -495,7 +495,7 @@ function CropContent({
             />
           </div>
           {isImageLoading && (
-            <div className="absolute inset-0 flex flex-col items-center justify-center gap-1 bg-content1/50">
+            <div className="absolute inset-0 flex touch-none flex-col items-center justify-center gap-1 bg-content1/50">
               <Spinner color="primary" />
               <span className="text-base font-bold text-foreground">{dictionary.loading}</span>
             </div>

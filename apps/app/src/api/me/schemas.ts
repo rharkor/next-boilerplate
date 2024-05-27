@@ -144,6 +144,7 @@ export const sendVerificationEmailSchema = (dictionary?: TDictionary<typeof send
         emailVerified: true,
         lastLocale: true,
         email: true,
+        name: true,
       }),
       silent: z.boolean().optional(),
       email: z.never().optional(),

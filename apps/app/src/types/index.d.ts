@@ -5,6 +5,7 @@ export type ITrpcContext = {
   session: Session | null | undefined
   headers: { [k: string]: string } | null | undefined
   req: Request | null | undefined
+  fromServer?: boolean
 }
 
 export type apiInputFromSchema<T extends (() => z.Schema) | undefined> = {

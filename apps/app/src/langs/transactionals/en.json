@@ -1,0 +1,13 @@
+{
+  "hey": "Hey",
+  "verifyYourEmailAddressToCompleteYourRegistration": "Verify your email address to complete your registration",
+  "verifyYourEmailAddress": "Verify your email address",
+  "footer": "This email was sent to you as part of our account services. If you have any questions, please contact us at",
+  "thanksForSigninUpCompleteRegistration": "Thanks for signing up for Animadate. To complete your registration, we just need to verify your email address.",
+  "verifyEmail": "Verify email",
+  "confirmYourNewEmail": "Confirm your new email",
+  "changeEmailAddressDescription": "You have requested to change your email address. Please use the following code to validate your request.",
+  "resetPasswordRequest": "Reset password request",
+  "resetYourPassword": "Reset your password",
+  "resetPasswordDescription": "You recently requested to reset your password for your account. Click the button below to reset it."
+}

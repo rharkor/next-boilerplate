@@ -3,6 +3,7 @@
 import { InputHTMLAttributes, useCallback, useEffect, useState } from "react"
 import { Crop, Upload } from "lucide-react"
 import { Accept, useDropzone } from "react-dropzone"
+import { toast } from "react-toastify"
 
 import { TDictionary } from "@/lib/langs"
 import { bytesToMegabytes, cn } from "@/lib/utils"
@@ -72,6 +73,7 @@ export type TFileUploadProps = Omit<
   accept?: Accept //? See: https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types
   maxFiles?: number
   dictionary: TDictionary<typeof FileUploadDr>
+  acceptCamera?: boolean
 }
 
 export default function FileUpload({
@@ -81,11 +83,19 @@ export default function FileUpload({
   accept,
   maxFiles,
   dictionary,
+  acceptCamera,
   ...props
 }: TFileUploadProps) {
   const { acceptedFiles, getRootProps, getInputProps, isDragAccept, isDragReject } = useDropzone({
     accept,
     maxFiles,
+    multiple: maxFiles !== 1,
+    onDropRejected(fileRejections) {
+      const fileRejection = fileRejections[0]
+      if (fileRejection.errors[0].code === "file-invalid-type") {
+        toast.error(dictionary.invalidFileType)
+      }
+    },
   })
   const [files, setFiles] = useState<File[]>([])
   const [croppedFiles, setCroppedFiles] = useState<File[]>([])
@@ -130,7 +140,13 @@ export default function FileUpload({
           className
         )}
       >
-        <input type="file" {...getInputProps()} disabled={disabled} {...props} />
+        <input
+          type="file"
+          {...getInputProps()}
+          disabled={disabled}
+          accept={accept + (acceptCamera ? ";capture=camera" : "")}
+          {...props}
+        />
         <Upload className="size-12" />
         <p className="text-center text-sm text-foreground/80">{dictionary.uploadDescription}</p>
       </div>

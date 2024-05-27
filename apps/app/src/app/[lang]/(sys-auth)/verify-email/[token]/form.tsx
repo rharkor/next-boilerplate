@@ -20,7 +20,7 @@ export default function VerifyEmailButton({
 }) {
   const router = useRouter()
 
-  const verifyEmail = trpc.me.verifyEmail.useMutation({
+  const verifyEmailMutation = trpc.me.verifyEmail.useMutation({
     onSuccess: () => {
       toast.success(dictionary.verifyEmailSuccessDescription)
       router.push(authRoutes.redirectAfterSignIn)
@@ -28,10 +28,10 @@ export default function VerifyEmailButton({
   })
 
   async function onSubmit() {
-    verifyEmail.mutate({ token })
+    verifyEmailMutation.mutate({ token })
   }
 
-  const isLoading = verifyEmail.isLoading
+  const isLoading = verifyEmailMutation.isPending
 
   return (
     <div className={"!mt-5 grid w-[350px] space-y-2"}>

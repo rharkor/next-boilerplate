@@ -1,4 +1,4 @@
-FROM node:20-alpine as base
+FROM node:20 as base
 # Install turbo-cli
 RUN npm install turbo --global
 

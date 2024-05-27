@@ -47,7 +47,7 @@ export default function ResetPasswordForm({
     resetPasswordMutation.mutate(data)
   }
 
-  const isLoading = resetPasswordMutation.isLoading
+  const isLoading = resetPasswordMutation.isPending
 
   return (
     <form onSubmit={form.handleSubmit(onSubmit)} className={"!mt-5 grid w-[350px] space-y-2"}>
