@@ -23,7 +23,9 @@ export default function RootLayout({ children, params }: { children: React.React
 
   return (
     <html lang={params.lang}>
-      <body className={cn("antialiaseds bg-background min-h-screen font-sans", fontSans.variable)}>{children}</body>
+      <body className={cn("antialiaseds bg-background min-h-screen font-sans", fontSans.variable, fontSans.className)}>
+        {children}
+      </body>
     </html>
   )
 }
