@@ -1,0 +1,27 @@
+{
+  "name": "@next-boilerplate/emails",
+  "version": "0.0.19",
+  "private": true,
+  "scripts": {
+    "_build": "email build",
+    "dev": "email dev --port 8080",
+    "export": "email export",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix .",
+    "prettier": "prettier --check \"**/*.{js,jsx,ts,tsx}\"",
+    "prettier:fix": "prettier --write \"**/*.{js,jsx,ts,tsx}\""
+  },
+  "dependencies": {
+    "@react-email/components": "0.0.16",
+    "react-email": "2.1.1",
+    "react": "18.2.0",
+    "@next-boilerplate/scripts": "*",
+    "@next-boilerplate/tsconfig": "*",
+    "eslint-config-custom": "*",
+    "custom-prettier-config": "*"
+  },
+  "devDependencies": {
+    "@types/react": "18.2.33",
+    "@types/react-dom": "18.2.14"
+  }
+}
