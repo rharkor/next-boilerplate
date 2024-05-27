@@ -6,7 +6,7 @@ import { execSync } from "child_process"
 import * as fs from "fs"
 import * as path from "path"
 
-import { logger, startTask } from "@next-boilerplate/lib"
+import { startTask } from "@next-boilerplate/lib"
 
 import { getPath } from "./utils/path"
 
@@ -32,14 +32,12 @@ export const dbSetup = async () => {
 
     //? Prisma migrate dev
     task.print("Migrating the database...")
-    let hasError = false
     try {
-      execSync("prisma migrate dev", { cwd: appPath })
+      execSync("prisma migrate deploy", { cwd: appPath })
     } catch {
-      hasError = true
+      task.print("Prisma migrate dev failed, please run it by yourself...")
     }
     task.stop()
-    if (hasError) logger.error("Prisma migrate dev failed, please run it by yourself...")
 
     //? Prisma seed
     const seedTask = startTask({
