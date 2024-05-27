@@ -1,0 +1,13 @@
+{
+  "hey": "Hey",
+  "verifyYourEmailAddressToCompleteYourRegistration": "Vérifiez votre adresse e-mail pour compléter votre inscription",
+  "verifyYourEmailAddress": "Vérifiez votre adresse e-mail",
+  "footer": "Cet e-mail vous a été envoyé dans le cadre de nos services de compte. Si vous avez des questions, veuillez nous contacter à",
+  "thanksForSigninUpCompleteRegistration": "Merci de vous être inscrit à Animadate. Pour compléter votre inscription, nous devons juste vérifier votre adresse e-mail.",
+  "verifyEmail": "Vérifier l'e-mail",
+  "confirmYourNewEmail": "Confirmez votre nouvel e-mail",
+  "changeEmailAddressDescription": "Vous avez demandé à changer votre adresse e-mail. Veuillez utiliser le code suivant pour valider votre demande.",
+  "resetPasswordRequest": "Demande de réinitialisation du mot de passe",
+  "resetYourPassword": "Réinitialisez votre mot de passe",
+  "resetPasswordDescription": "Vous avez récemment demandé à réinitialiser votre mot de passe pour votre compte. Cliquez sur le bouton ci-dessous pour le réinitialiser."
+}

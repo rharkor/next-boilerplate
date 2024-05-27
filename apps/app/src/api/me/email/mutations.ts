@@ -3,14 +3,17 @@ import { z } from "zod"
 
 import { sendVerificationEmailSchema, verifyEmailResponseSchema, verifyEmailSchema } from "@/api/me/schemas"
 import { emailVerificationExpiration, resendEmailVerificationExpiration } from "@/constants"
+import { logoUrl } from "@/constants/medias"
 import { env } from "@/lib/env"
-import { i18n } from "@/lib/i18n-config"
+import { i18n, Locale } from "@/lib/i18n-config"
+import { _getDictionary } from "@/lib/langs"
 import { sendMail } from "@/lib/mailer"
 import { prisma } from "@/lib/prisma"
-import { html, plainText, subject } from "@/lib/templates/mail/verify-email"
 import { ApiError, handleApiError } from "@/lib/utils/server-utils"
 import { apiInputFromSchema } from "@/types"
+import VerifyEmail from "@next-boilerplate/emails/emails/verify-email"
 import { logger } from "@next-boilerplate/lib"
+import { render } from "@react-email/render"
 
 export const sendVerificationEmail = async ({ input }: apiInputFromSchema<typeof sendVerificationEmailSchema>) => {
   try {
@@ -65,13 +68,39 @@ export const sendVerificationEmail = async ({ input }: apiInputFromSchema<typeof
           expires: new Date(Date.now() + emailVerificationExpiration),
         },
       })
-      const url = `${env.VERCEL_URL ?? env.NEXT_PUBLIC_BASE_URL}/verify-email/${token}`
+      const verificationLink = `${env.VERCEL_URL ?? env.NEXT_PUBLIC_BASE_URL}/verify-email/${token}`
+      const locale = (user.lastLocale as Locale | null) ?? i18n.defaultLocale
+      const dictionary = await _getDictionary("transactionals", locale, {
+        hey: true,
+        verifyEmail: true,
+        footer: true,
+        thanksForSigninUpCompleteRegistration: true,
+        verifyYourEmailAddress: true,
+        verifyYourEmailAddressToCompleteYourRegistration: true,
+      })
+      const element = VerifyEmail({
+        verificationLink,
+        actionText: dictionary.verifyEmail,
+        contentTitle: dictionary.thanksForSigninUpCompleteRegistration,
+        footerText: dictionary.footer,
+        heyText: dictionary.hey,
+        logoUrl,
+        name: user.name ?? "",
+        previewText: dictionary.verifyYourEmailAddressToCompleteYourRegistration,
+        supportEmail: env.SUPPORT_EMAIL ?? "",
+        titleText: dictionary.verifyYourEmailAddress,
+      })
+      const text = render(element, {
+        plainText: true,
+      })
+      const html = render(element)
+
       await sendMail({
         from: `"${env.SMTP_FROM_NAME}" <${env.SMTP_FROM_EMAIL}>`,
         to: email.toLowerCase(),
-        subject: subject,
-        text: plainText(url, user.lastLocale ?? i18n.defaultLocale),
-        html: html(url, user.lastLocale ?? i18n.defaultLocale),
+        subject: dictionary.verifyYourEmailAddress,
+        text,
+        html,
       })
     } else {
       logger.debug("Email verification disabled")

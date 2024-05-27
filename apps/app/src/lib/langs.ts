@@ -12,6 +12,10 @@ const dictionaries = {
     en: () => import("../langs/errors/en.json").then((module) => module.default),
     fr: () => import("../langs/errors/fr.json").then((module) => module.default),
   },
+  transactionals: {
+    en: () => import("../langs/transactionals/en.json").then((module) => module.default),
+    fr: () => import("../langs/transactionals/fr.json").then((module) => module.default),
+  },
 }
 
 export type TPossibleNamespaces = keyof typeof dictionaries

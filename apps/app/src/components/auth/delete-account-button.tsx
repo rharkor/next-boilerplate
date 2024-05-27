@@ -36,7 +36,7 @@ export default function DeleteAccountButton({
 
   return (
     <>
-      <Button color="danger" isLoading={deleteAccountMutation.isLoading} onClick={() => setShowModal(true)}>
+      <Button color="danger" isLoading={deleteAccountMutation.isPending} onClick={() => setShowModal(true)}>
         {children}
       </Button>
       <Modal isOpen={showModal} onOpenChange={(open) => setShowModal(open)}>
@@ -51,7 +51,7 @@ export default function DeleteAccountButton({
                 <Button onPress={onClose} variant="flat">
                   {dictionary.cancel}
                 </Button>
-                <Button color="danger" onPress={handleDeleteAccount} isLoading={deleteAccountMutation.isLoading}>
+                <Button color="danger" onPress={handleDeleteAccount} isLoading={deleteAccountMutation.isPending}>
                   {dictionary.deleteAccountConfirm}
                 </Button>
               </ModalFooter>

@@ -20,7 +20,9 @@ export default async function Page404MatchAll() {
   })
   return (
     <html lang={params?.lang ?? i18n.defaultLocale}>
-      <body className={cn("h-dvh min-h-dvh bg-background font-sans antialiased", fontSans.variable)}>
+      <body
+        className={cn("h-dvh min-h-dvh bg-background font-sans antialiased", fontSans.variable, fontSans.className)}
+      >
         <UIProvider>
           <main className="container m-auto flex min-h-screen flex-1 flex-col items-center justify-center gap-3">
             <h1 className="text-4xl font-bold">{dictionary.notFound}</h1>

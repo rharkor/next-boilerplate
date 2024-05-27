@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form"
 import * as z from "zod"
 
 import { updateUserSchema } from "@/api/me/schemas"
-import { useAccount } from "@/contexts/account"
+import { useAccount } from "@/hooks/account"
 import { env } from "@/lib/env"
 import { TDictionary } from "@/lib/langs"
 import { trpc } from "@/lib/trpc/client"
@@ -92,12 +92,12 @@ export default function UpdateAccount({
               label={dictionary.profilePage.profileDetails.username.label}
               type="text"
               autoComplete="off"
-              isDisabled={updateUserMutation.isLoading || account.isLoading || !hasVerifiedEmail}
+              isDisabled={updateUserMutation.isPending || account.isLoading || !hasVerifiedEmail}
             />
             <NeedSavePopup
               show={isNotSensibleInformationsUpdated}
               onReset={resetForm}
-              isSubmitting={updateUserMutation.isLoading}
+              isSubmitting={updateUserMutation.isPending}
               text={dictionary.needSavePopup}
               dictionary={dictionary}
             />
