@@ -92,12 +92,12 @@ export default function UpdateAccount({
               label={dictionary.profilePage.profileDetails.username.label}
               type="text"
               autoComplete="off"
-              isDisabled={updateUserMutation.isLoading || account.isLoading || !hasVerifiedEmail}
+              isDisabled={updateUserMutation.isPending || account.isLoading || !hasVerifiedEmail}
             />
             <NeedSavePopup
               show={isNotSensibleInformationsUpdated}
               onReset={resetForm}
-              isSubmitting={updateUserMutation.isLoading}
+              isSubmitting={updateUserMutation.isPending}
               text={dictionary.needSavePopup}
               dictionary={dictionary}
             />

@@ -50,7 +50,7 @@ export default function VerifyEmailButton({
   return (
     <Button
       onClick={handleResendVerificationEmail}
-      isLoading={resendVerificationEmailMutation.isLoading}
+      isLoading={resendVerificationEmailMutation.isPending}
       className="flex-1 md:w-max"
       variant="flat"
       color="primary"

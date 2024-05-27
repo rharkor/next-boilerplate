@@ -19,5 +19,10 @@
     "tsc-alias": "^1.8.8",
     "typescript": "^5.4.3"
   },
-  "type": "module"
+  "type": "module",
+  "browser": {
+    "child_process": false,
+    "readline": false,
+    "ora": false
+  }
 }

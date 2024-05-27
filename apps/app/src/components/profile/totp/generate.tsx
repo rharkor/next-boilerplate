@@ -101,8 +101,8 @@ export default function GenerateTotp({
           if (hasOtpVerified) setDesactivate2FAModalOpen(true)
           else setIsModalOpen(true)
         }}
-        isLoading={desactivate2FAMutation.isLoading || generateTotpSecretMutation.isLoading}
-        isDisabled={account.isLoading || desactivate2FAMutation.isLoading || generateTotpSecretMutation.isLoading}
+        isLoading={desactivate2FAMutation.isPending || generateTotpSecretMutation.isPending}
+        isDisabled={account.isLoading || desactivate2FAMutation.isPending || generateTotpSecretMutation.isPending}
         className="w-max"
       >
         {hasOtpVerified ? dictionary.totp.desactivate : dictionary.totp.generate}
@@ -269,7 +269,7 @@ export default function GenerateTotp({
                     (modalIndex === 2 && mnemonicVerif !== totpSecretData?.mnemonic) ||
                     (modalIndex === 3 && otp.length !== 6)
                   }
-                  isLoading={verifyTotpMutation.isLoading}
+                  isLoading={verifyTotpMutation.isPending}
                 >
                   {modalIndex !== 3 ? dictionary.continue : dictionary.confirm}
                 </Button>
@@ -288,7 +288,7 @@ export default function GenerateTotp({
         closeText={dictionary.cancel}
         onlyPrompt
         isDanger
-        isLoading={desactivate2FAMutation.isLoading}
+        isLoading={desactivate2FAMutation.isPending}
       />
     </div>
   )

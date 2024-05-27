@@ -41,7 +41,7 @@ export default function ForgotPasswordForm({ dictionary }: { dictionary: TDictio
     forgotPasswordMutation.mutate(data)
   }
 
-  const isLoading = forgotPasswordMutation.isLoading
+  const isLoading = forgotPasswordMutation.isPending
   const retryIn = () =>
     latestEmailSentAt ? new Date(resendResetPasswordExpiration - (Date.now() - latestEmailSentAt)) : null
   const retryInValue = retryIn()

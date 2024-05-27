@@ -95,7 +95,7 @@ export default function TotpVerificationModal({
                   handleConfirm()
                 }}
                 isDisabled={otp.length !== 6}
-                isLoading={verifyTotpMutation.isLoading || isLoading}
+                isLoading={verifyTotpMutation.isPending || isLoading}
               >
                 {submitText}
               </Button>
