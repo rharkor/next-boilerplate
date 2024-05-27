@@ -1,5 +1,5 @@
 export const primary = "#006FEE"
-export const background = "#FFFFFF"
+export const background = "#f4f4f5"
 export const content1 = "#FFFFFF"
 export const content2 = "#f4f4f5"
 export const content3 = "#e4e4e7"

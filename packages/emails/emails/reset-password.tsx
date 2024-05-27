@@ -1,4 +1,3 @@
-import { Header } from "components/header"
 import * as React from "react"
 
 import { Head, Html, Preview, Text } from "@react-email/components"
@@ -8,6 +7,7 @@ import { Button } from "../components/button"
 import { Card } from "../components/card"
 import { Container } from "../components/container"
 import { Footer } from "../components/footer"
+import { Header } from "../components/header"
 
 interface ResetPasswordProps {
   resetLink: string
@@ -54,7 +54,8 @@ export const ResetPassword = ({
 )
 
 export const previewProps: ResetPasswordProps = {
-  logoUrl: "https://upload.wikimedia.org/wikipedia/commons/5/5e/Vercel_logo_black.svg",
+  logoUrl:
+    "https://imgs.search.brave.com/I_nW-x21BB6_TTk_xXuYVy5pZlaMfv0h4q35oqhrxvc/rs:fit:860:0:0/g:ce/aHR0cHM6Ly9zZWVr/bG9nby5jb20vaW1h/Z2VzL04vbmV4dC1q/cy1pY29uLWxvZ28t/RUUzMDJENURCRC1z/ZWVrbG9nby5jb20u/cG5n",
   name: "John Doe",
   previewText: "Reset password request.",
   supportEmail: "louis@huort.com",

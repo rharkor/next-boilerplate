@@ -2,7 +2,7 @@ import React from "react"
 
 import { Container, Hr, Img, Text } from "@react-email/components"
 
-import { mutedForeground } from "../contants"
+import { mutedForeground } from "../constants"
 
 import { Link } from "./link"
 
@@ -32,7 +32,7 @@ export const Footer = ({
         </Link>
       </Text>
       <Hr style={hrStyle} />
-      <Img src={logoUrl} width="82" height="32" alt="Next boilerplate" style={imgStyle} />
+      <Img src={logoUrl} width="32" height="32" alt="Next boilerplate" style={imgStyle} />
       <Text style={subFooterTextStyle}>© {curYear} Next boilerplate - All rights reserved</Text>
     </Container>
   )

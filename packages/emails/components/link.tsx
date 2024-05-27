@@ -2,7 +2,7 @@ import React, { ReactNode } from "react"
 
 import { Link as OLink, LinkProps } from "@react-email/components"
 
-import { primary } from "../contants"
+import { primary } from "../constants"
 
 export const Link = ({
   children,

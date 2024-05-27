@@ -2,7 +2,7 @@ import React, { ReactNode } from "react"
 
 import { Section as OSection, SectionProps } from "@react-email/components"
 
-import { content1 } from "../contants"
+import { content1 } from "../constants"
 
 export const Card = ({
   children,

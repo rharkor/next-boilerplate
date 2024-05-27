@@ -2,7 +2,7 @@ import React, { ReactNode } from "react"
 
 import { Body as OBody, BodyProps } from "@react-email/components"
 
-import { background, foreground } from "../contants"
+import { background, foreground } from "../constants"
 
 export const Body = ({
   children,

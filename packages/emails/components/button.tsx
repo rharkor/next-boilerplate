@@ -2,7 +2,7 @@ import React, { ReactNode } from "react"
 
 import { Button as OButton, ButtonProps } from "@react-email/components"
 
-import { foreground, primary } from "../contants"
+import { foreground, primary } from "../constants"
 
 export const Button = ({
   children,
