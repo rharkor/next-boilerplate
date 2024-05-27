@@ -4,7 +4,7 @@
   "scripts": {
     "init": "tsx ./init/init.ts",
     "init:env": "tsx ./init/init-env.ts",
-    "init:build": "tsx ./init/init-build.ts",
+    "init:build": "cd ../.. && npm run build -w packages/lib && cd packages/scripts && tsx ./init/init-build.ts",
     "is-initialized": "bash ./init/is-initialized.sh",
     "depcheck": "tsx depcheck-test.ts",
     "lint": "eslint .",
