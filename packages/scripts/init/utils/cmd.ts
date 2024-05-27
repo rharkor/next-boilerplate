@@ -1,6 +1,5 @@
 import { exec as pexec } from "child_process"
 import ora from "ora"
-import { stderr } from "process"
 
 import { logger, windowLog } from "@next-boilerplate/lib"
 
@@ -20,19 +19,20 @@ export function exec(command: string, options: ExecOptions): Promise<void> {
       isSilent: true,
       isEnabled: false,
     }).start()
-    stderr.write("\n")
     const window = windowLog(maxLines, {
       topPrefix: () => spinner.frame(),
       topInterval: 100,
     })
 
     const child = pexec(command, { cwd: options.cwd })
-
+    const rows = process.stdout.rows
+    const curMax = Math.min(maxLines, rows - 2)
     child.stdout?.on("data", (data: Buffer) => {
       const lines = data
         .toString()
         .split("\n")
         .filter((l) => l.length > 0)
+        .slice(-curMax - 1)
       lines.forEach((line) => {
         window.print(line + "\n")
       })

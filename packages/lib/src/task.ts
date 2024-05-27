@@ -71,6 +71,10 @@ export const windowLog = (
     return printable
   }
 
+  const print = (line: string) => {
+    handleLine(line)
+  }
+
   let interval: NodeJS.Timeout | null = null
   if (opts) {
     handleLine(null)
@@ -94,7 +98,7 @@ export const windowLog = (
     }
   }
 
-  return { print: handleLine, stop }
+  return { print, stop }
 }
 
 /**
@@ -113,12 +117,15 @@ export function startTask(options: { name: string; successMessage?: string; maxL
     topPrefix: () => spinner.frame(),
     topInterval: 100,
   })
+  const rows = process.stdout.rows
+  const curMax = Math.min(maxLines, rows - 2)
   return {
     print: (data: string) => {
       const lines = data
         .toString()
         .split("\n")
         .filter((l) => l.length > 0)
+        .slice(-curMax - 1)
       lines.forEach((line) => {
         window.print(line + "\n")
       })
