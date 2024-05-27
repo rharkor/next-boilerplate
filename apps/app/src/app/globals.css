@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
+html {
   --toastify-color-progress-light: hsl(var(--nextui-primary));
   --toastify-color-progress-dark: hsl(var(--nextui-primary));
   --toastify-color-progress-success: hsl(var(--nextui-success));

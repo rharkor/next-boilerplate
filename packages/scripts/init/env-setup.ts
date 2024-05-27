@@ -5,7 +5,8 @@
 import * as fs from "fs"
 import { join } from "path"
 
-import { startTask } from "./utils/cmd"
+import { startTask } from "@next-boilerplate/lib"
+
 import { getPath } from "./utils/path"
 
 export const envSetup = async () => {
@@ -41,6 +42,5 @@ export const envSetup = async () => {
     task.print("Created .env for cron")
   } else task.print("Skipping .env for cron")
 
-  await new Promise((resolve) => setTimeout(resolve, 1000))
   task.stop()
 }

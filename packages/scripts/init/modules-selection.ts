@@ -7,7 +7,8 @@ import inquirer from "inquirer"
 import * as path from "path"
 import YAML from "yaml"
 
-import { startTask } from "./utils/cmd"
+import { startTask } from "@next-boilerplate/lib"
+
 import { getPath } from "./utils/path"
 
 const dockerComposePaths = [
@@ -27,8 +28,7 @@ const onlyFrontToRemove = [
   "apps/app/src/components/profile",
   "apps/app/src/constants/auth.ts",
   "apps/app/src/constants/rate-limit.ts",
-  "apps/app/src/contexts/account.tsx",
-  "apps/app/src/contexts/active-sessions.tsx",
+  "apps/app/src/hooks/account.tsx",
   "apps/app/src/lib/auth",
   "apps/app/src/lib/server",
   "apps/app/src/lib/templates",

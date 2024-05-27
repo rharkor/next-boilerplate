@@ -212,5 +212,6 @@
   "somethingWentWrong": "Something went wrong",
   "tryAgain": "Try again",
   "goHome": "Go home",
-  "unknownError": "An unknown error occurred."
+  "unknownError": "An unknown error occurred.",
+  "invalidFileType": "Invalid file type."
 }

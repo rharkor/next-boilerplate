@@ -30,7 +30,7 @@ const clearUnusedUploads = async () => {
   if (!expiredUploadingFiles.length) {
     logger.debug(`No expired uploading files found`)
   } else {
-    logger.info(`Found ${expiredUploadingFiles.length} expired uploading files`)
+    logger.debug(`Found ${expiredUploadingFiles.length} expired uploading files`)
     const chuked = chunk(expiredUploadingFiles, 100)
     const deletedFiles: string[] = []
 
@@ -68,7 +68,7 @@ const clearUnusedUploads = async () => {
         deletedFiles.push(...deleted)
       })
     )
-    logger.success(`Deleted ${deletedFiles.length} expired uploading files`)
+    logger.debug(`Deleted ${deletedFiles.length} expired uploading files`)
   }
 
   //* Delete already uploaded files that are not linked to any item
@@ -102,7 +102,7 @@ const clearUnusedUploads = async () => {
   if (!unlikedFiles.length) {
     logger.debug(`No unlinked files found`)
   } else {
-    logger.info(`Found ${unlikedFiles.length} unlinked files`)
+    logger.debug(`Found ${unlikedFiles.length} unlinked files`)
     const chuked = chunk(unlikedFiles, 100)
     const deletedFiles: string[] = []
 
@@ -136,7 +136,7 @@ const clearUnusedUploads = async () => {
         deletedFiles.push(...deleted)
       })
     )
-    logger.success(`Deleted ${deletedFiles.length} unlinked files`)
+    logger.debug(`Deleted ${deletedFiles.length} unlinked files`)
   }
 }
 

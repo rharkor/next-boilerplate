@@ -4,6 +4,7 @@ import { z } from "zod"
 import { maxUploadSize } from "@/constants"
 import { env } from "@/lib/env"
 import { prisma } from "@/lib/prisma"
+import rateLimiter from "@/lib/rate-limit"
 import { s3Client } from "@/lib/s3"
 import { stringToSlug } from "@/lib/utils"
 import { ApiError, ensureLoggedIn, handleApiError } from "@/lib/utils/server-utils"
@@ -18,6 +19,12 @@ export const presignedUrl = async ({ input, ctx: { session } }: apiInputFromSche
   try {
     if (!env.ENABLE_S3_SERVICE || !s3Client) {
       return ApiError("s3ServiceDisabled")
+    }
+
+    //* Rate limit (20 requests per hour)
+    const { success } = await rateLimiter(`presigned-url:${session.user.id}`, 20, 60 * 60)
+    if (!success) {
+      return ApiError("tooManyAttempts", "TOO_MANY_REQUESTS")
     }
 
     const { filename, filetype } = input

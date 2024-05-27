@@ -3,15 +3,18 @@ import { z } from "zod"
 
 import { forgotPasswordSchema, resetPasswordResponseSchema, resetPasswordSchema } from "@/api/me/schemas"
 import { resendResetPasswordExpiration, resetPasswordExpiration, rolesAsObject } from "@/constants"
+import { logoUrl } from "@/constants/medias"
 import { hash } from "@/lib/bcrypt"
 import { env } from "@/lib/env"
-import { i18n } from "@/lib/i18n-config"
+import { i18n, Locale } from "@/lib/i18n-config"
+import { _getDictionary } from "@/lib/langs"
 import { sendMail } from "@/lib/mailer"
 import { prisma } from "@/lib/prisma"
-import { html, plainText, subject } from "@/lib/templates/mail/reset-password"
 import { ApiError, handleApiError } from "@/lib/utils/server-utils"
 import { apiInputFromSchema } from "@/types"
+import ResetPasswordTemplate from "@next-boilerplate/emails/emails/reset-password"
 import { logger } from "@next-boilerplate/lib"
+import { render } from "@react-email/render"
 
 export const forgotPassword = async ({ input }: apiInputFromSchema<typeof forgotPasswordSchema>) => {
   try {
@@ -61,20 +64,37 @@ export const forgotPassword = async ({ input }: apiInputFromSchema<typeof forgot
       },
     })
 
+    const resetLink = `${env.VERCEL_URL ?? env.NEXT_PUBLIC_BASE_URL}/reset-password/${resetPasswordToken}`
+    const locale = (user.lastLocale as Locale) ?? i18n.defaultLocale
+    const mailDict = await _getDictionary("transactionals", locale, {
+      footer: true,
+      resetPasswordRequest: true,
+      resetYourPassword: true,
+      resetPasswordDescription: true,
+      hey: true,
+    })
+    const element = ResetPasswordTemplate({
+      footerText: mailDict.footer,
+      logoUrl: logoUrl,
+      actionText: mailDict.resetYourPassword,
+      contentTitle: mailDict.resetPasswordDescription,
+      heyText: mailDict.hey,
+      name: user.name ?? "",
+      previewText: mailDict.resetPasswordRequest,
+      resetLink,
+      supportEmail: env.SMTP_FROM_EMAIL ?? "",
+      titleText: mailDict.resetYourPassword,
+    })
+    const text = render(element, {
+      plainText: true,
+    })
+    const html = render(element)
     await sendMail({
       from: `"${env.SMTP_FROM_NAME}" <${env.SMTP_FROM_EMAIL}>`,
       to: email,
-      subject: subject,
-      text: plainText(
-        user.username ?? email,
-        `${env.VERCEL_URL ?? env.NEXT_PUBLIC_BASE_URL}/reset-password/${resetPasswordToken}`,
-        user.lastLocale ?? i18n.defaultLocale
-      ),
-      html: html(
-        user.username ?? email,
-        `${env.VERCEL_URL ?? env.NEXT_PUBLIC_BASE_URL}/reset-password/${resetPasswordToken}`,
-        user.lastLocale ?? i18n.defaultLocale
-      ),
+      subject: mailDict.resetYourPassword,
+      text,
+      html,
     })
 
     return { email }
