@@ -7,12 +7,14 @@ import * as fs from "fs"
 import { glob } from "glob"
 import inquirer from "inquirer"
 
-import { exec, startTask } from "./utils/cmd"
+import { startTask } from "@next-boilerplate/lib"
+
+import { exec } from "./utils/cmd"
 import { getPath } from "./utils/path"
 
 const filesCache: Record<string, string> = {}
 
-export const replaceTokens = async () => {
+export const replaceTokens = async (dryRun?: boolean) => {
   const tokens: { message: string; token: string; id: string }[] = [
     {
       message: "What is the project name?",
@@ -66,7 +68,9 @@ export const replaceTokens = async () => {
       if (content) {
         if (content.includes(search)) {
           const replacedContent = content.replaceAll(search, value)
-          await fs.promises.writeFile(filePath, replacedContent, "utf8")
+          if (!dryRun) {
+            await fs.promises.writeFile(filePath, replacedContent, "utf8")
+          }
           task.print(`Done for ${filePath.replace(baseDir, "")}`)
         } else {
           task.print(`Checked ${filePath.replace(baseDir, "")}`)
@@ -108,11 +112,11 @@ export const replaceTokens = async () => {
 
   const rootDir = getPath()
   //? Reinstall dependencies
-  await exec("rm -rf node_modules", {
-    cwd: rootDir,
-    name: "Removing node_modules",
-    successMessage: "node_modules removed",
-  })
+  // await exec("rm -rf node_modules", {
+  //   cwd: rootDir,
+  //   name: "Removing node_modules",
+  //   successMessage: "node_modules removed",
+  // })
   await exec("npm install", {
     cwd: rootDir,
     name: "Installing dependencies",

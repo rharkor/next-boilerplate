@@ -41,7 +41,7 @@ export default function ForgotPasswordForm({ dictionary }: { dictionary: TDictio
     forgotPasswordMutation.mutate(data)
   }
 
-  const isLoading = forgotPasswordMutation.isLoading
+  const isLoading = forgotPasswordMutation.isPending
   const retryIn = () =>
     latestEmailSentAt ? new Date(resendResetPasswordExpiration - (Date.now() - latestEmailSentAt)) : null
   const retryInValue = retryIn()
@@ -65,24 +65,28 @@ export default function ForgotPasswordForm({ dictionary }: { dictionary: TDictio
       </Button>
       {latestEmailSentAt !== null && (
         <Tooltip content={dictionary.timeUntilYouCanRequestAnotherEmail}>
-          <AutoRefresh
-            callback={() => {
-              const retryInValue = retryIn()
-              const retryInFormatted =
-                retryInValue && retryInValue.getTime() > 0
-                  ? `${Math.floor(retryInValue.getTime() / 1000 / 60)}:${
-                      Math.floor(retryInValue.getTime() / 1000) % 60
-                    }`
-                  : null
-              return (
-                <div className="ml-auto flex flex-row items-center text-sm text-gray-500">
-                  <Clock className="mr-1 inline-block size-4" />
-                  {retryInFormatted}
-                </div>
-              )
-            }}
-            interval={1000}
-          />
+          <div className="ml-auto w-max">
+            <AutoRefresh
+              callback={() => {
+                const retryInValue = retryIn()
+                if (!retryInValue || !(retryInValue.getTime() > 0)) {
+                  return null
+                }
+                const minutes = Math.floor(retryInValue.getTime() / 1000 / 60)
+                const seconds = Math.floor(retryInValue.getTime() / 1000) % 60
+                const retryInFormatted = `${minutes ? `${minutes.toString().padStart(2, "0")}:` : ""}${seconds
+                  .toString()
+                  .padStart(2, "0")}`
+                return (
+                  <div className="ml-auto flex flex-row items-center text-sm text-gray-500">
+                    <Clock className="mr-1 inline-block size-4" />
+                    {retryInFormatted}
+                  </div>
+                )
+              }}
+              interval={1000}
+            />
+          </div>
         </Tooltip>
       )}
     </form>

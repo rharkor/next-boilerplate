@@ -5,7 +5,7 @@ import { Camera } from "lucide-react"
 import { toast } from "react-toastify"
 
 import { maxUploadSize } from "@/constants"
-import { useAccount } from "@/contexts/account"
+import { useAccount } from "@/hooks/account"
 import { TDictionary } from "@/lib/langs"
 import { trpc } from "@/lib/trpc/client"
 import { cn } from "@/lib/utils"
@@ -144,7 +144,7 @@ export default function UpdateAvatar({
           )}
           onPress={() => handleDelete()}
         >
-          {updateUserMutation.isLoading ? (
+          {updateUserMutation.isPending ? (
             <Spinner
               classNames={{
                 wrapper: "size-4",
@@ -174,6 +174,7 @@ export default function UpdateAvatar({
                   "image/png": [".png"],
                   "image/jpeg": [".jpg", ".jpeg"],
                 }}
+                acceptCamera
                 disabled={uploading}
               />
               <Button color="primary" type="submit" isDisabled={uploading || !file} isLoading={uploading}>

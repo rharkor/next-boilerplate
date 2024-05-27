@@ -8,7 +8,7 @@
   "otpSecretNotFound": "Secret OTP introuvable.",
   "demoAdminCannotHaveOtpSecret": "L'administrateur en mode démo ne peut pas avoir de secret OTP.",
   "username": {
-    "exist": "Le nom d'utilisateur existe déjà."
+    "exist": "Ce nom d'utilisateur existe déjà."
   },
   "email": {
     "exist": "Cet email existe déjà."
