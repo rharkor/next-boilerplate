@@ -3,6 +3,7 @@
 import { InputHTMLAttributes, useCallback, useEffect, useState } from "react"
 import { Crop, Upload } from "lucide-react"
 import { Accept, useDropzone } from "react-dropzone"
+import { toast } from "react-toastify"
 
 import { TDictionary } from "@/lib/langs"
 import { bytesToMegabytes, cn } from "@/lib/utils"
@@ -88,6 +89,13 @@ export default function FileUpload({
   const { acceptedFiles, getRootProps, getInputProps, isDragAccept, isDragReject } = useDropzone({
     accept,
     maxFiles,
+    multiple: maxFiles !== 1,
+    onDropRejected(fileRejections) {
+      const fileRejection = fileRejections[0]
+      if (fileRejection.errors[0].code === "file-invalid-type") {
+        toast.error(dictionary.invalidFileType)
+      }
+    },
   })
   const [files, setFiles] = useState<File[]>([])
   const [croppedFiles, setCroppedFiles] = useState<File[]>([])

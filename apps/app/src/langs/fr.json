@@ -212,5 +212,6 @@
   "somethingWentWrong": "Quelque chose s'est mal passé",
   "tryAgain": "Ressayer",
   "goHome": "Aller à l'accueil",
-  "unknownError": "Erreur inconnue"
+  "unknownError": "Erreur inconnue",
+  "invalidFileType": "Type de fichier invalide"
 }
