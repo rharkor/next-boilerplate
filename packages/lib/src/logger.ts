@@ -4,7 +4,7 @@
 
 import chalk from "chalk"
 
-const allowDebug = process.env.NODE_ENV !== "production"
+const allowDebug = process.env.ENV === "development"
 
 const console = globalThis.console
 
