@@ -2,7 +2,7 @@ import readline from "node:readline/promises"
 
 import { env } from "@/lib/env"
 import { sendMail } from "@/lib/mailer"
-import VerifyEmail, { previewProps } from "@next-boilerplate/emails/emails/verify-email"
+import VerifyEmail, { previewProps } from "@next-boilerplate/transactional/emails/verify-email"
 import { render } from "@react-email/render"
 
 const main = async () => {
