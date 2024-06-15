@@ -18,7 +18,7 @@
     "chalk": "^5.3.0",
     "depcheck": "^1.4.7",
     "dotenv": "^16.3.1",
-    "eslint-config-custom": "*",
+    "@smart-dev/eslint-config": "*",
     "glob": "^10.3.10",
     "inquirer": "^9.2.11",
     "ora": "^8.0.1",
@@ -27,6 +27,6 @@
   },
   "devDependencies": {
     "custom-prettier-config": "*",
-    "eslint-config-custom": "*"
+    "@smart-dev/eslint-config": "*"
   }
 }

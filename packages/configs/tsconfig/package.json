@@ -1,7 +1,7 @@
 {
   "name": "@next-boilerplate/tsconfig",
   "dependencies": {
-    "eslint-config-custom": "*",
+    "@smart-dev/eslint-config": "*",
     "custom-prettier-config": "*"
   }
 }

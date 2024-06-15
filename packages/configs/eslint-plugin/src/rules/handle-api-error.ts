@@ -1,17 +1,19 @@
-"use strict";
+import { Rule } from "eslint";
 
-module.exports = {
+export const rule: Rule.RuleModule = {
   meta: {
     type: "problem",
     docs: {
-      description: "await/return ApiError because it's a promise",
-      category: "Best Practices",
-      recommended: false,
+      description: "Use await/return ApiError because it's a promise",
     },
-    schema: [], // no options
+    schema: [],
+    messages: {
+      useAwaitOrReturnWithApiError:
+        "Use 'await' or 'return' with ApiError because it's a promise",
+    },
   },
   create: function (context) {
-    const handleProgram = (node) => {
+    const handleProgram: Rule.NodeListener["Program"] = (node) => {
       const sourceCode = context.sourceCode;
       const text = sourceCode.getText();
 
@@ -42,7 +44,7 @@ module.exports = {
 
           context.report({
             node,
-            message: `Use 'await' or 'return' with ApiError because it's a promise`,
+            messageId: "useAwaitOrReturnWithApiError",
             loc,
           });
         }

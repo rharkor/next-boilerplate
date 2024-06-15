@@ -23,7 +23,7 @@
     "autoprefixer": "^10.4.16",
     "clsx": "^2.0.0",
     "custom-prettier-config": "*",
-    "eslint-config-custom": "*",
+    "@smart-dev/eslint-config": "*",
     "negotiator": "^0.6.3",
     "next": "^14.0.0",
     "react": "^18.2.0",

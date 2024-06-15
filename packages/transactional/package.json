@@ -16,7 +16,7 @@
     "@next-boilerplate/tsconfig": "*",
     "@react-email/components": "0.0.19",
     "custom-prettier-config": "*",
-    "eslint-config-custom": "*",
+    "@smart-dev/eslint-config": "*",
     "react": "18.2.0",
     "react-email": "2.1.4"
   },

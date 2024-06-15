@@ -1,20 +1,62 @@
 {
-  "name": "eslint-config-custom",
+  "name": "@smart-dev/eslint-config",
   "version": "0.0.0",
   "private": true,
+  "scripts": {
+    "build": "pkgroll",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix .",
+    "prettier": "prettier --check \"**/*.{js,jsx,ts,tsx}\"",
+    "prettier:fix": "prettier --write \"**/*.{js,jsx,ts,tsx}\""
+  },
+  "main": "./dist/base.cjs",
+  "module": "./dist/base.mjs",
+  "types": "./dist/base.d.cts",
+  "exports": {
+    "./base": {
+      "require": {
+        "types": "./dist/base.d.cts",
+        "default": "./dist/base.cjs"
+      },
+      "import": {
+        "types": "./dist/base.d.mts",
+        "default": "./dist/base.mjs"
+      }
+    },
+    "./next": {
+      "require": {
+        "types": "./dist/next.d.cts",
+        "default": "./dist/next.cjs"
+      },
+      "import": {
+        "types": "./dist/next.d.mts",
+        "default": "./dist/next.mjs"
+      }
+    }
+  },
   "files": [
     "next.js",
     "base.js"
   ],
+  "type": "module",
   "dependencies": {
-    "@typescript-eslint/eslint-plugin": "^7.0.0",
-    "@typescript-eslint/parser": "^7.0.0",
+    "@smart-dev/custom-eslint-plugin": "*",
+    "@eslint/js": "^9.5.0",
+    "eslint": "^9.5.0",
     "eslint-config-next": "^14.0.3",
     "eslint-config-prettier": "^9.1.0",
     "eslint-config-react-app": "^7.0.1",
     "eslint-plugin-simple-import-sort": "^12.0.0",
     "eslint-plugin-tailwindcss": "^3.13.0",
     "eslint-plugin-unused-imports": "^3.0.0",
-    "eslint-plugin-custom-rule": "*"
+    "globals": "^15.4.0",
+    "typescript": "^5.4.5",
+    "@types/eslint__js": "^8.42.3",
+    "@types/eslint-config-prettier": "^6.11.3",
+    "typescript-eslint": "^7.13.0",
+    "prettier": "^3.1.0"
+  },
+  "devDependencies": {
+    "pkgroll": "^2.1.1"
   }
 }

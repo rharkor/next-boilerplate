@@ -3,7 +3,7 @@ aaron-bond.better-comments
 WallabyJs.console-ninja
 EditorConfig.EditorConfig
 dsznajder.es7-react-js-snippets
-dbaeumer.vscode-eslint
+dbaeumer.vscode-eslint@3.0.7
 tombonnike.vscode-status-bar-format-toggle
 github.vscode-github-actions
 GitHub.copilot

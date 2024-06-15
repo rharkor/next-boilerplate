@@ -11,9 +11,10 @@
     "prettier:fix": "prettier --write \"src/**/*.{js,jsx,ts,tsx}\""
   },
   "dependencies": {
+    "@smart-dev/eslint-config": "*",
     "chalk": "^5.3.0",
     "custom-prettier-config": "*",
-    "eslint-config-custom": "*",
+    "eslint": "^9.5.0",
     "ora": "^8.0.1",
     "rimraf": "^5.0.7",
     "tsc-alias": "^1.8.8",

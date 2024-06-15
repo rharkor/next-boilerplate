@@ -68,7 +68,7 @@ const main = async () => {
         "eslint-plugin-custom-rule"
       )
     } else if (pkg === path.join(rootPath, "configs", "eslint-plugin-custom-rule")) {
-      options.ignoreMatches.push("eslint-config-custom")
+      options.ignoreMatches.push("@smart-dev/eslint-config")
     } else if (pkg == path.join(rootPath, "configs", "prettier")) {
       options.ignoreMatches.push("prettier", "prettier-plugin-tailwindcss")
     }

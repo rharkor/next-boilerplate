@@ -1,17 +1,19 @@
-"use strict";
+import { Rule } from "eslint";
 
-module.exports = {
+export const rule: Rule.RuleModule = {
   meta: {
     type: "problem",
     docs: {
-      description: "disallow 'use client' in page/layout/dr files",
-      category: "Best Practices",
-      recommended: false,
+      description: "Disallow 'use client' in page/layout/dr files",
     },
-    schema: [], // no options
+    schema: [],
+    messages: {
+      useClientNotAllowed:
+        "'use client' is not allowed in page or layout files",
+    },
   },
   create: function (context) {
-    const handleProgram = (node) => {
+    const handleProgram: Rule.NodeListener["Program"] = (node) => {
       const sourceCode = context.sourceCode;
       const filename = context.filename;
       const firstLine = sourceCode.lines[0].trim();
@@ -25,7 +27,7 @@ module.exports = {
       if (isTargetedFile && firstLine === '"use client"') {
         context.report({
           node,
-          message: "'use client' is not allowed in page or layout files.",
+          messageId: "useClientNotAllowed",
           loc: {
             start: { line: 1, column: 0 },
             end: { line: 1, column: firstLine.length - 1 },

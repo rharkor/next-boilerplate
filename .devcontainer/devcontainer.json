@@ -46,7 +46,7 @@
         "WallabyJs.console-ninja",
         "EditorConfig.EditorConfig",
         "dsznajder.es7-react-js-snippets",
-        "dbaeumer.vscode-eslint",
+        "dbaeumer.vscode-eslint@3.0.7",
         "tombonnike.vscode-status-bar-format-toggle",
         "github.vscode-github-actions",
         "GitHub.copilot",
@@ -65,7 +65,6 @@
         "ChakrounAnas.turbo-console-log",
         "yoavbls.pretty-ts-errors",
         "humao.rest-client",
-        "hashicorp.terraform",
         "tldraw-org.tldraw-vscode",
         "unifiedjs.vscode-mdx"
       ]
