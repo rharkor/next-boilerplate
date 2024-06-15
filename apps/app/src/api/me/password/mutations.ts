@@ -13,7 +13,7 @@ import { prisma } from "@/lib/prisma"
 import { ApiError, handleApiError } from "@/lib/utils/server-utils"
 import { apiInputFromSchema } from "@/types"
 import { logger } from "@next-boilerplate/lib"
-import ResetPasswordTemplate from "@next-boilerplate/transactional/emails/reset-password"
+import ResetPasswordEmail from "@next-boilerplate/transactional/emails/reset-password"
 import { render } from "@react-email/render"
 
 export const forgotPassword = async ({ input }: apiInputFromSchema<typeof forgotPasswordSchema>) => {
@@ -73,7 +73,7 @@ export const forgotPassword = async ({ input }: apiInputFromSchema<typeof forgot
       resetPasswordDescription: true,
       hey: true,
     })
-    const element = ResetPasswordTemplate({
+    const element = ResetPasswordEmail({
       footerText: mailDict.footer,
       logoUrl: logoUrl,
       actionText: mailDict.resetYourPassword,
@@ -90,7 +90,6 @@ export const forgotPassword = async ({ input }: apiInputFromSchema<typeof forgot
     })
     const html = render(element)
     await sendMail({
-      from: `"${env.SMTP_FROM_NAME}" <${env.SMTP_FROM_EMAIL}>`,
       to: email,
       subject: mailDict.resetYourPassword,
       text,

@@ -96,7 +96,6 @@ export const sendVerificationEmail = async ({ input }: apiInputFromSchema<typeof
       const html = render(element)
 
       await sendMail({
-        from: `"${env.SMTP_FROM_NAME}" <${env.SMTP_FROM_EMAIL}>`,
         to: email.toLowerCase(),
         subject: dictionary.verifyYourEmailAddress,
         text,

@@ -21,13 +21,20 @@ const transporter = createTransport({
   },
 })
 
-export const sendMail = async (...params: Parameters<typeof transporter.sendMail>) => {
+export const sendMail = async (
+  ...params: Parameters<typeof transporter.sendMail> & {
+    from?: Parameters<typeof transporter.sendMail>[0]["from"]
+  }
+) => {
   if (!env.NEXT_PUBLIC_ENABLE_MAILING_SERVICE) {
     logger.error("Email service is disabled, sending email is skipped.")
     return ApiError("emailServiceDisabled", "PRECONDITION_FAILED")
   }
   try {
-    const res = await transporter.sendMail(...params)
+    const res = await transporter.sendMail({
+      from: `"${env.SMTP_FROM_NAME}" <${env.SMTP_FROM_EMAIL}>`,
+      ...params,
+    })
     logger.info(`Email sent to ${res.envelope.to}`)
   } catch (error) {
     logger.error(`Error sending message: ${error}`)

@@ -87,7 +87,6 @@ export const register = async ({ input }: apiInputFromSchema<typeof signUpSchema
       const html = render(element)
 
       await sendMail({
-        from: `"${env.SMTP_FROM_NAME}" <${env.SMTP_FROM_EMAIL}>`,
         to: email.toLowerCase(),
         subject: dictionary.verifyYourEmailAddress,
         text,
