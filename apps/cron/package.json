@@ -2,6 +2,7 @@
   "name": "@next-boilerplate/cron",
   "scripts": {
     "build": "tsc && tsc-alias",
+    "type-check": "tsc --noEmit",
     "clear-unused-uploads": "node dist/cron/clear-unused-uploads/index.js",
     "dev:clear-unused-uploads": "npm run build && npm run clear-unused-uploads",
     "sample": "node dist/cron/sample/index.js",

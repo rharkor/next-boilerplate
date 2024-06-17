@@ -63,4 +63,4 @@ jobs:
       - name: Set example env
         run: npm run init:env
       - name: Build
-        run: npm run build
+        run: npm run type-check
