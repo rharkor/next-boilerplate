@@ -3,11 +3,12 @@ import { z } from "zod"
 
 import { getAccount } from "@/api/me/queries"
 import { getAccountResponseSchema } from "@/api/me/schemas"
+import { auth } from "@/lib/auth"
 import { apiMiddleware, handleNextApiError } from "@/lib/utils/server-utils"
 
 //* Example of a route definition outside the router
 // Can be usefull for external services
-export const GET = async () => {
+export const GET = auth(async (req) => {
   try {
     // const parsed = getTransactionSchema().safeParse({
     //   ...yourParams
@@ -17,7 +18,7 @@ export const GET = async () => {
     // }
 
     //* Authenticated route
-    const session = await apiMiddleware({
+    const session = await apiMiddleware(req.auth, {
       authenticated: true,
     })
 
@@ -42,4 +43,4 @@ export const GET = async () => {
   } catch (error: unknown) {
     return handleNextApiError(error)
   }
-}
+})

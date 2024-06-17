@@ -10,7 +10,6 @@ import { Prisma } from "@prisma/client"
 import { TRPCError } from "@trpc/server"
 import { TRPC_ERROR_CODE_KEY } from "@trpc/server/rpc"
 
-import { auth } from "../auth"
 import { i18n, Locale } from "../i18n-config"
 import { _getDictionary, TDictionary } from "../langs"
 
@@ -116,9 +115,11 @@ type TRequirements =
 
 type TReturnType<T extends TRequirements> = T extends { authenticated: true } ? Session : undefined
 
-export const apiMiddleware = async <T extends TRequirements>(requirements: T): Promise<TReturnType<T>> => {
+export const apiMiddleware = async <T extends TRequirements>(
+  session: Session | null,
+  requirements: T
+): Promise<TReturnType<T>> => {
   if (requirements.authenticated === true) {
-    const session = await auth()
     if (!session) {
       return ApiError("unauthorized", "UNAUTHORIZED")
     }
