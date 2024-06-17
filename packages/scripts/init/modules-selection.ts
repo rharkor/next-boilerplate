@@ -49,6 +49,8 @@ const onlyFrontToRemove = [
   "apps/cron/src/cron/clear-unused-uploads",
   "apps/cron/src/lib/prisma.ts",
   "apps/cron/src/lib/s3.ts",
+  "apps/app/debug/send-mail.tsx",
+  "apps/app/src/types/index.d.ts",
 ]
 
 const onlyFrontAppsAdaptaion: {
@@ -151,6 +153,8 @@ const onlyFrontAppsAdaptaion: {
           "tsx",
           "ua-parser-js",
           "@react-email/render",
+          ,
+          "@tanstack/react-query-devtools",
         ].map((s) => new RegExp(`\\n\\s*"${s}"\:.*\,`, "g")),
         new RegExp(`\\n\\s*"postinstall"\:"prisma generate"\,`, "g"),
       ],
