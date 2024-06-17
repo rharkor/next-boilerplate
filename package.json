@@ -36,5 +36,6 @@
     "turbo": "^2.0.4"
   },
   "license": "MIT",
-  "packageManager": "npm@10.8.1"
+  "packageManager": "npm@10.8.1",
+  "version": "3.7.0-rec-release.15"
 }
