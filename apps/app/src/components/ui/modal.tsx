@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils"
-import { ModalHeader as NModalHeader } from "@nextui-org/react"
+import { ModalHeader as NModalHeader } from "@nextui-org/modal"
 
 export function ModalTitle({ children, className }: { children: React.ReactNode; className?: string }) {
   return <h3 className={cn("block text-lg font-semibold", className)}>{children}</h3>

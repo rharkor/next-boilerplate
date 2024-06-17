@@ -11,7 +11,7 @@ import { authRoutes } from "@/constants/auth"
 import { TDictionary } from "@/lib/langs"
 import { trpc } from "@/lib/trpc/client"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Button } from "@nextui-org/react"
+import { Button } from "@nextui-org/button"
 
 import { ResetPasswordFormDr } from "./form.dr"
 

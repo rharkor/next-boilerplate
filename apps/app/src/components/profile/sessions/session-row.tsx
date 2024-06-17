@@ -6,7 +6,8 @@ import { sessionsSchema } from "@/api/me/schemas"
 import { Icons } from "@/components/icons"
 import { TDictionary } from "@/lib/langs"
 import { cn, getTimeBetween } from "@/lib/utils"
-import { Button, Skeleton as NSkeleton } from "@nextui-org/react"
+import { Button } from "@nextui-org/button"
+import { Skeleton as NSkeleton } from "@nextui-org/skeleton"
 
 import GetDeviceIcon from "../get-device-icon"
 
