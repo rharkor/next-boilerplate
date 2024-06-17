@@ -150,6 +150,7 @@ const onlyFrontAppsAdaptaion: {
           "superjson",
           "tsx",
           "ua-parser-js",
+          "@react-email/render",
         ].map((s) => new RegExp(`\\n\\s*"${s}"\:.*\,`, "g")),
         new RegExp(`\\n\\s*"postinstall"\:"prisma generate"\,`, "g"),
       ],
