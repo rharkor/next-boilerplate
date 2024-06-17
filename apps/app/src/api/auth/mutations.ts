@@ -21,8 +21,8 @@ import { prisma } from "@/lib/prisma"
 import { redis } from "@/lib/redis"
 import { ApiError, ensureLoggedIn, generateRandomSecret, handleApiError } from "@/lib/utils/server-utils"
 import { apiInputFromSchema } from "@/types"
-import VerifyEmail from "@next-boilerplate/emails/emails/verify-email"
 import { logger } from "@next-boilerplate/lib"
+import VerifyEmail from "@next-boilerplate/transactional/emails/verify-email"
 import { Prisma } from "@prisma/client"
 import { render } from "@react-email/render"
 
@@ -87,7 +87,6 @@ export const register = async ({ input }: apiInputFromSchema<typeof signUpSchema
       const html = render(element)
 
       await sendMail({
-        from: `"${env.SMTP_FROM_NAME}" <${env.SMTP_FROM_EMAIL}>`,
         to: email.toLowerCase(),
         subject: dictionary.verifyYourEmailAddress,
         text,

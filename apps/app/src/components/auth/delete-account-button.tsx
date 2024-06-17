@@ -7,7 +7,8 @@ import { toast } from "react-toastify"
 import { authRoutes } from "@/constants/auth"
 import { TDictionary } from "@/lib/langs"
 import { trpc } from "@/lib/trpc/client"
-import { Button, Modal, ModalContent, ModalFooter } from "@nextui-org/react"
+import { Button } from "@nextui-org/button"
+import { Modal, ModalContent, ModalFooter } from "@nextui-org/modal"
 
 import { ModalDescription, ModalHeader, ModalTitle } from "../ui/modal"
 

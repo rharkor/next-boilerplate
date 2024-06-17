@@ -3,6 +3,7 @@
   "scripts": {
     "dev": "npm run is-initialized && next dev -p 3002 --turbo",
     "build": "next build",
+    "type-check": "tsc --noEmit",
     "start": "next start --port ${PORT:-3000}",
     "lint": "next lint",
     "lint:fix": "next lint --fix",

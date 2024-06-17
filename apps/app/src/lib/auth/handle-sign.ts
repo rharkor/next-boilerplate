@@ -15,12 +15,13 @@ export const handleSignError = (
     errors: {
       wrongProvider: true
     }
+    unknownError: true
   }>
 ) => {
   if (error == "OAuthAccountNotLinked") {
     toast.error(dictionary.errors.wrongProvider)
   } else {
-    toast(error)
+    toast.error(dictionary.unknownError)
   }
 }
 

@@ -23,3 +23,4 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
 RUN su node -c "npm install -g npm@latest"
 RUN su node -c "npm install -g prisma"
 RUN su node -c "npm install -g turbo"
+RUN su node -c "npm install -g nextui-cli"

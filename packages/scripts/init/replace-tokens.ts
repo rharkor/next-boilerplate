@@ -41,7 +41,7 @@ export const replaceTokens = async (dryRun?: boolean) => {
     answer: answers[token.id],
   }))
 
-  const task = startTask({
+  const task = await startTask({
     name: "Replace tokens",
     successMessage: "Tokens replaced",
   })

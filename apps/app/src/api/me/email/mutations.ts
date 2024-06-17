@@ -11,8 +11,8 @@ import { sendMail } from "@/lib/mailer"
 import { prisma } from "@/lib/prisma"
 import { ApiError, handleApiError } from "@/lib/utils/server-utils"
 import { apiInputFromSchema } from "@/types"
-import VerifyEmail from "@next-boilerplate/emails/emails/verify-email"
 import { logger } from "@next-boilerplate/lib"
+import VerifyEmail from "@next-boilerplate/transactional/emails/verify-email"
 import { render } from "@react-email/render"
 
 export const sendVerificationEmail = async ({ input }: apiInputFromSchema<typeof sendVerificationEmailSchema>) => {
@@ -45,7 +45,7 @@ export const sendVerificationEmail = async ({ input }: apiInputFromSchema<typeof
 
       const isToRecent = userEmailVerificationToken.createdAt.getTime() + resendEmailVerificationExpiration > Date.now()
       if (isToRecent) {
-        if (logger.allowDebug) {
+        if (logger.allowDebug()) {
           const availableIn = Math.round(
             (userEmailVerificationToken.createdAt.getTime() + resendEmailVerificationExpiration - Date.now()) / 1000
           )
@@ -96,7 +96,6 @@ export const sendVerificationEmail = async ({ input }: apiInputFromSchema<typeof
       const html = render(element)
 
       await sendMail({
-        from: `"${env.SMTP_FROM_NAME}" <${env.SMTP_FROM_EMAIL}>`,
         to: email.toLowerCase(),
         subject: dictionary.verifyYourEmailAddress,
         text,

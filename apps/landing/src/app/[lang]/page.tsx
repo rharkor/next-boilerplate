@@ -1,6 +1,7 @@
 import { env } from "@/lib/env"
 import { Locale } from "@/lib/i18n-config"
 import { getDictionary } from "@/lib/langs"
+import { dictionaryRequirements } from "@/lib/utils/dictionary"
 
 import Blob from "./blob"
 
@@ -11,7 +12,15 @@ export default async function Home({
     lang: Locale
   }
 }) {
-  const dictionary = await getDictionary(lang)
+  const dictionary = await getDictionary(
+    lang,
+    dictionaryRequirements({
+      home: {
+        title: true,
+        link: true,
+      },
+    })
+  )
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center p-6 md:p-24">

@@ -13,7 +13,7 @@ import { TDictionary } from "@/lib/langs"
 import { trpc } from "@/lib/trpc/client"
 import { cn } from "@/lib/utils"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Button } from "@nextui-org/react"
+import { Button } from "@nextui-org/button"
 
 import { Recover2FAFormDr } from "./form.dr"
 

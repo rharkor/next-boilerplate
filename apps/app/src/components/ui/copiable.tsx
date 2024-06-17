@@ -5,7 +5,8 @@ import { ClipboardList } from "lucide-react"
 
 import { TDictionary } from "@/lib/langs"
 import { cn } from "@/lib/utils"
-import { Button, Tooltip } from "@nextui-org/react"
+import { Button } from "@nextui-org/button"
+import { Tooltip } from "@nextui-org/tooltip"
 
 import { CopiableDr } from "./copiable.dr"
 
