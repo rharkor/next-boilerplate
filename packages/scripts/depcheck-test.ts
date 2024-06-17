@@ -30,6 +30,7 @@ const options: { skipMissing: boolean; ignoreMatches: string[] } = {
 const main = async () => {
   let message = ""
   let hasError = false
+  await logger.loadChalk()
   for (const pkg of packagesPath) {
     logger.log(chalk.blue(`Checking ${pkg}...`))
     if (pkg === path.join(appsRootPath, "docs")) {

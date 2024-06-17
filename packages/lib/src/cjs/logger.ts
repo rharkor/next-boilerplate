@@ -7,32 +7,35 @@ import oChalk, { ChalkInstance } from "chalk"
 let chalk = oChalk
 
 // Check if chalk is supported
-if (typeof chalk.hex !== "function") {
-  // Check if cjs
-  if (typeof require === "function") {
-    // Mock chalk while loading
-    const hex: ChalkInstance["hex"] = () => {
-      globalThis.console.log("Chalk is loading (due to cjs environment)...")
-      return undefined as unknown as ChalkInstance
+const loadChalk = async () => {
+  if (typeof chalk.hex !== "function") {
+    // Check if cjs
+    if (typeof require === "function") {
+      // Mock chalk while loading
+      const hex: ChalkInstance["hex"] = () => {
+        globalThis.console.log("Chalk is loading (due to cjs environment)...")
+        return undefined as unknown as ChalkInstance
+      }
+      const bgHex: ChalkInstance["bgHex"] = () => {
+        globalThis.console.log("Chalk is loading (due to cjs environment)...")
+        return undefined as unknown as ChalkInstance
+      }
+      chalk = {
+        hex,
+        bgHex,
+      } as unknown as ChalkInstance
+      // Load chalk asynchronously
+      import("chalk")
+        .then((chalk) => chalk.default)
+        .then((_chalk) => {
+          chalk = _chalk
+        })
+    } else {
+      throw new Error("Chalk is not supported in this runtime")
     }
-    const bgHex: ChalkInstance["bgHex"] = () => {
-      globalThis.console.log("Chalk is loading (due to cjs environment)...")
-      return undefined as unknown as ChalkInstance
-    }
-    chalk = {
-      hex,
-      bgHex,
-    } as unknown as ChalkInstance
-    // Load chalk asynchronously
-    import("chalk")
-      .then((chalk) => chalk.default)
-      .then((_chalk) => {
-        chalk = _chalk
-      })
-  } else {
-    throw new Error("Chalk is not supported in this runtime")
   }
 }
+loadChalk()
 
 const console = globalThis.console
 
@@ -89,6 +92,7 @@ const infoText = printColor(undefined, blue)
 const subLog = printColor(undefined, gray)
 
 export type TLogger = typeof console & {
+  loadChalk: () => Promise<void>
   success: (typeof console)["log"]
   subLog: (typeof console)["log"]
   allowDebug: () => boolean
@@ -107,6 +111,7 @@ function addPrefixToArgs(prefix: TLogger["prefix"], ...args: unknown[]) {
 
 export const logger: TLogger = {
   ...console,
+  loadChalk,
   allowDebug: () => process.env.ENV === "development",
   log: (...args: Parameters<(typeof console)["log"]>) => {
     if (isBrowser) return console.log(...addPrefixToArgs(logger.prefix, ...args))
