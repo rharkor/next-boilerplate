@@ -1,7 +1,15 @@
-import ora from "ora"
+import { Options, Ora } from "ora"
 import { stderr } from "process"
 
 import { logger, loggerExtra } from "./logger"
+
+let gOra: ((options?: string | Options | undefined) => Ora) | null = null
+const getOra = async () => {
+  if (gOra) return gOra
+  const ora = await import("ora").then((m) => m.default)
+  gOra = ora
+  return ora
+}
 
 /**
  * Clear the last lines of the terminal
@@ -106,8 +114,14 @@ export const windowLog = (
  * @param options
  * @returns
  */
-export function startTask(options: { name: string; successMessage?: string; maxLines?: number; noClear?: boolean }) {
+export async function startTask(options: {
+  name: string
+  successMessage?: string
+  maxLines?: number
+  noClear?: boolean
+}) {
   const { maxLines = 10, name, successMessage } = options
+  const ora = await getOra()
   const spinner = ora({
     text: name,
     isSilent: true,

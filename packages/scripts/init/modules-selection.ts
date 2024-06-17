@@ -275,7 +275,7 @@ export const modulesSelection = async () => {
   ])
 
   if (onlyFront) {
-    let task = startTask({
+    let task = await startTask({
       name: "Modules selection",
       successMessage: "Modules selected!",
     })
@@ -337,7 +337,7 @@ export const modulesSelection = async () => {
     ])
 
     if (noUi) {
-      task = startTask({
+      task = await startTask({
         name: "Removing UI",
         successMessage: "UI removed!",
       })

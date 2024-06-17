@@ -2,9 +2,9 @@
 //! CHALK DOESNT SUPPORT EDGE RUNTIME (ex: middleware)
 /// <reference lib="dom" />
 
-import ochalk, { ChalkInstance } from "chalk"
+import oChalk, { ChalkInstance } from "chalk"
 
-let chalk = ochalk
+let chalk = oChalk
 
 // Check if chalk is supported
 if (typeof chalk.hex !== "function") {

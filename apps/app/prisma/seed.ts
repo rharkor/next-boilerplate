@@ -21,7 +21,7 @@ async function main() {
       },
     })
     if (!adminExists) {
-      const task = startTask({
+      const task = await startTask({
         name: "Creating admin",
         successMessage: "Admin created",
       })
