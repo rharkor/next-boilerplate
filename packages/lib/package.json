@@ -1,9 +1,9 @@
 {
   "name": "@next-boilerplate/lib",
   "version": "0.0.0",
-  "main": "./dist/index-cjs.cjs",
-  "module": "./dist/index.mjs",
-  "types": "./dist/index.d.cts",
+  "main": "./dist/cjs/index.cjs",
+  "module": "./dist/esm/index.mjs",
+  "types": "./dist/cjs/index.d.cts",
   "scripts": {
     "build": "pkgroll",
     "type-check": "tsc --noEmit",
@@ -14,12 +14,12 @@
   },
   "exports": {
     "require": {
-      "types": "./dist/index-cjs.d.cts",
-      "default": "./dist/index-cjs.cjs"
+      "types": "./dist/cjs/index.d.cts",
+      "default": "./dist/cjs/index.cjs"
     },
     "import": {
-      "types": "./dist/index.d.mts",
-      "default": "./dist/index.mjs"
+      "types": "./dist/esm/index.d.mts",
+      "default": "./dist/esm/index.mjs"
     }
   },
   "dependencies": {
