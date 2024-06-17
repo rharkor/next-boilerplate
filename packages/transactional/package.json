@@ -1,10 +1,10 @@
 {
-  "name": "@next-boilerplate/emails",
-  "version": "0.0.19",
+  "name": "@next-boilerplate/transactional",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "_build": "email build",
-    "dev": "email dev --port 8080",
+    "dev": "concurrently \"email dev --port 8080\" \"open-cli http://localhost:8080/preview/verify-email\"",
     "export": "email export",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
@@ -12,16 +12,18 @@
     "prettier:fix": "prettier --write \"**/*.{js,jsx,ts,tsx}\""
   },
   "dependencies": {
-    "@react-email/components": "0.0.19",
-    "react-email": "2.1.4",
-    "react": "18.2.0",
     "@next-boilerplate/scripts": "*",
     "@next-boilerplate/tsconfig": "*",
+    "@react-email/components": "0.0.19",
+    "custom-prettier-config": "*",
     "eslint-config-custom": "*",
-    "custom-prettier-config": "*"
+    "react": "18.2.0",
+    "react-email": "2.1.4"
   },
   "devDependencies": {
     "@types/react": "18.2.33",
-    "@types/react-dom": "18.2.14"
+    "@types/react-dom": "18.2.14",
+    "concurrently": "^8.2.2",
+    "open-cli": "^8.0.0"
   }
 }

@@ -4,7 +4,9 @@ import { ReactEventHandler, useCallback, useEffect, useRef, useState } from "rea
 
 import { TDictionary } from "@/lib/langs"
 import { cn } from "@/lib/utils"
-import { Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Spinner } from "@nextui-org/react"
+import { Button } from "@nextui-org/button"
+import { Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from "@nextui-org/modal"
+import { Spinner } from "@nextui-org/spinner"
 
 import { CropContentDr, ImageCropDr } from "./image-crop.dr"
 

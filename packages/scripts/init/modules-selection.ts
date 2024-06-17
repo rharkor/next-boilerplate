@@ -49,6 +49,8 @@ const onlyFrontToRemove = [
   "apps/cron/src/cron/clear-unused-uploads",
   "apps/cron/src/lib/prisma.ts",
   "apps/cron/src/lib/s3.ts",
+  "apps/app/debug/send-mail.tsx",
+  "apps/app/src/types/index.d.ts",
 ]
 
 const onlyFrontAppsAdaptaion: {
@@ -150,6 +152,9 @@ const onlyFrontAppsAdaptaion: {
           "superjson",
           "tsx",
           "ua-parser-js",
+          "@react-email/render",
+          ,
+          "@tanstack/react-query-devtools",
         ].map((s) => new RegExp(`\\n\\s*"${s}"\:.*\,`, "g")),
         new RegExp(`\\n\\s*"postinstall"\:"prisma generate"\,`, "g"),
       ],
@@ -251,7 +256,7 @@ const noUiAppsAdaptaion: {
         "react-dropzone",
         "react-hook-form",
         "framer-motion",
-        "@nextui-org/react",
+        /@nextui-org\/.*/,
       ].map((s) => new RegExp(`\\n\\s*"${s}"\:.*\,`, "g")),
     },
   },
@@ -275,7 +280,7 @@ export const modulesSelection = async () => {
   ])
 
   if (onlyFront) {
-    let task = startTask({
+    let task = await startTask({
       name: "Modules selection",
       successMessage: "Modules selected!",
     })
@@ -337,7 +342,7 @@ export const modulesSelection = async () => {
     ])
 
     if (noUi) {
-      task = startTask({
+      task = await startTask({
         name: "Removing UI",
         successMessage: "UI removed!",
       })

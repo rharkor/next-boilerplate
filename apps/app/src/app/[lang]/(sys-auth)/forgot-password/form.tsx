@@ -13,7 +13,8 @@ import { resendResetPasswordExpiration } from "@/constants"
 import { TDictionary } from "@/lib/langs"
 import { trpc } from "@/lib/trpc/client"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Button, Tooltip } from "@nextui-org/react"
+import { Button } from "@nextui-org/button"
+import { Tooltip } from "@nextui-org/tooltip"
 
 import { ForgotPasswordFormDr } from "./form.dr"
 

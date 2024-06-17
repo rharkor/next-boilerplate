@@ -8,7 +8,7 @@ import { useAccount } from "@/hooks/account"
 import { TDictionary } from "@/lib/langs"
 import { trpc } from "@/lib/trpc/client"
 import { logger } from "@next-boilerplate/lib"
-import { Button } from "@nextui-org/react"
+import { Button } from "@nextui-org/button"
 
 import { VerifyEmailButtonDr } from "./verify-email-button.dr"
 

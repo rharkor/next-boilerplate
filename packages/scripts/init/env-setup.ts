@@ -10,7 +10,7 @@ import { startTask } from "@next-boilerplate/lib"
 import { getPath } from "./utils/path"
 
 export const envSetup = async () => {
-  const task = startTask({
+  const task = await startTask({
     name: "Setting up environment variables",
     successMessage: "Environment variables setup",
   })

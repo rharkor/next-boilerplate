@@ -73,8 +73,7 @@ const clearUnusedUploads = async () => {
 
   //* Delete already uploaded files that are not linked to any item
   // Step 1: Find all uploaded files that are not linked to any item
-  const allWhereFields = Prisma.FileScalarFieldEnum
-  const baseProps = [
+  const knownWhereFields = [
     "AND",
     "NOT",
     "OR",
@@ -83,21 +82,27 @@ const clearUnusedUploads = async () => {
     "bucket",
     "endpoint",
     "filetype",
+    "fileUploading",
     "fileUploadingId",
     "createdAt",
     "updatedAt",
   ] as const
-  type TWhere = Prisma.FileWhereInput
-  type TWhereFiltered = Omit<TWhere, (typeof baseProps)[number]>
-  const whereInputs = Object.keys(allWhereFields).filter((field) => {
-    return !baseProps.some((bp: (typeof baseProps)[number]) => bp === field)
-  }) as (keyof Omit<TWhere, (typeof baseProps)[number]>)[]
-  const where = whereInputs.reduce((acc, field) => {
-    acc[field] = null
-    return acc
-  }, {} as TWhereFiltered)
+  type TToHandleBase = Omit<Prisma.FileWhereInput, (typeof knownWhereFields)[number]>
+  type TToHandleRequired = {
+    [K in keyof TToHandleBase]-?: TToHandleBase[K]
+  }
+  const where: TToHandleRequired[] = [
+    {
+      userProfilePicture: {
+        is: null,
+      },
+    },
+  ]
+  //? Show error if there is any field in Prisma.FileWhereInput that is not in knownWhereFields/where
   const unlikedFiles = await prisma.file.findMany({
-    where,
+    where: {
+      OR: where,
+    },
   })
   if (!unlikedFiles.length) {
     logger.debug(`No unlinked files found`)

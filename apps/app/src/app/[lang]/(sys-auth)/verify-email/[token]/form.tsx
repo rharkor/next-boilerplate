@@ -6,7 +6,7 @@ import { toast } from "react-toastify"
 import { authRoutes } from "@/constants/auth"
 import { TDictionary } from "@/lib/langs"
 import { trpc } from "@/lib/trpc/client"
-import { Button } from "@nextui-org/react"
+import { Button } from "@nextui-org/button"
 
 export default function VerifyEmailButton({
   token,
