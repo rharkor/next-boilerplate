@@ -25,6 +25,7 @@ CREATE TABLE "User" (
     "name" TEXT,
     "email" TEXT,
     "emailVerified" TIMESTAMP(3),
+    "image" TEXT,
     "username" TEXT,
     "role" "UserRole" NOT NULL DEFAULT 'USER',
     "password" TEXT,

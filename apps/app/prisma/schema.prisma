@@ -41,6 +41,7 @@ model User {
   email          String?   @unique
   emailVerified  DateTime?
   profilePicture File?
+  image          String? // Require to use auth.js 
   accounts       Account[]
 
   // Custom fields

@@ -36,12 +36,12 @@ export function LoginUserAuthForm({ searchParams, dictionary, ...props }: UserAu
   const error = searchParams.error?.toString()
 
   const [isLoading, setIsLoading] = React.useState<boolean>(false)
-  const [errorDisplayed, setErrorDisplayed] = React.useState<string | null>(null)
 
-  if (error && !error.startsWith("_") && (!errorDisplayed || errorDisplayed !== error)) {
-    setErrorDisplayed(error)
-    handleSignError(error, dictionary)
-  }
+  React.useEffect(() => {
+    if (error && !error.startsWith("_")) {
+      handleSignError(error, dictionary)
+    }
+  }, [error, dictionary])
 
   const form = useForm<IForm>({
     resolver: zodResolver(formSchema(dictionary)),

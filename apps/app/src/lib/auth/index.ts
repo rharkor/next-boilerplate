@@ -173,6 +173,7 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
         if ("role" in user) token.role = user.role as string
         if ("uuid" in user) token.uuid = user.uuid as string
         if ("emailVerified" in user) token.emailVerified = user.emailVerified as Date
+        if ("lastLocale" in user) token.lastLocale = user.lastLocale as string | null
         //* Send verification email if needed
         if (user.email && "emailVerified" in user && !user.emailVerified) {
           const dbUser = await prisma.user.findUnique({
@@ -207,6 +208,7 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
       const role = dbUser.role
       const hasPassword = dbUser.hasPassword
       const emailVerified = dbUser.emailVerified
+      const lastLocale = dbUser.lastLocale
       //* Fill session with token data
       const uuid = "uuid" in token ? token.uuid : undefined
       const sessionFilled = {
@@ -214,11 +216,12 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
         user: {
           ...session.user,
           id: token.id,
-          username: username ?? undefined,
+          username,
           role,
           uuid,
           hasPassword,
           emailVerified,
+          lastLocale,
         },
       }
       return sessionFilled
@@ -277,9 +280,10 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
       logger.warn("warn", code)
     },
     error(error) {
-      const { name, message } = error
+      const { name } = error
       if (["CredentialsSignin", "JWTSessionError", "CallbackRouteError"].includes(name)) return
-      logger.error("Next auth error", name, message)
+      logger.error("Next auth error")
+      console.error(error)
     },
   },
 })

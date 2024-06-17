@@ -22,7 +22,7 @@ const transporter = createTransport({
 })
 
 export const sendMail = async (
-  ...params: Parameters<typeof transporter.sendMail> & {
+  params: Parameters<typeof transporter.sendMail>[0] & {
     from?: Parameters<typeof transporter.sendMail>[0]["from"]
   }
 ) => {
