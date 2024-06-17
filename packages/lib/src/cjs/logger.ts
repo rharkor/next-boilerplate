@@ -2,7 +2,7 @@
 //! CHALK DOESNT SUPPORT EDGE RUNTIME (ex: middleware)
 /// <reference lib="dom" />
 
-import oChalk, { ChalkInstance } from "chalk"
+import oChalk from "chalk"
 
 let chalk = oChalk
 
@@ -11,25 +11,15 @@ const loadChalk = async () => {
   if (typeof chalk.hex !== "function") {
     // Check if cjs
     if (typeof require === "function") {
-      // Mock chalk while loading
-      const hex: ChalkInstance["hex"] = () => {
-        globalThis.console.log("Chalk is loading (due to cjs environment)...")
-        return undefined as unknown as ChalkInstance
-      }
-      const bgHex: ChalkInstance["bgHex"] = () => {
-        globalThis.console.log("Chalk is loading (due to cjs environment)...")
-        return undefined as unknown as ChalkInstance
-      }
-      chalk = {
-        hex,
-        bgHex,
-      } as unknown as ChalkInstance
       // Load chalk asynchronously
-      import("chalk")
-        .then((chalk) => chalk.default)
-        .then((_chalk) => {
-          chalk = _chalk
-        })
+      return new Promise<void>((resolve) => {
+        import("chalk")
+          .then((chalk) => chalk.default)
+          .then((_chalk) => {
+            chalk = _chalk
+            resolve()
+          })
+      })
     } else {
       throw new Error("Chalk is not supported in this runtime")
     }
