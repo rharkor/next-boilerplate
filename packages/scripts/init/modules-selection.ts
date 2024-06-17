@@ -251,7 +251,7 @@ const noUiAppsAdaptaion: {
         "react-dropzone",
         "react-hook-form",
         "framer-motion",
-        "@nextui-org/react",
+        /@nextui-org\/.*/,
       ].map((s) => new RegExp(`\\n\\s*"${s}"\:.*\,`, "g")),
     },
   },

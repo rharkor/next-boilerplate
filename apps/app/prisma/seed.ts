@@ -40,7 +40,7 @@ async function main() {
       logger.log("Admin already exists")
     }
   } catch (e) {
-    logger.error(e)
+    console.error(e)
     process.exit(1)
   } finally {
     spinner.stop()

@@ -278,7 +278,7 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
     },
     error(error) {
       const { name, message } = error
-      if (["CredentialsSignin", "JWTSessionError"].includes(name)) return
+      if (["CredentialsSignin", "JWTSessionError", "CallbackRouteError"].includes(name)) return
       logger.error("Next auth error", name, message)
     },
   },
