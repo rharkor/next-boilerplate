@@ -19,7 +19,7 @@ export const getAccount = async ({ ctx: { session } }: apiInputFromSchema<undefi
         profilePicture: true,
       },
     })
-    if (!account) return ApiError("userNotFound", "NOT_FOUND")
+    if (!account) return ApiError("unauthorized", "UNAUTHORIZED")
     const data: z.infer<ReturnType<typeof getAccountResponseSchema>> = { user: account }
     return data
   } catch (error: unknown) {

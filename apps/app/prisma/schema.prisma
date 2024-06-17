@@ -36,12 +36,14 @@ enum UserRole {
 }
 
 model User {
-  id             String    @id @default(cuid())
-  name           String?
-  email          String?   @unique
-  emailVerified  DateTime?
-  profilePicture File?
-  accounts       Account[]
+  id               String    @id @default(cuid())
+  name             String?
+  email            String?   @unique
+  emailVerified    DateTime?
+  profilePictureId String?   @unique
+  profilePicture   File?     @relation(fields: [profilePictureId], references: [id], onDelete: SetNull)
+  image            String? // Require to use auth.js 
+  accounts         Account[]
 
   // Custom fields
   username                   String?                     @unique
@@ -99,8 +101,7 @@ model File {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  userProfilePictureId String? @unique
-  userProfilePicture   User?   @relation(fields: [userProfilePictureId], references: [id], onDelete: SetNull)
+  userProfilePicture User?
 
   fileUploadingId String?        @unique
   fileUploading   FileUploading? @relation(fields: [fileUploadingId], references: [id], onDelete: SetNull)

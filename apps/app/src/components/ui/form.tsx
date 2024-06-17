@@ -6,7 +6,9 @@ import { Controller, FieldPath, FieldValues, UseFormReturn } from "react-hook-fo
 
 import { TDictionary } from "@/lib/langs"
 import { cn, stringToSlug } from "@/lib/utils"
-import { Checkbox, Input, InputProps, Tooltip } from "@nextui-org/react"
+import { Checkbox } from "@nextui-org/checkbox"
+import { Input, InputProps } from "@nextui-org/input"
+import { Tooltip } from "@nextui-org/tooltip"
 
 import { Icons } from "../icons"
 

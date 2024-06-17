@@ -1,22 +1,32 @@
 {
   "name": "@next-boilerplate/lib",
   "version": "0.0.0",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "./dist/cjs/index.cjs",
+  "module": "./dist/esm/index.mjs",
+  "types": "./dist/cjs/index.d.cts",
   "scripts": {
-    "build": "rimraf dist && tsc && tsc-alias",
+    "build": "pkgroll",
+    "type-check": "tsc --noEmit",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
     "prettier": "prettier --check \"src/**/*.{js,jsx,ts,tsx}\"",
     "prettier:fix": "prettier --write \"src/**/*.{js,jsx,ts,tsx}\""
+  },
+  "exports": {
+    "require": {
+      "types": "./dist/cjs/index.d.cts",
+      "default": "./dist/cjs/index.cjs"
+    },
+    "import": {
+      "types": "./dist/esm/index.d.mts",
+      "default": "./dist/esm/index.mjs"
+    }
   },
   "dependencies": {
     "chalk": "^5.3.0",
     "custom-prettier-config": "*",
     "eslint-config-custom": "*",
     "ora": "^8.0.1",
-    "rimraf": "^5.0.7",
-    "tsc-alias": "^1.8.8",
     "typescript": "^5.4.3"
   },
   "type": "module",
@@ -24,5 +34,8 @@
     "child_process": false,
     "readline": false,
     "ora": false
+  },
+  "devDependencies": {
+    "pkgroll": "^2.1.1"
   }
 }

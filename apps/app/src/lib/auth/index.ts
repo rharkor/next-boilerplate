@@ -1,10 +1,10 @@
-import { NextAuthOptions, Session } from "next-auth"
+import NextAuth from "next-auth"
 import Credentials from "next-auth/providers/credentials"
 import GithubProvider from "next-auth/providers/github"
 import { Provider } from "next-auth/providers/index"
 import { randomUUID } from "crypto"
 import * as OTPAuth from "otpauth"
-import requestIp from "request-ip"
+import requestIp, { RequestHeaders } from "request-ip"
 import { z } from "zod"
 
 import { sendVerificationEmail } from "@/api/me/email/mutations"
@@ -13,7 +13,7 @@ import { authRoutes, SESSION_MAX_AGE } from "@/constants/auth"
 import { env } from "@/lib/env"
 import { i18n } from "@/lib/i18n-config"
 import { ITrpcContext } from "@/types"
-import { PrismaAdapter } from "@next-auth/prisma-adapter"
+import { PrismaAdapter } from "@auth/prisma-adapter"
 import { logger } from "@next-boilerplate/lib"
 
 import { signInSchema } from "../../api/auth/schemas"
@@ -37,7 +37,7 @@ export const providers: Provider[] = [
       password: { label: "Password", type: "password" },
     },
     authorize: async (credentials, req) => {
-      const referer = req.headers?.referer ?? ""
+      const referer = req.headers.get("referer") ?? ""
       const refererUrl = ensureRelativeUrl(referer)
       const lang = i18n.locales.find((locale) => refererUrl.startsWith(`/${locale}/`)) ?? i18n.defaultLocale
       const dr = dictionaryRequirements(
@@ -100,8 +100,16 @@ export const providers: Provider[] = [
       //* Store user agent and ip address in session
       const uuid = randomUUID()
       try {
-        const ua = req.headers?.["user-agent"] ?? ""
-        const ip = requestIp.getClientIp(req) ?? ""
+        const ua = req.headers.get("user-agent") ?? ""
+        const parsedHeaders: RequestHeaders = {}
+        req.headers.forEach((value, key) => {
+          parsedHeaders[key] = value
+        })
+        const ip =
+          requestIp.getClientIp({
+            ...req,
+            headers: parsedHeaders,
+          }) ?? ""
         const expires = new Date(Date.now() + SESSION_MAX_AGE * 1000)
         const body: z.infer<ReturnType<typeof sessionsSchema>> = {
           id: uuid,
@@ -150,7 +158,7 @@ export const providersByName: {
   return acc
 }, {})
 
-export const nextAuthOptions: NextAuthOptions = {
+export const { auth, handlers, signIn, signOut } = NextAuth({
   secret: env.NEXTAUTH_SECRET,
   adapter: PrismaAdapter(prisma), //? Require to use database
   providers,
@@ -165,6 +173,7 @@ export const nextAuthOptions: NextAuthOptions = {
         if ("role" in user) token.role = user.role as string
         if ("uuid" in user) token.uuid = user.uuid as string
         if ("emailVerified" in user) token.emailVerified = user.emailVerified as Date
+        if ("lastLocale" in user) token.lastLocale = user.lastLocale as string | null
         //* Send verification email if needed
         if (user.email && "emailVerified" in user && !user.emailVerified) {
           const dbUser = await prisma.user.findUnique({
@@ -182,7 +191,7 @@ export const nextAuthOptions: NextAuthOptions = {
       // logger.debug("Session token", token)
       if (!token.id || typeof token.id !== "string") {
         logger.debug("Missing token id")
-        return {} as Session
+        throw new Error("MISSING_TOKEN_ID")
       }
       //* Verify that the user still exists
       const dbUser = await prisma.user.findUnique({
@@ -192,13 +201,14 @@ export const nextAuthOptions: NextAuthOptions = {
       })
       if (!dbUser) {
         // logger.debug("User not found", token.id)
-        return {} as Session
+        throw new Error("USER_NOT_FOUND")
       }
       //* Fill session with user data
       const username = dbUser.username
       const role = dbUser.role
       const hasPassword = dbUser.hasPassword
       const emailVerified = dbUser.emailVerified
+      const lastLocale = dbUser.lastLocale
       //* Fill session with token data
       const uuid = "uuid" in token ? token.uuid : undefined
       const sessionFilled = {
@@ -206,11 +216,12 @@ export const nextAuthOptions: NextAuthOptions = {
         user: {
           ...session.user,
           id: token.id,
-          username: username ?? undefined,
+          username,
           role,
           uuid,
           hasPassword,
           emailVerified,
+          lastLocale,
         },
       }
       return sessionFilled
@@ -265,13 +276,14 @@ export const nextAuthOptions: NextAuthOptions = {
     maxAge: SESSION_MAX_AGE,
   },
   logger: {
-    error(code, metadata) {
-      if (["CLIENT_FETCH_ERROR", "JWT_SESSION_ERROR"].includes(code)) return
-      logger.error("error", code)
-      logger.error(metadata)
-    },
     warn(code) {
       logger.warn("warn", code)
     },
+    error(error) {
+      const { name } = error
+      if (["CredentialsSignin", "JWTSessionError", "CallbackRouteError"].includes(name)) return
+      logger.error("Next auth error")
+      console.error(error)
+    },
   },
-}
+})

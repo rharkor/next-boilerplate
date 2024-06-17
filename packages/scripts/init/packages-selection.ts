@@ -40,7 +40,7 @@ export const packagesSelection = async () => {
     return
   }
 
-  const task = startTask({
+  const task = await startTask({
     name: "Removing packages",
     successMessage: "Packages removed",
   })

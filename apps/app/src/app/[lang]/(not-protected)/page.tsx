@@ -1,6 +1,7 @@
 import NavSettings from "@/components/nav-settings"
 import { Locale } from "@/lib/i18n-config"
 import { getDictionary } from "@/lib/langs"
+import { dictionaryRequirements } from "@/lib/utils/dictionary"
 import { Button } from "@nextui-org/button"
 import { Link } from "@nextui-org/link"
 
@@ -11,12 +12,15 @@ export default async function Home({
     lang: Locale
   }
 }) {
-  const dictionary = await getDictionary(lang, {
-    homePage: {
-      title: true,
-    },
-    profile: true,
-  })
+  const dictionary = await getDictionary(
+    lang,
+    dictionaryRequirements({
+      homePage: {
+        title: true,
+      },
+      profile: true,
+    })
+  )
 
   return (
     <main className="container m-auto flex min-h-screen flex-1 flex-col items-center justify-center gap-3">

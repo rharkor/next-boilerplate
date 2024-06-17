@@ -5,7 +5,8 @@ import { usePathname } from "next/navigation"
 import { useRouter } from "next/navigation"
 
 import { Locale, localesDetailed } from "@/lib/i18n-config"
-import { Avatar, Select, SelectItem } from "@nextui-org/react"
+import { Avatar } from "@nextui-org/avatar"
+import { Select, SelectItem } from "@nextui-org/select"
 
 export default function LocaleSwitcher({ lang }: { lang: Locale }) {
   const pathName = usePathname()
