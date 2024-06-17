@@ -2,6 +2,7 @@
   "name": "@next-boilerplate/cron",
   "scripts": {
     "build": "tsc && tsc-alias",
+    "type-check": "tsc --noEmit",
     "clear-unused-uploads": "node dist/cron/clear-unused-uploads/index.js",
     "dev:clear-unused-uploads": "npm run build && npm run clear-unused-uploads",
     "sample": "node dist/cron/sample/index.js",
@@ -14,7 +15,7 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "@aws-sdk/client-s3": "^3.549.0",
     "@next-boilerplate/lib": "*",

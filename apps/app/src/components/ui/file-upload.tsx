@@ -7,7 +7,8 @@ import { toast } from "react-toastify"
 
 import { TDictionary } from "@/lib/langs"
 import { bytesToMegabytes, cn } from "@/lib/utils"
-import { Button, useDisclosure } from "@nextui-org/react"
+import { Button } from "@nextui-org/button"
+import { useDisclosure } from "@nextui-org/modal"
 
 import { Icons } from "../icons"
 

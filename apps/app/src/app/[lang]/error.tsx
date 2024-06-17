@@ -1,6 +1,6 @@
 "use client"
 
-import { Button } from "@nextui-org/react"
+import { Button } from "@nextui-org/button"
 
 export default function ErrorPage({ reset }: { reset: () => void }) {
   return (

@@ -9,6 +9,6 @@
   "dependencies": {
     "eslint-config-custom": "*",
     "prettier": "^3.1.0",
-    "prettier-plugin-tailwindcss": "^0.5.7"
+    "prettier-plugin-tailwindcss": "^0.6.0"
   }
 }

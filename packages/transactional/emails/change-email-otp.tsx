@@ -7,6 +7,7 @@ import { Card } from "../components/card"
 import { Container } from "../components/container"
 import { Footer } from "../components/footer"
 import { Header } from "../components/header"
+import HeyText from "../components/hey-text"
 import { muted } from "../constants"
 
 interface ChangeEmailProps {
@@ -39,9 +40,7 @@ export const ChangeEmail = ({
       <Container>
         <Header logoUrl={logoUrl} titleText={titleText} />
         <Card>
-          <Text style={text}>
-            {heyText} <strong>{name}</strong>!
-          </Text>
+          <HeyText heyText={heyText} name={name} />
           <Text style={text}>{contentTitle}</Text>
           <OContainer style={codeContainerStyle}>
             <CodeInline>{code}</CodeInline>

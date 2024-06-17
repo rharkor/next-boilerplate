@@ -6,6 +6,7 @@ import { createEnv } from "@t3-oss/env-nextjs"
 
 export const env = createEnv({
   server: {
+    ENV: z.enum(["development", "staging", "preproduction", "production"]),
     ANALYZE: z
       .enum(["true", "false"])
       .optional()
@@ -15,6 +16,7 @@ export const env = createEnv({
     NEXT_PUBLIC_APP_URL: z.string().url(),
   },
   runtimeEnv: {
+    ENV: process.env.ENV,
     ANALYZE: process.env.ANALYZE,
     NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
   },

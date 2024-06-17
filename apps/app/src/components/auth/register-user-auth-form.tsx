@@ -15,7 +15,7 @@ import { cn } from "@/lib/utils"
 import { handleMutationError } from "@/lib/utils/client-utils"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { logger } from "@next-boilerplate/lib"
-import { Button } from "@nextui-org/react"
+import { Button } from "@nextui-org/button"
 
 import TotpVerificationModal from "../profile/totp/totp-verification-modal"
 import FormField from "../ui/form"

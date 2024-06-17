@@ -1,17 +1,16 @@
 import { headers } from "next/headers"
 import { redirect } from "next/navigation"
 import { NextResponse } from "next/server"
-import { getServerSession } from "next-auth"
 import { z } from "zod"
 
 import { sessionsSchema } from "@/api/me/schemas"
 import { authRoutes } from "@/constants/auth"
-import { nextAuthOptions } from "@/lib/auth"
+import { auth } from "@/lib/auth"
 import { redis } from "@/lib/redis"
 import { logger } from "@next-boilerplate/lib"
 
 export default async function requireAuth(callbackUrl?: string) {
-  const session = await getServerSession(nextAuthOptions)
+  const session = await auth()
   if (!session) {
     let searchParams = ""
     if (callbackUrl) {
@@ -32,7 +31,7 @@ export default async function requireAuth(callbackUrl?: string) {
 }
 
 export async function getAuthApi() {
-  const session = await getServerSession(nextAuthOptions)
+  const session = await auth()
   if (!session) {
     return { session: null, error: NextResponse.json({ error: "Unauthorized" }, { status: 401 }) }
   }

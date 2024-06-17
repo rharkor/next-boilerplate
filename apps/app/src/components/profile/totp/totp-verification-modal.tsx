@@ -4,7 +4,9 @@ import { ModalHeader, ModalTitle } from "@/components/ui/modal"
 import OtpInput from "@/components/ui/otp-input"
 import { TDictionary } from "@/lib/langs"
 import { trpc } from "@/lib/trpc/client"
-import { Button, Link, Modal, ModalBody, ModalContent, ModalFooter } from "@nextui-org/react"
+import { Button } from "@nextui-org/button"
+import { Link } from "@nextui-org/link"
+import { Modal, ModalBody, ModalContent, ModalFooter } from "@nextui-org/modal"
 
 export type TotpVerificationModalProps = {
   dictionary: TDictionary<{
