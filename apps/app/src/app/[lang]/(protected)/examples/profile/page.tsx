@@ -1,5 +1,3 @@
-import { getServerSession } from "next-auth"
-
 import DeleteAccountButton from "@/components/auth/delete-account-button"
 import { DeleteAccountButtonDr } from "@/components/auth/delete-account-button.dr"
 import SignoutButton from "@/components/auth/sign-out-button"
@@ -10,7 +8,7 @@ import { ProfileDetailsDr } from "@/components/profile/profile-details.dr"
 import UserActiveSessions from "@/components/profile/sessions/user-active-sessions"
 import { UserActiveSessionsDr } from "@/components/profile/sessions/user-active-sessions.dr"
 import CardTitle from "@/components/ui/card"
-import { nextAuthOptions } from "@/lib/auth"
+import { auth } from "@/lib/auth"
 import { Locale } from "@/lib/i18n-config"
 import { getDictionary } from "@/lib/langs"
 import { dictionaryRequirements } from "@/lib/utils/dictionary"
@@ -40,7 +38,7 @@ export default async function Profile({
       ProfileDetailsDr
     )
   )
-  const session = await getServerSession(nextAuthOptions)
+  const session = await auth()
 
   const hasVerifiedEmail = Boolean(session?.user.emailVerified)
 
