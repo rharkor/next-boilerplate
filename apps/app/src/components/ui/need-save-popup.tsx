@@ -1,6 +1,6 @@
 import { TDictionary } from "@/lib/langs"
 import { cn } from "@/lib/utils"
-import { Button } from "@nextui-org/react"
+import { Button } from "@nextui-org/button"
 
 export type INeedSavePopupProps = {
   show: boolean

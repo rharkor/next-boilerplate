@@ -39,7 +39,9 @@ export default async function RootLayout({
 }) {
   //? If locale is not found, return 404
   if (!i18n.locales.includes(params.lang)) {
-    logger.debug(`Locale not found: ${params.lang}`)
+    if (params.lang !== "_next") {
+      logger.debug(`Locale not found: ${params.lang}`)
+    }
     return notFound()
   }
 

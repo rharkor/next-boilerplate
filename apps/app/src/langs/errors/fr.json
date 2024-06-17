@@ -28,5 +28,6 @@
   "s3ServiceDisabled": "Le service S3 est désactivé.",
   "registrationDisabled": "L'inscription est désactivée.",
   "cannotResetAdminPasswordInDemoMode": "Vous ne pouvez pas réinitialiser le mot de passe de l'administrateur en mode démo.",
-  "userDoesNotHaveAPassword": "L'utilisateur n'a pas de mot de passe."
+  "userDoesNotHaveAPassword": "L'utilisateur n'a pas de mot de passe.",
+  "forbidden": "Accès interdit."
 }

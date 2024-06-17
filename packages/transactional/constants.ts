@@ -1,4 +1,5 @@
 export const primary = "#006FEE"
+export const buttonPrimary = "#338EF7"
 export const background = "#f4f4f5"
 export const content1 = "#FFFFFF"
 export const content2 = "#f4f4f5"

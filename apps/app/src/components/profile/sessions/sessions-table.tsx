@@ -7,7 +7,9 @@ import { ModalDescription, ModalHeader, ModalTitle } from "@/components/ui/modal
 import { TDictionary } from "@/lib/langs"
 import { trpc } from "@/lib/trpc/client"
 import { cn } from "@/lib/utils"
-import { Button, Modal, ModalContent, ModalFooter, Pagination } from "@nextui-org/react"
+import { Button } from "@nextui-org/button"
+import { Modal, ModalContent, ModalFooter } from "@nextui-org/modal"
+import { Pagination } from "@nextui-org/pagination"
 
 import SessionRow from "./session-row"
 import { SessionsTableDr } from "./sessions-table.dr"

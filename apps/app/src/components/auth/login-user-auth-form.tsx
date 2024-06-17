@@ -12,7 +12,9 @@ import { env } from "@/lib/env"
 import { TDictionary } from "@/lib/langs"
 import { cn, ensureRelativeUrl } from "@/lib/utils"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Button, Card, CardBody, Link } from "@nextui-org/react"
+import { Button } from "@nextui-org/button"
+import { Card, CardBody } from "@nextui-org/card"
+import { Link } from "@nextui-org/link"
 
 import TotpVerificationModal from "../profile/totp/totp-verification-modal"
 import Copiable from "../ui/copiable"
@@ -34,12 +36,12 @@ export function LoginUserAuthForm({ searchParams, dictionary, ...props }: UserAu
   const error = searchParams.error?.toString()
 
   const [isLoading, setIsLoading] = React.useState<boolean>(false)
-  const [errorDisplayed, setErrorDisplayed] = React.useState<string | null>(null)
 
-  if (error && !error.startsWith("_") && (!errorDisplayed || errorDisplayed !== error)) {
-    setErrorDisplayed(error)
-    handleSignError(error, dictionary)
-  }
+  React.useEffect(() => {
+    if (error && !error.startsWith("_")) {
+      handleSignError(error, dictionary)
+    }
+  }, [error, dictionary])
 
   const form = useForm<IForm>({
     resolver: zodResolver(formSchema(dictionary)),

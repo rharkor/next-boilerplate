@@ -1,10 +1,9 @@
 import Link from "next/link"
-import { getServerSession } from "next-auth"
 
 import { RegisterUserAuthForm } from "@/components/auth/register-user-auth-form"
 import { RegisterUserAuthFormDr } from "@/components/auth/register-user-auth-form.dr"
 import { authRoutes } from "@/constants/auth"
-import { nextAuthOptions } from "@/lib/auth"
+import { auth } from "@/lib/auth"
 import { Locale } from "@/lib/i18n-config"
 import { getDictionary } from "@/lib/langs"
 import { cn } from "@/lib/utils"
@@ -43,7 +42,7 @@ export default async function SignUpPage({
       RegisterUserAuthFormDr
     )
   )
-  const session = await getServerSession(nextAuthOptions)
+  const session = await auth()
 
   return (
     <main className="container relative m-auto grid min-h-screen flex-1 flex-col items-center justify-center px-2 lg:max-w-none lg:grid-cols-2 lg:px-0">

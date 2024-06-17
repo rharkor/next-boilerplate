@@ -25,6 +25,8 @@ CREATE TABLE "User" (
     "name" TEXT,
     "email" TEXT,
     "emailVerified" TIMESTAMP(3),
+    "profilePictureId" TEXT,
+    "image" TEXT,
     "username" TEXT,
     "role" "UserRole" NOT NULL DEFAULT 'USER',
     "password" TEXT,
@@ -73,7 +75,6 @@ CREATE TABLE "File" (
     "endpoint" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
-    "userProfilePictureId" TEXT,
     "fileUploadingId" TEXT,
 
     CONSTRAINT "File_pkey" PRIMARY KEY ("id")
@@ -101,6 +102,9 @@ CREATE UNIQUE INDEX "Account_provider_providerAccountId_key" ON "Account"("provi
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "User_profilePictureId_key" ON "User"("profilePictureId");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "User_username_key" ON "User"("username");
 
 -- CreateIndex
@@ -125,9 +129,6 @@ CREATE UNIQUE INDEX "UserEmailVerificationToken_token_key" ON "UserEmailVerifica
 CREATE UNIQUE INDEX "File_key_key" ON "File"("key");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "File_userProfilePictureId_key" ON "File"("userProfilePictureId");
-
--- CreateIndex
 CREATE UNIQUE INDEX "File_fileUploadingId_key" ON "File"("fileUploadingId");
 
 -- CreateIndex
@@ -137,13 +138,13 @@ CREATE UNIQUE INDEX "FileUploading_key_key" ON "FileUploading"("key");
 ALTER TABLE "Account" ADD CONSTRAINT "Account_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "User" ADD CONSTRAINT "User_profilePictureId_fkey" FOREIGN KEY ("profilePictureId") REFERENCES "File"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "ResetPassordToken" ADD CONSTRAINT "ResetPassordToken_identifier_fkey" FOREIGN KEY ("identifier") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "UserEmailVerificationToken" ADD CONSTRAINT "UserEmailVerificationToken_identifier_fkey" FOREIGN KEY ("identifier") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "File" ADD CONSTRAINT "File_userProfilePictureId_fkey" FOREIGN KEY ("userProfilePictureId") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "File" ADD CONSTRAINT "File_fileUploadingId_fkey" FOREIGN KEY ("fileUploadingId") REFERENCES "FileUploading"("id") ON DELETE SET NULL ON UPDATE CASCADE;

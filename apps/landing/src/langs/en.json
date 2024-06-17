@@ -2,5 +2,7 @@
   "home": {
     "title": "Next boilerplate",
     "link": "Go to app"
-  }
+  },
+  "goHome": "Go home",
+  "notFound": "Page not found"
 }

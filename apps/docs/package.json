@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev -p 3001",
     "build": "next build",
+    "type-check": "tsc --noEmit",
     "start": "next start --port ${PORT:-3000}"
   },
   "license": "MIT",
@@ -16,7 +17,7 @@
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "@types/node": "20.12.12",
+    "@types/node": "20.14.2",
     "typescript": "^5.4.3"
   }
 }

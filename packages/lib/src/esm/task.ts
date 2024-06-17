@@ -3,6 +3,10 @@ import { stderr } from "process"
 
 import { logger, loggerExtra } from "./logger"
 
+const getOra = async () => {
+  return ora
+}
+
 /**
  * Clear the last lines of the terminal
  * @param count
@@ -106,8 +110,14 @@ export const windowLog = (
  * @param options
  * @returns
  */
-export function startTask(options: { name: string; successMessage?: string; maxLines?: number; noClear?: boolean }) {
+export async function startTask(options: {
+  name: string
+  successMessage?: string
+  maxLines?: number
+  noClear?: boolean
+}) {
   const { maxLines = 10, name, successMessage } = options
+  const ora = await getOra()
   const spinner = ora({
     text: name,
     isSilent: true,
