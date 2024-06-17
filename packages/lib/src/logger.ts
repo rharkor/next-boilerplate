@@ -34,8 +34,6 @@ if (typeof chalk.hex !== "function") {
   }
 }
 
-const allowDebug = process.env.ENV === "development"
-
 const console = globalThis.console
 
 // Basic Colors
@@ -93,7 +91,7 @@ const subLog = printColor(undefined, gray)
 export type TLogger = typeof console & {
   success: (typeof console)["log"]
   subLog: (typeof console)["log"]
-  allowDebug: boolean
+  allowDebug: () => boolean
   prefix?: string | (() => string)
 }
 
@@ -109,12 +107,13 @@ function addPrefixToArgs(prefix: TLogger["prefix"], ...args: unknown[]) {
 
 export const logger: TLogger = {
   ...console,
-  allowDebug,
+  allowDebug: () => process.env.ENV === "development",
   log: (...args: Parameters<(typeof console)["log"]>) => {
     if (isBrowser) return console.log(...addPrefixToArgs(logger.prefix, ...args))
     console.log(log(...addPrefixToArgs(logger.prefix, ...args)))
   },
   debug: (...args: unknown[]) => {
+    const allowDebug = process.env.ENV === "development"
     if (allowDebug) {
       if (isBrowser) return console.debug(...addPrefixToArgs(logger.prefix, " DEBUG ", ...args))
       console.debug(...addPrefixToArgs(logger.prefix, debug(" DEBUG "), debugText(...args)))

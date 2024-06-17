@@ -45,7 +45,7 @@ export const sendVerificationEmail = async ({ input }: apiInputFromSchema<typeof
 
       const isToRecent = userEmailVerificationToken.createdAt.getTime() + resendEmailVerificationExpiration > Date.now()
       if (isToRecent) {
-        if (logger.allowDebug) {
+        if (logger.allowDebug()) {
           const availableIn = Math.round(
             (userEmailVerificationToken.createdAt.getTime() + resendEmailVerificationExpiration - Date.now()) / 1000
           )
