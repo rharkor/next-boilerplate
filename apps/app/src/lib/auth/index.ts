@@ -1,4 +1,4 @@
-import NextAuth, { Session } from "next-auth"
+import NextAuth from "next-auth"
 import Credentials from "next-auth/providers/credentials"
 import GithubProvider from "next-auth/providers/github"
 import { Provider } from "next-auth/providers/index"
@@ -191,7 +191,7 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
       // logger.debug("Session token", token)
       if (!token.id || typeof token.id !== "string") {
         logger.debug("Missing token id")
-        return {} as Session
+        throw new Error("MISSING_TOKEN_ID")
       }
       //* Verify that the user still exists
       const dbUser = await prisma.user.findUnique({
@@ -201,7 +201,7 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
       })
       if (!dbUser) {
         // logger.debug("User not found", token.id)
-        return {} as Session
+        throw new Error("USER_NOT_FOUND")
       }
       //* Fill session with user data
       const username = dbUser.username

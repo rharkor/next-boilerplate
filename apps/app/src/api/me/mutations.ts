@@ -59,12 +59,12 @@ export const updateUser = async ({ input, ctx: { session } }: apiInputFromSchema
 
     //* Disconnect old profile picture (when null or set)
     if (profilePictureKey !== undefined && user.profilePicture) {
-      await prisma.file.update({
+      await prisma.user.update({
         where: {
-          userProfilePictureId: user.id,
+          id: user.id,
         },
         data: {
-          userProfilePictureId: null,
+          profilePictureId: null,
         },
       })
     }

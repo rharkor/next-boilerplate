@@ -1,7 +1,7 @@
 {
   "name": "@next-boilerplate/lib",
   "version": "0.0.0",
-  "main": "./dist/index.cjs",
+  "main": "./dist/index-cjs.cjs",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.cts",
   "scripts": {
@@ -14,8 +14,8 @@
   },
   "exports": {
     "require": {
-      "types": "./dist/index.d.cts",
-      "default": "./dist/index.cjs"
+      "types": "./dist/index-cjs.d.cts",
+      "default": "./dist/index-cjs.cjs"
     },
     "import": {
       "types": "./dist/index.d.mts",
