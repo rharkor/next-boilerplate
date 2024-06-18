@@ -5,6 +5,8 @@
 import * as fs from "fs"
 import * as path from "path"
 
+import { logger } from "@next-boilerplate/lib"
+
 import { exec } from "./utils/cmd"
 import { getPath } from "./utils/path"
 
@@ -34,13 +36,17 @@ export const dbSetup = async () => {
       cwd: appPath,
       successMessage: "Database migrated",
       name: "Migrating the database",
-    }).catch(() => {})
+    }).catch(() => {
+      logger.error("Failed to migrate the database")
+    })
 
     //? Prisma seed
     await exec("prisma db seed", {
       cwd: appPath,
       successMessage: "Database seeded",
       name: "Seeding the database",
+    }).catch(() => {
+      logger.error("Failed to seed the database")
     })
   }
 }
