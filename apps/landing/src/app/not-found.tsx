@@ -1,4 +1,5 @@
 import React from "react"
+import { Metadata } from "next"
 import { cookies } from "next/headers"
 
 import { fontSans } from "@/lib/fonts"
@@ -7,6 +8,10 @@ import { getDictionary } from "@/lib/langs"
 import { cn } from "@/lib/utils"
 import { Button } from "@nextui-org/button"
 import { Link } from "@nextui-org/link"
+
+export const metadata: Metadata = {
+  title: "Not found",
+}
 
 export default async function Page404MatchAll() {
   const cookiesStore = cookies()
