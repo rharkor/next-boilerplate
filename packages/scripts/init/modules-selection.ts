@@ -154,6 +154,7 @@ const onlyFrontAppsAdaptaion: {
           "ua-parser-js",
           "@react-email/render",
           "@tanstack/react-query-devtools",
+          "@auth/prisma-adapter",
         ].map((s) => new RegExp(`\\n\\s*"${s}"\:.*\,`, "g")),
         new RegExp(`,\\n\\s*"postinstall"\:\\s"prisma generate"`, "g"),
       ],
@@ -162,6 +163,8 @@ const onlyFrontAppsAdaptaion: {
           '"start": "next start --port ${PORT:-3000}",',
         '"dev": "npm run is-initialized && prisma migrate dev && cross-env FORCE_COLOR=1 next dev --turbo",':
           '"dev": "npm run is-initialized && cross-env FORCE_COLOR=1 next dev --turbo",',
+        '"dev": "npm run is-initialized && prisma migrate dev && cross-env FORCE_COLOR=1 next dev",':
+          '"dev": "npm run is-initialized && cross-env FORCE_COLOR=1 next dev",',
       },
     },
   },
