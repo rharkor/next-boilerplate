@@ -153,10 +153,9 @@ const onlyFrontAppsAdaptaion: {
           "tsx",
           "ua-parser-js",
           "@react-email/render",
-          ,
           "@tanstack/react-query-devtools",
         ].map((s) => new RegExp(`\\n\\s*"${s}"\:.*\,`, "g")),
-        new RegExp(`\\n\\s*"postinstall"\:"prisma generate"\,`, "g"),
+        new RegExp(`,\\n\\s*"postinstall"\:\\s"prisma generate"`, "g"),
       ],
       replacements: {
         '"start": "npm run deploy-db:prod && next start --port ${PORT:-3000}",':
