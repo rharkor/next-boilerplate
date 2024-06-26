@@ -50,7 +50,7 @@ const onlyFrontToRemove = [
   "apps/cron/src/lib/prisma.ts",
   "apps/cron/src/lib/s3.ts",
   "apps/app/debug/send-mail.tsx",
-  "apps/app/src/types/index.d.ts",
+  "apps/app/src/app/api/me/route.ts",
 ]
 
 const onlyFrontAppsAdaptaion: {
