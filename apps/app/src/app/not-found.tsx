@@ -1,6 +1,7 @@
 import React from "react"
 import { cookies } from "next/headers"
 
+import { ThemeProvider } from "@/components/theme/theme-provider"
 import { fontSans } from "@/lib/fonts"
 import { i18n, Locale } from "@/lib/i18n-config"
 import { getDictionary } from "@/lib/langs"
@@ -24,12 +25,14 @@ export default async function Page404MatchAll() {
         className={cn("h-dvh min-h-dvh bg-background font-sans antialiased", fontSans.variable, fontSans.className)}
       >
         <UIProvider>
-          <main className="container m-auto flex min-h-screen flex-1 flex-col items-center justify-center gap-3">
-            <h1 className="text-4xl font-bold">{dictionary.notFound}</h1>
-            <Button as={Link} href="/" color="primary" variant="flat">
-              {dictionary.goHome}
-            </Button>
-          </main>
+          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+            <main className="container m-auto flex min-h-screen flex-1 flex-col items-center justify-center gap-3">
+              <h1 className="text-4xl font-bold">{dictionary.notFound}</h1>
+              <Button as={Link} href="/" color="primary" variant="flat">
+                {dictionary.goHome}
+              </Button>
+            </main>
+          </ThemeProvider>
         </UIProvider>
       </body>
     </html>
