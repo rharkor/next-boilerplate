@@ -14,7 +14,7 @@
   "dependencies": {
     "@next-boilerplate/scripts": "*",
     "@next-boilerplate/tsconfig": "*",
-    "@react-email/components": "0.0.20",
+    "@react-email/components": "0.0.21",
     "custom-prettier-config": "*",
     "eslint-config-custom": "*",
     "react": "18.2.0",
