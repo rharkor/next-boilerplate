@@ -28,7 +28,7 @@ jobs:
       - name: Install dependencies
         run: npm install
       - name: Cache for Turbo
-        uses: rharkor/caching-for-turbo@v1.1
+        uses: rharkor/caching-for-turbo@v1.5
       - name: Init build
         run: npm run init:build
       - name: Set example env
@@ -61,7 +61,7 @@ jobs:
       - name: Install dependencies
         run: npm install
       - name: Cache for Turbo
-        uses: rharkor/caching-for-turbo@v1.1
+        uses: rharkor/caching-for-turbo@v1.5
       - name: Init build
         run: npm run init:build
       - name: Set example env
