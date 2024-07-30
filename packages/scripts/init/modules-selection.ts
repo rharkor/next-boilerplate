@@ -50,7 +50,7 @@ const onlyFrontToRemove = [
   "apps/cron/src/lib/prisma.ts",
   "apps/cron/src/lib/s3.ts",
   "apps/app/debug/send-mail.tsx",
-  "apps/app/src/types/index.d.ts",
+  "apps/app/src/app/api/me/route.ts",
 ]
 
 const onlyFrontAppsAdaptaion: {
@@ -153,16 +153,18 @@ const onlyFrontAppsAdaptaion: {
           "tsx",
           "ua-parser-js",
           "@react-email/render",
-          ,
           "@tanstack/react-query-devtools",
+          "@auth/prisma-adapter",
         ].map((s) => new RegExp(`\\n\\s*"${s}"\:.*\,`, "g")),
-        new RegExp(`\\n\\s*"postinstall"\:"prisma generate"\,`, "g"),
+        new RegExp(`,\\n\\s*"postinstall"\:\\s"prisma generate"`, "g"),
       ],
       replacements: {
         '"start": "npm run deploy-db:prod && next start --port ${PORT:-3000}",':
           '"start": "next start --port ${PORT:-3000}",',
         '"dev": "npm run is-initialized && prisma migrate dev && cross-env FORCE_COLOR=1 next dev --turbo",':
           '"dev": "npm run is-initialized && cross-env FORCE_COLOR=1 next dev --turbo",',
+        '"dev": "npm run is-initialized && prisma migrate dev && cross-env FORCE_COLOR=1 next dev",':
+          '"dev": "npm run is-initialized && cross-env FORCE_COLOR=1 next dev",',
       },
     },
   },

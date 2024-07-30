@@ -13,9 +13,13 @@
     },
     "test": {},
     "lint": {},
-    "lint:fix": {},
+    "lint:fix": {
+      "cache": false
+    },
     "prettier": {},
-    "prettier:fix": {},
+    "prettier:fix": {
+      "cache": false
+    },
     "dev": {
       "cache": false,
       "persistent": true

@@ -1,5 +1,4 @@
 import React from "react"
-import { Metadata } from "next"
 import { redirect } from "next/navigation"
 
 import { fontSans } from "@/lib/fonts"
@@ -7,11 +6,6 @@ import { i18n } from "@/lib/i18n-config"
 import { cn } from "@/lib/utils"
 
 import "../globals.css"
-
-export const metadata: Metadata = {
-  title: "Next.js Landing Page",
-  description: "Welcome to Next.js landing page",
-}
 
 export async function generateStaticParams() {
   return i18n.locales.map((locale) => ({ lang: locale }))

@@ -27,15 +27,13 @@
     "custom-prettier-config": "*",
     "eslint-config-custom": "*",
     "ora": "^8.0.1",
-    "typescript": "^5.4.3"
+    "typescript": "^5.4.3",
+    "pkgroll": "^2.1.1"
   },
   "type": "module",
   "browser": {
     "child_process": false,
     "readline": false,
     "ora": false
-  },
-  "devDependencies": {
-    "pkgroll": "^2.1.1"
   }
 }

@@ -8,15 +8,15 @@ const rootPath = getPath()
 
 export const completeInitialisation = async () => {
   // Linting and formatting
-  await exec("npm run lint:fix", {
-    cwd: rootPath,
-    name: "Linting",
-    successMessage: "Linted",
-  })
   await exec("npm run prettier:fix", {
     cwd: rootPath,
     name: "Formatting",
     successMessage: "Formatted",
+  })
+  await exec("npm run lint:fix", {
+    cwd: rootPath,
+    name: "Linting",
+    successMessage: "Linted",
   })
 
   // eslint-disable-next-line no-process-env
