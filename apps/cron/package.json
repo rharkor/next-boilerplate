@@ -20,7 +20,7 @@
     "@aws-sdk/client-s3": "^3.549.0",
     "@next-boilerplate/lib": "*",
     "@prisma/client": "^5.12.1",
-    "@t3-oss/env-core": "^0.10.0",
+    "@t3-oss/env-core": "^0.11.0",
     "@types/node": "^20.11.19",
     "chalk": "^5.3.0",
     "custom-prettier-config": "*",
