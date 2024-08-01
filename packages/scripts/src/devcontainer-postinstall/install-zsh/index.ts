@@ -7,15 +7,20 @@ import { $ } from "zx";
 import { logger, task } from "@rharkor/logger";
 import { cwdAtRoot } from "@/utils";
 
-export const installZsh = async ({isPromptLimited}: {isPromptLimited: boolean}) => {
+export const installZsh = async (opts?: { isPromptLimited: boolean }) => {
   cwdAtRoot();
+  await logger.init();
+
   const customZshConfig = "packages/scripts/assets/.zshrc";
 
-  const installZshTask = !isPromptLimited ? await task.startTask({
-    name: "Installing ZSH... 🚀",
-  }) : (() => {
-    logger.info('Installing git hooks... 🚀')
-  })();
+  const installZshTask = !opts?.isPromptLimited
+    ? await task.startTask({
+        name: "Installing ZSH... 🚀",
+        noClear: false,
+      })
+    : (() => {
+        logger.info("Installing ZSH... 🚀");
+      })();
 
   //? Install zsh configuration
   const zshRcConfig = await $`echo \${ZDOTDIR:-$HOME}/.zshrc`;
@@ -40,7 +45,9 @@ export const installZsh = async ({isPromptLimited}: {isPromptLimited: boolean}) 
     installZshTask?.print("zsh-syntax-highlighting already exists");
   } else {
     installZshTask?.print("Install zsh-syntax-highlighting");
-    await $`git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${zshSyntaxHighlightingPath}`;
+    await $({
+      quiet: true,
+    })`git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${zshSyntaxHighlightingPath}`;
   }
 
   //? Install zsh autosuggestions
@@ -54,7 +61,9 @@ export const installZsh = async ({isPromptLimited}: {isPromptLimited: boolean}) 
     installZshTask?.print("zsh-autosuggestions already exists");
   } else {
     installZshTask?.print("Install zsh-autosuggestions");
-    await $`git clone https://github.com/zsh-users/zsh-autosuggestions ${zshAutosuggestionsPath}`;
+    await $({
+      quiet: true,
+    })`git clone https://github.com/zsh-users/zsh-autosuggestions ${zshAutosuggestionsPath}`;
   }
 
   installZshTask?.stop("ZSH installed! 🎉");

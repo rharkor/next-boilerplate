@@ -7,10 +7,11 @@ import { $ } from "zx";
 import { logger, task } from "@rharkor/logger";
 import { cwdAtRoot } from "@/utils";
 
-export const installGitHooks = async ({isPromptLimited}: {isPromptLimited: boolean}) => {
+export const installGitHooks = async (opts?: {isPromptLimited: boolean}) => {
   cwdAtRoot();
+  await logger.init()
 
-  const installGitHooksTask = !isPromptLimited ? await task.startTask({
+  const installGitHooksTask = !opts?.isPromptLimited ? await task.startTask({
     name: "Installing git hooks... 🚀",
   }) : (() => {
     logger.info('Installing git hooks... 🚀')

@@ -4,12 +4,13 @@
 
 import "zx/globals";
 import { $ } from "zx";
-import { task } from "@rharkor/logger";
+import { logger, task } from "@rharkor/logger";
 import { chunk } from "@rharkor/utils";
 import { cwdAtRoot } from "@/utils";
 
 export const installExtensions = async () => {
   cwdAtRoot();
+  await logger.init()
 
   const installExtensionsTask = await task.startTask({
     name: "Installing vscode extensions... 🚀",

@@ -19,9 +19,7 @@
   "portsAttributes": {},
 
   // Use 'postCreateCommand' to run commands after the container is created.
-  "postCreateCommand": {
-    "init": "./.devcontainer/post-create-command.sh"
-  },
+  "postCreateCommand": "/bin/sh -c ./.devcontainer/post-create-command.sh",
 
   "customizations": {
     "vscode": {
