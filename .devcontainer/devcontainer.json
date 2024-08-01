@@ -19,7 +19,7 @@
   "portsAttributes": {},
 
   // Use 'postCreateCommand' to run commands after the container is created.
-  "postCreateCommand": "bash ./packages/scripts/install/install.sh devcontainer",
+  "postCreateCommand": "npm i && npm run build -w packages/scripts && npm run devcontainer-postinstall -w packages/scripts -- --devcontainer",
 
   "customizations": {
     "vscode": {

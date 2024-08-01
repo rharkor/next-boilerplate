@@ -1,8 +1,9 @@
 import { $ } from "zx";
 
+const initialPwd = $.sync`pwd`.text();
+
 export const getRoot = () => {
-  const dir = $.sync`pwd`.text();
-  const root = path.join(dir, "..", "..");
+  const root = path.join(initialPwd, "..", "..");
   return root;
 };
 

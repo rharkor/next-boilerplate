@@ -17,5 +17,3 @@ if (inDevContainer) {
 }
 
 await installGitHooks();
-
-logger.success("🎉 Installing done!");
