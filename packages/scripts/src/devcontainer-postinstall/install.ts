@@ -10,10 +10,11 @@ import { installZsh } from "./install-zsh";
 import { installGitHooks } from "./install-git-hooks";
 
 const inDevContainer = argv.devcontainer || false;
+const isPromptLimited = argv['prompt-limited'] || false;
 
 //* Install zsh only if the environment is devcontainer
 if (inDevContainer) {
-  await installZsh();
+  await installZsh({isPromptLimited});
 }
 
-await installGitHooks();
+await installGitHooks({isPromptLimited});

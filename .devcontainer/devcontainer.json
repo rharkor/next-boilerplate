@@ -11,7 +11,7 @@
 
   // The optional 'workspaceFolder' property is the path VS Code should open by default when
   // connected. This is typically a file mount in .devcontainer/docker-compose.yml
-  "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+  "workspaceFolder": "/workspace",
 
   // Use 'forwardPorts' to make a list of ports inside the container available locally.
   "forwardPorts": [],
@@ -19,7 +19,9 @@
   "portsAttributes": {},
 
   // Use 'postCreateCommand' to run commands after the container is created.
-  "postCreateCommand": "npm i && npm run build -w packages/scripts && npm run devcontainer-postinstall -w packages/scripts -- --devcontainer",
+  "postCreateCommand": {
+    "init": "./.devcontainer/post-create-command.sh"
+  },
 
   "customizations": {
     "vscode": {
