@@ -1,0 +1,25 @@
+{
+    "name": "@next-boilerplate/scripts",
+    "version": "0.0.0",
+    "scripts": {
+        "build": "tsc && tsc-alias",
+        "type-check": "tsc --noEmit",
+        "devcontainer-postinstall": "node ./dist/devcontainer-postinstall/install.js",
+        "devcontainer-postinstall:install-zsh": "node ./dist/devcontainer-postinstall/install-zsh/exec.js",
+        "devcontainer-postinstall:install-extensions": "node ./dist/devcontainer-postinstall/install-extensions/exec.js",
+        "devcontainer-postinstall:install-git-hooks": "node ./dist/devcontainer-postinstall/install-git-hooks/exec.js",
+        "ci-check": "run-p ci-check:*",
+        "ci-check:devcontainer-extensions": "node ./dist/ci-check/devcontainer-extensions.js"
+    },
+    "devDependencies": {
+        "npm-run-all": "^4.1.5",
+        "tsc-alias": "^1.8.10",
+        "typescript": "^5.5.4",
+        "zx": "^8.1.4"
+    },
+    "type": "module",
+    "dependencies": {
+        "@rharkor/logger": "^1.2.2",
+        "@rharkor/utils": "^0.1.3"
+    }
+}

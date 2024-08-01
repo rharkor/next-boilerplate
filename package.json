@@ -1,0 +1,36 @@
+{
+    "name": "next-boilerplate",
+    "private": true,
+    "version": "0.0.0",
+    "scripts": {},
+    "homepage": "https://github.com/rharkor/next-boilerplate",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/rharkor/next-boilerplate.git"
+    },
+    "keywords": [
+        "nextjs",
+        "boilerplate",
+        "typescript",
+        "monorepo"
+    ],
+    "author": "HUORT Louis (https://louis.huort.com)",
+    "workspaces": [
+        "apps/*",
+        "packages/*"
+    ],
+    "devDependencies": {
+        "@semantic-release/changelog": "^6.0.3",
+        "@semantic-release/commit-analyzer": "^13.0.0",
+        "@semantic-release/git": "^10.0.1",
+        "@semantic-release/github": "^10.0.0",
+        "@semantic-release/npm": "^12.0.0",
+        "@semantic-release/release-notes-generator": "^14.0.0",
+        "conventional-changelog-conventionalcommits": "^8.0.0",
+        "semantic-release": "^24.0.0",
+        "turbo": "^2.0.4",
+        "zx": "^8.1.4"
+    },
+    "license": "MIT",
+    "packageManager": "npm@10.8.2"
+}
