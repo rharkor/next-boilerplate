@@ -28,7 +28,7 @@ export const installExtensions = async () => {
       commandArgs.push(`--install-extension=${extension}`)
     })
 
-    await $`code ${commandArgs.join(" ")}`
+    await $`code ${commandArgs}`
   }
 
   const max = chunkedExtensions.reduce((acc, chunk) => acc + chunk.length, 0).toString()

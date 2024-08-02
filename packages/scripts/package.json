@@ -10,6 +10,7 @@
         "devcontainer-postinstall:install-git-hooks": "node ./dist/devcontainer-postinstall/install-git-hooks/exec.js",
         "ci-check": "run-p ci-check:*",
         "ci-check:devcontainer-extensions": "node ./dist/ci-check/devcontainer-extensions.js",
+        "ci-check:banned-keywords": "node ./dist/ci-check/banned-keywords.js",
         "lint": "eslint .",
         "lint:fix": "eslint --fix .",
         "prettier": "prettier --check \"src/**/*.{js,jsx,ts,tsx}\"",

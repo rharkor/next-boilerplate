@@ -8,7 +8,7 @@ keywords=("TODO", "FIXME")
 # Directory to search for source code
 source_code_dir="../"
 
-# Exclude node_modules and .next directories
+# Exclude node_modules and .next directorieskeywords
 exclude_dir="--exclude-dir=node_modules --exclude-dir=.next --exclude-dir=.git --exclude=banned-keywords.sh --exclude=README.md --exclude-dir=.terraform --exclude-dir=dist --exclude-dir=build"
 
 
