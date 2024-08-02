@@ -1,0 +1,38 @@
+{
+  "name": "@next-boilerplate/prettier",
+  "version": "0.0.0",
+  "scripts": {
+    "build": "pkgroll",
+    "type-check": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@next-boilerplate/eslint": "*",
+    "prettier": "^3.1.0",
+    "prettier-plugin-tailwindcss": "^0.6.0",
+    "typescript": "^5.5.4",
+    "pkgroll": "^2.4.2"
+  },
+  "exports": {
+    "base": {
+      "require": {
+        "types": "./dist/base.d.cts",
+        "default": "./dist/base.cjs"
+      },
+      "import": {
+        "types": "./dist/base.d.mts",
+        "default": "./dist/base.mjs"
+      }
+    },
+    "next": {
+      "require": {
+        "types": "./dist/next.d.cts",
+        "default": "./dist/next.cjs"
+      },
+      "import": {
+        "types": "./dist/next.d.mts",
+        "default": "./dist/next.mjs"
+      }
+    }
+  },
+  "type": "module"
+}

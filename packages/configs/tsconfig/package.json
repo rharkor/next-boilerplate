@@ -1,0 +1,10 @@
+{
+  "name": "@next-boilerplate/tsconfig",
+  "version": "0.0.0",
+  "scripts": {},
+  "devDependencies": {
+    "@next-boilerplate/prettier": "*",
+    "@next-boilerplate/eslint": "*"
+  },
+  "type": "module"
+}
