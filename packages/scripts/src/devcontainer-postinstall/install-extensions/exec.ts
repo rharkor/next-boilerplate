@@ -1,5 +1,5 @@
 #!/usr/bin/env zx
 
-import { installExtensions } from ".";
+import { installExtensions } from "."
 
-installExtensions();
+installExtensions()

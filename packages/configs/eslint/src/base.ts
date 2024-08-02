@@ -1,12 +1,14 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 
-import { ignores } from "./utils/ignores"
 import prettier from "eslint-config-prettier"
 import simpleImportSort from "eslint-plugin-simple-import-sort"
 import unusedImports from "eslint-plugin-unused-imports"
 import tseslint from "typescript-eslint"
+
 import eslint from "@eslint/js"
 import customRules from "@next-boilerplate/eslint-plugin"
+
+import { ignores } from "./utils/ignores"
 
 const config = tseslint.config(
   {

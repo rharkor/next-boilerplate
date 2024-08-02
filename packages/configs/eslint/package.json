@@ -10,18 +10,16 @@
     "prettier:fix": "prettier --write \"src/**/*.{js,jsx,ts,tsx}\""
   },
   "exports": {
-    "base": {
+    "./base": {
       "require": {
-        "types": "./dist/base.d.cts",
         "default": "./dist/base.cjs"
       },
       "import": {
-        "types": "./dist/base.d.mts",
         "default": "./dist/base.mjs"
       }
     }
   },
-  "devDependencies": {
+  "dependencies": {
     "@eslint/compat": "^1.1.1",
     "@next-boilerplate/eslint-plugin": "*",
     "@types/eslint": "^8.56.7",

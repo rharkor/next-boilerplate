@@ -3,7 +3,11 @@
   "version": "0.0.0",
   "scripts": {
     "build": "pkgroll",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix .",
+    "prettier": "prettier --check \"src/**/*.{js,jsx,ts,tsx}\"",
+    "prettier:fix": "prettier --write \"src/**/*.{js,jsx,ts,tsx}\""
   },
   "devDependencies": {
     "@next-boilerplate/eslint": "*",
@@ -13,23 +17,19 @@
     "pkgroll": "^2.4.2"
   },
   "exports": {
-    "base": {
+    "./base": {
       "require": {
-        "types": "./dist/base.d.cts",
         "default": "./dist/base.cjs"
       },
       "import": {
-        "types": "./dist/base.d.mts",
         "default": "./dist/base.mjs"
       }
     },
-    "next": {
+    "./next": {
       "require": {
-        "types": "./dist/next.d.cts",
         "default": "./dist/next.cjs"
       },
       "import": {
-        "types": "./dist/next.d.mts",
         "default": "./dist/next.mjs"
       }
     }

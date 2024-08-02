@@ -1,13 +1,13 @@
-import { $ } from "zx";
+import { $ } from "zx"
 
-const initialPwd = $.sync`pwd`.text();
+const initialPwd = $.sync`pwd`.text()
 
 export const getRoot = () => {
-  const root = path.join(initialPwd, "..", "..");
-  return root;
-};
+  const root = path.join(initialPwd, "..", "..")
+  return root
+}
 
 export const cwdAtRoot = () => {
-  const root = getRoot();
-  $.cwd = root;
-};
+  const root = getRoot()
+  $.cwd = root
+}

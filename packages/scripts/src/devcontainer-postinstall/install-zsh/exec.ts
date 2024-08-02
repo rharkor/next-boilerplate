@@ -1,5 +1,5 @@
 #!/usr/bin/env zx
 
-import { installZsh } from ".";
+import { installZsh } from "."
 
-installZsh();
+installZsh()

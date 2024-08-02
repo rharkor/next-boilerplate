@@ -1,5 +1,5 @@
 #!/usr/bin/env zx
 
-import { installGitHooks } from ".";
+import { installGitHooks } from "."
 
-installGitHooks();
+installGitHooks()

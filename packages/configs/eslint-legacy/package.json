@@ -10,7 +10,7 @@
     "prettier:fix": "prettier --write \"src/**/*.{js,jsx,ts,tsx}\""
   },
   "exports": {
-    "next": {
+    "./next": {
       "require": {
         "types": "./dist/next.d.cts",
         "default": "./dist/next.cjs"
