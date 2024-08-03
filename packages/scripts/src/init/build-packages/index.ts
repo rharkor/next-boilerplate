@@ -21,5 +21,5 @@ export const buildPackages = async () => {
   //? Use turbo mode to build all packages imported in the project
   await $({ quiet: true })`turbo run build --filter='@next-boilerplate/*'^...`
 
-  buildPackagesTask.stop("Packages built successfully! 🚀")
+  buildPackagesTask.stop("Packages built successfully! 🎉")
 }
