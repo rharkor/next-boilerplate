@@ -9,20 +9,16 @@ import { logger, task } from "@rharkor/logger"
 
 import "zx/globals"
 
-export const installZsh = async (opts?: { isPromptLimited: boolean }) => {
+export const installZsh = async () => {
   cwdAtRoot()
   await logger.init()
 
   const customZshConfig = "packages/scripts/assets/.zshrc"
 
-  const installZshTask = !opts?.isPromptLimited
-    ? await task.startTask({
-        name: "Installing ZSH... 🚀",
-        noClear: false,
-      })
-    : (() => {
-        logger.info("Installing ZSH... 🚀")
-      })()
+  const installZshTask = await task.startTask({
+    name: "Installing ZSH... ⌨️",
+    noClear: false,
+  })
 
   //? Install zsh configuration
   const zshRcConfig = await $`echo \${ZDOTDIR:-$HOME}/.zshrc`

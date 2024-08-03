@@ -1,7 +1,8 @@
 import type { Linter } from "eslint"
 
 const config: Linter.Config = {
-  extends: ["prettier", "plugin:@typescript-eslint/recommended"],
+  extends: ["next", "prettier", "plugin:@typescript-eslint/recommended", "plugin:tailwindcss/recommended"],
+  parser: "@typescript-eslint/parser",
   plugins: ["@typescript-eslint", "unused-imports", "simple-import-sort", "@next-boilerplate"],
   parserOptions: {
     extraFileExtensions: [".json"],

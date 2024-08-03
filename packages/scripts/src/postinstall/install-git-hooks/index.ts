@@ -9,17 +9,13 @@ import { logger, task } from "@rharkor/logger"
 
 import "zx/globals"
 
-export const installGitHooks = async (opts?: { isPromptLimited: boolean }) => {
+export const installGitHooks = async () => {
   cwdAtRoot()
   await logger.init()
 
-  const installGitHooksTask = !opts?.isPromptLimited
-    ? await task.startTask({
-        name: "Installing git hooks... 🚀",
-      })
-    : (() => {
-        logger.info("Installing git hooks... 🚀")
-      })()
+  const installGitHooksTask = await task.startTask({
+    name: "Installing git hooks... 🪝",
+  })
 
   //? Install git conventional commits
   installGitHooksTask?.print("Install git-conventional-commits")

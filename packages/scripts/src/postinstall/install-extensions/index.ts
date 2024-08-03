@@ -15,7 +15,7 @@ export const installExtensions = async () => {
   await logger.init()
 
   const installExtensionsTask = await task.startTask({
-    name: "Installing vscode extensions... 🚀",
+    name: "Installing vscode extensions... 🔌",
   })
 
   installExtensionsTask.print("Parsing extensions.txt file")

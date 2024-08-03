@@ -2,7 +2,20 @@
     "name": "next-boilerplate",
     "private": true,
     "version": "0.0.0",
-    "scripts": {},
+    "scripts": {
+        "dev": "turbo run dev",
+        "build": "turbo run build",
+        "type-check": "turbo run type-check",
+        "start": "turbo run start",
+        "lint": "turbo run lint",
+        "lint:fix": "turbo run lint:fix",
+        "prettier": "turbo run prettier",
+        "prettier:fix": "turbo run prettier:fix",
+        "test": "turbo run test",
+        "ci-check": "turbo run ci-check",
+        "init": "npm run init -s -w packages/scripts",
+        "depcheck": "npm run depcheck -s -w packages/scripts"
+    },
     "homepage": "https://github.com/rharkor/next-boilerplate",
     "repository": {
         "type": "git",

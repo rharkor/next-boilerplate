@@ -40,7 +40,7 @@ jobs:
       - name: Check dependencies usage
         run: npm run depcheck
       - name: Advanced check
-        run: npm run ci-check -w packages/scripts
+        run: npm run ci-check
 
   build:
     name: Build

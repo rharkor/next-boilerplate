@@ -24,7 +24,7 @@ const exclusions: string[] = [
   ...fileExclusions.map((file) => `--exclude=${file}`),
 ]
 const searchTask = await task.startTask({
-  name: "Searching for banned keywords",
+  name: "Searching for banned keywords... 🚫",
 })
 
 let foundBannedKeywords = false
@@ -38,8 +38,9 @@ for (const keyword of keywords) {
     searchTask.error(grepResult.stdout)
   }
 }
-searchTask.stop()
-
-if (foundBannedKeywords) {
+if (!foundBannedKeywords) {
+  searchTask.stop("No banned keywords found! 🎉")
+} else {
+  searchTask.stop()
   process.exit(1)
 }

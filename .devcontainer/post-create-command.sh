@@ -11,4 +11,4 @@ echo "🔨 Building initial script"
 npm run build -w packages/scripts -s
 
 echo "🏃 Running initial script"
-npm run devcontainer-postinstall -s -w packages/scripts -- --devcontainer
+npm run postinstall -s -w packages/scripts -- --devcontainer
