@@ -7,9 +7,9 @@
 import { $ } from "zx"
 
 import { cwdAtRoot } from "@/utils"
+import { task } from "@rharkor/logger"
 
 import "zx/globals"
-import { task } from "@rharkor/logger"
 
 cwdAtRoot()
 

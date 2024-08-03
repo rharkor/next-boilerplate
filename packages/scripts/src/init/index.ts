@@ -5,8 +5,10 @@
  */
 
 import { postInstall } from "@/postinstall/install"
-import "zx/globals"
+
 import { buildPackages } from "./build-packages"
+
+import "zx/globals"
 
 //* Post install
 // Setup git hooks
