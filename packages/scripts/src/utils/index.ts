@@ -11,3 +11,8 @@ export const cwdAtRoot = () => {
   const root = getRoot()
   $.cwd = root
 }
+
+export const cdAtRoot = () => {
+  const root = getRoot()
+  cd(root)
+}
