@@ -104,8 +104,11 @@ const applyCompareChecksum = async (fromPath: string, toPath: string) => {
 for (const template of templates) {
   for (const [from, to] of Object.entries(template.config.references)) {
     //? Check if the component exists
-    const toPath = path.join(componentsDirectory, to)
-    if (!(await fs.exists(toPath))) {
+    const toDirPath = path.join(componentsDirectory, to)
+    // Find the file that start with "index"
+    const toPathFile = (await fs.readdir(toDirPath)).find((file) => file.startsWith("index"))
+    const toPath = toPathFile ? path.join(toDirPath, toPathFile) : undefined
+    if (!toPath || !(await fs.exists(toPath))) {
       validateTemplateTask.error(`The component ${to} referenced by the template ${template.path} doesn't exist`)
       if (onlyCheck) {
         validateTemplateTask.stop()

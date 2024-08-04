@@ -2,6 +2,6 @@
     "$schema": "../../components/schema.d.json",
     "name": "empty-monorepo",
     "references": {
-        "turbo.json": "turbo/default.json"
+        "turbo.json": "turbo/default"
     }
 }
