@@ -13,12 +13,13 @@
         "ci-check": "run-p ci-check:*",
         "ci-check:devcontainer-extensions": "node ./dist/ci-check/devcontainer-extensions.js",
         "ci-check:banned-keywords": "node ./dist/ci-check/banned-keywords.js",
-        "ci-check:templates-config": "node ./dist/ci-check/templates-config.js",
+        "ci-check:templates-config": "node ./dist/ci-check/templates-config.js --check=true",
         "depcheck": "node ./dist/depcheck-test/index.js",
         "lint": "eslint .",
         "lint:fix": "eslint --fix .",
         "prettier": "prettier --check \"src/**/*.{js,jsx,ts,tsx}\"",
-        "prettier:fix": "prettier --write \"src/**/*.{js,jsx,ts,tsx}\""
+        "prettier:fix": "prettier --write \"src/**/*.{js,jsx,ts,tsx}\"",
+        "utils:fix-templates-config": "node ./dist/ci-check/templates-config.js"
     },
     "devDependencies": {
         "@next-boilerplate/eslint": "*",

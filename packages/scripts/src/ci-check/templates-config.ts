@@ -19,6 +19,8 @@ const templatesDirectory = "packages/templates"
 const componentsDirectory = "packages/components"
 const configFileName = "config.json"
 
+const onlyCheck = argv.check === "true"
+
 const configSchema = z.object({
   name: z.string(),
   references: z.record(z.string(), z.string()),
@@ -38,6 +40,10 @@ for (const templatePath of templatesPath) {
   const configPath = path.join(templatesDirectory, templatePath, configFileName)
   if (!(await fs.exists(configPath))) {
     validateTemplateTask.error(`The template ${templatePath} doesn't have a config file`)
+    if (onlyCheck) {
+      validateTemplateTask.stop()
+      process.exit(1)
+    }
     continue
   }
   const config = await fs.readJSON(configPath)
@@ -52,6 +58,10 @@ for (const template of templates) {
     configSchema.parse(template.config)
   } catch (error) {
     validateTemplateTask.error(`The template ${template.path} has an invalid config: ${error}`)
+    if (onlyCheck) {
+      validateTemplateTask.stop()
+      process.exit(1)
+    }
   }
 }
 
@@ -67,6 +77,11 @@ const applyCompareChecksum = async (fromPath: string, toPath: string) => {
     const toChecksum = await $`find ${toPath} -type f -exec md5sum {} \\;`.text()
 
     if (fromChecksum !== toChecksum) {
+      if (onlyCheck) {
+        validateTemplateTask.error(`The directory ${fromPath} is different from the component ${toPath}`)
+        validateTemplateTask.stop()
+        process.exit(1)
+      }
       validateTemplateTask.print(`Copying the directory ${fromPath} to the component ${toPath}`)
       await fs.copy(fromPath, toPath, { overwrite: true })
     }
@@ -75,6 +90,11 @@ const applyCompareChecksum = async (fromPath: string, toPath: string) => {
     const toChecksum = await $`md5sum ${toPath}`.text()
 
     if (fromChecksum !== toChecksum) {
+      if (onlyCheck) {
+        validateTemplateTask.error(`The file ${fromPath} is different from the component ${toPath}`)
+        validateTemplateTask.stop()
+        process.exit(1)
+      }
       validateTemplateTask.print(`Copying the file ${fromPath} to the component ${toPath}`)
       await fs.copy(fromPath, toPath)
     }
@@ -87,12 +107,23 @@ for (const template of templates) {
     const toPath = path.join(componentsDirectory, to)
     if (!(await fs.exists(toPath))) {
       validateTemplateTask.error(`The component ${to} referenced by the template ${template.path} doesn't exist`)
+      if (onlyCheck) {
+        validateTemplateTask.stop()
+        process.exit(1)
+      }
       continue
     }
 
     // Verify if the template from is up to date
     const fromPath = path.join(template.path, from)
     if (!(await fs.exists(fromPath))) {
+      if (onlyCheck) {
+        validateTemplateTask.error(
+          `The file/directory ${from} referenced by the template ${template.path} doesn't exist`
+        )
+        validateTemplateTask.stop()
+        process.exit(1)
+      }
       validateTemplateTask.print(`Copying the component ${to} to the template ${template.path}`)
       await fs.copy(toPath, fromPath)
     } else {
