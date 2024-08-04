@@ -5,7 +5,7 @@
         "build": "tsc && tsc-alias",
         "type-check": "tsc --noEmit",
         "init": "npm run -s build && node ./dist/init/index.js",
-        "init:build-packages": "node ./dist/init/build-packages/index.js",
+        "init:build-packages": "node ./dist/init/build-packages/exec.js",
         "project-postinstall": "node ./dist/postinstall/exec.js",
         "project-postinstall:install-zsh": "node ./dist/postinstall/install-zsh/exec.js",
         "project-postinstall:install-extensions": "node ./dist/postinstall/install-extensions/exec.js",

@@ -14,7 +14,6 @@ export const buildPackages = async () => {
 
   const buildPackagesTask = await task.startTask({
     name: "Building packages... 📦",
-    noClear: false,
   })
 
   //* Build packages (in packages directory)
