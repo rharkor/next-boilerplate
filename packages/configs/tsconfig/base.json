@@ -14,17 +14,17 @@
         "moduleResolution": "Bundler",
         "resolveJsonModule": true,
         "isolatedModules": true,
-        "baseUrl": ".",
-        "rootDir": "./src",
-        "outDir": "./dist",
+        "baseUrl": "${configDir}",
+        "rootDir": "${configDir}/src",
+        "outDir": "${configDir}/dist",
         "paths": {
             "@/*": [
-                "./src/*"
+                "${configDir}/src/*"
             ]
         }
     },
     "include": [
-        "src/**/*.ts"
+        "${configDir}/src/**/*.ts"
     ],
     "exclude": [
         "node_modules"

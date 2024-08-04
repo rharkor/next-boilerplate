@@ -24,7 +24,12 @@
       {
         "name": "next"
       }
-    ]
+    ],
+    "paths": {
+      "@/*": [
+        "${configDir}/src/*"
+      ]
+    }
   },
   "include": [
     "next-env.d.ts",

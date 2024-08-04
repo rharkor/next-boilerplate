@@ -11,7 +11,7 @@ const rule: Rule.RuleModule = {
     schema: [], // no options
   },
   create: function (context) {
-    const handleProgram = (node) => {
+    const handleProgram: ReturnType<Rule.RuleModule["create"]>["Program"] = (node) => {
       const sourceCode = context.sourceCode
       const text = sourceCode.getText()
 

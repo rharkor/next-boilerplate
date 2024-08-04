@@ -11,7 +11,7 @@ const rule: Rule.RuleModule = {
     schema: [], // no options
   },
   create: function (context) {
-    const handleProgram = () => {
+    const handleProgram: ReturnType<Rule.RuleModule["create"]>["Program"] = () => {
       const sourceCode = context.sourceCode
 
       const importNodes = sourceCode.ast.body.filter((node) => node.type === "ImportDeclaration")
