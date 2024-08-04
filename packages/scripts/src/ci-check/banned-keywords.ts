@@ -16,7 +16,7 @@ cwdAtRoot()
 const keywords = ["TODO", "FIXME"]
 
 const dirExclusions = ["node_modules", "dist", "build", ".next", ".git", ".terraform"]
-const fileExclusions = ["README.md", "banned-keywords.ts"]
+const fileExclusions = ["README.md", "banned-keywords.ts", "banned-keywords.sh"]
 const searchDir = "."
 
 const exclusions: string[] = [
@@ -30,12 +30,16 @@ const searchTask = await task.startTask({
 let foundBannedKeywords = false
 for (const keyword of keywords) {
   searchTask.print(`Searching for ${keyword}`)
-  const grepResult = await $`grep -r "${keyword}" ${searchDir} ${exclusions}`
+  try {
+    const grepResult = await $`grep -r "${keyword}" ${searchDir} ${exclusions}`
 
-  if (grepResult.stdout) {
-    foundBannedKeywords = true
-    searchTask.error(`Found banned keyword ${keyword}`)
-    searchTask.error(grepResult.stdout)
+    if (grepResult.stdout) {
+      foundBannedKeywords = true
+      searchTask.error(`Found banned keyword ${keyword}`)
+      searchTask.error(grepResult.stdout)
+    }
+  } catch {
+    // Do nothing
   }
 }
 if (!foundBannedKeywords) {
