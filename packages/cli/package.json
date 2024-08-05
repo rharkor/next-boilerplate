@@ -7,7 +7,6 @@
     "scripts": {
         "build": "pkgroll",
         "type-check": "tsc --noEmit",
-        "apply-config": "node ./dist/functions/apply-config/exec.js",
         "debug": "tsx ./debug/index.ts",
         "lint": "eslint .",
         "lint:fix": "eslint --fix .",

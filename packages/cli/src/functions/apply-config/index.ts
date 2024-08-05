@@ -62,29 +62,6 @@ export const applyConfig = async () => {
   //* Apply references
   applyConfigTask.print("Applying references")
 
-  // Diff the checksum of the directories/files and apply the changes
-  const applyCompareChecksum = async (fromPath: string, toPath: string) => {
-    const isDirectory = await fs.stat(fromPath).then((stat) => stat.isDirectory())
-
-    if (isDirectory) {
-      const fromChecksum = await $`find ${fromPath} -type f -exec md5sum {} \\;`.text()
-      const toChecksum = await $`find ${toPath} -type f -exec md5sum {} \\;`.text()
-
-      if (fromChecksum !== toChecksum) {
-        applyConfigTask.print(`Copying the directory ${fromPath} to the component ${toPath}`)
-        await fs.copy(fromPath, toPath, { overwrite: true })
-      }
-    } else {
-      const fromChecksum = await $`md5sum ${fromPath}`.text()
-      const toChecksum = await $`md5sum ${toPath}`.text()
-
-      if (fromChecksum !== toChecksum) {
-        applyConfigTask.print(`Copying the file ${fromPath} to the component ${toPath}`)
-        await fs.copy(fromPath, toPath)
-      }
-    }
-  }
-
   for (const reference of config.references) {
     const componentName = typeof reference === "string" ? reference : reference.name
     const componentPath = path.join(componentsDirectory, componentName)
@@ -120,16 +97,21 @@ export const applyConfig = async () => {
 
     const relativeDestinationPath = typeof reference === "string" ? componentConfig.suggestedPath : reference.path
 
-    // Verify if the template from is up to date
+    // Verify if the template doesnt exist
     const destinationPath = path.join(root, relativeDestinationPath)
-    if (!(await fs.exists(destinationPath))) {
-      applyConfigTask.print(`Copying the component ${componentName} to the destination ${destinationPath}`)
-      await fs.copy(componentContentPath, destinationPath)
-    } else {
-      // Compare the checksum
-      await applyCompareChecksum(componentContentPath, destinationPath)
+    if (await fs.exists(destinationPath)) {
+      applyConfigTask.error(`A file/folder already exists at the destination ${destinationPath}`)
+      applyConfigTask.stop()
+      process.exit(1)
     }
+
+    applyConfigTask.print(`Copying the component ${componentName} to the destination ${destinationPath}`)
+    await fs.copy(componentContentPath, destinationPath)
   }
+
+  //* Delete config.json
+  applyConfigTask.print("Deleting the config file")
+  await fs.remove(configPath)
 
   applyConfigTask.stop("The template config has been applied! 🎉")
 }
