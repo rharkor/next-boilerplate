@@ -1,5 +1,6 @@
 {
     "$schema": "../../component.d.json",
     "name": "default",
-    "pluggable": true
+    "description": "Default git hooks",
+    "suggestedPath": ".git-hooks"
 }

@@ -9,12 +9,17 @@
         "name": {
             "type": "string"
         },
-        "pluggable": {
-            "type": "boolean"
+        "description": {
+            "type": "string"
+        },
+        "suggestedPath": {
+            "type": "string"
         }
     },
     "required": [
         "$schema",
-        "name"
+        "name",
+        "description",
+        "suggestedPath"
     ]
 }

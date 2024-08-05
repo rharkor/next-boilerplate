@@ -4,10 +4,15 @@
  * Validate the config of each templates
  */
 
-import { z } from "zod"
 import { $ } from "zx"
 
 import { input } from "@inquirer/prompts"
+import {
+  componentConfigSchema,
+  configSchema,
+  TComponentConfig,
+  TConfig,
+} from "@next-boilerplate/scripts/utils/template-config"
 import { logger, task } from "@rharkor/logger"
 
 import "zx/globals"
@@ -16,12 +21,6 @@ const dir = $.sync`pwd`.text().replace("\n", "")
 
 const componentsDirectory = path.join(dir, "assets", "components")
 const configFileName = "config.json"
-
-const configSchema = z.object({
-  name: z.string(),
-  references: z.record(z.string(), z.string()),
-})
-type TConfig = z.infer<typeof configSchema>
 
 export const applyConfig = async () => {
   //* Root dir
@@ -86,25 +85,49 @@ export const applyConfig = async () => {
     }
   }
 
-  for (const [from, to] of Object.entries(config.references)) {
-    //? Check if the component exists
-    const toDirPath = path.join(componentsDirectory, to)
-    // Find the file that start with "index"
-    const toPathFile = (await fs.readdir(toDirPath)).find((file) => file.startsWith("index"))
-    const toPath = toPathFile ? path.join(toDirPath, toPathFile) : undefined
-    if (!toPath || !(await fs.exists(toPath))) {
-      applyConfigTask.error(`The component ${to} referenced by the config doesn't exist`)
-      continue
+  for (const reference of config.references) {
+    const componentName = typeof reference === "string" ? reference : reference.name
+    const componentPath = path.join(componentsDirectory, componentName)
+    if (!(await fs.exists(componentPath))) {
+      applyConfigTask.error(`The component ${componentName} referenced by the config doesn't exist`)
+      applyConfigTask.stop()
+      process.exit(1)
+    }
+    const componentConfigPath = path.join(componentPath, configFileName)
+    const componentContentName = (await fs.readdir(componentPath)).find((file) => file.startsWith("index"))
+    if (!componentContentName) {
+      applyConfigTask.error(`The component ${componentName} referenced by the config doesn't exist`)
+      applyConfigTask.stop()
+      process.exit(1)
+    }
+    const componentContentPath = path.join(componentPath, componentContentName)
+    const componentConfig = (await fs.readJson(componentConfigPath)) as TComponentConfig
+    try {
+      componentConfigSchema.parse(componentConfig)
+    } catch (error) {
+      applyConfigTask.error(`The component config file ${componentConfigPath} is not valid`)
+      applyConfigTask.stop()
+      logger.error(error)
+      process.exit(1)
     }
 
+    //? Check if the component exists
+    if (!componentContentPath || !(await fs.exists(componentContentPath))) {
+      applyConfigTask.error(`The component ${componentName} referenced by the config doesn't exist`)
+      applyConfigTask.stop()
+      process.exit(1)
+    }
+
+    const relativeDestinationPath = typeof reference === "string" ? componentConfig.suggestedPath : reference.path
+
     // Verify if the template from is up to date
-    const fromPath = path.join(root, from)
-    if (!(await fs.exists(fromPath))) {
-      applyConfigTask.print(`Copying the component ${to} to ${fromPath}`)
-      await fs.copy(toPath, fromPath)
+    const destinationPath = path.join(root, relativeDestinationPath)
+    if (!(await fs.exists(destinationPath))) {
+      applyConfigTask.print(`Copying the component ${componentName} to the destination ${destinationPath}`)
+      await fs.copy(componentContentPath, destinationPath)
     } else {
       // Compare the checksum
-      await applyCompareChecksum(toPath, fromPath)
+      await applyCompareChecksum(componentContentPath, destinationPath)
     }
   }
 

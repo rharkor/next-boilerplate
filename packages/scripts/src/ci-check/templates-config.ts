@@ -4,10 +4,9 @@
  * Validate the config of each templates
  */
 
-import { z } from "zod"
-
 import { cdAtRoot, cwdAtRoot } from "@/utils"
-import { task } from "@rharkor/logger"
+import { componentConfigSchema, configSchema, TComponentConfig, TConfig } from "@/utils/template-config"
+import { logger, task } from "@rharkor/logger"
 
 import "zx/globals"
 
@@ -15,14 +14,8 @@ cwdAtRoot()
 cdAtRoot()
 
 const templatesDirectory = "packages/templates"
-const componentsDirectory = "packages/components"
+const componentsDirectory = "packages/cli/assets/components"
 const configFileName = "config.json"
-
-const configSchema = z.object({
-  name: z.string(),
-  references: z.record(z.string(), z.string()),
-})
-type TConfig = z.infer<typeof configSchema>
 
 const validateTemplateTask = await task.startTask({
   name: "Validating templates config... 🧰",
@@ -30,7 +23,9 @@ const validateTemplateTask = await task.startTask({
 
 //* Get all the templates
 validateTemplateTask.print("Getting all the templates")
-const templatesPath = await fs.readdir(templatesDirectory)
+const templatesPath = (await fs.readdir(templatesDirectory, { withFileTypes: true }))
+  .filter((dirent) => dirent.isDirectory())
+  .map((dirent) => dirent.name)
 
 const templates: { config: TConfig; path: string }[] = []
 for (const templatePath of templatesPath) {
@@ -60,14 +55,35 @@ for (const template of templates) {
 //* Validate the references
 validateTemplateTask.print("Validating the references")
 for (const template of templates) {
-  for (const to of Object.values(template.config.references)) {
+  for (const reference of template.config.references) {
+    const componentName = typeof reference === "string" ? reference : reference.name
+    const componentPath = path.join(componentsDirectory, componentName)
+    if (!(await fs.exists(componentPath))) {
+      validateTemplateTask.error(`The component ${componentName} referenced by the config doesn't exist`)
+      validateTemplateTask.stop()
+      process.exit(1)
+    }
+    const componentConfigPath = path.join(componentPath, configFileName)
+    const componentContentName = (await fs.readdir(componentPath)).find((file) => file.startsWith("index"))
+    if (!componentContentName) {
+      validateTemplateTask.error(`The component ${componentName} referenced by the config doesn't exist`)
+      validateTemplateTask.stop()
+      process.exit(1)
+    }
+    const componentContentPath = path.join(componentPath, componentContentName)
+    const componentConfig = (await fs.readJson(componentConfigPath)) as TComponentConfig
+    try {
+      componentConfigSchema.parse(componentConfig)
+    } catch (error) {
+      validateTemplateTask.error(`The component config file ${componentConfigPath} is not valid`)
+      validateTemplateTask.stop()
+      logger.error(error)
+      process.exit(1)
+    }
+
     //? Check if the component exists
-    const toDirPath = path.join(componentsDirectory, to)
-    // Find the file that start with "index"
-    const toPathFile = (await fs.readdir(toDirPath)).find((file) => file.startsWith("index"))
-    const toPath = toPathFile ? path.join(toDirPath, toPathFile) : undefined
-    if (!toPath || !(await fs.exists(toPath))) {
-      validateTemplateTask.error(`The component ${to} referenced by the template ${template.path} doesn't exist`)
+    if (!componentContentPath || !(await fs.exists(componentContentPath))) {
+      validateTemplateTask.error(`The component ${componentName} referenced by the config doesn't exist`)
       validateTemplateTask.stop()
       process.exit(1)
     }
