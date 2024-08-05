@@ -17,11 +17,8 @@
         "baseUrl": "${configDir}",
         "rootDir": "${configDir}/src",
         "outDir": "${configDir}/dist",
-        "paths": {
-            "@/*": [
-                "${configDir}/src/*"
-            ]
-        }
+        "declaration": true,
+        "declarationMap": true
     },
     "include": [
         "${configDir}/src/**/*.ts"
