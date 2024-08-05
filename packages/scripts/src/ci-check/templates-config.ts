@@ -52,10 +52,10 @@ for (const template of templates) {
   }
 }
 
-//* Validate the references
-validateTemplateTask.print("Validating the references")
+//* Validate the plugins
+validateTemplateTask.print("Validating the plugins")
 for (const template of templates) {
-  for (const reference of template.config.references) {
+  for (const reference of template.config.plugins) {
     const componentName = typeof reference === "string" ? reference : reference.name
     const componentPath = path.join(componentsDirectory, componentName)
     if (!(await fs.exists(componentPath))) {

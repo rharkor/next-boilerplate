@@ -59,10 +59,10 @@ export const applyConfig = async () => {
     process.exit(1)
   }
 
-  //* Apply references
-  applyConfigTask.print("Applying references")
+  //* Apply plugins
+  applyConfigTask.print("Applying plugins")
 
-  for (const reference of config.references) {
+  for (const reference of config.plugins) {
     const componentName = typeof reference === "string" ? reference : reference.name
     const componentPath = path.join(componentsDirectory, componentName)
     if (!(await fs.exists(componentPath))) {

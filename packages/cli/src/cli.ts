@@ -2,8 +2,6 @@ import { program } from "commander"
 
 import { logger } from "@rharkor/logger"
 
-import pJson from "../package.json"
-
 import { registerCli } from "./cli/index"
 
 const register = async () => {
@@ -12,6 +10,7 @@ const register = async () => {
     .description("Show the version")
     .action(async () => {
       await logger.init()
+      const pJson = await import("../package.json")
       logger._log(pJson.version)
     })
 

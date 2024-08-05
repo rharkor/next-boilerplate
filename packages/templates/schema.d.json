@@ -9,7 +9,7 @@
         "name": {
             "type": "string"
         },
-        "references": {
+        "plugins": {
             "type": "array",
             "items": {
                 "anyOf": [

@@ -15,7 +15,7 @@ export function isPathInCurrentScope(filePath: string): boolean {
 
 export const configSchema = z.object({
   name: z.string(),
-  references: z.array(
+  plugins: z.array(
     z.string().or(
       z.object({
         name: z.string(),
