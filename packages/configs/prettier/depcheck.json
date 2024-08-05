@@ -1,0 +1,5 @@
+{
+    "ignoreMatches": [
+        "prettier-plugin-tailwindcss"
+    ]
+}

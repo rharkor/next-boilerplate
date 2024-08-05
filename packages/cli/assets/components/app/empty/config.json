@@ -1,0 +1,6 @@
+{
+    "$schema": "../../component.d.json",
+    "name": "empty",
+    "description": "Empty app directory",
+    "suggestedPath": "app"
+}

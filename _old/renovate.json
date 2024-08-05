@@ -1,0 +1,35 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended"
+  ],
+  "dependencyDashboard": true,
+  "baseBranches": [
+    "dev"
+  ],
+  "packageRules": [
+    {
+      "matchUpdateTypes": [
+        "minor",
+        "patch",
+        "pin",
+        "digest"
+      ],
+      "automerge": true
+    },
+    {
+      "matchDepTypes": [
+        "devDependencies"
+      ],
+      "automerge": true
+    }
+  ],
+  "platformAutomerge": true,
+  "devcontainer": {
+    "fileMatch": [
+      "^.devcontainer/devcontainer.json$",
+      "^.devcontainer.json$"
+    ]
+  },
+  "branchConcurrentLimit": 3
+}

@@ -42,9 +42,23 @@ jobs:
         run: |
           SOURCE_BRANCH="${GITHUB_REF_NAME}"
           TARGET_BRANCH="${GITHUB_REF_NAME}-release"
-          # Checkout target branch
-          git fetch origin ${TARGET_BRANCH}:${TARGET_BRANCH}
-          git checkout ${TARGET_BRANCH}
+          MAIN_RELEASE_BRANCH="main-release"
+          # Fetch all
+          git fetch origin
+          # Create the main-release branch from main if it doesn't exist
+          if ! git show-ref --verify --quiet "refs/remotes/origin/${MAIN_RELEASE_BRANCH}"; then
+              echo "Target branch ${MAIN_RELEASE_BRANCH} does not exist. Creating it from main."
+              git checkout -b ${MAIN_RELEASE_BRANCH} origin/main
+              git push --set-upstream origin ${MAIN_RELEASE_BRANCH}
+          fi
+          # Check if the target branch exists and checkout to it
+          if git show-ref --verify --quiet "refs/remotes/origin/${TARGET_BRANCH}"; then
+              git checkout ${TARGET_BRANCH}
+          else
+              echo "Target branch ${TARGET_BRANCH} does not exist. Creating it from ${SOURCE_BRANCH}."
+              git checkout -b ${TARGET_BRANCH} origin/${SOURCE_BRANCH}
+              git push --set-upstream origin ${TARGET_BRANCH}
+          fi
           # Merge changes from SOURCE_BRANCH to TARGET_BRANCH, favoring 'theirs' for conflicts
           git merge -X theirs origin/${SOURCE_BRANCH}
           # Push changes to TARGET_BRANCH
@@ -80,9 +94,14 @@ jobs:
           cache: "npm"
       - name: Install dependencies
         run: npm install
+      - name: Cache for Turbo
+        uses: rharkor/caching-for-turbo@v1.5
+      - name: Build
+        run: turbo run build --filter='@next-boilerplate/cli'
       # - name: Verify the integrity of provenance attestations and registry signatures for installed dependencies
       #   run: npm audit signatures
       - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: npx semantic-release

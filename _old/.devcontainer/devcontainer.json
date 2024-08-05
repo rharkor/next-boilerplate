@@ -1,0 +1,77 @@
+{
+  "name": "next-boilerplate",
+
+  // Update the 'dockerComposeFile' list if you have more compose files or use different names.
+  // The .devcontainer/docker-compose.yml file contains any overrides you need/want to make.
+  "dockerComposeFile": "docker-compose.yml",
+
+  // The 'service' property is the name of the service for the container that VS Code should
+  // use. Update this value and .devcontainer/docker-compose.yml to the real service name.
+  "service": "app",
+  "runServices": ["redis", "db"],
+
+  // The optional 'workspaceFolder' property is the path VS Code should open by default when
+  // connected. This is typically a file mount in .devcontainer/docker-compose.yml
+  "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+
+  // Use 'forwardPorts' to make a list of ports inside the container available locally.
+  "forwardPorts": [3000, 3001, 3002, 5432, 6379, 6080],
+
+  "portsAttributes": {
+    "3000": {
+      "label": "app"
+    },
+    "3001": {
+      "label": "docs"
+    },
+    "3002": {
+      "label": "landing"
+    },
+    "5432": {
+      "label": "postgres"
+    },
+    "6379": {
+      "label": "redis"
+    }
+  },
+
+  // Use 'postCreateCommand' to run commands after the container is created.
+  "postCreateCommand": "bash ./packages/scripts/install/install.sh devcontainer",
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "formulahendry.auto-rename-tag",
+        "aaron-bond.better-comments",
+        "WallabyJs.console-ninja",
+        "EditorConfig.EditorConfig",
+        "dsznajder.es7-react-js-snippets",
+        "dbaeumer.vscode-eslint",
+        "tombonnike.vscode-status-bar-format-toggle",
+        "github.vscode-github-actions",
+        "GitHub.copilot",
+        "GitHub.copilot-chat",
+        "eamodio.gitlens",
+        "ecmel.vscode-html-css",
+        "Zignd.html-css-class-completion",
+        "yzhang.markdown-all-in-one",
+        "esbenp.prettier-vscode",
+        "Prisma.prisma",
+        "bradlc.vscode-tailwindcss",
+        "donjayamanne.githistory",
+        "ms-azuretools.vscode-docker",
+        "ftonato.password-generator",
+        "adamhartford.vscode-base64",
+        "ChakrounAnas.turbo-console-log",
+        "yoavbls.pretty-ts-errors",
+        "humao.rest-client",
+        "hashicorp.terraform",
+        "tldraw-org.tldraw-vscode",
+        "unifiedjs.vscode-mdx"
+      ]
+    }
+  }
+
+  // Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
+  // "remoteUser": "root"
+}

@@ -1,14 +1,39 @@
 {
-  "name": "custom-prettier-config",
+  "name": "@next-boilerplate/prettier",
   "version": "0.0.0",
-  "private": true,
-  "files": [
-    "next.js",
-    "base.js"
-  ],
-  "dependencies": {
-    "eslint-config-custom": "*",
+  "scripts": {
+    "build": "pkgroll",
+    "type-check": "tsc --noEmit",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix .",
+    "prettier": "prettier --check \"src/**/*.{js,jsx,ts,tsx}\"",
+    "prettier:fix": "prettier --write \"src/**/*.{js,jsx,ts,tsx}\""
+  },
+  "devDependencies": {
+    "@next-boilerplate/eslint": "*",
+    "@next-boilerplate/tsconfig": "^0.0.0",
+    "pkgroll": "^2.4.2",
     "prettier": "^3.1.0",
-    "prettier-plugin-tailwindcss": "^0.6.0"
-  }
+    "prettier-plugin-tailwindcss": "^0.6.0",
+    "typescript": "^5.5.4"
+  },
+  "exports": {
+    "./base": {
+      "require": {
+        "default": "./dist/base.cjs"
+      },
+      "import": {
+        "default": "./dist/base.mjs"
+      }
+    },
+    "./next": {
+      "require": {
+        "default": "./dist/next.cjs"
+      },
+      "import": {
+        "default": "./dist/next.mjs"
+      }
+    }
+  },
+  "type": "module"
 }

@@ -1,7 +1,5 @@
 {
   "name": "@next-boilerplate/tsconfig",
-  "dependencies": {
-    "eslint-config-custom": "*",
-    "custom-prettier-config": "*"
-  }
+  "version": "0.0.0",
+  "type": "module"
 }

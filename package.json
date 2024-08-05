@@ -1,40 +1,50 @@
 {
-  "name": "next-boilerplate",
-  "private": true,
-  "scripts": {
-    "dev": "turbo run dev",
-    "build": "turbo run build",
-    "type-check": "turbo run type-check",
-    "start": "turbo run start",
-    "lint": "turbo run lint",
-    "lint:fix": "turbo run lint:fix",
-    "prettier": "turbo run prettier",
-    "prettier:fix": "turbo run prettier:fix",
-    "test": "turbo run test",
-    "init": "npm run -s init:build && npm run -s init -w packages/scripts",
-    "init:env": "npm run -s init:env -w packages/scripts",
-    "init:build": "npm run -s init:build -w packages/scripts",
-    "init:coding-env": "bash ./packages/scripts/install/install.sh",
-    "depcheck": "npm run -s depcheck -w packages/scripts",
-    "is-initialized": "npm run -s is-initialized -w packages/scripts",
-    "preinstall": "npx --yes only-allow-many npm"
-  },
-  "workspaces": [
-    "apps/*",
-    "packages/*",
-    "packages/configs/*"
-  ],
-  "devDependencies": {
-    "@semantic-release/changelog": "^6.0.3",
-    "@semantic-release/commit-analyzer": "^13.0.0",
-    "@semantic-release/git": "^10.0.1",
-    "@semantic-release/github": "^10.0.0",
-    "@semantic-release/npm": "^12.0.0",
-    "@semantic-release/release-notes-generator": "^14.0.0",
-    "conventional-changelog-conventionalcommits": "^8.0.0",
-    "semantic-release": "^24.0.0",
-    "turbo": "^2.0.4"
-  },
-  "license": "MIT",
-  "packageManager": "npm@10.8.1"
+    "name": "next-boilerplate",
+    "private": true,
+    "version": "0.0.0",
+    "scripts": {
+        "dev": "turbo run dev",
+        "build": "turbo run build",
+        "type-check": "turbo run type-check",
+        "start": "turbo run start",
+        "lint": "turbo run lint",
+        "lint:fix": "turbo run lint:fix",
+        "prettier": "turbo run prettier",
+        "prettier:fix": "turbo run prettier:fix",
+        "test": "turbo run test",
+        "ci-check": "turbo run ci-check",
+        "init": "npm run init -s -w packages/scripts",
+        "depcheck": "npm run depcheck -s -w packages/scripts"
+    },
+    "homepage": "https://github.com/rharkor/next-boilerplate",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/rharkor/next-boilerplate.git"
+    },
+    "keywords": [
+        "nextjs",
+        "boilerplate",
+        "typescript",
+        "monorepo"
+    ],
+    "author": "HUORT Louis (https://louis.huort.com)",
+    "workspaces": [
+        "apps/*",
+        "packages/*",
+        "packages/configs/*"
+    ],
+    "devDependencies": {
+        "@semantic-release/changelog": "^6.0.3",
+        "@semantic-release/commit-analyzer": "^13.0.0",
+        "@semantic-release/git": "^10.0.1",
+        "@semantic-release/github": "^10.0.0",
+        "@semantic-release/npm": "^12.0.0",
+        "@semantic-release/release-notes-generator": "^14.0.0",
+        "conventional-changelog-conventionalcommits": "^8.0.0",
+        "semantic-release": "^24.0.0",
+        "turbo": "^2.0.4",
+        "zx": "^8.1.4"
+    },
+    "license": "MIT",
+    "packageManager": "npm@10.8.2"
 }
