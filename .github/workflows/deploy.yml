@@ -58,11 +58,18 @@ jobs:
         # 2. The multi line json string is transformed to a single line string.
         # 3. The single line json string is set to an 'output' (or result) of this step.
         run: |
-          content=`npx -y turbo build --filter="...[$TURBO_RUN_FILTER]" --dry-run=json`
-          echo 'result<<EOF' >> $GITHUB_OUTPUT
-          echo $content >> $GITHUB_OUTPUT
-          echo 'EOF' >> $GITHUB_OUTPUT
-          echo $content > $GITHUB_WORKSPACE/result.json
+          npx -y turbo build --filter="...[$TURBO_RUN_FILTER]" --dry-run=json > $GITHUB_WORKSPACE/result.json 2> error.log
+          content=$(cat $GITHUB_WORKSPACE/result.json)
+
+          if [ $? -ne 0 ]; then
+              echo 'result<<EOF' >> $GITHUB_OUTPUT
+              cat error.log >> $GITHUB_OUTPUT
+              echo 'EOF' >> $GITHUB_OUTPUT
+          else
+              echo 'result<<EOF' >> $GITHUB_OUTPUT
+              echo "$content" >> $GITHUB_OUTPUT
+              echo 'EOF' >> $GITHUB_OUTPUT
+          fi
       - name: Upload Result as Artifact
         uses: actions/upload-artifact@v4
         with:
