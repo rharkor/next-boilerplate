@@ -1,0 +1,102 @@
+name: Release
+on:
+  push:
+    branches:
+      - main
+      - main-release
+      - rec
+      - rec-release
+
+  workflow_dispatch:
+
+permissions:
+  contents: read # for checkout
+
+jobs:
+  # This job is used to sync the main branch to the main:release branch and the rec branch to the rec:release branch
+  sync:
+    name: Sync
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # to be able to push to the main:release and rec:release branches
+      id-token: write # to enable use of OIDC for npm provenance
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/rec'
+    steps:
+      - name: Generate token
+        id: generate_token
+        uses: tibdex/github-app-token@v2
+        with:
+          app_id: ${{ secrets.MYBOT_APP_ID }}
+          private_key: ${{ secrets.MYBOT_PRIVATE_KEY }}
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ steps.generate_token.outputs.token }}
+      - name: Setup Git Config
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "github-actions@example.com"
+
+      - name: Sync Branch
+        run: |
+          SOURCE_BRANCH="${GITHUB_REF_NAME}"
+          TARGET_BRANCH="${GITHUB_REF_NAME}-release"
+          MAIN_RELEASE_BRANCH="main-release"
+          # Fetch all
+          git fetch origin
+          # Create the main-release branch from main if it doesn't exist
+          if ! git show-ref --verify --quiet "refs/remotes/origin/${MAIN_RELEASE_BRANCH}"; then
+              echo "Target branch ${MAIN_RELEASE_BRANCH} does not exist. Creating it from main."
+              git checkout -b ${MAIN_RELEASE_BRANCH} origin/main
+              git push --set-upstream origin ${MAIN_RELEASE_BRANCH}
+          fi
+          # Check if the target branch exists and checkout to it
+          if git show-ref --verify --quiet "refs/remotes/origin/${TARGET_BRANCH}"; then
+              git checkout ${TARGET_BRANCH}
+          else
+              echo "Target branch ${TARGET_BRANCH} does not exist. Creating it from ${SOURCE_BRANCH}."
+              git checkout -b ${TARGET_BRANCH} origin/${SOURCE_BRANCH}
+              git push --set-upstream origin ${TARGET_BRANCH}
+          fi
+          # Merge changes from SOURCE_BRANCH to TARGET_BRANCH, favoring 'theirs' for conflicts
+          git merge -X theirs origin/${SOURCE_BRANCH}
+          # Push changes to TARGET_BRANCH
+          git push origin ${TARGET_BRANCH}
+        env:
+          GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
+
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # to be able to publish a GitHub release
+      issues: write # to be able to comment on released issues
+      pull-requests: write # to be able to comment on released pull requests
+      id-token: write # to enable use of OIDC for npm provenance
+    if: (github.ref == 'refs/heads/main-release' || github.ref == 'refs/heads/rec-release')
+    steps:
+      - name: Generate token
+        id: generate_token
+        uses: tibdex/github-app-token@v2
+        with:
+          app_id: ${{ secrets.MYBOT_APP_ID }}
+          private_key: ${{ secrets.MYBOT_PRIVATE_KEY }}
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ steps.generate_token.outputs.token }}
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20.x"
+          cache: "npm"
+      - name: Install dependencies
+        run: npm install
+      # - name: Verify the integrity of provenance attestations and registry signatures for installed dependencies
+      #   run: npm audit signatures
+      - name: Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npx semantic-release

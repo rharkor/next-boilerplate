@@ -1,0 +1,38 @@
+{
+  "name": "@next-boilerplate/eslint-legacy",
+  "version": "0.0.0",
+  "scripts": {
+    "build": "pkgroll",
+    "type-check": "tsc --noEmit",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix .",
+    "prettier": "prettier --check \"src/**/*.{js,jsx,ts,tsx}\"",
+    "prettier:fix": "prettier --write \"src/**/*.{js,jsx,ts,tsx}\""
+  },
+  "exports": {
+    "./next": {
+      "require": {
+        "types": "./dist/next.d.cts",
+        "default": "./dist/next.cjs"
+      },
+      "import": {
+        "types": "./dist/next.d.mts",
+        "default": "./dist/next.mjs"
+      }
+    }
+  },
+  "devDependencies": {
+    "@next-boilerplate/eslint-plugin": "*",
+    "@next-boilerplate/tsconfig": "^0.0.0",
+    "@types/eslint": "^8.56.7",
+    "@typescript-eslint/eslint-plugin": "^7.0.0",
+    "@typescript-eslint/parser": "^7.0.0",
+    "eslint": "^8.0.0",
+    "eslint-config-next": "^14.0.3",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-simple-import-sort": "^12.0.0",
+    "eslint-plugin-tailwindcss": "^3.13.0",
+    "eslint-plugin-unused-imports": "^3.0.0",
+    "typescript": "^5.5.4"
+  }
+}

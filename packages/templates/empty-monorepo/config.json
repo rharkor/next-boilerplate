@@ -1,0 +1,19 @@
+{
+    "$schema": "../schema.d.json",
+    "name": "empty-monorepo",
+    "references": [
+        "turbo/default",
+        "devcontainer/default",
+        "app/empty",
+        "packages/empty",
+        "githooks/default",
+        "vscode/default",
+        "github/workflows/default",
+        "github/issue-template/default",
+        "gitignore/default",
+        "releaserc/default",
+        "git-conventional-commits/default",
+        "license/default",
+        "makefile/default"
+    ]
+}

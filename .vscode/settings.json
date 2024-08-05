@@ -12,9 +12,5 @@
   "editor.formatOnSave": true,
   "files.associations": {
     "*.css": "tailwindcss"
-  },
-  "[terraform]": {
-    "editor.defaultFormatter": "hashicorp.terraform",
-    "editor.formatOnSave": true
   }
 }

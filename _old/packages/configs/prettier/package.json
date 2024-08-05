@@ -1,0 +1,14 @@
+{
+  "name": "custom-prettier-config",
+  "version": "0.0.0",
+  "private": true,
+  "files": [
+    "next.js",
+    "base.js"
+  ],
+  "dependencies": {
+    "eslint-config-custom": "*",
+    "prettier": "^3.1.0",
+    "prettier-plugin-tailwindcss": "^0.6.0"
+  }
+}

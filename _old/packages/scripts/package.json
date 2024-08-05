@@ -1,0 +1,32 @@
+{
+  "name": "@next-boilerplate/scripts",
+  "main": "index.js",
+  "scripts": {
+    "init": "tsx ./init/init.ts",
+    "init:env": "tsx ./init/init-env.ts",
+    "init:build": "cd ../.. && npm run build -w packages/lib && cd packages/scripts && tsx ./init/init-build.ts",
+    "is-initialized": "bash ./init/is-initialized.sh",
+    "depcheck": "tsx depcheck-test.ts",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix .",
+    "prettier": "prettier --check \"**/*.{js,jsx,ts,tsx}\"",
+    "prettier:fix": "prettier --write \"**/*.{js,jsx,ts,tsx}\""
+  },
+  "dependencies": {
+    "@next-boilerplate/lib": "*",
+    "@types/inquirer": "^9.0.3",
+    "chalk": "^5.3.0",
+    "depcheck": "^1.4.7",
+    "dotenv": "^16.3.1",
+    "eslint-config-custom": "*",
+    "glob": "^11.0.0",
+    "inquirer": "^9.2.11",
+    "ora": "^8.0.1",
+    "tsx": "^4.7.0",
+    "yaml": "^2.3.4"
+  },
+  "devDependencies": {
+    "custom-prettier-config": "*",
+    "eslint-config-custom": "*"
+  }
+}

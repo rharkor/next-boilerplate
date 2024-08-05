@@ -1,0 +1,7 @@
+{
+    "ignoreMatches": [
+        "@next-boilerplate/eslint-plugin",
+        "eslint-config-next",
+        "eslint-plugin-tailwindcss"
+    ]
+}

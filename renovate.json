@@ -7,29 +7,10 @@
   "baseBranches": [
     "dev"
   ],
-  "packageRules": [
-    {
-      "matchUpdateTypes": [
-        "minor",
-        "patch",
-        "pin",
-        "digest"
-      ],
-      "automerge": true
-    },
-    {
-      "matchDepTypes": [
-        "devDependencies"
-      ],
-      "automerge": true
-    }
-  ],
+  "automerge": true,
   "platformAutomerge": true,
-  "devcontainer": {
-    "fileMatch": [
-      "^.devcontainer/devcontainer.json$",
-      "^.devcontainer.json$"
-    ]
-  },
-  "branchConcurrentLimit": 3
+  "branchConcurrentLimit": 3,
+  "schedule": [
+    "every weekend"
+  ]
 }

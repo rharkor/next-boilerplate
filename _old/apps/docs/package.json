@@ -1,0 +1,23 @@
+{
+  "name": "@next-boilerplate/docs",
+  "version": "0.0.1",
+  "description": "Documentation",
+  "scripts": {
+    "dev": "next dev -p 3001",
+    "build": "next build",
+    "type-check": "tsc --noEmit",
+    "start": "next start --port ${PORT:-3000}"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "next": "^14.0.0",
+    "nextra": "latest",
+    "nextra-theme-docs": "latest",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "20.14.10",
+    "typescript": "^5.4.3"
+  }
+}

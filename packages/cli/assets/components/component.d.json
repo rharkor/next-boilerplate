@@ -1,0 +1,25 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+        "$schema": {
+            "type": "string"
+        },
+        "name": {
+            "type": "string"
+        },
+        "description": {
+            "type": "string"
+        },
+        "suggestedPath": {
+            "type": "string"
+        }
+    },
+    "required": [
+        "$schema",
+        "name",
+        "description",
+        "suggestedPath"
+    ]
+}

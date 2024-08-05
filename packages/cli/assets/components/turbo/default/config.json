@@ -1,0 +1,6 @@
+{
+    "$schema": "../../component.d.json",
+    "name": "default",
+    "description": "Default turbo configuration",
+    "suggestedPath": "turbo.json"
+}
