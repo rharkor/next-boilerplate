@@ -65,7 +65,7 @@
     },
     "dependencies": {
         "@inquirer/prompts": "^5.3.7",
-        "@rharkor/logger": "^1.2.2",
+        "@rharkor/logger": "^1.2.3",
         "commander": "^12.1.0",
         "typescript": "^5.5.4",
         "zx": "^8.1.4"

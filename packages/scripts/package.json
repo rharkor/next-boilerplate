@@ -10,7 +10,7 @@
         "project-postinstall:install-zsh": "node ./dist/project-postinstall/install-zsh/exec.js",
         "project-postinstall:install-extensions": "node ./dist/project-postinstall/install-extensions/exec.js",
         "project-postinstall:install-git-hooks": "node ./dist/project-postinstall/install-git-hooks/exec.js",
-        "ci-check": "run-p ci-check:*",
+        "ci-check": "run-s -s ci-check:*",
         "ci-check:devcontainer-extensions": "node ./dist/ci-check/devcontainer-extensions.js",
         "ci-check:banned-keywords": "node ./dist/ci-check/banned-keywords.js",
         "ci-check:templates-config": "node ./dist/ci-check/templates-config.js",
@@ -40,7 +40,7 @@
     },
     "type": "module",
     "dependencies": {
-        "@rharkor/logger": "^1.2.2",
+        "@rharkor/logger": "^1.2.3",
         "@rharkor/utils": "^0.1.3"
     }
 }
