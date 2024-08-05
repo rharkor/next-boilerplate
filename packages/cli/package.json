@@ -36,7 +36,7 @@
         }
     },
     "bin": {
-        "next-boilerplate": "./dist/cli.js"
+        "next-boilerplate": "dist/cli.js"
     },
     "keywords": [
         "cli",
@@ -51,7 +51,7 @@
     "author": "HUORT Louis (https://louis.huort.com)",
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/rharkor/next-boilerplate"
+        "url": "git+https://github.com/rharkor/next-boilerplate.git"
     },
     "license": "MIT",
     "description": "CLI for Next Boilerplate",
