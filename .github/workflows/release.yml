@@ -97,7 +97,7 @@ jobs:
       - name: Cache for Turbo
         uses: rharkor/caching-for-turbo@v1.5
       - name: Build
-        run: turbo run build --filter='@next-boilerplate/cli'
+        run: npx turbo run build --filter='@next-boilerplate/cli'
       # - name: Verify the integrity of provenance attestations and registry signatures for installed dependencies
       #   run: npm audit signatures
       - name: Release
