@@ -8,6 +8,7 @@
         "build": "pkgroll",
         "type-check": "tsc --noEmit",
         "debug": "tsx ./debug/index.ts",
+	"install-local": "npm pack && npm install -g next-boilerplate-cli-0.0.0.tgz && rm next-boilerplate-cli-0.0.0.tgz",
         "lint": "eslint .",
         "lint:fix": "eslint --fix .",
         "prettier": "prettier --check \"src/**/*.{js,jsx,ts,tsx}\"",
@@ -58,17 +59,19 @@
     "devDependencies": {
         "@next-boilerplate/eslint": "*",
         "@next-boilerplate/prettier": "*",
-        "@next-boilerplate/tsconfig": "*",
         "@next-boilerplate/scripts": "*",
+        "@next-boilerplate/tsconfig": "*",
         "pkgroll": "^2.4.2",
-        "tsx": "^4.16.5"
+        "tsx": "^4.16.5",
+        "typescript": "^5.5.4"
     },
     "dependencies": {
-        "@inquirer/prompts": "^5.3.7",
         "@rharkor/logger": "^1.2.3",
+        "@types/minimist": "^1.2.5",
         "commander": "^12.1.0",
-        "typescript": "^5.5.4",
-        "zx": "^8.1.4"
+        "fs-extra": "^11.2.0",
+        "minimist": "^1.2.8",
+        "@inquirer/prompts": "^5.3.7"
     },
     "type": "module",
     "private": false,

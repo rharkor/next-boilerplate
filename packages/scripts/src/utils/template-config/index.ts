@@ -1,3 +1,4 @@
+import path from "path"
 import { z } from "zod"
 
 /**
@@ -34,7 +35,7 @@ export const configSchema = z.object({
 })
 export type TConfig = z.infer<typeof configSchema>
 
-export const componentConfigSchema = z.object({
+export const pluginConfigSchema = z.object({
   name: z.string(),
   description: z.string(),
   suggestedPath: z.string().refine(
@@ -48,4 +49,4 @@ export const componentConfigSchema = z.object({
   ),
 })
 
-export type TComponentConfig = z.infer<typeof componentConfigSchema>
+export type TpluginConfig = z.infer<typeof pluginConfigSchema>
