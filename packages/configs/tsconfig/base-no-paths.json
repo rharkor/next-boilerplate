@@ -23,8 +23,5 @@
     ],
     "exclude": [
         "node_modules"
-    ],
-    "tsc-alias": {
-        "resolveFullPaths": true
-    }
+    ]
 }
