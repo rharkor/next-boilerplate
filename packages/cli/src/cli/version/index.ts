@@ -14,5 +14,9 @@ export const registerVersion = (program: Command) => {
 
   program.addCommand(versionCommand)
 
-  program.addOption(new Option("-v, --version", "output the version number")).action(printVersion)
+  program.addOption(new Option("-v, --version", "output the version number")).action((options) => {
+    if (options.version) {
+      printVersion()
+    }
+  })
 }
