@@ -1,0 +1,66 @@
+name: Check
+
+on:
+  #? We want to run this workflow on pull requests to the dev branch
+  #? Because we use the git flow workflow, the dev branch is the one that will receive the pull requests that may be invalid
+  pull_request:
+    branches:
+      - dev
+  workflow_dispatch:
+
+jobs:
+  check:
+    name: Check
+    runs-on: ubuntu-latest
+    env:
+      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+      TURBO_TEAM: ${{ vars.TURBO_TEAM }}
+      TURBO_REMOTE_ONLY: true
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20.x"
+          cache: "npm"
+      - name: Install dependencies
+        run: npm install
+      - name: Cache for Turbo
+        uses: rharkor/caching-for-turbo@v1.5
+      - name: Init
+        run: npm run init
+      - name: Lint check
+        run: npm run lint
+      - name: Format check
+        run: npm run prettier
+      - name: Unit & Integration tests
+        run: npm run test
+      - name: Check dependencies usage
+        run: npm run depcheck
+      - name: Advanced check
+        run: npm run ci-check
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    env:
+      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+      TURBO_TEAM: ${{ vars.TURBO_TEAM }}
+      TURBO_REMOTE_ONLY: true
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20.x"
+          cache: "npm"
+      - name: Install dependencies
+        run: npm install
+      - name: Cache for Turbo
+        uses: rharkor/caching-for-turbo@v1.5
+      - name: Init
+        run: npm run init
+      - name: Build
+        run: npm run type-check

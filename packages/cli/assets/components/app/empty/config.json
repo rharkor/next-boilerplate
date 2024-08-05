@@ -1,0 +1,5 @@
+{
+    "$schema": "../../component.d.json",
+    "name": "empty",
+    "pluggable": true
+}

@@ -13,18 +13,19 @@
         "ci-check": "run-p ci-check:*",
         "ci-check:devcontainer-extensions": "node ./dist/ci-check/devcontainer-extensions.js",
         "ci-check:banned-keywords": "node ./dist/ci-check/banned-keywords.js",
-        "ci-check:templates-config": "node ./dist/ci-check/templates-config.js --check=true",
+        "ci-check:templates-config": "node ./dist/ci-check/templates-config.js",
+        "cli:fix-templates-config": "node ./dist/cli/apply-template-config.js",
         "depcheck": "node ./dist/depcheck-test/index.js",
         "lint": "eslint .",
         "lint:fix": "eslint --fix .",
         "prettier": "prettier --check \"src/**/*.{js,jsx,ts,tsx}\"",
-        "prettier:fix": "prettier --write \"src/**/*.{js,jsx,ts,tsx}\"",
-        "utils:fix-templates-config": "node ./dist/ci-check/templates-config.js"
+        "prettier:fix": "prettier --write \"src/**/*.{js,jsx,ts,tsx}\""
     },
     "devDependencies": {
         "@next-boilerplate/eslint": "*",
         "@next-boilerplate/prettier": "*",
         "depcheck": "^1.4.7",
+        "globby": "^14.0.2",
         "npm-run-all": "^4.1.5",
         "tsc-alias": "^1.8.10",
         "typescript": "^5.5.4",

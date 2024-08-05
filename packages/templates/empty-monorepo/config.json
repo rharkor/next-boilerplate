@@ -2,6 +2,18 @@
     "$schema": "../../components/schema.d.json",
     "name": "empty-monorepo",
     "references": {
-        "turbo.json": "turbo/default"
+        "turbo.json": "turbo/default",
+        ".devcontainer": "devcontainer/default",
+        "app": "app/empty",
+        "packages": "packages/empty",
+        ".git-hooks": "githooks/default",
+        ".vscode": "vscode/default",
+        ".github/workflows": "github/workflows/default",
+        ".github/ISSUE_TEMPLATE": "github/issue-template/default",
+        ".gitignore": "gitignore/default",
+        ".releaserc.json": "releaserc/default",
+        "git-conventional-commits.yaml": "git-conventional-commits/default",
+        "LICENSE": "license/default",
+        "makefile": "makefile/default"
     }
 }
