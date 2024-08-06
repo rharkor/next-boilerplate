@@ -1,0 +1,217 @@
+{
+  "app": {
+    "name": "Next boilerplate",
+    "description": "Le boilerplate parfait pour démarrer votre projet Next.js."
+  },
+  "errors": {
+    "password": {
+      "regex": "Le mot de passe doit contenir au moins une lettre majuscule, une lettre minuscule, un chiffre, et un caractère spécial.",
+      "required": "Mot de passe requis",
+      "min8": "Le mot de passe doit être d'au moins 8 caractères.",
+      "max25": "Le mot de passe doit être d'au maximum 25 caractères.",
+      "dontMatch": "Les mots de passe ne correspondent pas"
+    },
+    "username": {
+      "required": "Nom d'utilisateur requis",
+      "min3": "Le nom d'utilisateur doit être d'au moins 3 caractères.",
+      "max30": "Le nom d'utilisateur doit être d'au maximum 30 caractères."
+    },
+    "email": {
+      "required": "Email requis",
+      "invalid": "Email invalide"
+    },
+    "typeError": {
+      "number": {
+        "invalid": "Veuillez entrer un nombre valide.",
+        "required": "Veuillez entrer un nombre."
+      },
+      "string": {
+        "invalid": "Veuillez entrer une chaîne de caractères valide.",
+        "required": "Veuillez entrer une chaîne de caractères."
+      }
+    },
+    "unavailableWithOAuth": "Cette fonctionnalité n'est pas disponible avec ce type de connexion.",
+    "noFileSelected": "Aucun fichier sélectionné.",
+    "wrongProvider": "Vous avez déjà un compte avec un autre provider. Veuillez vous connecter avec celui-ci.",
+    "invalidCredentials": "Les informations d'identification sont invalides.",
+    "otpInvalid": "Code OTP invalide.",
+    "emailNotVerified": "Veuillez vérifier votre email.",
+    "fileTooLarge": "Le fichier est trop volumineux.",
+    "passwordsDoNotMatch": "Les mots de passe ne correspondent pas."
+  },
+  "home": "Accueil",
+  "homePage": {
+    "title": "Accueil"
+  },
+  "signUpPage": {
+    "createAnAccount": "Créer un compte",
+    "enterEmail": "Entrez votre adresse email pour créer un compte"
+  },
+  "signInPage": {
+    "loginToYourAccount": "Connectez-vous à votre compte",
+    "enterDetails": "Entrez vos détails pour vous connecter"
+  },
+  "profilePage": {
+    "serverSideData": "Les données ci-dessous ont été générée du serveur",
+    "profileDetails": {
+      "toggle": "Voir les détails",
+      "updateAccount": "Mettre à jour le compte",
+      "updateAccountDescription": "Vous pouvez mettre à jour votre compte ci-dessous",
+      "username": {
+        "label": "Nom d'utilisateur",
+        "placeholder": "Nom d'utilisateur"
+      },
+      "loggedDevices": "Appareils connectés",
+      "loggedDevicesDescription": "Vous pouvez voir les appareils connectés à votre compte ci-dessous",
+      "deleteLoggedDevice": {
+        "description": "Cette action va déconnecter l'appareil de votre compte"
+      },
+      "session": "la session",
+      "sessions": "les sessions",
+      "lastUsed": "Dernière utilisation",
+      "created": "Créé",
+      "expires": "Expire",
+      "in": "dans"
+    }
+  },
+  "auth": {
+    "orContinueWith": "Ou continuez avec",
+    "clickingAggreement": "En cliquant sur Inscription, vous acceptez nos",
+    "termsOfService": "Conditions d'utilisation",
+    "privacyPolicy": "Politique de confidentialité",
+    "demoMode": "Mode démo"
+  },
+  "and": "et",
+  "profile": "Profil",
+  "signUp": "Inscription",
+  "signIn": "Connexion",
+  "toSignUp": "S'inscrire",
+  "toSignIn": "Se connecter",
+  "signOut": "Déconnexion",
+  "deleteAccount": "Supprimer le compte",
+  "notFound": "Page introuvable",
+  "login": "Connexion",
+  "cancel": "Annuler",
+  "continue": "Suivant",
+  "areYouAbsolutelySure": "Êtes-vous absolument sûr ?",
+  "error": "Erreur",
+  "couldNotMessage": "Impossible de {action} {subject}. Veuillez ressayer plus tard.",
+  "fetch": "Récupérer",
+  "create": "Créer",
+  "update": "Mettre à jour",
+  "delete": "Supprimer",
+  "yes": "Oui",
+  "no": "Non",
+  "needSavePopup": "Vous avez des modifications non enregistrées !",
+  "reset": "Réinitialiser",
+  "saveChanges": "Sauvegarder",
+  "email": "Email",
+  "emailPlaceholder": "nom@exemple.com",
+  "password": "Mot de passe",
+  "passwordConfirmation": "Confirmer le mot de passe",
+  "edit": "Modifier",
+  "username": "Nom d'utilisateur",
+  "confirmPassword": "Confirmer le mot de passe",
+  "withEmail": "avec email",
+  "timeUnit": {
+    "now": "maintenant",
+    "second": "seconde",
+    "seconds": "secondes",
+    "minute": "minute",
+    "minutes": "minutes",
+    "hour": "heure",
+    "hours": "heures",
+    "day": "jour",
+    "days": "jours",
+    "week": "semaine",
+    "weeks": "semaines",
+    "month": "mois",
+    "months": "mois",
+    "year": "année",
+    "years": "années"
+  },
+  "pagination": {
+    "rowsPerPage": "Lignes par page",
+    "page": "Page",
+    "of": "sur",
+    "goToFirstPage": "Aller à la première page",
+    "goToPreviousPage": "Aller à la page précédente",
+    "goToNextPage": "Aller à la page suivante",
+    "goToLastPage": "Aller à la dernière page"
+  },
+  "deleteAccountConfirmationTitle": "Supprimer le compte",
+  "deleteAccountConfirmationDescription": "Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible.",
+  "deleteAccountConfirm": "Confirmer la suppression",
+  "deleteAccountSuccessTitle": "Compte supprimé",
+  "deleteAccountSuccessDescription": "Votre compte a été supprimé avec succès.",
+  "forgotPassword": "Mot de passe oublié ?",
+  "forgotPasswordTitle": "Mot de passe oublié",
+  "forgotPasswordDescription": "Entrez votre adresse email pour réinitialiser votre mot de passe.",
+  "forgotPasswordSuccessTitle": "Email envoyé",
+  "forgotPasswordSuccessDescription": "Un email a été envoyé à l'adresse indiquée. Veuillez suivre les instructions pour réinitialiser votre mot de passe.",
+  "timeUntilYouCanRequestAnotherEmail": "Temps restant avant de pouvoir demander un autre email",
+  "resetPasswordTitle": "Réinitialiser le mot de passe",
+  "resetPasswordDescription": "Entrez votre nouveau mot de passe ci-dessous.",
+  "resetPasswordSuccessTitle": "Mot de passe réinitialisé",
+  "resetPasswordSuccessDescription": "Votre mot de passe a été réinitialisé avec succès.",
+  "send": "Envoyer",
+  "goToSignInPage": "Aller à la page de connexion",
+  "emailVerificationSentTitle": "Email envoyé",
+  "emailVerificationSentDescription": "Un email de vérification vous a été envoyé. Veuillez suivre les instructions pour valider votre email.",
+  "emailAlreadyVerified": "Email vérifié",
+  "resendVerificationEmail": "Renvoyer l'email de vérification",
+  "verifyEmailSuccessTitle": "Email vérifié",
+  "verifyEmailSuccessDescription": "Votre email a été vérifié avec succès.",
+  "verifyEmail": "Vérifier l'email",
+  "emailVerificationTitle": "Vérification de l'email",
+  "emailVerificationDescription": "Veuillez vérifier votre email pour continuer.",
+  "copiedToClipboard": "Copié dans le presse-papier",
+  "avatarUpdated": "Avatar mis à jour",
+  "updateAvatar": "Mettre à jour l'avatar",
+  "uploadDescription": "Cliquez ou faites glisser un fichier ici pour l'uploader.",
+  "loading": "Chargement",
+  "min8Chars": "8 caractères minimum",
+  "containsNumber": "Contient des chiffres",
+  "containsLowercase": "Contient des minuscules",
+  "containsUppercase": "Contient des majuscules",
+  "containsSpecial": "Contient des caractères spéciaux",
+  "totp": {
+    "generate": "Activer le 2FA",
+    "generateTitle": "Authentification à deux facteurs",
+    "generateStep1": "Ajouter le secret OTP à votre application d'authentification (Google Authenticator, 2FA Auth, etc.)",
+    "generateStep1Description": "Cliquez sur le qr code pour copier l'url dans le presse-papier.",
+    "generateStep2": "Sauvegardez la phrase secrète ci-dessous dans un endroit sûr.",
+    "generateStep2Description": "Vous pouvez utiliser cette phrase secrète pour récupérer votre secret OTP si vous perdez votre téléphone.",
+    "generateStep3": "Vérifier la phrase secrète.",
+    "generateStep4": "Entrez le code OTP généré par votre application d'authentification.",
+    "desactivate": "Désactiver le 2FA",
+    "totpDesactivated": "2FA désactivé",
+    "desactivateTitle": "Désactiver le 2FA",
+    "enterCode": "Vérification 2FA",
+    "generateDescription": "Veuillez noter que si vous vous connectez avec un provider, le 2FA ne sera pas demandé.",
+    "lostYourDevice": "Vous avez perdu votre téléphone ?"
+  },
+  "back": "Retour",
+  "urlCopiedToClipboard": "URL copiée dans le presse-papier",
+  "confirm": "Confirmer",
+  "totpEnabled": "2FA activé",
+  "recover2FA": "Récupérer votre compte",
+  "recover2FADescription": "Entrez la phrase secrète que vous avez sauvegardé lors de l'activation du 2FA. Si vous ne l'avez pas, veuillez contacter le support.",
+  "mnemonic": {
+    "write": "Ecrivez",
+    "down": "ci-dessous",
+    "your": "votre",
+    "mnemonic": "phrase",
+    "phrase": "secrète",
+    "here": "",
+    "invalid": "Phrase secrète invalide"
+  },
+  "save": "Sauvegarder",
+  "cropImage": "Recadrer l'image",
+  "copyToClipboard": "Copier dans le presse-papier",
+  "somethingWentWrong": "Quelque chose s'est mal passé",
+  "tryAgain": "Ressayer",
+  "goHome": "Aller à l'accueil",
+  "unknownError": "Erreur inconnue",
+  "invalidFileType": "Type de fichier invalide"
+}

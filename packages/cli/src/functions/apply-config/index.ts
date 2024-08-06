@@ -14,7 +14,8 @@ import {
   TConfig,
   TpluginConfig,
 } from "@next-boilerplate/scripts/utils/template-config"
-import { logger, task } from "@rharkor/logger"
+import { logger } from "@rharkor/logger"
+import { task } from "@rharkor/task"
 
 // Get the current package directory
 const __filename = fileURLToPath(import.meta.url) // get the resolved path to the file
@@ -45,7 +46,7 @@ export const applyConfig = async () => {
   })
 
   //* Check if the plugins directory exists
-  applyConfigTask.print("Checking if the plugins directory exists")
+  applyConfigTask.log("Checking if the plugins directory exists")
   if (!(await fs.exists(pluginsDirectory))) {
     applyConfigTask.error(`The plugins directory doesn't exist at ${pluginsDirectory}`)
     applyConfigTask.stop()
@@ -53,7 +54,7 @@ export const applyConfig = async () => {
   }
 
   //* Retrieve config
-  applyConfigTask.print("Retrieving the config")
+  applyConfigTask.log("Retrieving the config")
   const configPath = !root.endsWith(configFileName) ? path.join(root, configFileName) : root
   if (!(await fs.exists(configPath))) {
     applyConfigTask.error(`The config file ${configPath} doesn't exist`)
@@ -72,7 +73,7 @@ export const applyConfig = async () => {
   }
 
   //* Apply plugins
-  applyConfigTask.print("Applying plugins")
+  applyConfigTask.log("Applying plugins")
 
   for (const plugin of config.plugins) {
     const pluginName = typeof plugin === "string" ? plugin : plugin.name
@@ -117,12 +118,12 @@ export const applyConfig = async () => {
       process.exit(1)
     }
 
-    applyConfigTask.print(`Copying the plugin ${pluginName} to the destination ${destinationPath}`)
+    applyConfigTask.log(`Copying the plugin ${pluginName} to the destination ${destinationPath}`)
     await fs.copy(pluginContentPath, destinationPath)
   }
 
   //* Delete config.json
-  applyConfigTask.print("Deleting the config file")
+  applyConfigTask.log("Deleting the config file")
   await fs.remove(configPath)
 
   applyConfigTask.stop("The template config has been applied! 🎉")

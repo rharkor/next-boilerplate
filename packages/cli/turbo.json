@@ -7,6 +7,9 @@
         "build": {
             "outputs": [
                 "dist/**"
+            ],
+            "dependsOn": [
+                "@next-boilerplate/cli-app#build"
             ]
         }
     }

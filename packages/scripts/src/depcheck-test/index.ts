@@ -8,7 +8,7 @@ import depcheck from "depcheck"
 import { $ } from "zx"
 
 import { cwdAtRoot, getRoot } from "@/utils"
-import { task } from "@rharkor/logger"
+import { task } from "@rharkor/task"
 
 import "zx/globals"
 
@@ -20,11 +20,11 @@ const depcheckTask = await task.startTask({
 })
 
 //* Find all packages in the monorepo
-depcheckTask.print("Reading package.json")
+depcheckTask.log("Reading package.json")
 const packageJson = (await $`cat package.json`.json()) as { workspaces: string[] }
 
 //* Get all the packages paths
-depcheckTask.print("Finding all packages paths")
+depcheckTask.log("Finding all packages paths")
 //? Get the packages directories from the workspaces in the package.json
 const dirPackagesPaths = packageJson.workspaces
 //? Go into each child of the packages directory and get the path
@@ -58,7 +58,7 @@ const packages: { path: string; name: string }[] = allPossiblePackagesPaths
   })
 
 //* Treat each package
-depcheckTask.print("Checking each package")
+depcheckTask.log("Checking each package")
 let message = ""
 let hasError = false
 
@@ -72,7 +72,7 @@ const beautify = (arr: string[]) => {
 
 for (const pkg of packages) {
   const packagePath = path.join(root, pkg.path)
-  depcheckTask.print(`Checking ${packagePath}`)
+  depcheckTask.log(`Checking ${packagePath}`)
 
   //* Options for depcheck
   const options: depcheck.Options = {}
@@ -87,7 +87,7 @@ for (const pkg of packages) {
   //? Check if any options file exists
   const optionsPath = path.join(packagePath, "depcheck.json")
   if (fs.existsSync(optionsPath)) {
-    depcheckTask.print(`Found options file for ${pkg.name}`)
+    depcheckTask.log(`Found options file for ${pkg.name}`)
     const optionsFile = JSON.parse(fs.readFileSync(optionsPath, "utf-8")) as {
       ignoreMatches?: string[]
     }

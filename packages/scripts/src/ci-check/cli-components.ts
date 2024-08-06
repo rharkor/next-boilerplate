@@ -8,7 +8,8 @@ import { z } from "zod"
 
 import { cdAtRoot, cwdAtRoot } from "@/utils"
 import { pluginConfigSchema } from "@/utils/template-config"
-import { logger, task } from "@rharkor/logger"
+import { logger } from "@rharkor/logger"
+import { task } from "@rharkor/task"
 
 import "zx/globals"
 

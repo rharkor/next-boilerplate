@@ -6,7 +6,8 @@
 
 import { cdAtRoot, cwdAtRoot } from "@/utils"
 import { configSchema, pluginConfigSchema, TConfig, TpluginConfig } from "@/utils/template-config"
-import { logger, task } from "@rharkor/logger"
+import { logger } from "@rharkor/logger"
+import { task } from "@rharkor/task"
 
 import "zx/globals"
 
@@ -22,7 +23,7 @@ const validateTemplateTask = await task.startTask({
 })
 
 //* Get all the templates
-validateTemplateTask.print("Getting all the templates")
+validateTemplateTask.log("Getting all the templates")
 const templatesPath = (await fs.readdir(templatesDirectory, { withFileTypes: true }))
   .filter((dirent) => dirent.isDirectory())
   .map((dirent) => dirent.name)
@@ -38,10 +39,10 @@ for (const templatePath of templatesPath) {
   const config = await fs.readJSON(configPath)
   templates.push({ config, path: path.join(templatesDirectory, templatePath) })
 }
-validateTemplateTask.print(`Found ${templates.length} templates`)
+validateTemplateTask.log(`Found ${templates.length} templates`)
 
 //* Validate the config
-validateTemplateTask.print("Validating the config")
+validateTemplateTask.log("Validating the config")
 for (const template of templates) {
   try {
     configSchema.parse(template.config)
@@ -53,7 +54,7 @@ for (const template of templates) {
 }
 
 //* Validate the plugins
-validateTemplateTask.print("Validating the plugins")
+validateTemplateTask.log("Validating the plugins")
 for (const template of templates) {
   for (const reference of template.config.plugins) {
     const pluginName = typeof reference === "string" ? reference : reference.name

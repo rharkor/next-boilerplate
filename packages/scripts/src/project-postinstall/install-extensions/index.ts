@@ -5,7 +5,8 @@
 import { $ } from "zx"
 
 import { cwdAtRoot } from "@/utils"
-import { logger, task } from "@rharkor/logger"
+import { logger } from "@rharkor/logger"
+import { task } from "@rharkor/task"
 import { chunk } from "@rharkor/utils"
 
 import "zx/globals"
@@ -18,7 +19,7 @@ export const installExtensions = async () => {
     name: "Installing vscode extensions... 🔌",
   })
 
-  installExtensionsTask.print("Parsing extensions.txt file")
+  installExtensionsTask.log("Parsing extensions.txt file")
   const extensions = (await $`cat .devcontainer/extensions.txt`.text()).split("\n").filter(Boolean)
   const chunkedExtensions = chunk(extensions, 5)
 
@@ -34,11 +35,11 @@ export const installExtensions = async () => {
   const max = chunkedExtensions.reduce((acc, chunk) => acc + chunk.length, 0).toString()
   let number = 0
   const formatNumber = (number: number) => number.toString().padStart(max.length, " ")
-  installExtensionsTask.print(`[${formatNumber(number)}/${max}] Install vscode extensions`)
+  installExtensionsTask.log(`[${formatNumber(number)}/${max}] Install vscode extensions`)
   for (const chunk of chunkedExtensions) {
     await installExtensionsChunk(chunk)
     number += chunk.length
-    installExtensionsTask.print(`[${formatNumber(number)}/${max}] Install vscode extensions`)
+    installExtensionsTask.log(`[${formatNumber(number)}/${max}] Install vscode extensions`)
   }
 
   installExtensionsTask.stop("Vscode extensions installed! 🎉")

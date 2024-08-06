@@ -1,0 +1,217 @@
+{
+  "app": {
+    "name": "Next boilerplate",
+    "description": "The perfect boilerplate to start your Next.js project."
+  },
+  "errors": {
+    "password": {
+      "regex": "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character",
+      "required": "Password is required.",
+      "min8": "Password must be at least 8 characters long.",
+      "max25": "Password must be at most 25 characters long.",
+      "dontMatch": "Passwords don't match."
+    },
+    "username": {
+      "required": "Username is required.",
+      "min3": "Username must be at least 3 characters long.",
+      "max30": "Username must be at most 30 characters long."
+    },
+    "email": {
+      "required": "Email is required.",
+      "invalid": "Email is invalid."
+    },
+    "typeError": {
+      "number": {
+        "invalid": "Please enter a valid number.",
+        "required": "Please enter a number."
+      },
+      "string": {
+        "invalid": "Please enter a valid string.",
+        "required": "Please enter a string."
+      }
+    },
+    "unavailableWithOAuth": "This feature is not available with OAuth providers.",
+    "noFileSelected": "No file selected.",
+    "wrongProvider": "You already have an account with a different provider. Please sign in with it.",
+    "invalidCredentials": "Invalid credentials. Please try again.",
+    "otpInvalid": "Invalid OTP code.",
+    "emailNotVerified": "Please, verify your email.",
+    "fileTooLarge": "File too large.",
+    "passwordsDoNotMatch": "Passwords do not match."
+  },
+  "home": "Home",
+  "homePage": {
+    "title": "Home"
+  },
+  "signUpPage": {
+    "createAnAccount": "Create an account",
+    "enterEmail": "Enter your email below to create your account"
+  },
+  "signInPage": {
+    "loginToYourAccount": "Login to your account",
+    "enterDetails": "Enter your details below."
+  },
+  "profilePage": {
+    "serverSideData": "The following data are retrieve server-side.",
+    "profileDetails": {
+      "toggle": "See details",
+      "updateAccount": "Update your account",
+      "updateAccountDescription": "You can update your account details here.",
+      "username": {
+        "label": "Username",
+        "placeholder": "Enter your username"
+      },
+      "loggedDevices": "Logged in devices",
+      "loggedDevicesDescription": "Manage your logged in devices here.",
+      "deleteLoggedDevice": {
+        "description": "This action will disconnect the device connected to this session."
+      },
+      "session": "session",
+      "sessions": "sessions",
+      "lastUsed": "Last used",
+      "created": "Created",
+      "expires": "Expires",
+      "in": "in"
+    }
+  },
+  "auth": {
+    "orContinueWith": "Or continue with",
+    "clickingAggreement": "By clicking continue, you agree to our",
+    "termsOfService": "Terms of Service",
+    "privacyPolicy": "Privacy Policy",
+    "demoMode": "Demo mode"
+  },
+  "and": "and",
+  "profile": "Profile",
+  "signUp": "Sign Up",
+  "signIn": "Sign In",
+  "toSignUp": "Sign Up",
+  "toSignIn": "Sign In",
+  "signOut": "Sign Out",
+  "deleteAccount": "Delete Account",
+  "notFound": "Not Found",
+  "login": "Login",
+  "cancel": "Cancel",
+  "continue": "Continue",
+  "areYouAbsolutelySure": "Are you absolutely sure?",
+  "error": "Error",
+  "couldNotMessage": "Could not {action} {subject}. Please try again later.",
+  "fetch": "Fetch",
+  "create": "Create",
+  "update": "Update",
+  "delete": "Delete",
+  "yes": "Yes",
+  "no": "No",
+  "needSavePopup": "Be careful, there are still unsaved changes!",
+  "reset": "Reset",
+  "saveChanges": "Save changes",
+  "email": "Email",
+  "emailPlaceholder": "name@example.com",
+  "password": "Password",
+  "passwordConfirmation": "Confirm Password",
+  "edit": "Edit",
+  "username": "Username",
+  "confirmPassword": "Confirm Password",
+  "withEmail": "with email",
+  "timeUnit": {
+    "now": "now",
+    "second": "second",
+    "seconds": "seconds",
+    "minute": "minute",
+    "minutes": "minutes",
+    "hour": "hour",
+    "hours": "hours",
+    "day": "day",
+    "days": "days",
+    "week": "week",
+    "weeks": "weeks",
+    "month": "month",
+    "months": "months",
+    "year": "year",
+    "years": "years"
+  },
+  "pagination": {
+    "rowsPerPage": "Rows per page",
+    "page": "Page",
+    "of": "of",
+    "goToFirstPage": "Aller à la première page",
+    "goToPreviousPage": "Aller à la page précédente",
+    "goToNextPage": "Aller à la page suivante",
+    "goToLastPage": "Aller à la dernière page"
+  },
+  "deleteAccountConfirmationTitle": "Delete account",
+  "deleteAccountConfirmationDescription": "Are you sure you want to delete your account? This action is irreversible.",
+  "deleteAccountConfirm": "Delete account",
+  "deleteAccountSuccessTitle": "Account deleted",
+  "deleteAccountSuccessDescription": "Your account has been deleted.",
+  "forgotPassword": "Forgot password?",
+  "forgotPasswordTitle": "Forgot password",
+  "forgotPasswordDescription": "Enter your email below to reset your password.",
+  "forgotPasswordSuccessTitle": "Email sent",
+  "forgotPasswordSuccessDescription": "An email has been sent to you. Please follow the instructions in the email to reset your password.",
+  "timeUntilYouCanRequestAnotherEmail": "Time until you can request another email",
+  "resetPasswordTitle": "Reset password",
+  "resetPasswordDescription": "Enter your new password below.",
+  "resetPasswordSuccessTitle": "Password reset",
+  "resetPasswordSuccessDescription": "Your password has been reset.",
+  "send": "Send",
+  "goToSignInPage": "Go to sign in page",
+  "emailVerificationSentTitle": "Email verification sent",
+  "emailVerificationSentDescription": "An email has been sent to you. Please follow the instructions in the email to verify your email address.",
+  "emailAlreadyVerified": "Email verified",
+  "resendVerificationEmail": "Resend verification email",
+  "verifyEmailSuccessTitle": "Email verified",
+  "verifyEmailSuccessDescription": "Your email has been verified.",
+  "verifyEmail": "Verify email",
+  "emailVerificationTitle": "Email verification",
+  "emailVerificationDescription": "Please verify your email address.",
+  "copiedToClipboard": "Copied to clipboard",
+  "avatarUpdated": "Avatar updated",
+  "updateAvatar": "Update avatar",
+  "uploadDescription": "Click or drag a file here to upload it.",
+  "loading": "Loading",
+  "min8Chars": "8 characters minimum",
+  "containsNumber": "Contains numbers",
+  "containsLowercase": "Contains lowercase characters",
+  "containsUppercase": "Contains uppercase characters",
+  "containsSpecial": "Contains special characters",
+  "totp": {
+    "generate": "Activate 2FA",
+    "generateTitle": "Two-factor authentication",
+    "generateStep1": "Add the OTP secret to your authentication app (Google Authenticator, 2FA Auth, etc.)",
+    "generateStep1Description": "Click on the qr code to copy the url to the clipboard.",
+    "generateStep2": "Save the secret phrase below in a safe place.",
+    "generateStep2Description": "You can use this secret phrase to recover your OTP secret if you lose your phone.",
+    "generateStep3": "Verify the secret phrase.",
+    "generateStep4": "Enter the OTP code generated by your authentication app.",
+    "desactivate": "Desactivate 2FA",
+    "totpDesactivated": "2FA disabled",
+    "desactivateTitle": "Desactivate 2FA",
+    "enterCode": "Enter 2FA code",
+    "generateDescription": "Please note that if you login with a provider, the 2FA will not be asked.",
+    "lostYourDevice": "Lost your device?"
+  },
+  "back": "Back",
+  "urlCopiedToClipboard": "URL copied to clipboard",
+  "confirm": "Confirm",
+  "totpEnabled": "2FA enabled",
+  "recover2FA": "Recover your account",
+  "recover2FADescription": "Enter the secret phrase you saved when you activated the 2FA. If you don't have it, please contact support.",
+  "mnemonic": {
+    "write": "Write",
+    "down": "down",
+    "your": "your",
+    "mnemonic": "mnemonic",
+    "phrase": "phrase",
+    "here": "here",
+    "invalid": "Invalid mnemonic phrase."
+  },
+  "save": "Save",
+  "cropImage": "Crop image",
+  "copyToClipboard": "Copy to clipboard",
+  "somethingWentWrong": "Something went wrong",
+  "tryAgain": "Try again",
+  "goHome": "Go home",
+  "unknownError": "An unknown error occurred.",
+  "invalidFileType": "Invalid file type."
+}
