@@ -213,5 +213,11 @@
   "tryAgain": "Ressayer",
   "goHome": "Aller à l'accueil",
   "unknownError": "Erreur inconnue",
-  "invalidFileType": "Type de fichier invalide"
+  "invalidFileType": "Type de fichier invalide",
+  "welcomeTo": "Bienvenue sur",
+  "enterYourProjectName": "Entrez le nom de votre projet",
+  "configuration": "Configuration",
+  "templates": "Templates",
+  "plugins": "Plugins",
+  "remove": "Retirer"
 }

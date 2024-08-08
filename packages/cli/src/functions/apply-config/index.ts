@@ -12,7 +12,7 @@ import {
   configSchema,
   pluginConfigSchema,
   TConfig,
-  TpluginConfig,
+  TPluginConfig,
 } from "@next-boilerplate/scripts/utils/template-config"
 import { logger } from "@rharkor/logger"
 import { task } from "@rharkor/task"
@@ -91,7 +91,7 @@ export const applyConfig = async () => {
       process.exit(1)
     }
     const pluginContentPath = path.join(pluginPath, pluginContentName)
-    const pluginConfig = (await fs.readJson(pluginConfigPath)) as TpluginConfig
+    const pluginConfig = (await fs.readJson(pluginConfigPath)) as TPluginConfig
     try {
       pluginConfigSchema.parse(pluginConfig)
     } catch (error) {

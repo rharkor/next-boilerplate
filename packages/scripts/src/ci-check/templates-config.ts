@@ -5,7 +5,7 @@
  */
 
 import { cdAtRoot, cwdAtRoot } from "@/utils"
-import { configSchema, pluginConfigSchema, TConfig, TpluginConfig } from "@/utils/template-config"
+import { configSchema, pluginConfigSchema, TConfig, TPluginConfig } from "@/utils/template-config"
 import { logger } from "@rharkor/logger"
 import { task } from "@rharkor/task"
 
@@ -72,7 +72,7 @@ for (const template of templates) {
       process.exit(1)
     }
     const pluginContentPath = path.join(pluginPath, pluginContentName)
-    const pluginConfig = (await fs.readJson(pluginConfigPath)) as TpluginConfig
+    const pluginConfig = (await fs.readJson(pluginConfigPath)) as TPluginConfig
     try {
       pluginConfigSchema.parse(pluginConfig)
     } catch (error) {

@@ -26,6 +26,7 @@ const config: Linter.Config = {
     "simple-import-sort/imports": "error",
     "simple-import-sort/exports": "error",
     "tailwindcss/no-custom-classname": "off",
+    "tailwindcss/classnames-order": "off",
     "no-console": ["error", { allow: ["warn", "error"] }],
     "no-process-env": "error",
     "@next-boilerplate/no-node-modules-import": "error",

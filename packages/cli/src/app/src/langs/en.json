@@ -213,5 +213,11 @@
   "tryAgain": "Try again",
   "goHome": "Go home",
   "unknownError": "An unknown error occurred.",
-  "invalidFileType": "Invalid file type."
+  "invalidFileType": "Invalid file type.",
+  "welcomeTo": "Welcome to",
+  "enterYourProjectName": "Enter your project name",
+  "configuration": "Configuration",
+  "templates": "Templates",
+  "plugins": "Plugins",
+  "remove": "Remove"
 }

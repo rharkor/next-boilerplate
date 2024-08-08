@@ -16,7 +16,7 @@ import "zx/globals"
 cwdAtRoot()
 cdAtRoot()
 
-type TpluginConfig = z.infer<typeof pluginConfigSchema>
+type TPluginConfig = z.infer<typeof pluginConfigSchema>
 
 const pluginsDirectory = "packages/cli/assets/plugins"
 const configFileName = "config.json"
@@ -29,7 +29,7 @@ const validatepluginTask = await task.startTask({
 const plugins = await globby(path.join(pluginsDirectory, "**", configFileName))
 
 for (const plugin of plugins) {
-  const pluginConfig = (await fs.readJson(plugin)) as TpluginConfig
+  const pluginConfig = (await fs.readJson(plugin)) as TPluginConfig
 
   try {
     pluginConfigSchema.parse(pluginConfig)
