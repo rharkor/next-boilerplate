@@ -4,6 +4,7 @@ import { NextResponse } from "next/server"
 import base32Encode from "base32-encode"
 import { ZodError } from "zod"
 
+import { savedLocaleCookieName } from "@/constants"
 import { Path } from "@/types"
 import { logger } from "@rharkor/logger"
 import { TRPCError } from "@trpc/server"
@@ -74,9 +75,8 @@ export async function ApiError(
   code?: TRPC_ERROR_CODE_KEY,
   extra?: object
 ): Promise<never> {
-  const cookiesStore = cookies()
-  const lang = cookiesStore.get("saved-locale")?.value ?? i18n.defaultLocale
-  const dictionary = await _getDictionary("errors", lang as Locale, undefined)
+  const locale = extractLocale()
+  const dictionary = await _getDictionary("errors", locale, undefined)
   let message = findNestedKeyInDictionary(messageCode, dictionary)
   if (!message) {
     logger.error(new Error(`Error not found in dictionary: ${messageCode}`))
@@ -92,4 +92,13 @@ export async function ApiError(
 export const generateRandomSecret = () => {
   const secret = base32Encode(crypto.getRandomValues(new Uint8Array(10)), "RFC4648", { padding: false })
   return secret
+}
+
+export const extractLocale = () => {
+  const cookiesStore = cookies()
+  const localeFromCookies = cookiesStore.get(savedLocaleCookieName)?.value
+  if (localeFromCookies && i18n.locales.includes(localeFromCookies)) {
+    return localeFromCookies as Locale
+  }
+  return i18n.defaultLocale
 }

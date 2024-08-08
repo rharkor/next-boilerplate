@@ -1,26 +1,20 @@
 "use client"
 
 import { useState } from "react"
-import { usePathname } from "next/navigation"
 import { useRouter } from "next/navigation"
 
+import { savedLocaleCookieName } from "@/constants"
 import { Locale, localesDetailed } from "@/lib/i18n-config"
 import { Avatar } from "@nextui-org/avatar"
 import { Select, SelectItem } from "@nextui-org/select"
 
 export default function LocaleSwitcher({ lang }: { lang: Locale }) {
-  const pathName = usePathname()
   const router = useRouter()
-  const redirectedPathName = (locale: Locale) => {
-    if (!pathName) return "/"
-    const segments = pathName.split("/")
-    segments[1] = locale
-    return segments.join("/")
-  }
 
   const handleLocaleChange = (locale: Locale) => {
-    router.push(redirectedPathName(locale))
-    //? refresh the page due to prefetch <Link/>
+    // Change locale in cookies
+    document.cookie = `${savedLocaleCookieName}=${locale};path=/`
+    // Reload page
     router.refresh()
   }
 
@@ -39,7 +33,7 @@ export default function LocaleSwitcher({ lang }: { lang: Locale }) {
       }}
       className="w-[150px]"
       aria-label={localesDetailed[lang].nativeName}
-      startContent={<Avatar alt={lang} className="!size-4 shrink-0" src={localesDetailed[lang].flag} />}
+      startContent={<Avatar alt={lang} className="!size-4 shrink-0" src={localesDetailed[dynamicLocale].flag} />}
       size="sm"
       selectionMode="single"
     >

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react"
+import { useRef, useState } from "react"
 
 import { AnimatePresence, motion } from "framer-motion"
 import { Eye, MoreHorizontal, Pencil } from "lucide-react"
@@ -43,15 +43,18 @@ export default function CurrentConfiguration({
     }
   }
 
-  const bubblesDuration = 5
+  const bubblesDuration = 0.45
   const animateBubbles = (boundingBox: DOMRect) => {
     //* Animate deletion
-    const bubbles = 50
+    const bubbles = 100
     const minSize = 5
     const maxSize = 15
-    const startRadius = 10
-    const endRadius = 100
-    const positionRandomness = 50
+    const startXRadius = 320
+    const startYRadius = 20
+    const endXRadius = 350
+    const endYRadius = 40
+    const xRandomness = 150
+    const yRandomness = 20
     const angleStep = (2 * Math.PI) / bubbles
     const center = {
       x: boundingBox.x + boundingBox.width / 2,
@@ -60,44 +63,31 @@ export default function CurrentConfiguration({
     const newBubbles = Array.from({ length: bubbles }, (_, i) => {
       const size = Math.random() * (maxSize - minSize) + minSize
       const angle = angleStep * i
-      const xRandomness = (Math.random() - 0.5) * positionRandomness * 2
-      const yRandomness = (Math.random() - 0.5) * positionRandomness * 2
+      const cosAngle = Math.cos(angle)
+      const sinAngle = Math.sin(angle)
+      const xRandomnessValue = (Math.random() - 0.5) * xRandomness * 2
+      const yRandomnessValue = (Math.random() - 0.5) * yRandomness * 2
       return {
         key: uuid(),
         position: {
-          x: center.x + startRadius * Math.cos(angle) + xRandomness,
-          y: center.y + startRadius * Math.sin(angle) + yRandomness,
+          x: center.x + startXRadius * cosAngle + xRandomnessValue * cosAngle,
+          y: center.y + startYRadius * sinAngle + yRandomnessValue * sinAngle,
         },
         destination: {
-          x: center.x + endRadius * Math.cos(angle) + xRandomness,
-          y: center.y + endRadius * Math.sin(angle) + yRandomness,
+          x: center.x + endXRadius * cosAngle + xRandomnessValue,
+          y: center.y + endYRadius * sinAngle + yRandomnessValue,
         },
         size,
       }
     })
     setDeletionBubbles((prev) => [...prev, ...newBubbles])
-    setTimeout(() => {
-      setDeletionBubbles((prev) => prev.filter((bubble) => !newBubbles.includes(bubble)))
-    }, bubblesDuration * 1000)
+    setTimeout(
+      () => {
+        setDeletionBubbles((prev) => prev.filter((bubble) => !newBubbles.includes(bubble)))
+      },
+      bubblesDuration * 1000 + 3000
+    )
   }
-
-  //TODO Remove
-  useEffect(() => {
-    // Animate bubbles on click
-    const handleClick = () => {
-      const boundingBox = {
-        x: 100,
-        y: 100,
-        width: 100,
-        height: 100,
-      } as DOMRect
-      animateBubbles(boundingBox)
-    }
-    window.addEventListener("click", handleClick)
-    return () => {
-      window.removeEventListener("click", handleClick)
-    }
-  }, [configuration.data.configuration.plugins])
 
   const [deletionBubbles, setDeletionBubbles] = useState<
     {
@@ -122,8 +112,8 @@ export default function CurrentConfiguration({
     <section className="flex w-full flex-col gap-3 overflow-auto scrollbar-hide">
       <h1 className="text-3xl">{dictionary.configuration}</h1>
       {configuration.data.configuration.plugins ? (
-        <AnimatePresence>
-          <ul className="flex flex-col gap-2">
+        <ul className="relative z-10 flex flex-col gap-2">
+          <AnimatePresence>
             {configuration.data.configuration.plugins.map((plugin) => (
               <Plugin
                 key={plugin.name}
@@ -133,8 +123,8 @@ export default function CurrentConfiguration({
                 onDelete={onDelete(plugin)}
               />
             ))}
-          </ul>
-        </AnimatePresence>
+          </AnimatePresence>
+        </ul>
       ) : (
         <p>No plugin</p>
       )}
@@ -146,11 +136,13 @@ export default function CurrentConfiguration({
           style={{
             width: `${bubble.size}px`,
             height: `${bubble.size}px`,
+            top: 0,
+            left: 0,
           }}
           transition={{ duration: bubblesDuration }}
           initial={{ x: bubble.position.x, y: bubble.position.y, scale: 1, opacity: 1 }}
           animate={{ x: bubble.destination.x, y: bubble.destination.y, opacity: 0, scale: 0.5 }}
-          className="absolute rounded-full bg-danger"
+          className="absolute rounded-full bg-foreground"
         />
       ))}
     </section>

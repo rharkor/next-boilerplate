@@ -1,31 +1,34 @@
 import React from "react"
 import { Metadata } from "next"
-import { cookies } from "next/headers"
 
 import { ThemeProvider } from "@/components/theme/theme-provider"
 import { fontSans } from "@/lib/fonts"
-import { i18n, Locale } from "@/lib/i18n-config"
 import { getDictionary } from "@/lib/langs"
 import { cn } from "@/lib/utils"
+import { extractLocale } from "@/lib/utils/server-utils"
 import { Button } from "@nextui-org/button"
 import { Link } from "@nextui-org/link"
 
-import UIProvider from "./[lang]/ui-provider"
+import UIProvider from "./ui-provider"
 
-export const metadata: Metadata = {
-  title: "Not found",
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = extractLocale()
+  const dictionary = await getDictionary(locale, {
+    notFound: true,
+  })
+  return {
+    title: dictionary.notFound,
+  }
 }
 
 export default async function Page404MatchAll() {
-  const cookiesStore = cookies()
-  const savedLocale = cookiesStore.get("saved-locale")
-  const params = savedLocale?.value ? { lang: savedLocale.value } : undefined
-  const dictionary = await getDictionary(params ? (params.lang as Locale) : i18n.defaultLocale, {
+  const locale = extractLocale()
+  const dictionary = await getDictionary(locale, {
     notFound: true,
     goHome: true,
   })
   return (
-    <html lang={params?.lang ?? i18n.defaultLocale}>
+    <html lang={locale}>
       <body
         className={cn("h-dvh min-h-dvh bg-background font-sans antialiased", fontSans.variable, fontSans.className)}
       >
