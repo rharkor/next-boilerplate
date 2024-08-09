@@ -1,5 +1,7 @@
 "use client"
 
+import { BookDashed } from "lucide-react"
+
 import ItemCard from "@/components/ui/item-card"
 import { trpc } from "@/lib/trpc/client"
 import { RouterOutputs } from "@/lib/trpc/utils"
@@ -17,7 +19,7 @@ export default function TemplatesContent({
   )
 
   return (
-    <ul className="relative z-10 flex min-h-full flex-col gap-2 overflow-auto scrollbar-hide">
+    <ul className="relative z-10 flex flex-1 flex-col gap-2 overflow-auto scrollbar-hide">
       {templates.data.templates.map((template) => (
         <ItemCard
           key={template.name}
@@ -25,6 +27,7 @@ export default function TemplatesContent({
           title={template.name}
           subTitle={template.sourcePath}
           description={template.description}
+          endContent={<BookDashed className="absolute right-2 top-2 size-4 text-primary" />}
         />
       ))}
     </ul>

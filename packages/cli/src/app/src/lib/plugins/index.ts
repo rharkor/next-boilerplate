@@ -47,7 +47,8 @@ export const getPlugins = async () => {
       })
     }
 
-    pluginsFilled.push({ ...pluginConfig, sourcePath: plugin })
+    const sourcePath = path.dirname(plugin).replace(pluginsDirectory, "").replace(/^\//, "")
+    pluginsFilled.push({ ...pluginConfig, sourcePath })
   }
 
   setPluginsToStore(pluginsFilled)

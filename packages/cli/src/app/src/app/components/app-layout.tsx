@@ -28,7 +28,7 @@ export default function AppLayout({
   })
 
   return (
-    <main className="container m-auto flex min-h-screen flex-1 flex-col gap-4 p-3 py-8">
+    <main className="container m-auto flex max-h-screen min-h-screen flex-1 flex-col gap-4 p-3 py-8">
       <AnimatePresence>
         {!configuration.data.configuration.name && <ProjectInit dictionary={dictionary} />}
       </AnimatePresence>

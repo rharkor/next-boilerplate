@@ -155,7 +155,7 @@ export default function CurrentConfiguration({
           </Button>
         }
       />
-      <ul className="relative z-10 flex min-h-full flex-col gap-2 overflow-auto scrollbar-hide">
+      <ul className="relative z-10 flex flex-1 flex-col gap-2 overflow-auto scrollbar-hide">
         <AnimatePresence>
           {configuration.data.configuration.plugins?.map((plugin) => (
             <Plugin
