@@ -1,6 +1,5 @@
 "use client"
 
-
 import { TDictionary } from "@/lib/langs"
 import { RouterOutputs } from "@/lib/trpc/utils"
 
@@ -14,8 +13,5 @@ export default function MainContent({
   dictionary: TDictionary<typeof MainContentDr>
   ssrConfiguration: RouterOutputs["configuration"]["getConfiguration"]
 }) {
-
-  return (
-        <CurrentConfiguration dictionary={dictionary} ssrConfiguration={ssrConfiguration} />
-  )
+  return <CurrentConfiguration dictionary={dictionary} ssrConfiguration={ssrConfiguration} />
 }

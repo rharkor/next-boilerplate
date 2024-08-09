@@ -226,5 +226,6 @@
   "fromScratch": "De zéro",
   "fromScratchDescription": "Créez votre configuration de zéro en choisissant les plugins que vous souhaitez utiliser.",
   "suggested": "Suggéré",
-  "advanced": "Avancé"
+  "advanced": "Avancé",
+  "projectName": "Nom du projet"
 }

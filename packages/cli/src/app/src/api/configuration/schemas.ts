@@ -1,11 +1,17 @@
 import { z } from "zod"
 
-import { fullPluginSchema, pluginConfigSchema } from "@next-boilerplate/scripts/utils/template-config"
+import { fullPluginSchema } from "@/lib/plugins/store"
 
 export const configurationSchema = () =>
   z.object({
     name: z.string().optional(),
-    plugins: z.array(fullPluginSchema.extend({ config: pluginConfigSchema })).optional(),
+    plugins: z
+      .array(
+        fullPluginSchema.extend({
+          outputPath: z.string().optional(),
+        })
+      )
+      .optional(),
   })
 export type TConfiguration = z.infer<ReturnType<typeof configurationSchema>>
 

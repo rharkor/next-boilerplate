@@ -32,7 +32,7 @@ export default function AppLayout({
       <AnimatePresence>
         {!configuration.data.configuration.name && <ProjectInit dictionary={dictionary} />}
       </AnimatePresence>
-      <NavSettings lang={lang} ssrConfiguration={ssrConfiguration} />
+      <NavSettings lang={lang} ssrConfiguration={ssrConfiguration} dictionary={dictionary} />
       <div className="flex w-full flex-1 flex-row gap-4 overflow-hidden">
         <Sidenav dictionary={dictionary} ssrConfiguration={ssrConfiguration} />
         {children}

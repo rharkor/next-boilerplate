@@ -1,6 +1,6 @@
 {
     "$schema": "../../component.d.json",
-    "name": "default",
+    "name": "Default gitignore",
     "description": "Default gitignore configuration",
     "suggestedPath": ".gitignore"
 }

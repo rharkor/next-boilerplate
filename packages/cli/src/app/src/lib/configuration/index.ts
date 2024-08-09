@@ -5,21 +5,17 @@ let configuration: TConfiguration = {
   name: "test",
   plugins: [
     {
-      name: "turbo/default",
-      path: "turbo.json",
-      config: {
-        name: "default",
-        description: "Default turbo configuration",
-        suggestedPath: "turbo.json",
-      },
+      name: "Default turbo configuration",
+      description: "Basic steps configuration for turbo (build, lint, dev, ...)",
+      suggestedPath: "turbo.json",
+      sourcePath: "turbo/default",
     },
     {
-      name: "devcontainer/default",
-      config: {
-        name: "default",
-        description: "Default devcontainer configuration",
-        suggestedPath: ".devcontainer",
-      },
+      name: "Default devcontainer configuration",
+      description: "Open VS Code in a linux container",
+      suggestedPath: ".devcontainer",
+      sourcePath: "devcontainer/default",
+      outputPath: ".devcontainer",
     },
   ],
 }

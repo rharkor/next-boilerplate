@@ -226,5 +226,6 @@
   "fromScratch": "From scratch",
   "fromScratchDescription": "Create your configuration from scratch by choosing the plugins you want to use.",
   "suggested": "Suggested",
-  "advanced": "Advanced"
+  "advanced": "Advanced",
+  "projectName": "Project name"
 }

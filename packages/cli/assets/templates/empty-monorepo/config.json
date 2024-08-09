@@ -1,6 +1,7 @@
 {
     "$schema": "../schema.d.json",
-    "name": "empty-monorepo",
+    "name": "Empty monorepo",
+    "description": "An empty monorepo",
     "plugins": [
         "turbo/default",
         "devcontainer/default",

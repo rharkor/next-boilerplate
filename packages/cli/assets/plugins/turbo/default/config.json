@@ -1,6 +1,6 @@
 {
     "$schema": "../../component.d.json",
-    "name": "default",
-    "description": "Default turbo configuration",
+    "name": "Default turbo configuration",
+    "description": "Basic steps configuration for turbo (build, lint, dev, ...)",
     "suggestedPath": "turbo.json"
 }

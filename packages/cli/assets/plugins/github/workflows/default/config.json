@@ -1,6 +1,6 @@
 {
     "$schema": "../../../component.d.json",
-    "name": "default",
-    "description": "Default GitHub Workflows configuration",
+    "name": "Default gitHub workflows",
+    "description": "Basic github workflows configuration (check, deploy, release)",
     "suggestedPath": ".github/workflows"
 }

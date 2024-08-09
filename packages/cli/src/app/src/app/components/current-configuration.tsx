@@ -1,12 +1,14 @@
 import { useRef, useState } from "react"
 
 import { AnimatePresence, motion } from "framer-motion"
-import { Eye, MoreHorizontal, Pencil } from "lucide-react"
+import { ArrowRight, Eye, MoreHorizontal, Pencil } from "lucide-react"
 import { v4 as uuid } from "uuid"
 import { z } from "zod"
 
 import { updateConfigurationRequestSchema } from "@/api/configuration/schemas"
 import { Icons } from "@/components/icons"
+import Header from "@/components/ui/header"
+import ItemCard from "@/components/ui/item-card"
 import { TDictionary } from "@/lib/langs"
 import { trpc } from "@/lib/trpc/client"
 import { RouterOutputs } from "@/lib/trpc/utils"
@@ -145,30 +147,27 @@ export default function CurrentConfiguration({
 
   return (
     <section className="flex w-full flex-col gap-5">
-      <div className="flex items-center justify-between gap-3">
-        <h1 className="text-3xl">{dictionary.configuration}</h1>
-        <Button color="danger" variant="light" onClick={resetConfiguration} isLoading={isPending}>
-          {dictionary.reset}
-        </Button>
-      </div>
-      {configuration.data.configuration.plugins ? (
-        <ul className="relative z-10 flex min-h-full flex-col gap-2 overflow-auto scrollbar-hide">
-          <AnimatePresence>
-            {configuration.data.configuration.plugins.map((plugin) => (
-              <Plugin
-                key={plugin.name}
-                plugin={plugin}
-                dictionary={dictionary}
-                isPending={isPending}
-                onDelete={onDelete(plugin)}
-              />
-            ))}
-          </AnimatePresence>
-        </ul>
-      ) : (
-        <p>No plugin</p>
-      )}
-
+      <Header
+        title={dictionary.configuration}
+        actions={
+          <Button color="danger" variant="light" onClick={resetConfiguration} isLoading={isPending}>
+            {dictionary.reset}
+          </Button>
+        }
+      />
+      <ul className="relative z-10 flex min-h-full flex-col gap-2 overflow-auto scrollbar-hide">
+        <AnimatePresence>
+          {configuration.data.configuration.plugins?.map((plugin) => (
+            <Plugin
+              key={plugin.name}
+              plugin={plugin}
+              dictionary={dictionary}
+              isPending={isPending}
+              onDelete={onDelete(plugin)}
+            />
+          ))}
+        </AnimatePresence>
+      </ul>
       {deletionBubbles.map((bubble) => (
         <motion.div
           key={bubble.key}
@@ -211,22 +210,23 @@ function Plugin({
     await _onDelete(boundingBox)
   }
 
+  const outputPath = plugin.outputPath ?? plugin.suggestedPath
+
   return (
-    <motion.li
-      layout={"position"}
-      key={plugin.name}
-      className="plugin flex cursor-pointer flex-col gap-2 rounded-medium bg-content2 p-3 shadow hover:bg-content2/80"
-      exit={{ opacity: 0, scale: 0.9 }}
-      initial={{ opacity: 0, scale: 0.9 }}
-      animate={{ opacity: 1, scale: 1 }}
-      ref={liRef}
-    >
-      <div className="flex items-center justify-between gap-4">
-        <div>
-          <p className="text-xl font-medium">{plugin.name}</p>
-          <p className="text-xs text-muted-foreground">{plugin.path ?? plugin.config.suggestedPath}</p>
-        </div>
-        <div className="flex flex-row gap-2">
+    <ItemCard
+      id={plugin.name}
+      liRef={liRef}
+      title={plugin.name}
+      subTitle={
+        <>
+          {plugin.sourcePath}
+          <ArrowRight className="size-2.5" />
+          {outputPath}
+        </>
+      }
+      description={plugin.description}
+      actions={
+        <>
           <Button color="primary" variant="flat" className="h-max min-w-0 p-2.5">
             <Eye className="size-5" />
           </Button>
@@ -278,9 +278,8 @@ function Plugin({
               </DropdownItem>
             </DropdownMenu>
           </Dropdown>
-        </div>
-      </div>
-      <p className="truncate text-sm">{plugin.config.description}</p>
-    </motion.li>
+        </>
+      }
+    />
   )
 }

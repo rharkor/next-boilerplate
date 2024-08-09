@@ -1,6 +1,6 @@
 {
     "$schema": "../../component.d.json",
-    "name": "default",
-    "description": "Default license",
+    "name": "MIT License",
+    "description": "",
     "suggestedPath": "LICENSE"
 }

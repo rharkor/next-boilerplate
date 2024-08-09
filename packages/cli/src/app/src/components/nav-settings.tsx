@@ -1,19 +1,23 @@
 import { useEffect, useState } from "react"
 
 import { Locale } from "@/lib/i18n-config"
+import { TDictionary } from "@/lib/langs"
 import { trpc } from "@/lib/trpc/client"
 import { RouterOutputs } from "@/lib/trpc/utils"
 import { Spinner } from "@nextui-org/spinner"
 
 import { ThemeSwitch } from "./theme/theme-switch"
 import LocaleSwitcher from "./locale-switcher"
+import { NavSettingsDr } from "./nav-settings.dr"
 
 export default function NavSettings({
   lang,
   ssrConfiguration,
+  dictionary,
 }: {
   lang: Locale
   ssrConfiguration: RouterOutputs["configuration"]["getConfiguration"]
+  dictionary: TDictionary<typeof NavSettingsDr>
 }) {
   const utils = trpc.useUtils()
   const configuration = trpc.configuration.getConfiguration.useQuery(undefined, {
@@ -50,22 +54,28 @@ export default function NavSettings({
 
   return (
     <aside className="flex w-full flex-row justify-between rounded-medium bg-content1 px-3 py-2">
-      <div className="relative">
-        <input
-          className="rounded-medium border-none bg-content2 p-1 px-2 text-lg font-semibold focus-visible:outline-none"
-          value={newName ?? ""}
-          onChange={(e) => setNewName(e.target.value)}
-        />
-        {isPending && (
-          <Spinner
-            size="sm"
-            classNames={{
-              wrapper: "!size-4",
-            }}
-            className="absolute right-2 top-1/2 -translate-y-1/2"
-            color="current"
+      <div className="flex flex-col gap-1">
+        <label className="cursor-pointer text-xs uppercase text-muted-foreground" htmlFor="project-name">
+          {dictionary.projectName}
+        </label>
+        <div className="relative">
+          <input
+            className="border-none bg-transparent text-base font-semibold focus-visible:outline-none"
+            value={newName ?? ""}
+            id="project-name"
+            onChange={(e) => setNewName(e.target.value)}
           />
-        )}
+          {isPending && (
+            <Spinner
+              size="sm"
+              classNames={{
+                wrapper: "!size-4",
+              }}
+              className="absolute right-2 top-1/2 -translate-y-1/2"
+              color="current"
+            />
+          )}
+        </div>
       </div>
       <div className="flex flex-row gap-2">
         <ThemeSwitch />

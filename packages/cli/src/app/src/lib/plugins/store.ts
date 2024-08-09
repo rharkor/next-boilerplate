@@ -1,6 +1,11 @@
-import { TPluginConfig } from "@next-boilerplate/scripts/utils/template-config"
+import { z } from "zod"
 
-export type TPluginStore = TPluginConfig & { path: string }
+import { pluginConfigSchema } from "@next-boilerplate/scripts/utils/template-config"
+
+export const fullPluginSchema = pluginConfigSchema.extend({
+  sourcePath: z.string(),
+})
+export type TPluginStore = z.infer<typeof fullPluginSchema>
 
 let plugins: TPluginStore[] | null = null
 

@@ -1,6 +1,6 @@
 import { z } from "zod"
 
-import { pluginConfigSchema } from "@next-boilerplate/scripts/utils/template-config"
+import { fullPluginSchema } from "@/lib/plugins/store"
 
 export const getPluginsSchema = () =>
   z.object({
@@ -9,9 +9,5 @@ export const getPluginsSchema = () =>
 
 export const getPluginsResponseSchema = () =>
   z.object({
-    plugins: z.array(
-      pluginConfigSchema.extend({
-        path: z.string(),
-      })
-    ),
+    plugins: z.array(fullPluginSchema),
   })

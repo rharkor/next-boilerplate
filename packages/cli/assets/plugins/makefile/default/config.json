@@ -1,6 +1,6 @@
 {
     "$schema": "../../component.d.json",
-    "name": "default",
-    "description": "Default makefile",
+    "name": "Default makefile",
+    "description": "Basic makefile with buildnrun command to start a docker app",
     "suggestedPath": "Makefile"
 }

@@ -9,6 +9,9 @@
         "name": {
             "type": "string"
         },
+        "description": {
+            "type": "string"
+        },
         "plugins": {
             "type": "array",
             "items": {
@@ -38,6 +41,8 @@
     },
     "required": [
         "$schema",
-        "name"
+        "name",
+        "description",
+        "plugins"
     ]
 }
