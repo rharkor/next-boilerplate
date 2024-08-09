@@ -18,7 +18,7 @@ export default function Sidenav({
   dictionary: TDictionary<typeof SidenavDr>
   ssrConfiguration: RouterOutputs["configuration"]["getConfiguration"]
 }) {
-  const pathname = usePathname().replace(/\/.{2}/, "/")
+  const pathname = usePathname()
   const configuration = trpc.configuration.getConfiguration.useQuery(undefined, {
     initialData: ssrConfiguration,
   })
