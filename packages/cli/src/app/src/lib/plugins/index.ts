@@ -51,6 +51,8 @@ export const getPlugins = async () => {
     pluginsFilled.push({ ...pluginConfig, sourcePath })
   }
 
+  pluginsFilled.sort((a, b) => a.name.localeCompare(b.name))
+
   setPluginsToStore(pluginsFilled)
   return pluginsFilled
 }

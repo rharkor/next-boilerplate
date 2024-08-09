@@ -227,5 +227,7 @@
   "fromScratchDescription": "Créez votre configuration de zéro en choisissant les plugins que vous souhaitez utiliser.",
   "suggested": "Suggéré",
   "advanced": "Avancé",
-  "projectName": "Nom du projet"
+  "projectName": "Nom du projet",
+  "addToConfiguration": "Ajouter à la configuration",
+  "removeFromConfiguration": "Retirer de la configuration"
 }

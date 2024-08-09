@@ -51,6 +51,8 @@ export const getTemplates = async () => {
     templatesFilled.push({ ...templateConfig, sourcePath })
   }
 
+  templatesFilled.sort((a, b) => a.name.localeCompare(b.name))
+
   setTemplatesToStore(templatesFilled)
   return templatesFilled
 }

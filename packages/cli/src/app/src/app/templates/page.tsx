@@ -13,7 +13,7 @@ export default async function Templates() {
   const ssrTemplates = await serverTrpc.templates.getTemplates({})
 
   return (
-    <section className="flex w-full flex-col gap-5">
+    <section className="flex flex-1 flex-col gap-5 overflow-hidden">
       <Header title={dictionary.templates} />
       <TemplatesContent ssrTemplates={ssrTemplates} />
     </section>

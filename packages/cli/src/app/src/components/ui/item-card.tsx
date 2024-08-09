@@ -1,5 +1,7 @@
 "use client"
 
+import Link from "next/link"
+
 import { motion } from "framer-motion"
 
 import { cn } from "@/lib/utils"
@@ -13,6 +15,7 @@ export default function ItemCard({
   description,
   className,
   endContent,
+  href,
 }: {
   id: string
   liRef?: React.RefObject<HTMLLIElement>
@@ -22,20 +25,10 @@ export default function ItemCard({
   description: string
   className?: string
   endContent?: React.ReactNode
+  href?: string
 }) {
-  return (
-    <motion.li
-      layout={"position"}
-      key={id}
-      className={cn(
-        "plugin relative flex cursor-pointer flex-col gap-2 rounded-medium bg-content2 p-3 shadow hover:bg-content2/80",
-        className
-      )}
-      exit={{ opacity: 0, scale: 0.9 }}
-      initial={{ opacity: 0, scale: 0.9 }}
-      animate={{ opacity: 1, scale: 1 }}
-      ref={liRef}
-    >
+  const content = (
+    <>
       <div className="flex items-center justify-between gap-4">
         <div>
           <p className="text-xl font-medium">{title}</p>
@@ -45,6 +38,31 @@ export default function ItemCard({
       </div>
       <p className="truncate text-sm">{description}</p>
       {endContent}
+    </>
+  )
+
+  const baseClassName = cn(
+    "plugin relative flex cursor-pointer flex-col gap-2 rounded-medium bg-content2 p-3 shadow hover:bg-content2/80",
+    className
+  )
+
+  return (
+    <motion.li
+      layout={"position"}
+      key={id}
+      className={href ? undefined : baseClassName}
+      exit={{ opacity: 0, scale: 0.9 }}
+      initial={{ opacity: 0, scale: 0.9 }}
+      animate={{ opacity: 1, scale: 1 }}
+      ref={liRef}
+    >
+      {href ? (
+        <Link href={href} className={baseClassName}>
+          {content}
+        </Link>
+      ) : (
+        content
+      )}
     </motion.li>
   )
 }

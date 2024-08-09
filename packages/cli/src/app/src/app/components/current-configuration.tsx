@@ -146,7 +146,7 @@ export default function CurrentConfiguration({
   }
 
   return (
-    <section className="flex w-full flex-col gap-5">
+    <section className="flex flex-1 flex-col gap-5 overflow-hidden">
       <Header
         title={dictionary.configuration}
         actions={

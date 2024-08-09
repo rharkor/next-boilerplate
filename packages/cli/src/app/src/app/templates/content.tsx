@@ -22,8 +22,8 @@ export default function TemplatesContent({
     <ul className="relative z-10 flex flex-1 flex-col gap-2 overflow-auto scrollbar-hide">
       {templates.data.templates.map((template) => (
         <ItemCard
-          key={template.name}
-          id={template.name}
+          key={template.sourcePath}
+          id={template.sourcePath}
           title={template.name}
           subTitle={template.sourcePath}
           description={template.description}

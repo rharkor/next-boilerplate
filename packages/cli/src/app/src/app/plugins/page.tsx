@@ -11,11 +11,12 @@ export default async function Plugins() {
   const locale = extractLocale()
   const dictionary = await getDictionary(locale, dictionaryRequirements({ plugins: true }, PluginsContentDr))
   const ssrPlugins = await serverTrpc.plugins.getPlugins({})
+  const ssrConfiguration = await serverTrpc.configuration.getConfiguration()
 
   return (
-    <section className="flex w-full flex-col gap-5">
+    <section className="flex flex-1 flex-col gap-5 overflow-hidden">
       <Header title={dictionary.plugins} />
-      <PluginsContent ssrPlugins={ssrPlugins} />
+      <PluginsContent ssrPlugins={ssrPlugins} dictionary={dictionary} ssrConfiguration={ssrConfiguration} />
     </section>
   )
 }
