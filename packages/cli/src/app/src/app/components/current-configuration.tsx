@@ -65,7 +65,7 @@ export default function CurrentConfiguration({
     const startYRadius = 20
     const endXRadius = 350
     const endYRadius = 40
-    const xRandomness = 150
+    const xRandomness = 50
     const yRandomness = 20
     const angleStep = (2 * Math.PI) / bubbles
     const center = {
@@ -120,6 +120,23 @@ export default function CurrentConfiguration({
     animateBubbles(boundingBox)
   }
 
+  /**
+   * Use to debug particles
+   */
+  // useEffect(() => {
+  //   const debug = () => {
+  //     const firstPlugin = configuration.data.configuration.plugins?.[0]
+  //     if (!firstPlugin) return
+  //     const boundingBox = document.querySelector("li.plugin")?.getBoundingClientRect()
+  //     if (!boundingBox) return
+  //     animateBubbles(boundingBox)
+  //   }
+  //   document.addEventListener("click", debug)
+  //   return () => {
+  //     document.removeEventListener("click", debug)
+  //   }
+  // }, [configuration.data.configuration.plugins])
+
   const hasEmptyConfiguration =
     !configuration.data.configuration.plugins || configuration.data.configuration.plugins.length === 0
   if (hasEmptyConfiguration) {
@@ -135,7 +152,7 @@ export default function CurrentConfiguration({
         </Button>
       </div>
       {configuration.data.configuration.plugins ? (
-        <ul className="relative z-10 flex flex-col gap-2 overflow-auto scrollbar-hide">
+        <ul className="relative z-10 flex min-h-full flex-col gap-2 overflow-auto scrollbar-hide">
           <AnimatePresence>
             {configuration.data.configuration.plugins.map((plugin) => (
               <Plugin
@@ -196,9 +213,9 @@ function Plugin({
 
   return (
     <motion.li
-      layout
+      layout={"position"}
       key={plugin.name}
-      className="flex cursor-pointer flex-col gap-2 rounded-medium bg-content2 p-3 shadow hover:bg-content2/80"
+      className="plugin flex cursor-pointer flex-col gap-2 rounded-medium bg-content2 p-3 shadow hover:bg-content2/80"
       exit={{ opacity: 0, scale: 0.9 }}
       initial={{ opacity: 0, scale: 0.9 }}
       animate={{ opacity: 1, scale: 1 }}
