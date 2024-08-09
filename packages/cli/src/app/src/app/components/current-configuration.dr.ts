@@ -1,3 +1,13 @@
 import { dictionaryRequirements } from "@/lib/utils/dictionary"
 
-export const CurrentConfigurationDr = dictionaryRequirements({ configuration: true, edit: true, delete: true })
+import { NoConfigurationDr } from "./no-configuration.dr"
+
+export const CurrentConfigurationDr = dictionaryRequirements(
+  {
+    configuration: true,
+    edit: true,
+    delete: true,
+    reset: true,
+  },
+  NoConfigurationDr
+)

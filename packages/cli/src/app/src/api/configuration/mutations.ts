@@ -21,3 +21,17 @@ export const updateConfiguration = async ({
     return handleApiError(error)
   }
 }
+
+export const resetConfiguration = async ({}: apiInputFromSchema<typeof undefined>) => {
+  try {
+    const configuration = getConfiguration()
+    setConfiguration({
+      name: configuration.name,
+    })
+
+    const data: z.infer<ReturnType<typeof updateConfigurationResponseSchema>> = { configuration: {} }
+    return data
+  } catch (error: unknown) {
+    return handleApiError(error)
+  }
+}

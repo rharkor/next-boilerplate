@@ -219,5 +219,12 @@
   "configuration": "Configuration",
   "templates": "Modèles",
   "plugins": "Plugins",
-  "remove": "Retirer"
+  "remove": "Retirer",
+  "createYourConfiguration": "Créez votre configuration",
+  "fromTemplate": "Depuis un modèle",
+  "fromTemplateDescription": "Choisissez un modèle pour démarrer votre projet. Vous pourrez ensuite modifier les plugins.",
+  "fromScratch": "De zéro",
+  "fromScratchDescription": "Créez votre configuration de zéro en choisissant les plugins que vous souhaitez utiliser.",
+  "suggested": "Suggéré",
+  "advanced": "Avancé"
 }

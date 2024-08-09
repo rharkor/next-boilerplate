@@ -15,6 +15,7 @@ import { Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@nextui-o
 import { Spinner } from "@nextui-org/spinner"
 
 import { CurrentConfigurationDr } from "./current-configuration.dr"
+import NoConfiguration from "./no-configuration"
 
 type TPlugin = NonNullable<RouterOutputs["configuration"]["getConfiguration"]["configuration"]["plugins"]>[number]
 
@@ -29,14 +30,25 @@ export default function CurrentConfiguration({
     initialData: ssrConfiguration,
   })
 
-  const updateConfigurationMutation = trpc.configuration.updateConfiguration.useMutation()
   const utils = trpc.useUtils()
+  const updateConfigurationMutation = trpc.configuration.updateConfiguration.useMutation()
+  const resetConfigurationMutation = trpc.configuration.resetConfiguration.useMutation()
 
   const [isPending, setIsPending] = useState(false)
   const updateConfiguration = async (data: z.infer<ReturnType<typeof updateConfigurationRequestSchema>>) => {
     setIsPending(true)
     try {
       await updateConfigurationMutation.mutateAsync(data)
+      await utils.configuration.invalidate()
+    } finally {
+      setIsPending(false)
+    }
+  }
+
+  const resetConfiguration = async () => {
+    setIsPending(true)
+    try {
+      await resetConfigurationMutation.mutateAsync()
       await utils.configuration.invalidate()
     } finally {
       setIsPending(false)
@@ -108,11 +120,22 @@ export default function CurrentConfiguration({
     animateBubbles(boundingBox)
   }
 
+  const hasEmptyConfiguration =
+    !configuration.data.configuration.plugins || configuration.data.configuration.plugins.length === 0
+  if (hasEmptyConfiguration) {
+    return <NoConfiguration dictionary={dictionary} />
+  }
+
   return (
-    <section className="flex w-full flex-col gap-3 overflow-auto scrollbar-hide">
-      <h1 className="text-3xl">{dictionary.configuration}</h1>
+    <section className="flex w-full flex-col gap-5">
+      <div className="flex items-center justify-between gap-3">
+        <h1 className="text-3xl">{dictionary.configuration}</h1>
+        <Button color="danger" variant="light" onClick={resetConfiguration} isLoading={isPending}>
+          {dictionary.reset}
+        </Button>
+      </div>
       {configuration.data.configuration.plugins ? (
-        <ul className="relative z-10 flex flex-col gap-2">
+        <ul className="relative z-10 flex flex-col gap-2 overflow-auto scrollbar-hide">
           <AnimatePresence>
             {configuration.data.configuration.plugins.map((plugin) => (
               <Plugin

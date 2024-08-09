@@ -13,3 +13,5 @@ export const getConfigurationResponseSchema = () => z.object({ configuration: co
 
 export const updateConfigurationRequestSchema = () => z.object({ configuration: configurationSchema() })
 export const updateConfigurationResponseSchema = () => z.object({ configuration: configurationSchema() })
+
+export const resetConfigurationResponseSchema = () => z.object({ configuration: configurationSchema() })

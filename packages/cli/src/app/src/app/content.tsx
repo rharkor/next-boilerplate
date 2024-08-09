@@ -32,7 +32,7 @@ export default function MainContent({
         {!configuration.data.configuration.name && <ProjectInit dictionary={dictionary} />}
       </AnimatePresence>
       <NavSettings lang={lang} ssrConfiguration={ssrConfiguration} />
-      <div className="flex w-full flex-1 flex-row gap-4">
+      <div className="flex w-full flex-1 flex-row gap-4 overflow-hidden">
         <Sidenav dictionary={dictionary} ssrConfiguration={ssrConfiguration} />
         <CurrentConfiguration dictionary={dictionary} ssrConfiguration={ssrConfiguration} />
       </div>

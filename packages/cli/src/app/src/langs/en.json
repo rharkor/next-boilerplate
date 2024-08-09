@@ -219,5 +219,12 @@
   "configuration": "Configuration",
   "templates": "Templates",
   "plugins": "Plugins",
-  "remove": "Remove"
+  "remove": "Remove",
+  "createYourConfiguration": "Create your configuration",
+  "fromTemplate": "From template",
+  "fromTemplateDescription": "Choose a template to start your project. You will be able to modify the plugins afterwards.",
+  "fromScratch": "From scratch",
+  "fromScratchDescription": "Create your configuration from scratch by choosing the plugins you want to use.",
+  "suggested": "Suggested",
+  "advanced": "Advanced"
 }
