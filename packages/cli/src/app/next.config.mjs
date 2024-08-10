@@ -2,6 +2,7 @@
  * @type {import('next').NextConfig}
  */
 let config = {
+  output: "standalone",
   reactStrictMode: true,
   rewrites() {
     return [

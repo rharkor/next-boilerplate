@@ -108,7 +108,8 @@ export const applyConfig = async () => {
       process.exit(1)
     }
 
-    const relativeDestinationPath = typeof plugin === "string" ? pluginConfig.suggestedPath : plugin.path
+    const relativeDestinationPath =
+      typeof plugin === "string" ? pluginConfig.suggestedPath : plugin.path || pluginConfig.suggestedPath
 
     // Verify if the template doesnt exist
     const destinationPath = path.join(root, relativeDestinationPath)

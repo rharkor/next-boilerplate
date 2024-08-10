@@ -5,7 +5,9 @@
     "module": "./dist/index.mjs",
     "types": "./dist/index.d.cts",
     "scripts": {
-        "build": "pkgroll",
+        "build": "pkgroll && npm run -s copy-app",
+        "copy-app": "mkdir -p dist/app/.next && cp -r src/app/public dist/app/public && cp -r src/app/.next/standalone/packages/cli/src/app dist/app && cp -r src/app/.next/static dist/app/.next/static",
+        "start-app": "cd dist/app && cross-env HOSTNAME=\"0.0.0.0\" node server.js",
         "type-check": "tsc --noEmit",
         "debug": "tsx ./debug/index.ts",
         "install-local": "npm pack && npm install -g next-boilerplate-cli-0.0.0.tgz && rm next-boilerplate-cli-0.0.0.tgz",
@@ -61,17 +63,18 @@
         "@next-boilerplate/prettier": "*",
         "@next-boilerplate/scripts": "*",
         "@next-boilerplate/tsconfig": "*",
+        "cross-env": "^7.0.3",
         "pkgroll": "^2.4.2",
         "tsx": "^4.16.5",
         "typescript": "^5.5.4"
     },
     "dependencies": {
+        "@inquirer/prompts": "^5.3.7",
         "@rharkor/logger": "^1.3.1",
         "@types/minimist": "^1.2.5",
         "commander": "^12.1.0",
         "fs-extra": "^11.2.0",
-        "minimist": "^1.2.8",
-        "@inquirer/prompts": "^5.3.7"
+        "minimist": "^1.2.8"
     },
     "type": "module",
     "private": false,
