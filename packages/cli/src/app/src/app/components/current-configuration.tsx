@@ -9,12 +9,15 @@ import { updateConfigurationRequestSchema } from "@/api/configuration/schemas"
 import { Icons } from "@/components/icons"
 import Header from "@/components/ui/header"
 import ItemCard from "@/components/ui/item-card"
+import { ModalHeader } from "@/components/ui/modal"
 import Section from "@/components/ui/section"
 import { TDictionary } from "@/lib/langs"
 import { trpc } from "@/lib/trpc/client"
 import { RouterOutputs } from "@/lib/trpc/utils"
 import { Button } from "@nextui-org/button"
 import { Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@nextui-org/dropdown"
+import { Input } from "@nextui-org/input"
+import { Modal, ModalBody, ModalContent, ModalFooter, useDisclosure } from "@nextui-org/modal"
 import { Spinner } from "@nextui-org/spinner"
 
 import { CurrentConfigurationDr } from "./current-configuration.dr"
@@ -34,29 +37,26 @@ export default function CurrentConfiguration({
   })
 
   const utils = trpc.useUtils()
-  const updateConfigurationMutation = trpc.configuration.updateConfiguration.useMutation()
-  const resetConfigurationMutation = trpc.configuration.resetConfiguration.useMutation()
-
-  const [isPending, setIsPending] = useState(false)
-  const updateConfiguration = async (data: z.infer<ReturnType<typeof updateConfigurationRequestSchema>>) => {
-    setIsPending(true)
-    try {
-      await updateConfigurationMutation.mutateAsync(data)
+  const updateConfigurationMutation = trpc.configuration.updateConfiguration.useMutation({
+    onSuccess: async () => {
       await utils.configuration.invalidate()
-    } finally {
-      setIsPending(false)
-    }
+    },
+  })
+  const resetConfigurationMutation = trpc.configuration.resetConfiguration.useMutation({
+    onSuccess: async () => {
+      await utils.configuration.invalidate()
+    },
+  })
+
+  const updateConfiguration = async (data: z.infer<ReturnType<typeof updateConfigurationRequestSchema>>) => {
+    await updateConfigurationMutation.mutateAsync(data)
   }
 
   const resetConfiguration = async () => {
-    setIsPending(true)
-    try {
-      await resetConfigurationMutation.mutateAsync()
-      await utils.configuration.invalidate()
-    } finally {
-      setIsPending(false)
-    }
+    await resetConfigurationMutation.mutateAsync()
   }
+
+  const isPending = updateConfigurationMutation.isPending || resetConfigurationMutation.isPending
 
   const bubblesDuration = 0.45
   const animateBubbles = (boundingBox: DOMRect) => {
@@ -146,6 +146,19 @@ export default function CurrentConfiguration({
     return <NoConfiguration dictionary={dictionary} />
   }
 
+  const onEdit = async (plugin: TPlugin) => {
+    await updateConfiguration({
+      configuration: {
+        plugins: configuration.data.configuration.plugins?.map((p) => {
+          if (p.id === plugin.id) {
+            return plugin
+          }
+          return p
+        }),
+      },
+    })
+  }
+
   return (
     <Section>
       <Header
@@ -161,11 +174,12 @@ export default function CurrentConfiguration({
         <AnimatePresence>
           {configuration.data.configuration.plugins?.map((plugin) => (
             <Plugin
-              key={plugin.name}
+              key={plugin.id}
               plugin={plugin}
               dictionary={dictionary}
               isPending={isPending}
               onDelete={onDelete(plugin)}
+              onEdit={onEdit}
             />
           ))}
         </AnimatePresence>
@@ -194,11 +208,13 @@ function Plugin({
   plugin,
   dictionary,
   onDelete: _onDelete,
+  onEdit: _onEdit,
   isPending,
 }: {
   plugin: TPlugin
   dictionary: TDictionary<typeof CurrentConfigurationDr>
   onDelete: (boundingBox: DOMRect) => Promise<void>
+  onEdit: (plugin: TPlugin) => Promise<void>
   isPending: boolean
 }) {
   const liRef = useRef<HTMLLIElement>(null)
@@ -212,76 +228,135 @@ function Plugin({
     await _onDelete(boundingBox)
   }
 
+  const [newOutputPath, setNewOutputPath] = useState(plugin.outputPath)
+
   const outputPath = plugin.outputPath ?? plugin.suggestedPath
 
+  const {
+    isOpen: isEditOpen,
+    onOpen: onEditOpen,
+    onOpenChange: onEditOpenChange,
+    onClose: onEditClose,
+  } = useDisclosure()
+
+  const onEdit = async () => {
+    await _onEdit({
+      ...plugin,
+      outputPath: newOutputPath === "" ? undefined : newOutputPath,
+    })
+    onEditClose()
+  }
+
   return (
-    <ItemCard
-      id={plugin.name}
-      liRef={liRef}
-      title={plugin.name}
-      subTitle={
-        <>
-          {plugin.sourcePath}
-          <ArrowRight className="size-2.5" />
-          {outputPath}
-        </>
-      }
-      description={plugin.description}
-      actions={
-        <>
-          <Button color="primary" variant="flat" className="h-max min-w-0 p-2.5">
-            <Eye className="size-5" />
-          </Button>
-          <Dropdown>
-            <DropdownTrigger>
-              <Button color="default" className="h-max min-w-0 p-2.5">
-                <MoreHorizontal className="size-5" />
-              </Button>
-            </DropdownTrigger>
-            <DropdownMenu aria-label="Actions" disabledKeys={isPending ? ["edit", "delete"] : []}>
-              <DropdownItem
-                key="edit"
-                startContent={
-                  isPending ? (
-                    <Spinner
-                      classNames={{
-                        wrapper: "!size-4",
-                      }}
-                      color="current"
-                      size="sm"
-                    />
-                  ) : (
-                    <Pencil className="pointer-events-none size-4 shrink-0" />
-                  )
-                }
-              >
-                {dictionary.edit}
-              </DropdownItem>
-              <DropdownItem
-                key="delete"
-                className="text-danger"
-                color="danger"
-                startContent={
-                  isPending ? (
-                    <Spinner
-                      classNames={{
-                        wrapper: "!size-4",
-                      }}
-                      color="current"
-                      size="sm"
-                    />
-                  ) : (
-                    <Icons.trash className="pointer-events-none size-4 shrink-0" />
-                  )
-                }
-                onClick={onDelete}
-              >
-                {dictionary.delete}
-              </DropdownItem>
-            </DropdownMenu>
-          </Dropdown>
-        </>
-      }
-    />
+    <>
+      <ItemCard
+        id={plugin.id}
+        liRef={liRef}
+        title={plugin.name}
+        subTitle={
+          <>
+            {plugin.sourcePath}
+            <ArrowRight className="size-2.5" />
+            {outputPath}
+          </>
+        }
+        description={plugin.description}
+        href={`/plugins/${encodeURIComponent(plugin.id)}`}
+        actions={
+          <>
+            <Button color="primary" variant="flat" className="h-max min-w-0 p-2.5">
+              <Eye className="size-5" />
+            </Button>
+            <Dropdown>
+              <DropdownTrigger>
+                <Button
+                  color="default"
+                  className="h-max min-w-0 p-2.5"
+                  onClick={(e) => {
+                    e.preventDefault()
+                  }}
+                >
+                  <MoreHorizontal className="size-5" />
+                </Button>
+              </DropdownTrigger>
+              <DropdownMenu aria-label="Actions" disabledKeys={isPending ? ["edit", "delete"] : []}>
+                <DropdownItem
+                  key="edit"
+                  startContent={
+                    isPending ? (
+                      <Spinner
+                        classNames={{
+                          wrapper: "!size-4",
+                        }}
+                        color="current"
+                        size="sm"
+                      />
+                    ) : (
+                      <Pencil className="pointer-events-none size-4 shrink-0" />
+                    )
+                  }
+                  onClick={(e) => {
+                    e.preventDefault()
+                    onEditOpen()
+                  }}
+                >
+                  {dictionary.edit}
+                </DropdownItem>
+                <DropdownItem
+                  key="delete"
+                  className="text-danger"
+                  color="danger"
+                  startContent={
+                    isPending ? (
+                      <Spinner
+                        classNames={{
+                          wrapper: "!size-4",
+                        }}
+                        color="current"
+                        size="sm"
+                      />
+                    ) : (
+                      <Icons.trash className="pointer-events-none size-4 shrink-0" />
+                    )
+                  }
+                  onClick={(e) => {
+                    e.preventDefault()
+                    onDelete()
+                  }}
+                >
+                  {dictionary.delete}
+                </DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
+          </>
+        }
+      />
+      <Modal isOpen={isEditOpen} onOpenChange={onEditOpenChange}>
+        <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalHeader className="flex flex-col gap-1">Modal Title</ModalHeader>
+              <ModalBody>
+                <Input isDisabled isReadOnly value={plugin.sourcePath} label={dictionary.sourcePath} />
+                <Input
+                  value={newOutputPath ?? ""}
+                  onValueChange={setNewOutputPath}
+                  placeholder={plugin.suggestedPath}
+                  label={dictionary.outputPath}
+                />
+              </ModalBody>
+              <ModalFooter>
+                <Button variant="light" onPress={onClose} isDisabled={isPending}>
+                  {dictionary.close}
+                </Button>
+                <Button color="primary" onPress={onEdit} isLoading={isPending}>
+                  {dictionary.save}
+                </Button>
+              </ModalFooter>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
+    </>
   )
 }

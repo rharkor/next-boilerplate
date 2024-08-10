@@ -28,7 +28,7 @@ export default function TemplatesContent({
           subTitle={template.sourcePath}
           description={template.description}
           endContent={<BookDashed className="absolute right-2 top-2 size-4 text-primary" />}
-          href={`/templates/${template.id}`}
+          href={`/templates/${encodeURIComponent(template.id)}`}
         />
       ))}
     </ul>

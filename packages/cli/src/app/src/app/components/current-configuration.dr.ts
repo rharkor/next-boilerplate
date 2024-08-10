@@ -9,6 +9,10 @@ export const CurrentConfigurationDr = dictionaryRequirements(
     edit: true,
     delete: true,
     reset: true,
+    sourcePath: true,
+    outputPath: true,
+    save: true,
+    close: true,
   },
   NoConfigurationDr,
   HeaderDr

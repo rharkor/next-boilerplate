@@ -230,5 +230,8 @@
   "projectName": "Project name",
   "addToConfiguration": "Add to configuration",
   "removeFromConfiguration": "Remove from configuration",
-  "replaceConfiguration": "Replace configuration"
+  "replaceConfiguration": "Replace configuration",
+  "sourcePath": "Source path",
+  "outputPath": "Output path",
+  "close": "Close"
 }
