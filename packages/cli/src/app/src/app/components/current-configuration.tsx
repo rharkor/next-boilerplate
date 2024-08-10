@@ -155,6 +155,7 @@ export default function CurrentConfiguration({
             {dictionary.reset}
           </Button>
         }
+        dictionary={dictionary}
       />
       <ul className="relative z-10 flex flex-1 flex-col gap-2 overflow-auto scrollbar-hide">
         <AnimatePresence>

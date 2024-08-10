@@ -86,7 +86,7 @@ export default function Plugin({
           <ToyBrick className="absolute right-2 top-2 size-4 text-primary" />
           <Tooltip
             content={isPluginInConfiguration ? dictionary.removeFromConfiguration : dictionary.addToConfiguration}
-            delay={300}
+            delay={500}
           >
             <Button
               size="sm"

@@ -59,7 +59,7 @@ export default function TemplateContent({
 
   return (
     <Section>
-      <Header title={template.data.template.name} />
+      <Header title={template.data.template.name} withBack dictionary={dictionary} />
       <p>{template.data.template.description}</p>
       <div className="ml-auto">
         <Button color="primary" className="h-max min-w-0 p-2" variant={"shadow"} onPress={replaceConfiguration}>
@@ -77,8 +77,8 @@ export default function TemplateContent({
           <p>{dictionary.replaceConfiguration}</p>
         </Button>
       </div>
-      <div className="flex flex-col gap-2 overflow-auto">
-        <h1 className="text-3xl">{dictionary.plugins}</h1>
+      <div className="mt-5 flex flex-col gap-2 overflow-auto">
+        <h1 className="text-2xl">{dictionary.plugins}</h1>
         <ul className="flex flex-1 flex-col gap-2 overflow-auto scrollbar-hide">
           {plugins.map((plugin) => (
             <Plugin key={plugin.id} plugin={plugin} dictionary={dictionary} ssrConfiguration={ssrConfiguration} />

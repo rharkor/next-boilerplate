@@ -91,7 +91,7 @@ export default function PluginContent({
 
   return (
     <Section>
-      <Header title={plugin.data.plugin.name} />
+      <Header title={plugin.data.plugin.name} withBack dictionary={dictionary} />
       <p>{plugin.data.plugin.description}</p>
       <div className="ml-auto">
         <Button
