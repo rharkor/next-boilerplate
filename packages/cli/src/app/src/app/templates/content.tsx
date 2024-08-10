@@ -19,15 +19,16 @@ export default function TemplatesContent({
   )
 
   return (
-    <ul className="relative z-10 flex flex-1 flex-col gap-2 overflow-auto scrollbar-hide">
+    <ul className="flex flex-1 flex-col gap-2 overflow-auto scrollbar-hide">
       {templates.data.templates.map((template) => (
         <ItemCard
-          key={template.sourcePath}
-          id={template.sourcePath}
+          key={template.id}
+          id={template.id}
           title={template.name}
           subTitle={template.sourcePath}
           description={template.description}
           endContent={<BookDashed className="absolute right-2 top-2 size-4 text-primary" />}
+          href={`/templates/${template.id}`}
         />
       ))}
     </ul>

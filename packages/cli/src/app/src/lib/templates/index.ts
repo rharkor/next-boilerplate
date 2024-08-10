@@ -7,7 +7,15 @@ import { configSchema, TConfig } from "@next-boilerplate/scripts/utils/template-
 import { logger } from "@rharkor/logger"
 import { TRPCError } from "@trpc/server"
 
-import { getTemplatesFromStore, setTemplatesToStore, TTemplateStore } from "./store"
+import { getPlugins } from "../plugins"
+
+import {
+  getSingleTemplateFromStore,
+  getTemplatesFromStore,
+  setSingleTemplateToStore,
+  setTemplatesToStore,
+  TTemplateStore,
+} from "./store"
 
 // Get the current package directory
 const __filename = fileURLToPath(import.meta.url) // get the resolved path to the file
@@ -48,11 +56,44 @@ export const getTemplates = async () => {
     }
 
     const sourcePath = path.dirname(template).replace(templatesDirectory, "").replace(/^\//, "")
-    templatesFilled.push({ ...templateConfig, sourcePath })
+    templatesFilled.push({ ...templateConfig, sourcePath, id: sourcePath })
   }
 
   templatesFilled.sort((a, b) => a.name.localeCompare(b.name))
 
   setTemplatesToStore(templatesFilled)
   return templatesFilled
+}
+
+export const getTemplate = async (id: string) => {
+  const templateFromStore = await getSingleTemplateFromStore(id)
+  if (templateFromStore) return templateFromStore
+
+  const templates = await getTemplates()
+  const template = templates.find((p) => p.id === id)
+  if (!template) {
+    throw new TRPCError({
+      message: `Template ${id} not found`,
+      code: "INTERNAL_SERVER_ERROR",
+    })
+  }
+
+  //? Fill the template with the plugins
+  const plugins = await getPlugins()
+  const foundPlugins = template.plugins
+    .map((pluginId) => {
+      const plugin = plugins.find((p) => p.id === pluginId)
+      if (!plugin) {
+        logger.error(`Plugin ${pluginId} in template ${id} not found`)
+      }
+      return plugin
+    })
+    .filter(Boolean)
+  const filledTemplate = {
+    ...template,
+    plugins: foundPlugins,
+  }
+
+  setSingleTemplateToStore(id, filledTemplate)
+  return filledTemplate
 }

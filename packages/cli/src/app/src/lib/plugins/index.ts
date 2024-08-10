@@ -7,7 +7,13 @@ import { pluginConfigSchema, TPluginConfig } from "@next-boilerplate/scripts/uti
 import { logger } from "@rharkor/logger"
 import { TRPCError } from "@trpc/server"
 
-import { getPluginsFromStore, setPluginsToStore, TPluginStore } from "./store"
+import {
+  getPluginsFromStore,
+  getSinglePluginFromStore,
+  setPluginsToStore,
+  setSinglePluginToStore,
+  TPluginStore,
+} from "./store"
 
 // Get the current package directory
 const __filename = fileURLToPath(import.meta.url) // get the resolved path to the file
@@ -48,11 +54,28 @@ export const getPlugins = async () => {
     }
 
     const sourcePath = path.dirname(plugin).replace(pluginsDirectory, "").replace(/^\//, "")
-    pluginsFilled.push({ ...pluginConfig, sourcePath })
+    pluginsFilled.push({ ...pluginConfig, sourcePath, id: sourcePath })
   }
 
   pluginsFilled.sort((a, b) => a.name.localeCompare(b.name))
 
   setPluginsToStore(pluginsFilled)
   return pluginsFilled
+}
+
+export const getPlugin = async (id: string) => {
+  const pluginFromStore = await getSinglePluginFromStore(id)
+  if (pluginFromStore) return pluginFromStore
+
+  const plugins = await getPlugins()
+  const plugin = plugins.find((p) => p.id === id)
+  if (!plugin) {
+    throw new TRPCError({
+      message: `Plugin ${id} not found`,
+      code: "INTERNAL_SERVER_ERROR",
+    })
+  }
+
+  setSinglePluginToStore(id, plugin)
+  return plugin
 }

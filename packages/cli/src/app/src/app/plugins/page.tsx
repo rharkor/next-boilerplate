@@ -1,4 +1,5 @@
 import Header from "@/components/ui/header"
+import Section from "@/components/ui/section"
 import { getDictionary } from "@/lib/langs"
 import { serverTrpc } from "@/lib/trpc/server"
 import { dictionaryRequirements } from "@/lib/utils/dictionary"
@@ -14,9 +15,9 @@ export default async function Plugins() {
   const ssrConfiguration = await serverTrpc.configuration.getConfiguration()
 
   return (
-    <section className="flex flex-1 flex-col gap-5 overflow-hidden">
+    <Section>
       <Header title={dictionary.plugins} />
       <PluginsContent ssrPlugins={ssrPlugins} dictionary={dictionary} ssrConfiguration={ssrConfiguration} />
-    </section>
+    </Section>
   )
 }

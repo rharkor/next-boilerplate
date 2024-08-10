@@ -35,14 +35,14 @@ export const fullPluginSchema = z.object({
 
 export const configSchema = z.object({
   name: z.string(),
-  description: z.string(),
+  description: z.string().max(300),
   plugins: z.array(z.string().or(fullPluginSchema)),
 })
 export type TConfig = z.infer<typeof configSchema>
 
 export const pluginConfigSchema = z.object({
   name: z.string(),
-  description: z.string(),
+  description: z.string().max(300),
   suggestedPath: z.string().refine(
     (value) => {
       if (!isPathInCurrentScope(value)) {

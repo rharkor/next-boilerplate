@@ -229,5 +229,6 @@
   "advanced": "Avancé",
   "projectName": "Nom du projet",
   "addToConfiguration": "Ajouter à la configuration",
-  "removeFromConfiguration": "Retirer de la configuration"
+  "removeFromConfiguration": "Retirer de la configuration",
+  "replaceConfiguration": "Remplacer la configuration"
 }

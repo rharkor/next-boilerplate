@@ -4,6 +4,7 @@ import { pluginConfigSchema } from "@next-boilerplate/scripts/utils/template-con
 
 export const fullPluginSchema = pluginConfigSchema.extend({
   sourcePath: z.string(),
+  id: z.string(),
 })
 export type TPluginStore = z.infer<typeof fullPluginSchema>
 
@@ -19,4 +20,21 @@ export const setPluginsToStore = async (newPlugins: TPluginStore[]) => {
 
 export const resetPluginsStore = async () => {
   plugins = null
+}
+
+export const singlePluginSchema = fullPluginSchema
+export type TPlugin = z.infer<typeof singlePluginSchema>
+
+let singlePlugins: Record<string, TPlugin> = {}
+
+export const getSinglePluginFromStore = async (id: string) => {
+  return singlePlugins[id]
+}
+
+export const setSinglePluginToStore = async (id: string, plugin: TPlugin) => {
+  singlePlugins[id] = plugin
+}
+
+export const resetSinglePluginStore = async () => {
+  singlePlugins = {}
 }

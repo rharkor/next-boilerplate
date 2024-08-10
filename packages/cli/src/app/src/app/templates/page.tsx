@@ -1,4 +1,5 @@
 import Header from "@/components/ui/header"
+import Section from "@/components/ui/section"
 import { getDictionary } from "@/lib/langs"
 import { serverTrpc } from "@/lib/trpc/server"
 import { dictionaryRequirements } from "@/lib/utils/dictionary"
@@ -13,9 +14,9 @@ export default async function Templates() {
   const ssrTemplates = await serverTrpc.templates.getTemplates({})
 
   return (
-    <section className="flex flex-1 flex-col gap-5 overflow-hidden">
+    <Section>
       <Header title={dictionary.templates} />
       <TemplatesContent ssrTemplates={ssrTemplates} />
-    </section>
+    </Section>
   )
 }

@@ -9,6 +9,7 @@ import { updateConfigurationRequestSchema } from "@/api/configuration/schemas"
 import { Icons } from "@/components/icons"
 import Header from "@/components/ui/header"
 import ItemCard from "@/components/ui/item-card"
+import Section from "@/components/ui/section"
 import { TDictionary } from "@/lib/langs"
 import { trpc } from "@/lib/trpc/client"
 import { RouterOutputs } from "@/lib/trpc/utils"
@@ -146,7 +147,7 @@ export default function CurrentConfiguration({
   }
 
   return (
-    <section className="flex flex-1 flex-col gap-5 overflow-hidden">
+    <Section>
       <Header
         title={dictionary.configuration}
         actions={
@@ -184,7 +185,7 @@ export default function CurrentConfiguration({
           className="absolute rounded-full bg-foreground"
         />
       ))}
-    </section>
+    </Section>
   )
 }
 
