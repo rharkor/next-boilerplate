@@ -43,6 +43,7 @@
         "uuid",
         "eslint-config-legacy",
         "tailwindcss",
-        "@babel/core"
+        "@babel/core",
+        "zod"
     ]
 }
