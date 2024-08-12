@@ -4,10 +4,12 @@ import { logger } from "@rharkor/logger"
 
 import { registerApplyConfig } from "./apply-config"
 import { registerVersion } from "./version"
+import { registerWeb } from "./web"
 
 export const registerCli = async (program: Command) => {
   await logger.init()
 
   registerApplyConfig(program)
   registerVersion(program)
+  registerWeb(program)
 }

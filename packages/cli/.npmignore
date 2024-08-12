@@ -4,3 +4,4 @@ eslint.config.js
 prettier.config.js
 tsconfig.json
 turbo.json
+!dist/app/**/*

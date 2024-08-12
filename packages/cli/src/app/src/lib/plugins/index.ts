@@ -1,7 +1,6 @@
 import fs from "fs-extra"
 import { globby } from "globby"
 import path from "path"
-import { fileURLToPath } from "url"
 
 import { pluginConfigSchema, TPluginConfig } from "@next-boilerplate/scripts/utils/template-config/index.js"
 import { logger } from "@rharkor/logger"
@@ -16,9 +15,9 @@ import {
 } from "./store"
 
 // Get the current package directory
-const __filename = fileURLToPath(import.meta.url) // get the resolved path to the file
-const __dirname = path.dirname(__filename) // get the name of the directory
-const dir = path.resolve(__dirname, "../../../../..")
+const cwd = process.cwd()
+// eslint-disable-next-line no-process-env
+const dir = path.resolve(cwd, "../..")
 
 const configFileName = "config.json"
 const pluginsDirectory = path.join(dir, "assets", "plugins")
