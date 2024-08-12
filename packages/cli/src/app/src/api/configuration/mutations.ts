@@ -10,7 +10,7 @@ export const updateConfiguration = async ({
   input: { configuration: _configuration },
 }: apiInputFromSchema<typeof updateConfigurationRequestSchema>) => {
   try {
-    const configuration = getConfiguration()
+    const configuration = await getConfiguration()
 
     // Merge the new configuration with the old one
     setConfiguration({ ...configuration, ..._configuration })
@@ -24,7 +24,7 @@ export const updateConfiguration = async ({
 
 export const resetConfiguration = async ({}: apiInputFromSchema<typeof undefined>) => {
   try {
-    const configuration = getConfiguration()
+    const configuration = await getConfiguration()
     setConfiguration({
       name: configuration.name,
     })

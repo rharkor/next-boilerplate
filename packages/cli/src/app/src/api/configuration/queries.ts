@@ -8,7 +8,7 @@ import { getConfigurationResponseSchema } from "./schemas"
 
 export const getConfigurationQuery = async ({}: apiInputFromSchema<typeof undefined>) => {
   try {
-    const configuration = getConfiguration()
+    const configuration = await getConfiguration()
 
     const data: z.infer<ReturnType<typeof getConfigurationResponseSchema>> = { configuration }
     return data
