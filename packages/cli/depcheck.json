@@ -44,6 +44,7 @@
         "eslint-config-legacy",
         "tailwindcss",
         "@babel/core",
-        "zod"
+        "zod",
+        "autoprefixer"
     ]
 }

@@ -4,17 +4,21 @@
  * Validate the config of each templates
  */
 
+import { z } from "zod"
+
 import { cdAtRoot, cwdAtRoot } from "@/utils"
-import { configSchema, pluginConfigSchema, TConfig, TPluginConfig } from "@/utils/template-config"
+import { pluginConfigSchema, templateSchema, TPluginConfig } from "@/utils/template-config"
 import { logger } from "@rharkor/logger"
 import { task } from "@rharkor/task"
+
+type TConfig = z.infer<typeof templateSchema>
 
 import "zx/globals"
 
 cwdAtRoot()
 cdAtRoot()
 
-const templatesDirectory = "packages/templates"
+const templatesDirectory = "packages/cli/assets/templates"
 const pluginsDirectory = "packages/cli/assets/plugins"
 const configFileName = "config.json"
 
@@ -45,7 +49,7 @@ validateTemplateTask.log(`Found ${templates.length} templates`)
 validateTemplateTask.log("Validating the config")
 for (const template of templates) {
   try {
-    configSchema.parse(template.config)
+    templateSchema.parse(template.config)
   } catch (error) {
     validateTemplateTask.error(`The template ${template.path} has an invalid config: ${error}`)
     validateTemplateTask.stop()

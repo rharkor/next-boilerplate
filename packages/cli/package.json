@@ -60,6 +60,7 @@
     "license": "MIT",
     "description": "CLI for Next Boilerplate",
     "devDependencies": {
+        "@babel/core": "^7.22.17",
         "@next-boilerplate/eslint": "*",
         "@next-boilerplate/prettier": "*",
         "@next-boilerplate/scripts": "*",
@@ -74,8 +75,7 @@
         "tailwindcss": "^3.4.0",
         "tsx": "^4.16.5",
         "typescript": "^5.5.4",
-        "wait-port": "^1.1.0",
-        "@babel/core": "^7.22.17"
+        "wait-port": "^1.1.0"
     },
     "dependencies": {
         "@formatjs/intl-localematcher": "^0.5.0",
@@ -109,6 +109,7 @@
         "@types/react": "^18.2.19",
         "@types/react-dom": "^18.2.7",
         "@types/uuid": "^10.0.0",
+        "autoprefixer": "^10.4.20",
         "base32-encode": "^2.0.0",
         "clsx": "^2.0.0",
         "commander": "^12.1.0",
