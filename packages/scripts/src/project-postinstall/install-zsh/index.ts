@@ -5,7 +5,8 @@
 import { $ } from "zx"
 
 import { cwdAtRoot } from "@/utils"
-import { logger, task } from "@rharkor/logger"
+import { logger } from "@rharkor/logger"
+import { task } from "@rharkor/task"
 
 import "zx/globals"
 
@@ -24,10 +25,10 @@ export const installZsh = async () => {
   const zshRcConfig = await $`echo \${ZDOTDIR:-$HOME}/.zshrc`
   const isZshRcConfigExists = await $`test -f ${zshRcConfig}`.then(() => true).catch(() => false)
   if (isZshRcConfigExists) {
-    installZshTask?.print("Backup .zshrc file")
+    installZshTask?.log("Backup .zshrc file")
     await $`cp ${zshRcConfig} ${zshRcConfig}.bak`
   }
-  installZshTask?.print("Copy .zshrc file")
+  installZshTask?.log("Copy .zshrc file")
   await $`cp ${customZshConfig} ${zshRcConfig}`
 
   //? Install zsh syntax highlighting
@@ -37,9 +38,9 @@ export const installZsh = async () => {
     .then(() => true)
     .catch(() => false)
   if (isZshSyntaxHighlightingPathExists) {
-    installZshTask?.print("zsh-syntax-highlighting already exists")
+    installZshTask?.log("zsh-syntax-highlighting already exists")
   } else {
-    installZshTask?.print("Install zsh-syntax-highlighting")
+    installZshTask?.log("Install zsh-syntax-highlighting")
     await $({
       quiet: true,
     })`git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${zshSyntaxHighlightingPath}`
@@ -49,9 +50,9 @@ export const installZsh = async () => {
   const zshAutosuggestionsPath = await $`echo \${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-autosuggestions`
   const isZshAutosuggestionsPathExists = await $`test -d ${zshAutosuggestionsPath}`.then(() => true).catch(() => false)
   if (isZshAutosuggestionsPathExists) {
-    installZshTask?.print("zsh-autosuggestions already exists")
+    installZshTask?.log("zsh-autosuggestions already exists")
   } else {
-    installZshTask?.print("Install zsh-autosuggestions")
+    installZshTask?.log("Install zsh-autosuggestions")
     await $({
       quiet: true,
     })`git clone https://github.com/zsh-users/zsh-autosuggestions ${zshAutosuggestionsPath}`

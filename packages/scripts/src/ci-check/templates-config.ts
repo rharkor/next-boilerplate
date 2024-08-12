@@ -4,17 +4,22 @@
  * Validate the config of each templates
  */
 
+import { z } from "zod"
+
 import { cdAtRoot, cwdAtRoot } from "@/utils"
-import { componentConfigSchema, configSchema, TComponentConfig, TConfig } from "@/utils/template-config"
-import { logger, task } from "@rharkor/logger"
+import { pluginConfigSchema, templateSchema, TPluginConfig } from "@/utils/template-config"
+import { logger } from "@rharkor/logger"
+import { task } from "@rharkor/task"
+
+type TConfig = z.infer<typeof templateSchema>
 
 import "zx/globals"
 
 cwdAtRoot()
 cdAtRoot()
 
-const templatesDirectory = "packages/templates"
-const componentsDirectory = "packages/cli/assets/components"
+const templatesDirectory = "packages/cli/assets/templates"
+const pluginsDirectory = "packages/cli/assets/plugins"
 const configFileName = "config.json"
 
 const validateTemplateTask = await task.startTask({
@@ -22,7 +27,7 @@ const validateTemplateTask = await task.startTask({
 })
 
 //* Get all the templates
-validateTemplateTask.print("Getting all the templates")
+validateTemplateTask.log("Getting all the templates")
 const templatesPath = (await fs.readdir(templatesDirectory, { withFileTypes: true }))
   .filter((dirent) => dirent.isDirectory())
   .map((dirent) => dirent.name)
@@ -38,13 +43,13 @@ for (const templatePath of templatesPath) {
   const config = await fs.readJSON(configPath)
   templates.push({ config, path: path.join(templatesDirectory, templatePath) })
 }
-validateTemplateTask.print(`Found ${templates.length} templates`)
+validateTemplateTask.log(`Found ${templates.length} templates`)
 
 //* Validate the config
-validateTemplateTask.print("Validating the config")
+validateTemplateTask.log("Validating the config")
 for (const template of templates) {
   try {
-    configSchema.parse(template.config)
+    templateSchema.parse(template.config)
   } catch (error) {
     validateTemplateTask.error(`The template ${template.path} has an invalid config: ${error}`)
     validateTemplateTask.stop()
@@ -52,38 +57,38 @@ for (const template of templates) {
   }
 }
 
-//* Validate the references
-validateTemplateTask.print("Validating the references")
+//* Validate the plugins
+validateTemplateTask.log("Validating the plugins")
 for (const template of templates) {
-  for (const reference of template.config.references) {
-    const componentName = typeof reference === "string" ? reference : reference.name
-    const componentPath = path.join(componentsDirectory, componentName)
-    if (!(await fs.exists(componentPath))) {
-      validateTemplateTask.error(`The component ${componentName} referenced by the config doesn't exist`)
+  for (const reference of template.config.plugins) {
+    const pluginName = typeof reference === "string" ? reference : reference.name
+    const pluginPath = path.join(pluginsDirectory, pluginName)
+    if (!(await fs.exists(pluginPath))) {
+      validateTemplateTask.error(`The plugin ${pluginName} referenced by the config doesn't exist`)
       validateTemplateTask.stop()
       process.exit(1)
     }
-    const componentConfigPath = path.join(componentPath, configFileName)
-    const componentContentName = (await fs.readdir(componentPath)).find((file) => file.startsWith("index"))
-    if (!componentContentName) {
-      validateTemplateTask.error(`The component ${componentName} referenced by the config doesn't exist`)
+    const pluginConfigPath = path.join(pluginPath, configFileName)
+    const pluginContentName = (await fs.readdir(pluginPath)).find((file) => file.startsWith("index"))
+    if (!pluginContentName) {
+      validateTemplateTask.error(`The plugin ${pluginName} referenced by the config doesn't exist`)
       validateTemplateTask.stop()
       process.exit(1)
     }
-    const componentContentPath = path.join(componentPath, componentContentName)
-    const componentConfig = (await fs.readJson(componentConfigPath)) as TComponentConfig
+    const pluginContentPath = path.join(pluginPath, pluginContentName)
+    const pluginConfig = (await fs.readJson(pluginConfigPath)) as TPluginConfig
     try {
-      componentConfigSchema.parse(componentConfig)
+      pluginConfigSchema.parse(pluginConfig)
     } catch (error) {
-      validateTemplateTask.error(`The component config file ${componentConfigPath} is not valid`)
+      validateTemplateTask.error(`The plugin config file ${pluginConfigPath} is not valid`)
       validateTemplateTask.stop()
       logger.error(error)
       process.exit(1)
     }
 
-    //? Check if the component exists
-    if (!componentContentPath || !(await fs.exists(componentContentPath))) {
-      validateTemplateTask.error(`The component ${componentName} referenced by the config doesn't exist`)
+    //? Check if the plugin exists
+    if (!pluginContentPath || !(await fs.exists(pluginContentPath))) {
+      validateTemplateTask.error(`The plugin ${pluginName} referenced by the config doesn't exist`)
       validateTemplateTask.stop()
       process.exit(1)
     }

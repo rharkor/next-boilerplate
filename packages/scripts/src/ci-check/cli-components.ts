@@ -7,37 +7,38 @@
 import { z } from "zod"
 
 import { cdAtRoot, cwdAtRoot } from "@/utils"
-import { componentConfigSchema } from "@/utils/template-config"
-import { logger, task } from "@rharkor/logger"
+import { pluginConfigSchema } from "@/utils/template-config"
+import { logger } from "@rharkor/logger"
+import { task } from "@rharkor/task"
 
 import "zx/globals"
 
 cwdAtRoot()
 cdAtRoot()
 
-type TComponentConfig = z.infer<typeof componentConfigSchema>
+type TPluginConfig = z.infer<typeof pluginConfigSchema>
 
-const componentsDirectory = "packages/cli/assets/components"
+const pluginsDirectory = "packages/cli/assets/plugins"
 const configFileName = "config.json"
 
-const validateComponentTask = await task.startTask({
-  name: "Validating components config... 🧰",
+const validatepluginTask = await task.startTask({
+  name: "Validating plugins config... 🧰",
 })
 
-//* Get all the components
-const components = await globby(path.join(componentsDirectory, "**", configFileName))
+//* Get all the plugins
+const plugins = await globby(path.join(pluginsDirectory, "**", configFileName))
 
-for (const component of components) {
-  const componentConfig = (await fs.readJson(component)) as TComponentConfig
+for (const plugin of plugins) {
+  const pluginConfig = (await fs.readJson(plugin)) as TPluginConfig
 
   try {
-    componentConfigSchema.parse(componentConfig)
+    pluginConfigSchema.parse(pluginConfig)
   } catch (error) {
-    validateComponentTask.error(`The config of the component ${component} is invalid!`)
-    validateComponentTask.stop()
+    validatepluginTask.error(`The config of the plugin ${plugin} is invalid!`)
+    validatepluginTask.stop()
     logger.error(error)
     process.exit(1)
   }
 }
 
-validateComponentTask.stop("Components config validated! 🎉")
+validatepluginTask.stop("plugins config validated! 🎉")

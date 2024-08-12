@@ -1,26 +1,31 @@
-#!/usr/bin/env zx
-
 /**
  * Validate the config of each templates
  */
 
-import { $ } from "zx"
+import fs from "fs-extra"
+import minimist from "minimist"
+import path from "path"
+import { fileURLToPath } from "url"
 
 import { input } from "@inquirer/prompts"
 import {
-  componentConfigSchema,
   configSchema,
-  TComponentConfig,
+  pluginConfigSchema,
   TConfig,
+  TPluginConfig,
 } from "@next-boilerplate/scripts/utils/template-config"
-import { logger, task } from "@rharkor/logger"
+import { logger } from "@rharkor/logger"
+import { task } from "@rharkor/task"
 
-import "zx/globals"
+// Get the current package directory
+const __filename = fileURLToPath(import.meta.url) // get the resolved path to the file
+const __dirname = path.dirname(__filename) // get the name of the directory
+const dir = path.resolve(__dirname, "../../..")
 
-const dir = $.sync`pwd`.text().replace("\n", "")
-
-const componentsDirectory = path.join(dir, "assets", "components")
+const pluginsDirectory = path.join(dir, "assets", "plugins")
 const configFileName = "config.json"
+
+const argv = minimist(process.argv.slice(2))
 
 export const applyConfig = async () => {
   //* Root dir
@@ -40,8 +45,16 @@ export const applyConfig = async () => {
     name: "Apply template config... 🧰",
   })
 
+  //* Check if the plugins directory exists
+  applyConfigTask.log("Checking if the plugins directory exists")
+  if (!(await fs.exists(pluginsDirectory))) {
+    applyConfigTask.error(`The plugins directory doesn't exist at ${pluginsDirectory}`)
+    applyConfigTask.stop()
+    process.exit(1)
+  }
+
   //* Retrieve config
-  applyConfigTask.print("Retrieving the config")
+  applyConfigTask.log("Retrieving the config")
   const configPath = !root.endsWith(configFileName) ? path.join(root, configFileName) : root
   if (!(await fs.exists(configPath))) {
     applyConfigTask.error(`The config file ${configPath} doesn't exist`)
@@ -59,43 +72,44 @@ export const applyConfig = async () => {
     process.exit(1)
   }
 
-  //* Apply references
-  applyConfigTask.print("Applying references")
+  //* Apply plugins
+  applyConfigTask.log("Applying plugins")
 
-  for (const reference of config.references) {
-    const componentName = typeof reference === "string" ? reference : reference.name
-    const componentPath = path.join(componentsDirectory, componentName)
-    if (!(await fs.exists(componentPath))) {
-      applyConfigTask.error(`The component ${componentName} referenced by the config doesn't exist`)
+  for (const plugin of config.plugins) {
+    const pluginName = typeof plugin === "string" ? plugin : plugin.name
+    const pluginPath = path.join(pluginsDirectory, pluginName)
+    if (!(await fs.exists(pluginPath))) {
+      applyConfigTask.error(`The plugin ${pluginName} doesn't exist`)
       applyConfigTask.stop()
       process.exit(1)
     }
-    const componentConfigPath = path.join(componentPath, configFileName)
-    const componentContentName = (await fs.readdir(componentPath)).find((file) => file.startsWith("index"))
-    if (!componentContentName) {
-      applyConfigTask.error(`The component ${componentName} referenced by the config doesn't exist`)
+    const pluginConfigPath = path.join(pluginPath, configFileName)
+    const pluginContentName = (await fs.readdir(pluginPath)).find((file) => file.startsWith("index"))
+    if (!pluginContentName) {
+      applyConfigTask.error(`The plugin ${pluginName} doesn't exist`)
       applyConfigTask.stop()
       process.exit(1)
     }
-    const componentContentPath = path.join(componentPath, componentContentName)
-    const componentConfig = (await fs.readJson(componentConfigPath)) as TComponentConfig
+    const pluginContentPath = path.join(pluginPath, pluginContentName)
+    const pluginConfig = (await fs.readJson(pluginConfigPath)) as TPluginConfig
     try {
-      componentConfigSchema.parse(componentConfig)
+      pluginConfigSchema.parse(pluginConfig)
     } catch (error) {
-      applyConfigTask.error(`The component config file ${componentConfigPath} is not valid`)
+      applyConfigTask.error(`The plugin config file ${pluginConfigPath} is not valid. Contact developer`)
       applyConfigTask.stop()
       logger.error(error)
       process.exit(1)
     }
 
-    //? Check if the component exists
-    if (!componentContentPath || !(await fs.exists(componentContentPath))) {
-      applyConfigTask.error(`The component ${componentName} referenced by the config doesn't exist`)
+    //? Check if the plugin exists
+    if (!pluginContentPath || !(await fs.exists(pluginContentPath))) {
+      applyConfigTask.error(`The plugin ${pluginName} doesn't exist`)
       applyConfigTask.stop()
       process.exit(1)
     }
 
-    const relativeDestinationPath = typeof reference === "string" ? componentConfig.suggestedPath : reference.path
+    const relativeDestinationPath =
+      typeof plugin === "string" ? pluginConfig.suggestedPath : plugin.path || pluginConfig.suggestedPath
 
     // Verify if the template doesnt exist
     const destinationPath = path.join(root, relativeDestinationPath)
@@ -105,12 +119,12 @@ export const applyConfig = async () => {
       process.exit(1)
     }
 
-    applyConfigTask.print(`Copying the component ${componentName} to the destination ${destinationPath}`)
-    await fs.copy(componentContentPath, destinationPath)
+    applyConfigTask.log(`Copying the plugin ${pluginName} to the destination ${destinationPath}`)
+    await fs.copy(pluginContentPath, destinationPath)
   }
 
   //* Delete config.json
-  applyConfigTask.print("Deleting the config file")
+  applyConfigTask.log("Deleting the config file")
   await fs.remove(configPath)
 
   applyConfigTask.stop("The template config has been applied! 🎉")

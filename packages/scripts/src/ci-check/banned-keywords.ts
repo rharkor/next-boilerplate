@@ -7,7 +7,7 @@
 import { $ } from "zx"
 
 import { cwdAtRoot } from "@/utils"
-import { task } from "@rharkor/logger"
+import { task } from "@rharkor/task"
 
 import "zx/globals"
 
@@ -29,7 +29,7 @@ const searchTask = await task.startTask({
 
 let foundBannedKeywords = false
 for (const keyword of keywords) {
-  searchTask.print(`Searching for ${keyword}`)
+  searchTask.log(`Searching for ${keyword}`)
   try {
     const grepResult = await $`grep -r "${keyword}" ${searchDir} ${exclusions}`
 

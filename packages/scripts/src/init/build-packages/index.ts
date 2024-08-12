@@ -5,7 +5,7 @@
  */
 
 import { cwdAtRoot } from "@/utils"
-import { task } from "@rharkor/logger"
+import { task } from "@rharkor/task"
 
 import "zx/globals"
 

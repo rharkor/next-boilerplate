@@ -17,7 +17,7 @@ const rule: Rule.RuleModule = {
       const firstLine = sourceCode.lines[0].trim()
 
       // Check if the file is a page or layout file
-      const isTargetedFile = /(?:page|layout|dr)\.(ts|tsx|js|jsx)$/.test(filename)
+      const isTargetedFile = /^(?:page|layout|dr)\.(ts|tsx|js|jsx)$/.test(filename)
 
       // If it's the targeted file type and the first line is 'use client'
       if (isTargetedFile && firstLine === '"use client"') {
