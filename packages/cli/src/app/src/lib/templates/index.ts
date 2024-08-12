@@ -32,7 +32,7 @@ export const getTemplates = async () => {
   const templatesFromStore = await getTemplatesFromStore()
   if (templatesFromStore) return templatesFromStore
 
-  logger.info(`Loading templates (${templatesDirectory})`)
+  logger.debug(`Loading templates (${templatesDirectory})`)
   if (!(await fs.exists(templatesDirectory))) {
     throw new TRPCError({
       message: `The templates directory doesn't exist at ${templatesDirectory}`,
