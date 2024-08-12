@@ -1,0 +1,6 @@
+{
+    "$schema": "../../component.d.json",
+    "name": "Empty packages directory",
+    "description": "Generates an empty packages directory",
+    "suggestedPath": "packages"
+}

@@ -1,0 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  --toastify-color-progress-light: hsl(var(--nextui-primary));
+  --toastify-color-progress-dark: hsl(var(--nextui-primary));
+  --toastify-color-progress-success: hsl(var(--nextui-success));
+  --toastify-icon-color-success: hsl(var(--nextui-success));
+  --toastify-color-progress-warning: hsl(var(--nextui-warning));
+  --toastify-icon-color-warning: hsl(var(--nextui-warning));
+  --toastify-color-progress-error: hsl(var(--nextui-danger));
+  --toastify-icon-color-error: hsl(var(--nextui-danger));
+}

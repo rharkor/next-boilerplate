@@ -5,7 +5,8 @@
 import { $ } from "zx"
 
 import { cwdAtRoot } from "@/utils"
-import { logger, task } from "@rharkor/logger"
+import { logger } from "@rharkor/logger"
+import { task } from "@rharkor/task"
 
 import "zx/globals"
 
@@ -18,11 +19,11 @@ export const installGitHooks = async () => {
   })
 
   //? Install git conventional commits
-  installGitHooksTask?.print("Install git-conventional-commits")
+  installGitHooksTask?.log("Install git-conventional-commits")
   await $`npm install --global git-conventional-commits`
 
   //? Install git hooks
-  installGitHooksTask?.print("Configure hooks path")
+  installGitHooksTask?.log("Configure hooks path")
   await $`git config core.hooksPath .git-hooks`
 
   installGitHooksTask?.stop("Git hooks installed! 🎉")

@@ -2,6 +2,7 @@ export const ignores = [
   "node_modules",
   "dist",
   "build",
+  ".next",
   "**/.eslintrc.js",
   "**/.eslintrc.cjs",
   "**/eslint.config.js",
