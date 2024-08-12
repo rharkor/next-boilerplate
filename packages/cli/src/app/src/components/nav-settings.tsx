@@ -27,6 +27,10 @@ export default function NavSettings({
   const [newName, setNewName] = useState(configuration.data.configuration.name)
   const updateConfigurationMutation = trpc.configuration.updateConfiguration.useMutation()
 
+  useEffect(() => {
+    setNewName(configuration.data.configuration.name)
+  }, [configuration.data.configuration.name])
+
   const [isPending, setIsPending] = useState(false)
   const updateConfiguration = async () => {
     setIsPending(true)

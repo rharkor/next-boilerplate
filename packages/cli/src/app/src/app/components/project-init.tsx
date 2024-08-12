@@ -159,7 +159,13 @@ export default function ProjectInit({ dictionary }: { dictionary: TDictionary<ty
   ]
 
   return (
-    <section className="fixed inset-0 z-50 h-screen w-screen bg-background">
+    <motion.section
+      className="fixed inset-0 z-50 h-screen w-screen bg-background"
+      exit={{
+        opacity: 0,
+        y: "-100vh",
+      }}
+    >
       <motion.div
         className="flex"
         initial={{
@@ -172,15 +178,10 @@ export default function ProjectInit({ dictionary }: { dictionary: TDictionary<ty
           duration: 0.8,
           type: "spring",
         }}
-        exit={{
-          opacity: 0,
-          x: "-100vw",
-          y: "-100vh",
-        }}
       >
         {sections}
       </motion.div>
-    </section>
+    </motion.section>
   )
 }
 
