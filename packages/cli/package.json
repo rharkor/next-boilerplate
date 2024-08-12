@@ -74,7 +74,8 @@
         "tailwindcss": "^3.4.0",
         "tsx": "^4.16.5",
         "typescript": "^5.5.4",
-        "wait-port": "^1.1.0"
+        "wait-port": "^1.1.0",
+        "@babel/core": "^7.22.17"
     },
     "dependencies": {
         "@formatjs/intl-localematcher": "^0.5.0",

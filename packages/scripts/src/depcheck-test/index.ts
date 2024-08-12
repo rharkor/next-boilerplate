@@ -48,8 +48,12 @@ const allPossiblePackagesPaths = (
 const packages: { path: string; name: string }[] = allPossiblePackagesPaths
   .filter((p) => {
     const pjsonPath = path.join($.cwd ?? "", p, "package.json")
-    if (fs.existsSync(pjsonPath)) return true
-    return false
+    // Check exists
+    if (!fs.existsSync(pjsonPath)) return false
+    // Check doesnt contain "depcheck": false
+    const pjson = JSON.parse(fs.readFileSync(pjsonPath, "utf-8")) as { depcheck?: boolean }
+    if (pjson.depcheck === false) return false
+    return true
   })
   .map((p) => {
     const pjsonPath = path.join($.cwd ?? "", p, "package.json")
