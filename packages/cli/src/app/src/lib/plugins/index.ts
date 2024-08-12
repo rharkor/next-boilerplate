@@ -26,7 +26,7 @@ export const getPlugins = async () => {
   const pluginsFromStore = await getPluginsFromStore()
   if (pluginsFromStore) return pluginsFromStore
 
-  logger.info("Loading plugins")
+  logger.info(`Loading plugins (${pluginsDirectory})`)
   if (!(await fs.exists(pluginsDirectory))) {
     throw new TRPCError({
       message: `The plugins directory doesn't exist at ${pluginsDirectory}`,

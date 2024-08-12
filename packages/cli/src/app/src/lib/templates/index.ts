@@ -2,11 +2,15 @@ import fs from "fs-extra"
 import { globby } from "globby"
 import path from "path"
 
-import { configSchema, TConfig } from "@next-boilerplate/scripts/utils/template-config/index.js"
+import { templateSchema } from "@next-boilerplate/scripts/utils/template-config/index.js"
 import { logger } from "@rharkor/logger"
 import { TRPCError } from "@trpc/server"
 
 import { getPlugins } from "../plugins"
+
+type TConfig = z.infer<typeof templateSchema>
+
+import { z } from "zod"
 
 import {
   getSingleTemplateFromStore,
@@ -28,7 +32,7 @@ export const getTemplates = async () => {
   const templatesFromStore = await getTemplatesFromStore()
   if (templatesFromStore) return templatesFromStore
 
-  logger.info("Loading templates")
+  logger.info(`Loading templates (${templatesDirectory})`)
   if (!(await fs.exists(templatesDirectory))) {
     throw new TRPCError({
       message: `The templates directory doesn't exist at ${templatesDirectory}`,
@@ -45,7 +49,7 @@ export const getTemplates = async () => {
     const templateConfig = (await fs.readJson(template)) as TConfig
 
     try {
-      configSchema.parse(templateConfig)
+      templateSchema.parse(templateConfig)
     } catch (error) {
       logger.error(error)
       throw new TRPCError({

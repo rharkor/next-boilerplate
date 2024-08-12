@@ -1,10 +1,10 @@
 import { z } from "zod"
 
-import { configSchema } from "@next-boilerplate/scripts/utils/template-config"
+import { templateSchema } from "@next-boilerplate/scripts/utils/template-config"
 
 import { fullPluginSchema } from "../plugins/store"
 
-export const fullTemplateSchema = configSchema.extend({
+export const fullTemplateSchema = templateSchema.extend({
   sourcePath: z.string(),
   id: z.string(),
 })
