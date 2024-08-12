@@ -1,6 +1,0 @@
-{
-    "$schema": "../../component.d.json",
-    "name": "default",
-    "description": "Default devcontainer configuration",
-    "suggestedPath": ".devcontainer"
-}

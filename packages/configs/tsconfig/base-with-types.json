@@ -29,6 +29,6 @@
         "${configDir}/src/**/*.ts"
     ],
     "exclude": [
-        "node_modules"
+        "${configDir}/node_modules"
     ]
 }

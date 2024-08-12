@@ -1,6 +1,0 @@
-{
-    "$schema": "../../../component.d.json",
-    "name": "default",
-    "description": "Default GitHub issue template",
-    "suggestedPath": ".github/ISSUE_TEMPLATE"
-}

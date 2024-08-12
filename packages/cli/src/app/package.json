@@ -1,0 +1,6 @@
+{
+    "scripts": {
+        "dev": "next dev"
+    },
+    "depcheck": false
+}

@@ -1,5 +1,5 @@
 {
-  "name": "@next-boilerplate/eslint-legacy",
+  "name": "eslint-config-legacy",
   "version": "0.0.0",
   "scripts": {
     "build": "pkgroll",

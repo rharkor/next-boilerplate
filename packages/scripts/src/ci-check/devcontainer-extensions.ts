@@ -7,7 +7,7 @@
 import { $ } from "zx"
 
 import { cdAtRoot, cwdAtRoot } from "@/utils"
-import { task } from "@rharkor/logger"
+import { task } from "@rharkor/task"
 
 import "zx/globals"
 
@@ -33,10 +33,10 @@ if (devcontainerPaths.length === 0) {
 }
 
 for (const dirPath of devcontainerPaths) {
-  extensionsTask.print(`Checking ${dirPath}`)
+  extensionsTask.log(`Checking ${dirPath}`)
   const devcontainerJson = path.join(dirPath, "devcontainer.json")
   const extensionsTxt = path.join(dirPath, "extensions.txt")
-  extensionsTask.print("Reading devcontainer.json")
+  extensionsTask.log("Reading devcontainer.json")
   const devcontainerPlain = await $`cat ${devcontainerJson}`.text()
   const devcontainer: TDevContainer = JSON.parse(
     devcontainerPlain
@@ -44,7 +44,7 @@ for (const dirPath of devcontainerPaths) {
       .replace(/\/\/.*/g, "")
   )
 
-  extensionsTask.print("Reading extensions.txt")
+  extensionsTask.log("Reading extensions.txt")
   const extensions = (await $`cat ${extensionsTxt}`.text()).split("\n").filter(Boolean)
 
   const devcontainerExtensions = devcontainer["customizations"]["vscode"]["extensions"]
