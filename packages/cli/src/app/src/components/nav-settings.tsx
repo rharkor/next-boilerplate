@@ -53,7 +53,7 @@ export default function NavSettings({
   }, [newName, configuration.data.configuration.name])
 
   return (
-    <aside className="flex w-full flex-row justify-between rounded-medium bg-content1 px-3 py-2">
+    <aside className="flex flex-row justify-between rounded-medium bg-content1 px-3 py-2">
       <div className="flex flex-col gap-1">
         <label className="cursor-pointer text-xs uppercase text-muted-foreground" htmlFor="project-name">
           {dictionary.projectName}

@@ -55,10 +55,10 @@ export default function Plugin({
     await updateConfigurationMutation.mutateAsync({
       configuration: {
         ...configuration.data.configuration,
-        plugins: configuration.data.configuration.plugins?.filter((plugin) => plugin.id !== plugin.id),
+        plugins: configuration.data.configuration.plugins?.filter((_plugin) => _plugin.id !== plugin.id),
       },
     })
-  }, [configuration.data.configuration, updateConfigurationMutation])
+  }, [configuration.data.configuration, plugin.id, updateConfigurationMutation])
 
   const togglePlugin = useCallback(async () => {
     if (isPluginInConfiguration) {

@@ -28,12 +28,12 @@ export default function AppLayout({
   })
 
   return (
-    <main className="container m-auto flex max-h-screen min-h-screen flex-1 flex-col gap-4 p-3 py-8">
+    <main className="container m-auto flex max-h-screen min-h-screen flex-1 flex-col gap-4 px-3 pt-8">
       <AnimatePresence>
         {!configuration.data.configuration.name && <ProjectInit dictionary={dictionary} />}
       </AnimatePresence>
       <NavSettings lang={lang} ssrConfiguration={ssrConfiguration} dictionary={dictionary} />
-      <div className="flex w-full flex-1 flex-row gap-4 overflow-hidden">
+      <div className="flex flex-1 flex-row gap-4 pb-8">
         <Sidenav dictionary={dictionary} ssrConfiguration={ssrConfiguration} />
         {children}
       </div>

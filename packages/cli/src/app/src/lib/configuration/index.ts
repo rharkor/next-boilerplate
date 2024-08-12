@@ -1,26 +1,11 @@
 import { TConfiguration } from "@/api/configuration/schemas"
+import { logger } from "@rharkor/logger"
 
-let configuration: TConfiguration = {
-  // TODO Reset
-  // name: "test",
-  // plugins: [
-  //   {
-  //     name: "Default turbo configuration",
-  //     description: "Basic steps configuration for turbo (build, lint, dev, ...)",
-  //     suggestedPath: "turbo.json",
-  //     sourcePath: "turbo/default",
-  //     id: "turbo/default",
-  //   },
-  //   {
-  //     name: "Default devcontainer configuration",
-  //     description: "Open VS Code in a linux container",
-  //     suggestedPath: ".devcontainer",
-  //     sourcePath: "devcontainer/default",
-  //     id: "devcontainer/default",
-  //     outputPath: ".devcontainer",
-  //   },
-  // ],
-}
+import { env } from "../env"
+
+let configuration: TConfiguration = {}
+
+logger._log("ROOT PATH", env.ROOT_PATH)
 
 export const getConfiguration = () => configuration
 

@@ -5,3 +5,4 @@ prettier.config.js
 tsconfig.json
 turbo.json
 !dist/app/**/*
+config.json

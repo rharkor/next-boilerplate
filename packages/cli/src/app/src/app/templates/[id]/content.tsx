@@ -55,7 +55,7 @@ export default function TemplateContent({
     })
   }
 
-  const plugins = configuration.data.configuration.plugins ?? []
+  const plugins = template.data.template.plugins
 
   return (
     <Section>
@@ -77,9 +77,9 @@ export default function TemplateContent({
           <p>{dictionary.replaceConfiguration}</p>
         </Button>
       </div>
-      <div className="mt-5 flex flex-col gap-2 overflow-auto">
+      <div className="mt-5 flex flex-col gap-2">
         <h1 className="text-2xl">{dictionary.plugins}</h1>
-        <ul className="flex flex-1 flex-col gap-2 overflow-auto scrollbar-hide">
+        <ul className="flex flex-1 flex-col gap-2">
           {plugins.map((plugin) => (
             <Plugin key={plugin.id} plugin={plugin} dictionary={dictionary} ssrConfiguration={ssrConfiguration} />
           ))}
