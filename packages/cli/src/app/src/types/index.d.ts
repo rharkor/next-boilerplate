@@ -1,5 +1,3 @@
-import { Session } from "next-auth"
-
 import { z } from "zod"
 
 export type ITrpcContext = {

@@ -1,5 +1,5 @@
-import { dictionaryRequirements } from "@/lib/utils/dictionary";
+import { dictionaryRequirements } from "@/lib/utils/dictionary"
 
 export const NavSettingsDr = dictionaryRequirements({
-  projectName: true
+  projectName: true,
 })
