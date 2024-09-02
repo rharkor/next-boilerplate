@@ -46,5 +46,5 @@
         "zx": "^8.1.4"
     },
     "license": "MIT",
-    "packageManager": "npm@10.8.2"
+    "packageManager": "npm@10.8.3"
 }
