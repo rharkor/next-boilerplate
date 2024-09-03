@@ -12,7 +12,7 @@ export default function NoConfiguration({ dictionary }: { dictionary: TDictionar
   return (
     <section className="flex w-full flex-col items-center gap-5 overflow-hidden">
       <h1 className="text-3xl">{dictionary.createYourConfiguration}</h1>
-      <div className="flex flex-1 gap-2">
+      <div className="flex flex-1 flex-wrap gap-2">
         <ConfigurationCard
           name={dictionary.fromTemplate}
           description={dictionary.fromTemplateDescription}
@@ -50,8 +50,8 @@ function ConfigurationCard({
   href: string
 }) {
   return (
-    <Link href={href}>
-      <button className="group relative flex h-[400px] flex-1 flex-col items-center justify-center gap-2 rounded-medium border border-transparent bg-content2 p-3 shadow hover:border-primary hover:bg-content2/80">
+    <Link href={href} className="h-max flex-1">
+      <button className="group relative flex h-[400px] min-w-[300px] flex-col items-center justify-center gap-2 rounded-medium border border-transparent bg-content2 p-3 shadow hover:border-primary hover:bg-content2/80">
         <span className="text-foreground group-hover:text-primary">{icon}</span>
         <h2 className="text-center text-2xl font-semibold">{name}</h2>
         <p className="text-center text-base text-muted-foreground">{description}</p>

@@ -12,14 +12,29 @@
         "description": {
             "type": "string"
         },
-        "suggestedPath": {
+        "source": {
             "type": "string"
+        },
+        "paths": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                    "from": {
+                        "type": "string"
+                    },
+                    "to": {
+                        "type": "string"
+                    }
+                }
+            }
         }
     },
     "required": [
         "$schema",
         "name",
         "description",
-        "suggestedPath"
+        "paths"
     ]
 }

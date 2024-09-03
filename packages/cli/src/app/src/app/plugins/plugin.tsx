@@ -2,7 +2,7 @@
 
 import { useCallback, useMemo } from "react"
 
-import { ArrowRight, PackageMinus, PackagePlus, ToyBrick } from "lucide-react"
+import { PackageMinus, PackagePlus, ToyBrick } from "lucide-react"
 
 import ItemCard from "@/components/ui/item-card"
 import { TDictionary } from "@/lib/langs"
@@ -73,13 +73,7 @@ export default function Plugin({
       key={plugin.id}
       id={plugin.id}
       title={plugin.name}
-      subTitle={
-        <>
-          {plugin.sourcePath}
-          <ArrowRight className="size-2.5" />
-          {plugin.suggestedPath}
-        </>
-      }
+      subTitle={plugin.sourcePath}
       description={plugin.description}
       endContent={
         <>

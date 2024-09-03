@@ -1,6 +1,11 @@
 {
     "$schema": "../../../component.d.json",
     "name": "Default gitHub issue template",
-    "description": "",
-    "suggestedPath": ".github/ISSUE_TEMPLATE"
+    "description": "FitHub issue template with bug report and feature request",
+    "paths": [
+        {
+            "from": "ISSUE_TEMPLATE",
+            "to": ".github/ISSUE_TEMPLATE"
+        }
+    ]
 }

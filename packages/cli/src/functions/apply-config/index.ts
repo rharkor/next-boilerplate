@@ -108,19 +108,24 @@ export const applyConfig = async () => {
       process.exit(1)
     }
 
-    const relativeDestinationPath =
-      typeof plugin === "string" ? pluginConfig.suggestedPath : plugin.path || pluginConfig.suggestedPath
+    const relativeDestinationPaths = pluginConfig.paths.map((p) => p.to)
 
-    // Verify if the template doesnt exist
-    const destinationPath = path.join(root, relativeDestinationPath)
-    if (await fs.exists(destinationPath)) {
-      applyConfigTask.error(`A file/folder already exists at the destination ${destinationPath}`)
-      applyConfigTask.stop()
-      process.exit(1)
+    // Verify if the template doesnt already exist
+    for (const relativeDestinationPath of relativeDestinationPaths) {
+      const destinationPath = path.join(root, relativeDestinationPath)
+      if (await fs.exists(destinationPath)) {
+        applyConfigTask.error(`A file/folder already exists at the destination ${destinationPath}`)
+        applyConfigTask.stop()
+        process.exit(1)
+      }
     }
 
-    applyConfigTask.log(`Copying the plugin ${pluginName} to the destination ${destinationPath}`)
-    await fs.copy(pluginContentPath, destinationPath)
+    // Copy the plugin to the destination
+    for (const relativeDestinationPath of relativeDestinationPaths) {
+      const destinationPath = path.join(root, relativeDestinationPath)
+      applyConfigTask.log(`Copying the plugin ${pluginName} to the destination ${destinationPath}`)
+      await fs.copy(pluginContentPath, destinationPath)
+    }
   }
 
   //* Delete config.json

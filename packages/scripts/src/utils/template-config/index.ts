@@ -48,14 +48,27 @@ export const templateSchema = z.object({
 export const pluginConfigSchema = z.object({
   name: z.string(),
   description: z.string().max(300),
-  suggestedPath: z.string().refine(
-    (value) => {
-      if (!isPathInCurrentScope(value)) {
-        return false
-      }
-      return true
-    },
-    { message: "The path should be relative and in the current directory" }
+  paths: z.array(
+    z.object({
+      from: z.string().refine(
+        (value) => {
+          if (!isPathInCurrentScope(value)) {
+            return false
+          }
+          return true
+        },
+        { message: "The path should be relative and in the current directory" }
+      ),
+      to: z.string().refine(
+        (value) => {
+          if (!isPathInCurrentScope(value)) {
+            return false
+          }
+          return true
+        },
+        { message: "The path should be relative and in the current directory" }
+      ),
+    })
   ),
 })
 

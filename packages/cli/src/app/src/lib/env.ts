@@ -14,7 +14,14 @@ if (!process.env.ROOT_PATH) {
   })
 }
 
-export const env = schema.parse({
+const parsed = schema.safeParse({
   ROOT_PATH: process.cwd(),
   ...process.env,
 })
+
+if (!parsed.success) {
+  logger.error("Error parsing env", parsed.error)
+  process.exit(1)
+}
+
+export const env = parsed.data

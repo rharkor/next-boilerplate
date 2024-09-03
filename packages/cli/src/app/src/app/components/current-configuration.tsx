@@ -1,7 +1,7 @@
 import { useRef, useState } from "react"
 
 import { AnimatePresence, motion } from "framer-motion"
-import { ArrowRight, Eye, MoreHorizontal, Pencil } from "lucide-react"
+import { Eye, MoreHorizontal, Pencil } from "lucide-react"
 import { v4 as uuid } from "uuid"
 import { z } from "zod"
 
@@ -16,7 +16,6 @@ import { trpc } from "@/lib/trpc/client"
 import { RouterOutputs } from "@/lib/trpc/utils"
 import { Button } from "@nextui-org/button"
 import { Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@nextui-org/dropdown"
-import { Input } from "@nextui-org/input"
 import { Modal, ModalBody, ModalContent, ModalFooter, useDisclosure } from "@nextui-org/modal"
 import { Spinner } from "@nextui-org/spinner"
 
@@ -228,10 +227,6 @@ function Plugin({
     await _onDelete(boundingBox)
   }
 
-  const [newOutputPath, setNewOutputPath] = useState(plugin.outputPath)
-
-  const outputPath = plugin.outputPath ?? plugin.suggestedPath
-
   const {
     isOpen: isEditOpen,
     onOpen: onEditOpen,
@@ -240,10 +235,7 @@ function Plugin({
   } = useDisclosure()
 
   const onEdit = async () => {
-    await _onEdit({
-      ...plugin,
-      outputPath: newOutputPath === "" ? undefined : newOutputPath,
-    })
+    await _onEdit(plugin)
     onEditClose()
   }
 
@@ -253,13 +245,7 @@ function Plugin({
         id={plugin.id}
         liRef={liRef}
         title={plugin.name}
-        subTitle={
-          <>
-            {plugin.sourcePath}
-            <ArrowRight className="size-2.5" />
-            {outputPath}
-          </>
-        }
+        subTitle={plugin.sourcePath}
         description={plugin.description}
         href={`/plugins/${encodeURIComponent(plugin.id)}`}
         actions={
@@ -337,13 +323,14 @@ function Plugin({
             <>
               <ModalHeader className="flex flex-col gap-1">Modal Title</ModalHeader>
               <ModalBody>
-                <Input isDisabled isReadOnly value={plugin.sourcePath} label={dictionary.sourcePath} />
+                {/* //TODO EDIT ALL PATHS */}
+                {/* <Input isDisabled isReadOnly value={plugin.sourcePath} label={dictionary.sourcePath} />
                 <Input
                   value={newOutputPath ?? ""}
                   onValueChange={setNewOutputPath}
                   placeholder={plugin.suggestedPath}
                   label={dictionary.outputPath}
-                />
+                /> */}
               </ModalBody>
               <ModalFooter>
                 <Button variant="light" onPress={onClose} isDisabled={isPending}>

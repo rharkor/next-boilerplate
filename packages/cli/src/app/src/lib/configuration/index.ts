@@ -80,7 +80,7 @@ const apiConfigToWebConfig = async (apiConfig: z.infer<typeof optionalConfigSche
           description: foundPlugin.description,
           id: foundPlugin.id,
           sourcePath: foundPlugin.sourcePath,
-          suggestedPath: foundPlugin.suggestedPath,
+          paths: foundPlugin.paths,
           outputPath,
         }
       }),
