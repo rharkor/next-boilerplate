@@ -1,7 +1,7 @@
 import { Fragment, useRef, useState } from "react"
 
 import { AnimatePresence, motion } from "framer-motion"
-import { Eye, MoreHorizontal, Pencil } from "lucide-react"
+import { ArrowDownToLine, Eye, MoreHorizontal, Pencil } from "lucide-react"
 import { v4 as uuid } from "uuid"
 import { z } from "zod"
 
@@ -57,7 +57,16 @@ export default function CurrentConfiguration({
     await resetConfigurationMutation.mutateAsync()
   }
 
-  const isPending = updateConfigurationMutation.isPending || resetConfigurationMutation.isPending
+  const applyConfigurationMutation = trpc.configuration.applyConfiguration.useMutation()
+
+  const applyConfiguration = async () => {
+    await applyConfigurationMutation.mutateAsync()
+  }
+
+  const isPending =
+    updateConfigurationMutation.isPending ||
+    resetConfigurationMutation.isPending ||
+    applyConfigurationMutation.isPending
 
   const bubblesDuration = 0.45
   const animateBubbles = (boundingBox: DOMRect) => {
@@ -165,9 +174,15 @@ export default function CurrentConfiguration({
       <Header
         title={dictionary.configuration}
         actions={
-          <Button color="danger" variant="light" onClick={resetConfiguration} isLoading={isPending}>
-            {dictionary.reset}
-          </Button>
+          <>
+            <Button color="danger" variant="light" onPress={resetConfiguration} isLoading={isPending}>
+              {dictionary.reset}
+            </Button>
+            <Button color="primary" onPress={applyConfiguration} isLoading={isPending}>
+              <ArrowDownToLine className="size-4" />
+              {dictionary.apply}
+            </Button>
+          </>
         }
         dictionary={dictionary}
       />

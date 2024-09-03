@@ -234,5 +234,6 @@
   "sourcePath": "Chemin d'origine",
   "outputPath": "Chemin de destination",
   "close": "Fermer",
-  "pluginSettings": "Paramètres du plugin"
+  "pluginSettings": "Paramètres du plugin",
+  "apply": "Appliquer"
 }
