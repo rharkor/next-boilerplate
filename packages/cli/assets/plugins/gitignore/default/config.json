@@ -4,7 +4,7 @@
     "description": "Default gitignore configuration",
     "paths": [
         {
-            "from": ".gitignore",
+            "from": "default.gitignore",
             "to": ".gitignore"
         }
     ]
