@@ -1,8 +1,7 @@
-src
-debug
-eslint.config.js
-prettier.config.js
-tsconfig.json
-turbo.json
+./src
+./debug
+./eslint.config.js
+./prettier.config.js
+./tsconfig.json
+./turbo.json
 !dist/app/**/*
-src/app/config.json
