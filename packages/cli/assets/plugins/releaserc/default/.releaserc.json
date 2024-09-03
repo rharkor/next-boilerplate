@@ -135,7 +135,12 @@
                 }
             }
         ],
-        "@semantic-release/github",
+        [
+            "@semantic-release/github",
+            {
+                "successCommentCondition": "<% return issue.user.type !== 'Bot'; %>"
+            }
+        ],
         "@semantic-release/git",
         "@semantic-release/changelog"
     ]
