@@ -1,6 +1,6 @@
 {
     "scripts": {
-        "dev": "next dev"
+        "dev": "next dev --turbo"
     },
     "depcheck": false
 }

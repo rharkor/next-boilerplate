@@ -233,5 +233,8 @@
   "replaceConfiguration": "Replace configuration",
   "sourcePath": "Source path",
   "outputPath": "Output path",
-  "close": "Close"
+  "close": "Close",
+  "pluginSettings": "Plugin settings",
+  "apply": "Apply",
+  "configurationApplied": "Configuration applied"
 }

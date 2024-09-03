@@ -7,13 +7,12 @@
         "devcontainer/default",
         "app/empty",
         "packages/empty",
-        "githooks/default",
+        "conventional-commits/default",
         "vscode/default",
         "github/workflows/default",
         "github/issue-template/default",
         "gitignore/default",
         "releaserc/default",
-        "git-conventional-commits/default",
         "license/default",
         "makefile/default"
     ]

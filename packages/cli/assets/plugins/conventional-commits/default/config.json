@@ -1,0 +1,15 @@
+{
+    "$schema": "../../component.d.json",
+    "name": "Git hooks",
+    "description": "Execute git-conventional-commits on commit",
+    "paths": [
+        {
+            "from": ".git-hooks",
+            "to": ".git-hooks"
+        },
+        {
+            "from": "git-conventional-commits.yaml",
+            "to": "git-conventional-commits.yaml"
+        }
+    ]
+}

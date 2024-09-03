@@ -2,5 +2,10 @@
     "$schema": "../../component.d.json",
     "name": "Default makefile",
     "description": "Basic makefile with buildnrun command to start a docker app",
-    "suggestedPath": "Makefile"
+    "paths": [
+        {
+            "from": "Makefile",
+            "to": "Makefile"
+        }
+    ]
 }
