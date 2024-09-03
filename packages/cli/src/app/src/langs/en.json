@@ -235,5 +235,6 @@
   "outputPath": "Output path",
   "close": "Close",
   "pluginSettings": "Plugin settings",
-  "apply": "Apply"
+  "apply": "Apply",
+  "configurationApplied": "Configuration applied"
 }

@@ -2,6 +2,7 @@ import { Fragment, useRef, useState } from "react"
 
 import { AnimatePresence, motion } from "framer-motion"
 import { ArrowDownToLine, Eye, MoreHorizontal, Pencil } from "lucide-react"
+import { toast } from "react-toastify"
 import { v4 as uuid } from "uuid"
 import { z } from "zod"
 
@@ -57,7 +58,11 @@ export default function CurrentConfiguration({
     await resetConfigurationMutation.mutateAsync()
   }
 
-  const applyConfigurationMutation = trpc.configuration.applyConfiguration.useMutation()
+  const applyConfigurationMutation = trpc.configuration.applyConfiguration.useMutation({
+    onSettled: async () => {
+      toast.success(dictionary.configurationApplied)
+    },
+  })
 
   const applyConfiguration = async () => {
     await applyConfigurationMutation.mutateAsync()

@@ -68,7 +68,7 @@ for (const template of templates) {
       process.exit(1)
     }
 
-    //? Check if the plugin confg exists
+    //? Check if the plugin config exists
     const pluginConfigPath = path.join(pluginPath, configFileName)
     if (!(await fs.exists(pluginConfigPath))) {
       validateTemplateTask.error(`The plugin config for ${pluginName} doesn't exist`)

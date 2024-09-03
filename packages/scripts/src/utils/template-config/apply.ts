@@ -1,4 +1,5 @@
 import fs from "fs-extra"
+import path from "path"
 
 import { logger } from "@rharkor/logger"
 import { task } from "@rharkor/task"
@@ -52,18 +53,11 @@ export const applyConfigurationTask = async ({
     const pluginName = typeof plugin === "string" ? plugin : plugin.name
     const pluginPath = path.join(pluginsDirectory, pluginName)
     if (!(await fs.exists(pluginPath))) {
-      applyConfigTask.error(`The plugin ${pluginName} doesn't exist`)
+      applyConfigTask.error(`The plugin ${pluginName} doesn't exist at ${pluginPath}`)
       applyConfigTask.stop()
-      throw new Error(`The plugin ${pluginName} doesn't exist`)
+      throw new Error(`The plugin ${pluginName} doesn't exist at ${pluginPath}`)
     }
     const pluginConfigPath = path.join(pluginPath, configFileName)
-    const pluginContentName = (await fs.readdir(pluginPath)).find((file) => file.startsWith("index"))
-    if (!pluginContentName) {
-      applyConfigTask.error(`The plugin ${pluginName} doesn't exist`)
-      applyConfigTask.stop()
-      throw new Error(`The plugin ${pluginName} doesn't exist`)
-    }
-    const pluginContentPath = path.join(pluginPath, pluginContentName)
     const pluginConfig = (await fs.readJson(pluginConfigPath)) as TPluginConfig
     try {
       pluginConfigSchema.parse(pluginConfig)
@@ -74,11 +68,11 @@ export const applyConfigurationTask = async ({
       throw error
     }
 
-    //? Check if the plugin exists
-    if (!pluginContentPath || !(await fs.exists(pluginContentPath))) {
-      applyConfigTask.error(`The plugin ${pluginName} doesn't exist`)
+    //? Check if the plugin config exists
+    if (!(await fs.exists(pluginConfigPath))) {
+      applyConfigTask.error(`The plugin config for ${pluginName} doesn't exist at ${pluginConfigPath}`)
       applyConfigTask.stop()
-      throw new Error(`The plugin ${pluginName} doesn't exist`)
+      throw new Error(`The plugin config for ${pluginName} doesn't exist at ${pluginConfigPath}`)
     }
 
     const relativeDestinationPaths = pluginConfig.paths.map((p) => p.to)
@@ -92,18 +86,28 @@ export const applyConfigurationTask = async ({
         throw new Error(`A file/folder already exists at the destination ${destinationPath}`)
       }
     }
+  }
 
+  //* Apply the plugins
+  applyConfigTask.log("Applying the plugins")
+  for (const plugin of config.plugins) {
+    const pluginName = typeof plugin === "string" ? plugin : plugin.name
+    const pluginPath = path.join(pluginsDirectory, pluginName)
+    const pluginConfigPath = path.join(pluginPath, configFileName)
+    const pluginConfig = (await fs.readJson(pluginConfigPath)) as TPluginConfig
     // Copy the plugin to the destination
-    for (const relativeDestinationPath of relativeDestinationPaths) {
-      const destinationPath = path.join(root, relativeDestinationPath)
+    for (const { from, to } of pluginConfig.paths) {
+      const sourcePath = path.join(pluginPath, from)
+      const destinationPath = path.join(root, to)
       applyConfigTask.log(`Copying the plugin ${pluginName} to the destination ${destinationPath}`)
-      await fs.copy(pluginContentPath, destinationPath)
+      await fs.copy(sourcePath, destinationPath)
     }
   }
 
   //* Delete config.json
-  applyConfigTask.log("Deleting the config file")
-  await fs.remove(configPath)
+  //   applyConfigTask.log("Deleting the config file")
+  //   await fs.remove(configPath)
 
   applyConfigTask.stop("The template config has been applied! 🎉")
+  logger.info("You can now delete the config file if you want")
 }

@@ -15,6 +15,7 @@ export const CurrentConfigurationDr = dictionaryRequirements(
     close: true,
     pluginSettings: true,
     apply: true,
+    configurationApplied: true,
   },
   NoConfigurationDr,
   HeaderDr

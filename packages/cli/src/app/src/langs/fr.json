@@ -235,5 +235,6 @@
   "outputPath": "Chemin de destination",
   "close": "Fermer",
   "pluginSettings": "Paramètres du plugin",
-  "apply": "Appliquer"
+  "apply": "Appliquer",
+  "configurationApplied": "Configuration appliquée"
 }
