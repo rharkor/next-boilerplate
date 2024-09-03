@@ -1,4 +1,4 @@
-import { useRef, useState } from "react"
+import { Fragment, useRef, useState } from "react"
 
 import { AnimatePresence, motion } from "framer-motion"
 import { Eye, MoreHorizontal, Pencil } from "lucide-react"
@@ -15,7 +15,9 @@ import { TDictionary } from "@/lib/langs"
 import { trpc } from "@/lib/trpc/client"
 import { RouterOutputs } from "@/lib/trpc/utils"
 import { Button } from "@nextui-org/button"
+import { Divider } from "@nextui-org/divider"
 import { Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@nextui-org/dropdown"
+import { Input } from "@nextui-org/input"
 import { Modal, ModalBody, ModalContent, ModalFooter, useDisclosure } from "@nextui-org/modal"
 import { Spinner } from "@nextui-org/spinner"
 
@@ -234,8 +236,16 @@ function Plugin({
     onClose: onEditClose,
   } = useDisclosure()
 
+  const [overridedTo, setOverridedTo] = useState<Record<string, string>>({})
+
   const onEdit = async () => {
-    await _onEdit(plugin)
+    await _onEdit({
+      ...plugin,
+      paths: plugin.paths.map((p) => ({
+        from: plugin.sourcePath,
+        to: overridedTo[p.to] ?? p.to,
+      })),
+    })
     onEditClose()
   }
 
@@ -321,16 +331,27 @@ function Plugin({
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader className="flex flex-col gap-1">Modal Title</ModalHeader>
+              <ModalHeader className="flex flex-col gap-1">{dictionary.pluginSettings}</ModalHeader>
               <ModalBody>
-                {/* //TODO EDIT ALL PATHS */}
-                {/* <Input isDisabled isReadOnly value={plugin.sourcePath} label={dictionary.sourcePath} />
-                <Input
-                  value={newOutputPath ?? ""}
-                  onValueChange={setNewOutputPath}
-                  placeholder={plugin.suggestedPath}
-                  label={dictionary.outputPath}
-                /> */}
+                {plugin.paths.map((p, i) => (
+                  <Fragment key={p.from}>
+                    {i !== 0 && <Divider orientation="horizontal" />}
+                    <div className="flex flex-col gap-1">
+                      <Input isDisabled isReadOnly value={plugin.sourcePath} label={dictionary.sourcePath} />
+                      <Input
+                        value={overridedTo[p.to] ?? ""}
+                        onValueChange={(value) => {
+                          setOverridedTo((prev) => ({
+                            ...prev,
+                            [p.to]: value,
+                          }))
+                        }}
+                        placeholder={p.to}
+                        label={dictionary.outputPath}
+                      />
+                    </div>
+                  </Fragment>
+                ))}
               </ModalBody>
               <ModalFooter>
                 <Button variant="light" onPress={onClose} isDisabled={isPending}>

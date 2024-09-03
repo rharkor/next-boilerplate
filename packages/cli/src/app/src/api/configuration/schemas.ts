@@ -5,13 +5,7 @@ import { fullPluginSchema } from "@/lib/plugins/store"
 export const configurationSchema = () =>
   z.object({
     name: z.string().optional(),
-    plugins: z
-      .array(
-        fullPluginSchema.extend({
-          outputPath: z.string().optional(),
-        })
-      )
-      .optional(),
+    plugins: z.array(fullPluginSchema).optional(),
   })
 export type TConfiguration = z.infer<ReturnType<typeof configurationSchema>>
 

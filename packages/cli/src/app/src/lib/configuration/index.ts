@@ -29,12 +29,9 @@ const webConfigToApiConfig = (webConfig: TConfiguration): z.infer<typeof optiona
     const content = optionalConfigSchema.parse({
       name: webConfig.name,
       plugins: (webConfig.plugins ?? []).map((plugin) => {
-        if (!plugin.outputPath) {
-          return plugin.sourcePath
-        }
         return {
           name: plugin.sourcePath,
-          path: plugin.outputPath,
+          paths: plugin.paths.map((p) => p.to),
         }
       }),
     })
@@ -73,7 +70,6 @@ const apiConfigToWebConfig = async (apiConfig: z.infer<typeof optionalConfigSche
             code: "INTERNAL_SERVER_ERROR",
           })
         }
-        const outputPath = typeof plugin === "string" ? undefined : plugin.path
 
         return {
           name: foundPlugin.name,
@@ -81,7 +77,6 @@ const apiConfigToWebConfig = async (apiConfig: z.infer<typeof optionalConfigSche
           id: foundPlugin.id,
           sourcePath: foundPlugin.sourcePath,
           paths: foundPlugin.paths,
-          outputPath,
         }
       }),
     }

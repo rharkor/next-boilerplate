@@ -7,8 +7,7 @@
 import { z } from "zod"
 
 import { cdAtRoot, cwdAtRoot } from "@/utils"
-import { pluginConfigSchema, templateSchema, TPluginConfig } from "@/utils/template-config"
-import { logger } from "@rharkor/logger"
+import { templateSchema } from "@/utils/template-config"
 import { task } from "@rharkor/task"
 
 type TConfig = z.infer<typeof templateSchema>
@@ -64,34 +63,31 @@ for (const template of templates) {
     const pluginName = typeof reference === "string" ? reference : reference.name
     const pluginPath = path.join(pluginsDirectory, pluginName)
     if (!(await fs.exists(pluginPath))) {
-      validateTemplateTask.error(`The plugin ${pluginName} referenced by the config doesn't exist`)
+      validateTemplateTask.error(`The plugin ${pluginName} referenced by the config ${template.path} doesn't exist`)
       validateTemplateTask.stop()
-      process.exit(1)
-    }
-    const pluginConfigPath = path.join(pluginPath, configFileName)
-    const pluginContentName = (await fs.readdir(pluginPath)).find((file) => file.startsWith("index"))
-    if (!pluginContentName) {
-      validateTemplateTask.error(`The plugin ${pluginName} referenced by the config doesn't exist`)
-      validateTemplateTask.stop()
-      process.exit(1)
-    }
-    const pluginContentPath = path.join(pluginPath, pluginContentName)
-    const pluginConfig = (await fs.readJson(pluginConfigPath)) as TPluginConfig
-    try {
-      pluginConfigSchema.parse(pluginConfig)
-    } catch (error) {
-      validateTemplateTask.error(`The plugin config file ${pluginConfigPath} is not valid`)
-      validateTemplateTask.stop()
-      logger.error(error)
       process.exit(1)
     }
 
-    //? Check if the plugin exists
-    if (!pluginContentPath || !(await fs.exists(pluginContentPath))) {
-      validateTemplateTask.error(`The plugin ${pluginName} referenced by the config doesn't exist`)
+    //? Check if the plugin confg exists
+    const pluginConfigPath = path.join(pluginPath, configFileName)
+    if (!(await fs.exists(pluginConfigPath))) {
+      validateTemplateTask.error(`The plugin config for ${pluginName} doesn't exist`)
       validateTemplateTask.stop()
       process.exit(1)
     }
+  }
+}
+
+//* No plugin duplicates
+validateTemplateTask.log("Checking for plugin duplicates")
+for (const template of templates) {
+  const pluginNames = template.config.plugins.map((reference) =>
+    typeof reference === "string" ? reference : reference.name
+  )
+  if (new Set(pluginNames).size !== pluginNames.length) {
+    validateTemplateTask.error(`The template ${template.path} has duplicate plugins`)
+    validateTemplateTask.stop()
+    process.exit(1)
   }
 }
 

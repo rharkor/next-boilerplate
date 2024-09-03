@@ -233,5 +233,6 @@
   "replaceConfiguration": "Remplacer la configuration",
   "sourcePath": "Chemin d'origine",
   "outputPath": "Chemin de destination",
-  "close": "Fermer"
+  "close": "Fermer",
+  "pluginSettings": "Paramètres du plugin"
 }

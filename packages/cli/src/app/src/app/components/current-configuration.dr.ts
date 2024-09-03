@@ -13,6 +13,7 @@ export const CurrentConfigurationDr = dictionaryRequirements(
     outputPath: true,
     save: true,
     close: true,
+    pluginSettings: true,
   },
   NoConfigurationDr,
   HeaderDr

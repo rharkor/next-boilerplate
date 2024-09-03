@@ -16,21 +16,23 @@ export function isPathInCurrentScope(filePath: string): boolean {
 
 export const fullPluginSchema = z.object({
   name: z.string(),
-  path: z
-    .string()
-    .optional()
-    .refine(
-      (value) => {
-        if (value === undefined) {
+  paths: z.array(
+    z
+      .string()
+      .optional()
+      .refine(
+        (value) => {
+          if (value === undefined) {
+            return true
+          }
+          if (!isPathInCurrentScope(value)) {
+            return false
+          }
           return true
-        }
-        if (!isPathInCurrentScope(value)) {
-          return false
-        }
-        return true
-      },
-      { message: "The path should be relative and in the current directory" }
-    ),
+        },
+        { message: "The path should be relative and in the current directory" }
+      )
+  ),
 })
 
 export const configSchema = z.object({
@@ -48,28 +50,38 @@ export const templateSchema = z.object({
 export const pluginConfigSchema = z.object({
   name: z.string(),
   description: z.string().max(300),
-  paths: z.array(
-    z.object({
-      from: z.string().refine(
-        (value) => {
-          if (!isPathInCurrentScope(value)) {
-            return false
-          }
-          return true
-        },
-        { message: "The path should be relative and in the current directory" }
-      ),
-      to: z.string().refine(
-        (value) => {
-          if (!isPathInCurrentScope(value)) {
-            return false
-          }
-          return true
-        },
-        { message: "The path should be relative and in the current directory" }
-      ),
-    })
-  ),
+  paths: z
+    .array(
+      z.object({
+        from: z.string().refine(
+          (value) => {
+            if (!isPathInCurrentScope(value)) {
+              return false
+            }
+            return true
+          },
+          { message: "The path should be relative and in the current directory" }
+        ),
+        to: z.string().refine(
+          (value) => {
+            if (!isPathInCurrentScope(value)) {
+              return false
+            }
+            return true
+          },
+          { message: "The path should be relative and in the current directory" }
+        ),
+      })
+    )
+    .refine(
+      (value) => {
+        const paths = value.map((path) => path.to)
+        return new Set(paths).size === paths.length
+      },
+      {
+        message: "The 'to' paths should be unique",
+      }
+    ),
 })
 
 export type TPluginConfig = z.infer<typeof pluginConfigSchema>
