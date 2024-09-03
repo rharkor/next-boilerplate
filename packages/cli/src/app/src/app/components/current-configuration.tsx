@@ -1,7 +1,8 @@
-import { useRef, useState } from "react"
+import { Fragment, useRef, useState } from "react"
 
 import { AnimatePresence, motion } from "framer-motion"
-import { ArrowRight, Eye, MoreHorizontal, Pencil } from "lucide-react"
+import { ArrowDownToLine, Eye, MoreHorizontal, Pencil } from "lucide-react"
+import { toast } from "react-toastify"
 import { v4 as uuid } from "uuid"
 import { z } from "zod"
 
@@ -15,6 +16,7 @@ import { TDictionary } from "@/lib/langs"
 import { trpc } from "@/lib/trpc/client"
 import { RouterOutputs } from "@/lib/trpc/utils"
 import { Button } from "@nextui-org/button"
+import { Divider } from "@nextui-org/divider"
 import { Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@nextui-org/dropdown"
 import { Input } from "@nextui-org/input"
 import { Modal, ModalBody, ModalContent, ModalFooter, useDisclosure } from "@nextui-org/modal"
@@ -56,7 +58,20 @@ export default function CurrentConfiguration({
     await resetConfigurationMutation.mutateAsync()
   }
 
-  const isPending = updateConfigurationMutation.isPending || resetConfigurationMutation.isPending
+  const applyConfigurationMutation = trpc.configuration.applyConfiguration.useMutation({
+    onSettled: async () => {
+      toast.success(dictionary.configurationApplied)
+    },
+  })
+
+  const applyConfiguration = async () => {
+    await applyConfigurationMutation.mutateAsync()
+  }
+
+  const isPending =
+    updateConfigurationMutation.isPending ||
+    resetConfigurationMutation.isPending ||
+    applyConfigurationMutation.isPending
 
   const bubblesDuration = 0.45
   const animateBubbles = (boundingBox: DOMRect) => {
@@ -164,9 +179,15 @@ export default function CurrentConfiguration({
       <Header
         title={dictionary.configuration}
         actions={
-          <Button color="danger" variant="light" onClick={resetConfiguration} isLoading={isPending}>
-            {dictionary.reset}
-          </Button>
+          <>
+            <Button color="danger" variant="light" onPress={resetConfiguration} isLoading={isPending}>
+              {dictionary.reset}
+            </Button>
+            <Button color="primary" onPress={applyConfiguration} isLoading={isPending}>
+              <ArrowDownToLine className="size-4" />
+              {dictionary.apply}
+            </Button>
+          </>
         }
         dictionary={dictionary}
       />
@@ -228,10 +249,6 @@ function Plugin({
     await _onDelete(boundingBox)
   }
 
-  const [newOutputPath, setNewOutputPath] = useState(plugin.outputPath)
-
-  const outputPath = plugin.outputPath ?? plugin.suggestedPath
-
   const {
     isOpen: isEditOpen,
     onOpen: onEditOpen,
@@ -239,10 +256,15 @@ function Plugin({
     onClose: onEditClose,
   } = useDisclosure()
 
+  const [overridedTo, setOverridedTo] = useState<Record<string, string>>({})
+
   const onEdit = async () => {
     await _onEdit({
       ...plugin,
-      outputPath: newOutputPath === "" ? undefined : newOutputPath,
+      paths: plugin.paths.map((p) => ({
+        from: plugin.sourcePath,
+        to: overridedTo[p.to] ?? p.to,
+      })),
     })
     onEditClose()
   }
@@ -253,13 +275,7 @@ function Plugin({
         id={plugin.id}
         liRef={liRef}
         title={plugin.name}
-        subTitle={
-          <>
-            {plugin.sourcePath}
-            <ArrowRight className="size-2.5" />
-            {outputPath}
-          </>
-        }
+        subTitle={plugin.sourcePath}
         description={plugin.description}
         href={`/plugins/${encodeURIComponent(plugin.id)}`}
         actions={
@@ -335,15 +351,27 @@ function Plugin({
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader className="flex flex-col gap-1">Modal Title</ModalHeader>
+              <ModalHeader className="flex flex-col gap-1">{dictionary.pluginSettings}</ModalHeader>
               <ModalBody>
-                <Input isDisabled isReadOnly value={plugin.sourcePath} label={dictionary.sourcePath} />
-                <Input
-                  value={newOutputPath ?? ""}
-                  onValueChange={setNewOutputPath}
-                  placeholder={plugin.suggestedPath}
-                  label={dictionary.outputPath}
-                />
+                {plugin.paths.map((p, i) => (
+                  <Fragment key={p.from}>
+                    {i !== 0 && <Divider orientation="horizontal" />}
+                    <div className="flex flex-col gap-1">
+                      <Input isDisabled isReadOnly value={plugin.sourcePath} label={dictionary.sourcePath} />
+                      <Input
+                        value={overridedTo[p.to] ?? ""}
+                        onValueChange={(value) => {
+                          setOverridedTo((prev) => ({
+                            ...prev,
+                            [p.to]: value,
+                          }))
+                        }}
+                        placeholder={p.to}
+                        label={dictionary.outputPath}
+                      />
+                    </div>
+                  </Fragment>
+                ))}
               </ModalBody>
               <ModalFooter>
                 <Button variant="light" onPress={onClose} isDisabled={isPending}>

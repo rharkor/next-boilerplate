@@ -1,8 +1,11 @@
 import { z } from "zod"
 
 import { getConfiguration, setConfiguration } from "@/lib/configuration"
+import { env } from "@/lib/env"
+import { pluginsDirectory } from "@/lib/plugins"
 import { handleApiError } from "@/lib/utils/server-utils"
 import { apiInputFromSchema } from "@/types"
+import { applyConfigurationTask } from "@next-boilerplate/scripts/utils/template-config/apply.js"
 
 import { updateConfigurationRequestSchema, updateConfigurationResponseSchema } from "./schemas"
 
@@ -30,6 +33,24 @@ export const resetConfiguration = async ({}: apiInputFromSchema<typeof undefined
     })
 
     const data: z.infer<ReturnType<typeof updateConfigurationResponseSchema>> = { configuration: {} }
+    return data
+  } catch (error: unknown) {
+    return handleApiError(error)
+  }
+}
+
+export const applyConfiguration = async ({}: apiInputFromSchema<typeof undefined>) => {
+  try {
+    const configuration = await getConfiguration()
+
+    //* Apply the configuration
+    await applyConfigurationTask({
+      configFileName: "config.json",
+      pluginsDirectory,
+      root: env.ROOT_PATH,
+    })
+
+    const data: z.infer<ReturnType<typeof updateConfigurationResponseSchema>> = { configuration }
     return data
   } catch (error: unknown) {
     return handleApiError(error)

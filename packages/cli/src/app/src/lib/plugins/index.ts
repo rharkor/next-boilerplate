@@ -20,7 +20,7 @@ const cwd = process.cwd()
 const dir = path.resolve(cwd, "../..")
 
 const configFileName = "config.json"
-const pluginsDirectory = path.join(dir, "assets", "plugins")
+export const pluginsDirectory = path.join(dir, "assets", "plugins")
 
 export const getPlugins = async () => {
   const pluginsFromStore = await getPluginsFromStore()

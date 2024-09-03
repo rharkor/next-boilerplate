@@ -1,8 +1,9 @@
 import { publicProcedure, router } from "@/lib/server/trpc"
 
-import { resetConfiguration, updateConfiguration } from "./mutations"
+import { applyConfiguration, resetConfiguration, updateConfiguration } from "./mutations"
 import { getConfigurationQuery } from "./queries"
 import {
+  applyConfigurationResponseSchema,
   getConfigurationResponseSchema,
   resetConfigurationResponseSchema,
   updateConfigurationRequestSchema,
@@ -16,4 +17,5 @@ export const configurationRouter = router({
     .output(updateConfigurationResponseSchema())
     .mutation(updateConfiguration),
   resetConfiguration: publicProcedure.output(resetConfigurationResponseSchema()).mutation(resetConfiguration),
+  applyConfiguration: publicProcedure.output(applyConfigurationResponseSchema()).mutation(applyConfiguration),
 })

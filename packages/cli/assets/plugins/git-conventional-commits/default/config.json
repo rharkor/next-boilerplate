@@ -1,6 +1,0 @@
-{
-    "$schema": "../../component.d.json",
-    "name": "Default git-conventional-commits configuration",
-    "description": "Basic configuration for git-conventional-commits (feat, fix, chore, ...)",
-    "suggestedPath": "git-conventional-commits.yaml"
-}
