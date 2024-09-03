@@ -2,5 +2,10 @@
     "$schema": "../../component.d.json",
     "name": "MIT License",
     "description": "",
-    "suggestedPath": "LICENSE"
+    "paths": [
+        {
+            "from": "LICENSE",
+            "to": "LICENSE"
+        }
+    ]
 }

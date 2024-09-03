@@ -1,6 +1,0 @@
-{
-    "$schema": "../../component.d.json",
-    "name": "Git hooks",
-    "description": "Execute git-conventional-commits on commit",
-    "suggestedPath": ".git-hooks"
-}

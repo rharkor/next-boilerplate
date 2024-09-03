@@ -2,5 +2,10 @@
     "$schema": "../../component.d.json",
     "name": "Default turbo configuration",
     "description": "Basic steps configuration for turbo (build, lint, dev, ...)",
-    "suggestedPath": "turbo.json"
+    "paths": [
+        {
+            "from": "turbo.json",
+            "to": "turbo.json"
+        }
+    ]
 }

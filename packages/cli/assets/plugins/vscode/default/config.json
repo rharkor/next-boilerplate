@@ -2,5 +2,10 @@
     "$schema": "../../component.d.json",
     "name": "Default vscode configuration",
     "description": "Suggested vscode configuration with format on save",
-    "suggestedPath": ".vscode"
+    "paths": [
+        {
+            "from": ".vscode",
+            "to": ".vscode"
+        }
+    ]
 }
