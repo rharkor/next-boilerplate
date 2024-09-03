@@ -16,6 +16,7 @@
         "@nextui-org/system",
         "@nextui-org/theme",
         "@nextui-org/tooltip",
+        "@nextui-org/divider",
         "@react-aria/ssr",
         "@react-aria/visually-hidden",
         "@tanstack/react-query",
