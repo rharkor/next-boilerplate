@@ -5,7 +5,7 @@
     "module": "./dist/index.mjs",
     "types": "./dist/index.d.cts",
     "scripts": {
-        "build": "npm run -s build:app && pkgroll && npm run -s copy-app",
+        "build": "npm run -s build:app && pkgroll --export-condition=node --conditions=node --clean-dist && npm run -s copy-app",
         "build:app": "cd src/app && next build",
         "copy-app": "rm -rf dist/app && mkdir -p dist/app/.next && cp -r src/app/public dist/app/public && cp -r src/app/.next/standalone/packages/cli/src/app/* dist/app && cp -r src/app/.next/standalone/packages/cli/src/app/.next dist/app && cp -r src/app/.next/static dist/app/.next/static",
         "start-app": "cd dist/app && cross-env HOSTNAME=\"0.0.0.0\" node server.js",
@@ -51,7 +51,7 @@
         "monorepo",
         "nextjs"
     ],
-    "homepage": "https://github.com/rharkor/next-boilerplate",
+    "homepage": "https://github.com/rharkor/next-boilerplate/tree/main/packages/cli",
     "author": "HUORT Louis (https://louis.huort.com)",
     "repository": {
         "type": "git",
