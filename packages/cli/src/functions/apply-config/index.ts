@@ -7,7 +7,7 @@ import path from "path"
 import { fileURLToPath } from "url"
 
 import { input } from "@inquirer/prompts"
-import { applyConfigurationTask } from "@next-boilerplate/scripts/utils/template-config/apply.js"
+import { applyConfigurationTask } from "@next-boilerplate/scripts/utils/template-config/apply"
 
 // Get the current package directory
 const __filename = fileURLToPath(import.meta.url) // get the resolved path to the file

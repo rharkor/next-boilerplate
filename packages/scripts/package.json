@@ -26,6 +26,10 @@
         "./utils/template-config": {
             "types": "./dist/utils/template-config/index.d.ts",
             "default": "./dist/utils/template-config/index.js"
+        },
+        "./utils/template-config/apply": {
+            "types": "./dist/utils/template-config/apply.d.ts",
+            "default": "./dist/utils/template-config/apply.js"
         }
     },
     "devDependencies": {
