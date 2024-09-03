@@ -51,7 +51,7 @@
         "monorepo",
         "nextjs"
     ],
-    "homepage": "https://github.com/rharkor/next-boilerplate",
+    "homepage": "https://github.com/rharkor/next-boilerplate/tree/main/packages/cli",
     "author": "HUORT Louis (https://louis.huort.com)",
     "repository": {
         "type": "git",
