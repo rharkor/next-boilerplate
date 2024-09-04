@@ -76,6 +76,19 @@ export const pluginConfigSchema = z.object({
           },
           { message: "The path should be relative and in the current directory" }
         ),
+        overridedTo: z
+          .string()
+          .optional()
+          .refine(
+            (value) => {
+              if (value === undefined) return true
+              if (!isPathInCurrentScope(value)) {
+                return false
+              }
+              return true
+            },
+            { message: "The path should be relative and in the current directory" }
+          ),
       })
     )
     .refine(
