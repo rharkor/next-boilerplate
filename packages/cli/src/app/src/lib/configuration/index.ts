@@ -29,15 +29,23 @@ const webConfigToApiConfig = (webConfig: TConfiguration): z.infer<typeof optiona
     const content = optionalConfigSchema.parse({
       name: webConfig.name,
       plugins: (webConfig.plugins ?? []).map((plugin) => {
-        return {
+        const fullP = {
           name: plugin.sourcePath,
-          paths: plugin.paths.map((p) => p.to),
+          paths: plugin.paths.map((p) => ({
+            from: p.from,
+            to: p.overridedTo || p.to,
+          })),
         }
+        //? If there's no override, or the override is the same as the original path, return the name
+        if (!plugin.paths.some((p) => p.overridedTo) || plugin.paths.every((p) => p.to === p.overridedTo)) {
+          return fullP.name
+        }
+        return fullP
       }),
     })
     return content
   } catch (error) {
-    logger.error(error)
+    logger.error("Failed to convert the web configuration", error)
     throw new TRPCError({
       message: `Failed to convert the web configuration`,
       code: "INTERNAL_SERVER_ERROR",
@@ -76,7 +84,15 @@ const apiConfigToWebConfig = async (apiConfig: z.infer<typeof optionalConfigSche
           description: foundPlugin.description,
           id: foundPlugin.id,
           sourcePath: foundPlugin.sourcePath,
-          paths: foundPlugin.paths,
+          paths: foundPlugin.paths.map((path) => {
+            const overridedTo =
+              typeof plugin === "string" ? undefined : plugin.paths.find((p) => p.from === path.from)?.to
+            return {
+              from: path.from,
+              to: path.to,
+              overridedTo,
+            }
+          }),
         }
       }),
     }
