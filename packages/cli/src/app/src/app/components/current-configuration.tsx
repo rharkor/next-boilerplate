@@ -59,7 +59,7 @@ export default function CurrentConfiguration({
   }
 
   const applyConfigurationMutation = trpc.configuration.applyConfiguration.useMutation({
-    onSettled: async () => {
+    onSuccess: async () => {
       toast.success(dictionary.configurationApplied)
     },
   })
