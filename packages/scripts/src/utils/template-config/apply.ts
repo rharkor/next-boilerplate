@@ -56,7 +56,7 @@ export const applyConfigurationTask = async ({
     throw error
   }
 
-  //* Apply plugins
+  //* Verify plugins
   if (applyConfigTask) applyConfigTask.log("Applying plugins")
   else logger.info("Applying plugins")
 
@@ -114,7 +114,8 @@ export const applyConfigurationTask = async ({
     const pluginConfigPath = path.join(pluginPath, configFileName)
     const pluginConfig = (await fs.readJson(pluginConfigPath)) as TPluginConfig
     // Copy the plugin to the destination
-    for (const { from, to } of pluginConfig.paths) {
+    for (const { from, to: defaultTo } of pluginConfig.paths) {
+      const to = typeof plugin === "string" ? defaultTo : (plugin.paths.find((p) => p.from === from)?.to ?? defaultTo)
       const sourcePath = path.join(pluginPath, from)
       const destinationPath = path.join(root, to)
       if (applyConfigTask) applyConfigTask.log(`Copying the plugin ${pluginName} to the destination ${destinationPath}`)

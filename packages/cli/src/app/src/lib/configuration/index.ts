@@ -31,13 +31,13 @@ const webConfigToApiConfig = (webConfig: TConfiguration): z.infer<typeof optiona
       plugins: (webConfig.plugins ?? []).map((plugin) => {
         return {
           name: plugin.sourcePath,
-          paths: plugin.paths.map((p) => p.to),
+          paths: plugin.paths,
         }
       }),
     })
     return content
   } catch (error) {
-    logger.error(error)
+    logger.error("Failed to convert the web configuration", error)
     throw new TRPCError({
       message: `Failed to convert the web configuration`,
       code: "INTERNAL_SERVER_ERROR",

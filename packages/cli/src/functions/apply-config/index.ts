@@ -37,6 +37,7 @@ export const applyConfig = async () => {
     configFileName,
     pluginsDirectory,
     root,
+    noTask: false,
   }).catch(() => {
     process.exit(1)
   })
