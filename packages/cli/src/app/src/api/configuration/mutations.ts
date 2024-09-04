@@ -48,6 +48,7 @@ export const applyConfiguration = async ({}: apiInputFromSchema<typeof undefined
       configFileName: "config.json",
       pluginsDirectory,
       root: env.ROOT_PATH,
+      noTask: true,
     })
 
     const data: z.infer<ReturnType<typeof updateConfigurationResponseSchema>> = { configuration }

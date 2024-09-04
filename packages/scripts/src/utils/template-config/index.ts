@@ -17,21 +17,26 @@ export function isPathInCurrentScope(filePath: string): boolean {
 export const fullPluginSchema = z.object({
   name: z.string(),
   paths: z.array(
-    z
-      .string()
-      .optional()
-      .refine(
+    z.object({
+      from: z.string().refine(
         (value) => {
-          if (value === undefined) {
-            return true
-          }
           if (!isPathInCurrentScope(value)) {
             return false
           }
           return true
         },
         { message: "The path should be relative and in the current directory" }
-      )
+      ),
+      to: z.string().refine(
+        (value) => {
+          if (!isPathInCurrentScope(value)) {
+            return false
+          }
+          return true
+        },
+        { message: "The path should be relative and in the current directory" }
+      ),
+    })
   ),
 })
 
@@ -71,6 +76,19 @@ export const pluginConfigSchema = z.object({
           },
           { message: "The path should be relative and in the current directory" }
         ),
+        overridedTo: z
+          .string()
+          .optional()
+          .refine(
+            (value) => {
+              if (value === undefined) return true
+              if (!isPathInCurrentScope(value)) {
+                return false
+              }
+              return true
+            },
+            { message: "The path should be relative and in the current directory" }
+          ),
       })
     )
     .refine(

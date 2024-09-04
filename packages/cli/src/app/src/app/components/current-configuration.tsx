@@ -59,7 +59,7 @@ export default function CurrentConfiguration({
   }
 
   const applyConfigurationMutation = trpc.configuration.applyConfiguration.useMutation({
-    onSettled: async () => {
+    onSuccess: async () => {
       toast.success(dictionary.configurationApplied)
     },
   })
@@ -256,17 +256,35 @@ function Plugin({
     onClose: onEditClose,
   } = useDisclosure()
 
-  const [overridedTo, setOverridedTo] = useState<Record<string, string>>({})
-
-  const onEdit = async () => {
-    await _onEdit({
-      ...plugin,
-      paths: plugin.paths.map((p) => ({
-        from: plugin.sourcePath,
-        to: overridedTo[p.to] ?? p.to,
-      })),
-    })
+  const onEdit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    await _onEdit(plugin)
     onEditClose()
+  }
+
+  const [overridedTo, setOverridedTo] = useState<Record<string, string>>(
+    plugin.paths.reduce(
+      (acc, p) => {
+        acc[p.from] = p.overridedTo ?? p.to
+        return acc
+      },
+      {} as Record<string, string>
+    )
+  )
+  const editPath = (fromKey: string) => (to: string) => {
+    setOverridedTo((prev) => ({
+      ...prev,
+      [fromKey]: to,
+    }))
+    plugin.paths = plugin.paths.map((p) => {
+      if (p.from === fromKey) {
+        return {
+          ...p,
+          overridedTo: to,
+        }
+      }
+      return p
+    })
   }
 
   return (
@@ -352,35 +370,32 @@ function Plugin({
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1">{dictionary.pluginSettings}</ModalHeader>
-              <ModalBody>
-                {plugin.paths.map((p, i) => (
-                  <Fragment key={p.from}>
-                    {i !== 0 && <Divider orientation="horizontal" />}
-                    <div className="flex flex-col gap-1">
-                      <Input isDisabled isReadOnly value={plugin.sourcePath} label={dictionary.sourcePath} />
-                      <Input
-                        value={overridedTo[p.to] ?? ""}
-                        onValueChange={(value) => {
-                          setOverridedTo((prev) => ({
-                            ...prev,
-                            [p.to]: value,
-                          }))
-                        }}
-                        placeholder={p.to}
-                        label={dictionary.outputPath}
-                      />
-                    </div>
-                  </Fragment>
-                ))}
-              </ModalBody>
-              <ModalFooter>
-                <Button variant="light" onPress={onClose} isDisabled={isPending}>
-                  {dictionary.close}
-                </Button>
-                <Button color="primary" onPress={onEdit} isLoading={isPending}>
-                  {dictionary.save}
-                </Button>
-              </ModalFooter>
+              <form onSubmit={onEdit}>
+                <ModalBody>
+                  {plugin.paths.map((p, i) => (
+                    <Fragment key={p.from}>
+                      {i !== 0 && <Divider orientation="horizontal" />}
+                      <div className="flex flex-col gap-1">
+                        <Input isDisabled isReadOnly value={p.from} label={dictionary.sourcePath} />
+                        <Input
+                          value={overridedTo[p.from] ?? ""}
+                          onValueChange={editPath(p.from)}
+                          placeholder={p.to}
+                          label={dictionary.outputPath}
+                        />
+                      </div>
+                    </Fragment>
+                  ))}
+                </ModalBody>
+                <ModalFooter>
+                  <Button variant="light" onPress={onClose} isDisabled={isPending}>
+                    {dictionary.close}
+                  </Button>
+                  <Button color="primary" type="submit" isLoading={isPending}>
+                    {dictionary.save}
+                  </Button>
+                </ModalFooter>
+              </form>
             </>
           )}
         </ModalContent>
