@@ -6,6 +6,8 @@ import { pluginConfigSchema, TPluginConfig } from "@next-boilerplate/scripts/uti
 import { logger } from "@rharkor/logger"
 import { TRPCError } from "@trpc/server"
 
+import { env } from "../env"
+
 import {
   getPluginsFromStore,
   getSinglePluginFromStore,
@@ -13,7 +15,6 @@ import {
   setSinglePluginToStore,
   TPluginStore,
 } from "./store"
-import { env } from "../env"
 
 // Get the current package directory
 const cwd = process.cwd()

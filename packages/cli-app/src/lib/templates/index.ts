@@ -12,6 +12,8 @@ type TConfig = z.infer<typeof templateSchema>
 
 import { z } from "zod"
 
+import { env } from "../env"
+
 import {
   getSingleTemplateFromStore,
   getTemplatesFromStore,
@@ -19,7 +21,6 @@ import {
   setTemplatesToStore,
   TTemplateStore,
 } from "./store"
-import { env } from "../env"
 
 // Get the current package directory
 const cwd = process.cwd()
