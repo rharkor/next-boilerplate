@@ -19,11 +19,12 @@ import {
   setTemplatesToStore,
   TTemplateStore,
 } from "./store"
+import { env } from "../env"
 
 // Get the current package directory
 const cwd = process.cwd()
 // eslint-disable-next-line no-process-env
-const dir = path.resolve(cwd, "../..")
+const dir = path.resolve(cwd, env.CLI_REL_PATH ?? "../..")
 
 const configFileName = "config.json"
 const templatesDirectory = path.join(dir, "assets", "templates")
