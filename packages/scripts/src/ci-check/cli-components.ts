@@ -26,7 +26,7 @@ const validatepluginTask = await task.startTask({
 })
 
 //* Get all the plugins
-const plugins = await globby(path.join(pluginsDirectory, "**", configFileName))
+const plugins = await globby(path.join(pluginsDirectory, "**", configFileName).replace(/\\/g, "/"))
 
 for (const plugin of plugins) {
   const pluginConfig = (await fs.readJson(plugin)) as TPluginConfig
