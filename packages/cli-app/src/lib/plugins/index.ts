@@ -38,6 +38,7 @@ export const getPlugins = async () => {
 
   //* Get all the plugins
   const plugins = await globby(path.join(pluginsDirectory, "**", configFileName))
+  logger.debug(`Found ${plugins.length} plugins in ${path.join(pluginsDirectory, "**", configFileName)}`)
   const pluginsFilled: TPluginStore[] = []
 
   //* Validate their config
