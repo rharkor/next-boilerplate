@@ -6,6 +6,8 @@ import { pluginConfigSchema, TPluginConfig } from "@next-boilerplate/scripts/uti
 import { logger } from "@rharkor/logger"
 import { TRPCError } from "@trpc/server"
 
+import { env } from "../env"
+
 import {
   getPluginsFromStore,
   getSinglePluginFromStore,
@@ -17,7 +19,7 @@ import {
 // Get the current package directory
 const cwd = process.cwd()
 // eslint-disable-next-line no-process-env
-const dir = path.resolve(cwd, "../..")
+const dir = path.resolve(cwd, env.CLI_REL_PATH ?? "../..")
 
 const configFileName = "config.json"
 export const pluginsDirectory = path.join(dir, "assets", "plugins")

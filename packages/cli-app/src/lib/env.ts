@@ -6,6 +6,7 @@ import { logger } from "@rharkor/logger"
 
 const schema = z.object({
   ROOT_PATH: z.string(),
+  CLI_REL_PATH: z.string().optional(),
 })
 
 if (!process.env.ROOT_PATH) {
