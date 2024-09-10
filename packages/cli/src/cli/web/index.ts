@@ -27,6 +27,8 @@ export const openWeb = async () => {
       NODE_ENV: "production",
       HOSTNAME: "0.0.0.0",
       ROOT_PATH: cwd,
+      // eslint-disable-next-line no-process-env
+      ...process.env,
       PORT: resolvedPort,
       // CLI_REL_PATH: "../../../..",
     },
