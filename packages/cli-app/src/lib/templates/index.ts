@@ -43,10 +43,9 @@ export const getTemplates = async () => {
   }
 
   //* Get all the templates
-  const templates = await globby(path.join(templatesDirectory, "**", configFileName).replace(/\\/g, "/"))
-  logger.debug(
-    `Found ${templates.length} templates in ${path.join(templatesDirectory, "**", configFileName).replace(/\\/g, "/")}`
-  )
+  const formattedTemplatesDirectory = templatesDirectory.replace(/\\/g, "/")
+  const templates = await globby(path.join(formattedTemplatesDirectory, "**", configFileName))
+  logger.debug(`Found ${templates.length} templates in ${path.join(formattedTemplatesDirectory, "**", configFileName)}`)
   const templatesFilled: TTemplateStore[] = []
 
   //* Validate their config
@@ -63,7 +62,7 @@ export const getTemplates = async () => {
       })
     }
 
-    const sourcePath = path.dirname(template).replace(templatesDirectory, "").replace(/^\//, "")
+    const sourcePath = path.dirname(template).replace(formattedTemplatesDirectory, "").replace(/^\//, "")
     templatesFilled.push({ ...templateConfig, sourcePath, id: sourcePath })
   }
 
