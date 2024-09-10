@@ -43,7 +43,7 @@ export const getTemplates = async () => {
   }
 
   //* Get all the templates
-  const templates = await globby(path.join(templatesDirectory, "**", configFileName))
+  const templates = await globby(path.join(templatesDirectory, "**", configFileName).replace(/\\/g, "/"))
   const templatesFilled: TTemplateStore[] = []
 
   //* Validate their config

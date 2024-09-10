@@ -24,7 +24,10 @@ type TDevContainer = {
   customizations: { vscode: { extensions: string[] } }
 }
 
-const devcontainerPaths = await globby([`**/${devcontainerFolder}`], { onlyDirectories: true, dot: true })
+const devcontainerPaths = await globby([`**/${devcontainerFolder}`.replace(/\\/g, "/")], {
+  onlyDirectories: true,
+  dot: true,
+})
 
 if (devcontainerPaths.length === 0) {
   extensionsTask.error(`No devcontainers found`)
