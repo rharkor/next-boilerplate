@@ -9,7 +9,6 @@
   ],
   "automerge": true,
   "platformAutomerge": true,
-  "branchConcurrentLimit": 3,
   "schedule": [
     "every weekend"
   ]
