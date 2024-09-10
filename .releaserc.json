@@ -140,7 +140,7 @@
       "@semantic-release/github",
       {
         "successCommentCondition": "<% return issue.user.type !== 'Bot'; %>",
-        "successComment": ":tada: This issue has been resolved in version ${nextRelease.version} :tada:\n\nThe release is available on [GitHub release](<github_release_url>), pr creator: <% return issue.pull_request; %>"
+        "successComment": ":tada: <% return issue.pull_request; %>"
       }
     ],
     "@semantic-release/git",
