@@ -44,8 +44,10 @@ export const getTemplates = async () => {
 
   //* Get all the templates
   const formattedTemplatesDirectory = templatesDirectory.replace(/\\/g, "/")
-  const templates = await globby(path.join(formattedTemplatesDirectory, "**", configFileName))
-  logger.debug(`Found ${templates.length} templates in ${path.join(formattedTemplatesDirectory, "**", configFileName)}`)
+  const templates = await globby(path.join(formattedTemplatesDirectory, "**", configFileName).replace(/\\/g, "/"))
+  logger.debug(
+    `Found ${templates.length} templates in ${path.join(formattedTemplatesDirectory, "**", configFileName).replace(/\\/g, "/")}`
+  )
   const templatesFilled: TTemplateStore[] = []
 
   //* Validate their config
