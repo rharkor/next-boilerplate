@@ -4,6 +4,7 @@
     "scripts": {
         "dev": "next dev --turbo",
         "build": "next build",
+        "type-check": "tsc --noEmit",
         "lint": "next lint",
         "lint:fix": "next lint --fix",
         "prettier": "prettier --check \"**/*.{js,jsx,ts,tsx}\"",

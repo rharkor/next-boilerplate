@@ -7,7 +7,7 @@
     "scripts": {
         "build": "pkgroll --export-condition=node --conditions=node --clean-dist && npm run -s copy-app",
         "copy-app": "./scripts/copy-app.sh",
-        "type-check": "tsc --noEmit && cd src/app && tsc --noEmit",
+        "type-check": "tsc --noEmit",
         "debug": "tsx ./debug/index.ts",
         "install-local": "npm pack && npm install -g next-boilerplate-cli-0.0.0.tgz && rm next-boilerplate-cli-0.0.0.tgz",
         "lint": "eslint .",
