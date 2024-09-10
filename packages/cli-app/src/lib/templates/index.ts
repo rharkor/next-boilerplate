@@ -12,6 +12,8 @@ type TConfig = z.infer<typeof templateSchema>
 
 import { z } from "zod"
 
+import { env } from "../env"
+
 import {
   getSingleTemplateFromStore,
   getTemplatesFromStore,
@@ -23,7 +25,7 @@ import {
 // Get the current package directory
 const cwd = process.cwd()
 // eslint-disable-next-line no-process-env
-const dir = path.resolve(cwd, "../..")
+const dir = path.resolve(cwd, env.CLI_REL_PATH ?? "../..")
 
 const configFileName = "config.json"
 const templatesDirectory = path.join(dir, "assets", "templates")
