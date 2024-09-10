@@ -68,7 +68,6 @@
         "@types/minimist": "^1.2.5",
         "@types/node": "^20.4.9",
         "commander": "^12.1.0",
-        "cross-env": "^7.0.3",
         "minimist": "^1.2.8",
         "open": "^10.1.0",
         "pkgroll": "^2.4.2",
