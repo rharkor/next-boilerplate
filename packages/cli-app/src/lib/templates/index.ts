@@ -93,7 +93,7 @@ export const getTemplate = async (id: string) => {
       const plugin = plugins.find((p) => p.id === pluginId)
       if (!plugin) {
         logger.error(`Plugin ${pluginId} in template ${id} not found`)
-        logger.error(`Current plugins: ${plugins.map((p) => p.id).join(", ")}`)
+        logger.error(`Current loaded plugins: ${plugins.map((p) => p.id).join(", ")}`)
       }
       return plugin
     })
