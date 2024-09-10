@@ -38,7 +38,9 @@ export const getPlugins = async () => {
 
   //* Get all the plugins
   const plugins = await globby(path.join(pluginsDirectory, "**", configFileName).replace(/\\/g, "/"))
-  logger.debug(`Found ${plugins.length} plugins in ${path.join(pluginsDirectory, "**", configFileName)}`)
+  logger.debug(
+    `Found ${plugins.length} plugins in ${path.join(pluginsDirectory, "**", configFileName).replace(/\\/g, "/")}`
+  )
   const pluginsFilled: TPluginStore[] = []
 
   //* Validate their config
@@ -60,6 +62,10 @@ export const getPlugins = async () => {
   }
 
   pluginsFilled.sort((a, b) => a.name.localeCompare(b.name))
+
+  pluginsFilled.forEach((plugin) => {
+    logger.debug(`Plugin ${plugin.id} loaded`)
+  })
 
   setPluginsToStore(pluginsFilled)
   return pluginsFilled

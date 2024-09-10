@@ -44,6 +44,9 @@ export const getTemplates = async () => {
 
   //* Get all the templates
   const templates = await globby(path.join(templatesDirectory, "**", configFileName).replace(/\\/g, "/"))
+  logger.debug(
+    `Found ${templates.length} templates in ${path.join(templatesDirectory, "**", configFileName).replace(/\\/g, "/")}`
+  )
   const templatesFilled: TTemplateStore[] = []
 
   //* Validate their config
@@ -90,6 +93,7 @@ export const getTemplate = async (id: string) => {
       const plugin = plugins.find((p) => p.id === pluginId)
       if (!plugin) {
         logger.error(`Plugin ${pluginId} in template ${id} not found`)
+        logger.error(`Current plugins: ${plugins.map((p) => p.id).join(", ")}`)
       }
       return plugin
     })
