@@ -21,10 +21,12 @@ export default function Plugin({
   plugin,
   ssrConfiguration,
   dictionary,
+  isLoading,
 }: {
   plugin: TPlugin
   ssrConfiguration: RouterOutputs["configuration"]["getConfiguration"]
   dictionary: TDictionary<typeof PluginsContentDr>
+  isLoading?: boolean
 }) {
   const utils = trpc.useUtils()
 
@@ -75,45 +77,48 @@ export default function Plugin({
       title={plugin.name}
       subTitle={plugin.sourcePath}
       description={plugin.description}
+      isLoading={isLoading}
       endContent={
-        <>
-          <ToyBrick className="absolute right-2 top-2 size-4 text-primary" />
-          <Tooltip
-            content={isPluginInConfiguration ? dictionary.removeFromConfiguration : dictionary.addToConfiguration}
-            delay={500}
-          >
-            <Button
-              size="sm"
-              color="primary"
-              className="absolute bottom-2 right-2 h-max min-w-0 p-1"
-              variant={isPluginInConfiguration ? "flat" : "shadow"}
-              onClick={(e) => {
-                e.preventDefault()
-                togglePlugin()
-              }}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") {
+        isLoading ? null : (
+          <>
+            <ToyBrick className="absolute right-2 top-2 size-4 text-primary" />
+            <Tooltip
+              content={isPluginInConfiguration ? dictionary.removeFromConfiguration : dictionary.addToConfiguration}
+              delay={500}
+            >
+              <Button
+                size="sm"
+                color="primary"
+                className="absolute bottom-2 right-2 h-max min-w-0 p-1"
+                variant={isPluginInConfiguration ? "flat" : "shadow"}
+                onClick={(e) => {
                   e.preventDefault()
                   togglePlugin()
-                }
-              }}
-            >
-              {updateConfigurationMutation.isPending ? (
-                <Spinner
-                  size="sm"
-                  classNames={{
-                    wrapper: "!size-5",
-                  }}
-                  color="current"
-                />
-              ) : isPluginInConfiguration ? (
-                <PackageMinus className="size-5" />
-              ) : (
-                <PackagePlus className="size-5" />
-              )}
-            </Button>
-          </Tooltip>
-        </>
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault()
+                    togglePlugin()
+                  }
+                }}
+              >
+                {updateConfigurationMutation.isPending ? (
+                  <Spinner
+                    size="sm"
+                    classNames={{
+                      wrapper: "!size-5",
+                    }}
+                    color="current"
+                  />
+                ) : isPluginInConfiguration ? (
+                  <PackageMinus className="size-5" />
+                ) : (
+                  <PackagePlus className="size-5" />
+                )}
+              </Button>
+            </Tooltip>
+          </>
+        )
       }
       href={`/plugins/${encodeURIComponent(plugin.id)}`}
       className="pr-12"

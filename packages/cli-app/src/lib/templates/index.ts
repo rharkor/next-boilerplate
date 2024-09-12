@@ -30,10 +30,7 @@ const dir = path.resolve(cwd, env.CLI_REL_PATH ?? "../..")
 const configFileName = "config.json"
 const templatesDirectory = path.join(dir, "assets", "templates")
 
-export const getTemplates = async () => {
-  const templatesFromStore = await getTemplatesFromStore()
-  if (templatesFromStore) return templatesFromStore
-
+const loadTemplates = async () => {
   logger.debug(`Loading templates (${templatesDirectory})`)
   if (!(await fs.exists(templatesDirectory))) {
     throw new TRPCError({
@@ -72,6 +69,24 @@ export const getTemplates = async () => {
 
   setTemplatesToStore(templatesFilled)
   return templatesFilled
+}
+
+export const getTemplates = async (opts?: { search?: string }) => {
+  const templates = await new Promise<TTemplateStore[]>(async (resolve) => {
+    const templatesFromStore = await getTemplatesFromStore()
+    if (templatesFromStore) {
+      resolve(templatesFromStore)
+      return
+    }
+
+    const templates = await loadTemplates()
+    resolve(templates)
+    return
+  })
+  return templates.filter((template) => {
+    if (!opts?.search) return true
+    return template.name.toLowerCase().includes(opts.search.toLowerCase())
+  })
 }
 
 export const getTemplate = async (id: string) => {

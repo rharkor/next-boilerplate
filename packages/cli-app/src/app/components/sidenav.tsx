@@ -26,13 +26,23 @@ export default function Sidenav({
   const animate = useAnimation()
   useEffect(() => {
     if ((configuration.data.configuration.plugins?.length ?? 0) > 0) {
-      animate.start({
-        scale: 1.5,
-        opacity: 0,
-        transition: {
-          duration: 0.5,
-        },
-      })
+      const handleAnimate = async () => {
+        await animate.start({
+          scale: 2,
+          opacity: 0,
+          transition: {
+            duration: 1,
+          },
+        })
+        await animate.start({
+          scale: 1,
+          opacity: 0.6,
+          transition: {
+            duration: 0,
+          },
+        })
+      }
+      handleAnimate()
     }
   }, [configuration.data.configuration.plugins?.length, animate])
 
@@ -43,14 +53,28 @@ export default function Sidenav({
           href="/"
           isCurrent={pathname === "/"}
           afterContent={
-            (configuration.data.configuration.plugins?.length ?? 0) > 0 ? (
-              <div className="relative">
-                <motion.span animate={animate} className="absolute inset-0 rounded-full bg-primary" />
-                <span className="relative z-10 flex size-5 items-center justify-center rounded-full bg-primary text-xs text-primary-foreground">
-                  {configuration.data.configuration.plugins?.length}
-                </span>
-              </div>
-            ) : null
+            <motion.div
+              className="relative"
+              animate={
+                (configuration.data.configuration.plugins?.length ?? 0) > 0
+                  ? {
+                      scale: 1,
+                      opacity: 1,
+                    }
+                  : {
+                      scale: 0,
+                      opacity: 0,
+                    }
+              }
+              transition={{
+                type: "spring",
+              }}
+            >
+              <motion.span animate={animate} className="absolute inset-0 rounded-full bg-primary opacity-60" />
+              <span className="relative z-10 flex size-5 items-center justify-center rounded-full bg-primary text-xs text-primary-foreground">
+                {configuration.data.configuration.plugins?.length}
+              </span>
+            </motion.div>
           }
         >
           {dictionary.configuration}

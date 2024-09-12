@@ -236,5 +236,6 @@
   "close": "Fermer",
   "pluginSettings": "Paramètres du plugin",
   "apply": "Appliquer",
-  "configurationApplied": "Configuration appliquée"
+  "configurationApplied": "Configuration appliquée",
+  "search": "Rechercher"
 }

@@ -24,10 +24,7 @@ const dir = path.resolve(cwd, env.CLI_REL_PATH ?? "../..")
 const configFileName = "config.json"
 export const pluginsDirectory = path.join(dir, "assets", "plugins")
 
-export const getPlugins = async () => {
-  const pluginsFromStore = await getPluginsFromStore()
-  if (pluginsFromStore) return pluginsFromStore
-
+const loadPlugins = async () => {
   logger.debug(`Loading plugins (${pluginsDirectory})`)
   if (!(await fs.exists(pluginsDirectory))) {
     throw new TRPCError({
@@ -70,6 +67,24 @@ export const getPlugins = async () => {
 
   setPluginsToStore(pluginsFilled)
   return pluginsFilled
+}
+
+export const getPlugins = async (opts?: { search?: string }) => {
+  const plugins = await new Promise<TPluginStore[]>(async (resolve) => {
+    const pluginsFromStore = await getPluginsFromStore()
+    if (pluginsFromStore) {
+      resolve(pluginsFromStore)
+      return
+    }
+
+    const plugins = await loadPlugins()
+    resolve(plugins)
+    return
+  })
+  return plugins.filter((plugin) => {
+    if (!opts?.search) return true
+    return plugin.name.toLowerCase().includes(opts.search.toLowerCase())
+  })
 }
 
 export const getPlugin = async (id: string) => {
