@@ -103,3 +103,7 @@ export const pluginConfigSchema = z.object({
 })
 
 export type TPluginConfig = z.infer<typeof pluginConfigSchema>
+
+export const storeConfigSchema = z.object({
+  remote: z.string(),
+})
