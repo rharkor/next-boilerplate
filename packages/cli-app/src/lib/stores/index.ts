@@ -139,14 +139,9 @@ export const handleDownloadStores = async (config: z.infer<typeof optionalConfig
           const tarball = stdout.trim()
           const tarballPath = path.join(storePath, tarball)
           // Extract the tarball
-          await tar.x({ file: tarballPath, cwd: storeDataPath })
-          // Mv ${storeDataPath}/package/* ${storeDataPath}
-          const packagePath = path.join(storeDataPath, "package")
-          await fs.move(packagePath, storeDataPath, { overwrite: true })
+          await tar.x({ file: tarballPath, cwd: storeDataPath, strip: 1 })
           // Remove the tarball
           await fs.remove(tarballPath)
-          // Remove the package folder
-          await fs.remove(packagePath)
           logger.debug(`Downloaded the store ${store.name}@${store.version}`)
           resolve()
         } catch (e) {
