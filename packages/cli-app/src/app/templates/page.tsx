@@ -9,10 +9,7 @@ import { TemplatesContentDr } from "./content.dr"
 
 export default async function Templates() {
   const locale = extractLocale()
-  const dictionary = await getDictionary(
-    locale,
-    dictionaryRequirements(TemplatesContentDr)
-  )
+  const dictionary = await getDictionary(locale, dictionaryRequirements(TemplatesContentDr))
   const ssrTemplates = await serverTrpc.templates.getTemplates({})
 
   return (
