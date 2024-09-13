@@ -43,6 +43,7 @@ export const fullPluginSchema = z.object({
 export const configSchema = z.object({
   name: z.string(),
   plugins: z.array(z.string().or(fullPluginSchema)),
+  stores: z.array(z.string()),
 })
 export type TConfig = z.infer<typeof configSchema>
 
@@ -103,3 +104,7 @@ export const pluginConfigSchema = z.object({
 })
 
 export type TPluginConfig = z.infer<typeof pluginConfigSchema>
+
+export const storeConfigSchema = z.object({
+  remote: z.string(),
+})

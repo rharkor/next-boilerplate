@@ -5,6 +5,7 @@ import Link from "next/link"
 import { motion } from "framer-motion"
 
 import { cn } from "@/lib/utils"
+import { Skeleton } from "@nextui-org/skeleton"
 
 export default function ItemCard({
   id,
@@ -16,27 +17,29 @@ export default function ItemCard({
   className,
   endContent,
   href,
+  isLoading,
 }: {
   id: string
   liRef?: React.RefObject<HTMLLIElement>
   title: string
   subTitle?: React.ReactNode
   actions?: React.ReactNode
-  description: string
+  description?: string
   className?: string
   endContent?: React.ReactNode
   href?: string
+  isLoading?: boolean
 }) {
   const content = (
     <>
       <div className="flex items-center justify-between gap-4">
         <div>
-          <p className="text-xl font-medium">{title}</p>
-          <div className="flex flex-row items-center gap-1 text-xs text-muted-foreground">{subTitle}</div>
+          <p className="min-h-7 text-xl font-medium">{title}</p>
+          <div className="flex min-h-4 flex-row items-center gap-1 text-xs text-muted-foreground">{subTitle}</div>
         </div>
         <div className="flex flex-row gap-2">{actions}</div>
       </div>
-      <p className="truncate text-sm">{description}</p>
+      {description !== undefined && <p className="min-h-5 truncate text-sm">{description}</p>}
       {endContent}
     </>
   )
@@ -50,7 +53,7 @@ export default function ItemCard({
     <motion.li
       layout={"position"}
       key={id}
-      className={href ? undefined : baseClassName}
+      className={href || isLoading ? undefined : baseClassName}
       exit={{ opacity: 0, scale: 0.9 }}
       ref={liRef}
     >
@@ -58,6 +61,8 @@ export default function ItemCard({
         <Link href={href} className={baseClassName}>
           {content}
         </Link>
+      ) : isLoading ? (
+        <Skeleton className={baseClassName}>{content}</Skeleton>
       ) : (
         content
       )}

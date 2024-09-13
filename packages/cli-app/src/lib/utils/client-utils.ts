@@ -51,3 +51,7 @@ export const handleMutationError = <T extends TRPCClientErrorLike<AppRouter>>(
   }
   return resp
 }
+
+export const gitRemoteToName = (remote: string) => {
+  return remote.replace(/.*\//, "").replace(/\.git$/, "")
+}

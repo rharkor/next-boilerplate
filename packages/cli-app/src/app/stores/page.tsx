@@ -4,18 +4,17 @@ import { serverTrpc } from "@/lib/trpc/server"
 import { dictionaryRequirements } from "@/lib/utils/dictionary"
 import { extractLocale } from "@/lib/utils/server-utils"
 
-import PluginsContent from "./content"
-import { PluginsContentDr } from "./content.dr"
+import StoresContent from "./content"
+import { StoresContentDr } from "./content.dr"
 
-export default async function Plugins() {
+export default async function Stores() {
   const locale = extractLocale()
-  const dictionary = await getDictionary(locale, dictionaryRequirements(PluginsContentDr))
-  const ssrPlugins = await serverTrpc.plugins.getPlugins({})
+  const dictionary = await getDictionary(locale, dictionaryRequirements(StoresContentDr))
   const ssrConfiguration = await serverTrpc.configuration.getConfiguration()
 
   return (
     <Section>
-      <PluginsContent ssrPlugins={ssrPlugins} dictionary={dictionary} ssrConfiguration={ssrConfiguration} />
+      <StoresContent ssrConfiguration={ssrConfiguration} dictionary={dictionary} />
     </Section>
   )
 }

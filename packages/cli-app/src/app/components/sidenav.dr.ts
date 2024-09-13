@@ -4,4 +4,5 @@ export const SidenavDr = dictionaryRequirements({
   configuration: true,
   templates: true,
   plugins: true,
+  stores: true,
 })

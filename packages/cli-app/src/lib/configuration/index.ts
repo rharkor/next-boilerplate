@@ -42,6 +42,8 @@ const webConfigToApiConfig = (webConfig: TConfiguration): z.infer<typeof optiona
         }
         return fullP
       }),
+      // TODO Default store
+      stores: webConfig.stores ?? [],
     })
     return content
   } catch (error) {
@@ -95,6 +97,7 @@ const apiConfigToWebConfig = async (apiConfig: z.infer<typeof optionalConfigSche
           }),
         }
       }),
+      stores: apiConfig.stores,
     }
     webConfigurationSchema().parse(content)
     return content

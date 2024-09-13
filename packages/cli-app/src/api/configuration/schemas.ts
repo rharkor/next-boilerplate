@@ -6,6 +6,7 @@ export const configurationSchema = () =>
   z.object({
     name: z.string().optional(),
     plugins: z.array(fullPluginSchema).optional(),
+    stores: z.array(z.string()).optional(),
   })
 export type TConfiguration = z.infer<ReturnType<typeof configurationSchema>>
 

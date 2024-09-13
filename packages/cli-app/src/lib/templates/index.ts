@@ -12,7 +12,7 @@ type TConfig = z.infer<typeof templateSchema>
 
 import { z } from "zod"
 
-import { env } from "../env"
+import { getStores } from "../stores"
 
 import {
   getSingleTemplateFromStore,
@@ -22,56 +22,68 @@ import {
   TTemplateStore,
 } from "./store"
 
-// Get the current package directory
-const cwd = process.cwd()
-// eslint-disable-next-line no-process-env
-const dir = path.resolve(cwd, env.CLI_REL_PATH ?? "../..")
-
 const configFileName = "config.json"
-const templatesDirectory = path.join(dir, "assets", "templates")
 
-export const getTemplates = async () => {
-  const templatesFromStore = await getTemplatesFromStore()
-  if (templatesFromStore) return templatesFromStore
-
-  logger.debug(`Loading templates (${templatesDirectory})`)
-  if (!(await fs.exists(templatesDirectory))) {
-    throw new TRPCError({
-      message: `The templates directory doesn't exist at ${templatesDirectory}`,
-      code: "INTERNAL_SERVER_ERROR",
-    })
-  }
-
+const loadTemplates = async () => {
   //* Get all the templates
-  const formattedTemplatesDirectory = templatesDirectory.replace(/\\/g, "/")
-  const templates = await globby(path.join(formattedTemplatesDirectory, "**", configFileName).replace(/\\/g, "/"))
-  logger.debug(
-    `Found ${templates.length} templates in ${path.join(formattedTemplatesDirectory, "**", configFileName).replace(/\\/g, "/")}`
-  )
   const templatesFilled: TTemplateStore[] = []
-
-  //* Validate their config
-  for (const template of templates) {
-    const templateConfig = (await fs.readJson(template)) as TConfig
-
-    try {
-      templateSchema.parse(templateConfig)
-    } catch (error) {
-      logger.error(error)
+  const stores = await getStores()
+  for (const store of stores) {
+    const templatesDirectory = path.join(store.fullPath, "data", "templates")
+    logger.debug(`Loading templates (${templatesDirectory})`)
+    if (!(await fs.exists(templatesDirectory))) {
       throw new TRPCError({
-        message: `The config of the template ${template} is invalid`,
+        message: `The templates directory doesn't exist at ${templatesDirectory}`,
         code: "INTERNAL_SERVER_ERROR",
       })
     }
 
-    const sourcePath = path.dirname(template).replace(formattedTemplatesDirectory, "").replace(/^\//, "")
-    templatesFilled.push({ ...templateConfig, sourcePath, id: sourcePath })
+    const formattedTemplatesDirectory = path.join(templatesDirectory).replace(/\\/g, "/")
+    const globbyPath = path.join(formattedTemplatesDirectory, "**", configFileName).replace(/\\/g, "/")
+    const templates = await globby(globbyPath)
+    logger.debug(`Found ${templates.length} templates in ${globbyPath}`)
+
+    //* Validate their config
+    for (const template of templates) {
+      const templateConfig = (await fs.readJson(template)) as TConfig
+
+      try {
+        templateSchema.parse(templateConfig)
+      } catch (error) {
+        logger.error(error)
+        throw new TRPCError({
+          message: `The config of the template ${template} is invalid`,
+          code: "INTERNAL_SERVER_ERROR",
+        })
+      }
+
+      const sourcePath = path.dirname(template).replace(formattedTemplatesDirectory, "").replace(/^\//, "")
+      templatesFilled.push({ ...templateConfig, sourcePath, id: sourcePath })
+    }
   }
 
   templatesFilled.sort((a, b) => a.name.localeCompare(b.name))
 
   setTemplatesToStore(templatesFilled)
   return templatesFilled
+}
+
+export const getTemplates = async (opts?: { search?: string }) => {
+  const templates = await new Promise<TTemplateStore[]>(async (resolve) => {
+    const templatesFromStore = await getTemplatesFromStore()
+    if (templatesFromStore) {
+      resolve(templatesFromStore)
+      return
+    }
+
+    const templates = await loadTemplates()
+    resolve(templates)
+    return
+  })
+  return templates.filter((template) => {
+    if (!opts?.search) return true
+    return template.name.toLowerCase().includes(opts.search.toLowerCase())
+  })
 }
 
 export const getTemplate = async (id: string) => {

@@ -12,12 +12,12 @@
     },
     "depcheck": false,
     "devDependencies": {
-        "eslint-config-legacy": "*",
         "@babel/core": "^7.22.17",
-        "postcss": "^8.4.29",
-        "tailwindcss": "^3.4.0",
         "@formatjs/intl-localematcher": "^0.5.0",
-        "eslint": "^8.0.0"
+        "eslint": "^8.0.0",
+        "eslint-config-legacy": "*",
+        "postcss": "^8.4.29",
+        "tailwindcss": "^3.4.0"
     },
     "dependencies": {
         "@nextui-org/avatar": "^2.0.32",
@@ -30,6 +30,7 @@
         "@nextui-org/link": "^2.0.34",
         "@nextui-org/modal": "^2.0.39",
         "@nextui-org/select": "^2.2.5",
+        "@nextui-org/skeleton": "^2.0.31",
         "@nextui-org/spinner": "^2.0.33",
         "@nextui-org/switch": "^2.0.33",
         "@nextui-org/system": "^2.2.2",
