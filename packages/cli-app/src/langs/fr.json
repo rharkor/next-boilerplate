@@ -241,6 +241,9 @@
   "stores": "Magasins",
   "store": "Magasin",
   "addStore": "Ajouter un magasin",
-  "storeRemote": "URL du magasin (git)",
-  "storeRemoteExample": "git@github.com:rharkor/next-boilerplate--store.git"
+  "storeName": "URL du magasin (git)",
+  "storeNameExample": "@next-boilerplate/store",
+  "storeVersion": "Version du magasin",
+  "storeVersionExample": "latest",
+  "doNotTrustExternalStores": "Ne faites pas confiance aux magasins externes, assurez-vous de vérifier le code avant de l'ajouter à votre configuration."
 }

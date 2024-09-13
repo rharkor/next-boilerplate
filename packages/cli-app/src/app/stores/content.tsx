@@ -2,20 +2,26 @@
 
 import { useState } from "react"
 
-import { Plus } from "lucide-react"
+import { Download, Plus } from "lucide-react"
+import { useForm } from "react-hook-form"
+import { z } from "zod"
 
+import { updateConfigurationRequestSchema } from "@/api/configuration/schemas"
+import { Icons } from "@/components/icons"
+import FormField from "@/components/ui/form"
 import Header from "@/components/ui/header"
 import ItemCard from "@/components/ui/item-card"
 import { ModalHeader } from "@/components/ui/modal"
 import { TDictionary } from "@/lib/langs"
 import { trpc } from "@/lib/trpc/client"
 import { RouterOutputs } from "@/lib/trpc/utils"
-import { gitRemoteToName } from "@/lib/utils/client-utils"
+import { zodResolver } from "@hookform/resolvers/zod"
 import { Button } from "@nextui-org/button"
-import { Input } from "@nextui-org/input"
 import { Modal, ModalBody, ModalContent, ModalFooter } from "@nextui-org/modal"
 
 import { StoresContentDr } from "./content.dr"
+
+const formSchema = updateConfigurationRequestSchema().shape.configuration.shape.stores.unwrap().element
 
 export default function StoresContent({
   ssrConfiguration,
@@ -29,7 +35,6 @@ export default function StoresContent({
   })
 
   const [isAddStoreOpen, setIsAddStoreOpen] = useState(false)
-  const [newStoreName, setNewStoreName] = useState("")
 
   const utils = trpc.useUtils()
   const updateConfigurationMutation = trpc.configuration.updateConfiguration.useMutation({
@@ -37,18 +42,29 @@ export default function StoresContent({
       await utils.configuration.invalidate()
     },
   })
-  const onAddStore = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!newStoreName) return
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: "",
+      version: "",
+    },
+  })
+
+  const onSubmit = form.handleSubmit(async (data) => {
     await updateConfigurationMutation.mutateAsync({
       configuration: {
-        ...configuration.data.configuration,
-        stores: Array.from(new Set([...(configuration.data.configuration.stores ?? []), newStoreName])),
+        stores: [
+          ...(configuration.data.configuration.stores ?? []),
+          {
+            name: data.name,
+            version: data.version,
+          },
+        ].filter((store, index, self) => self.findIndex((s) => s.name === store.name) === index),
       },
     })
     setIsAddStoreOpen(false)
-    setNewStoreName("")
-  }
+  })
 
   const isPending = updateConfigurationMutation.isPending
 
@@ -65,8 +81,41 @@ export default function StoresContent({
         }
       />
       <ul className="flex flex-1 flex-col gap-2">
-        {(configuration.data.configuration.stores ?? []).map((storeRemote) => (
-          <ItemCard key={storeRemote} id={storeRemote} title={gitRemoteToName(storeRemote)} description={storeRemote} />
+        {(configuration.data.configuration.stores ?? []).map((store) => (
+          <ItemCard
+            notClickable
+            actions={
+              <>
+                <Button
+                  variant="light"
+                  color="warning"
+                  onPress={() => {
+                    //TODO
+                  }}
+                  isLoading={isPending}
+                >
+                  <Download className="size-5" />
+                  {dictionary.update}
+                </Button>
+                <Button
+                  variant="light"
+                  className="size-[40px] min-w-0 p-1"
+                  color="danger"
+                  aria-label={dictionary.remove}
+                  onPress={() => {
+                    //TODO
+                  }}
+                  isLoading={isPending}
+                >
+                  <Icons.trash className="size-5" />
+                </Button>
+              </>
+            }
+            key={store.name}
+            id={store.name}
+            title={store.name}
+            description={store.version}
+          />
         ))}
       </ul>
       <Modal isOpen={isAddStoreOpen} onOpenChange={setIsAddStoreOpen}>
@@ -74,13 +123,22 @@ export default function StoresContent({
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1">{dictionary.addStore}</ModalHeader>
-              <form onSubmit={onAddStore}>
+              <form onSubmit={onSubmit}>
                 <ModalBody>
-                  <Input
-                    label={dictionary.storeRemote}
-                    value={newStoreName}
-                    onValueChange={setNewStoreName}
-                    placeholder={dictionary.storeRemoteExample}
+                  <p className="text-xs text-warning">{dictionary.doNotTrustExternalStores}</p>
+                  <FormField
+                    label={dictionary.storeName}
+                    placeholder={dictionary.storeNameExample}
+                    type="text"
+                    name="name"
+                    form={form}
+                  />
+                  <FormField
+                    label={dictionary.storeVersion}
+                    placeholder={dictionary.storeVersionExample}
+                    type="text"
+                    name="version"
+                    form={form}
                   />
                 </ModalBody>
                 <ModalFooter>

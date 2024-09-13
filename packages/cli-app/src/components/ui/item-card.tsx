@@ -18,6 +18,7 @@ export default function ItemCard({
   endContent,
   href,
   isLoading,
+  notClickable,
 }: {
   id: string
   liRef?: React.RefObject<HTMLLIElement>
@@ -29,6 +30,7 @@ export default function ItemCard({
   endContent?: React.ReactNode
   href?: string
   isLoading?: boolean
+  notClickable?: boolean
 }) {
   const content = (
     <>
@@ -45,7 +47,8 @@ export default function ItemCard({
   )
 
   const baseClassName = cn(
-    "plugin relative flex cursor-pointer flex-col gap-2 rounded-medium bg-content2 p-3 shadow hover:bg-content2/80",
+    "plugin relative flex flex-col gap-2 rounded-medium bg-content2 p-3 shadow",
+    !notClickable && "cursor-pointer hover:bg-content2/80",
     className
   )
 

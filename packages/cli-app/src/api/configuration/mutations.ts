@@ -16,7 +16,7 @@ export const updateConfiguration = async ({
     const configuration = await getConfiguration()
 
     // Merge the new configuration with the old one
-    setConfiguration({ ...configuration, ..._configuration })
+    await setConfiguration({ ...configuration, ..._configuration })
 
     const data: z.infer<ReturnType<typeof updateConfigurationResponseSchema>> = { configuration }
     return data
@@ -28,7 +28,7 @@ export const updateConfiguration = async ({
 export const resetConfiguration = async ({}: apiInputFromSchema<typeof undefined>) => {
   try {
     const configuration = await getConfiguration()
-    setConfiguration({
+    await setConfiguration({
       name: configuration.name,
     })
 

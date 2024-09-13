@@ -6,10 +6,15 @@ export const StoresContentDr = dictionaryRequirements(
     stores: true,
     search: true,
     addStore: true,
-    storeRemote: true,
-    storeRemoteExample: true,
+    storeName: true,
+    storeNameExample: true,
+    storeVersion: true,
+    storeVersionExample: true,
     close: true,
     save: true,
+    doNotTrustExternalStores: true,
+    remove: true,
+    update: true,
   },
   HeaderDr
 )

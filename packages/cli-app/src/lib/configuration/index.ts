@@ -9,10 +9,11 @@ import { TRPCError } from "@trpc/server"
 
 import { env } from "../env"
 import { getPlugins } from "../plugins"
+import { handleDownloadStores } from "../stores"
 
 const configurationName = "config.json"
 
-const optionalConfigSchema = configSchema.partial()
+export const optionalConfigSchema = configSchema.partial()
 
 const webConfigToApiConfig = (webConfig: TConfiguration): z.infer<typeof optionalConfigSchema> => {
   try {
@@ -42,8 +43,12 @@ const webConfigToApiConfig = (webConfig: TConfiguration): z.infer<typeof optiona
         }
         return fullP
       }),
-      // TODO Default store
-      stores: webConfig.stores ?? [],
+      stores: webConfig.stores ?? [
+        {
+          name: "@next-boilerplate/store",
+          version: "latest",
+        },
+      ],
     })
     return content
   } catch (error) {
@@ -120,10 +125,11 @@ export const getConfiguration = async () => {
   return apiConfigToWebConfig(await fs.readJson(configurationPath))
 }
 
-export const setConfiguration = (newConfiguration: TConfiguration) => {
+export const setConfiguration = async (newConfiguration: TConfiguration) => {
   const content = webConfigToApiConfig(newConfiguration)
+  await handleDownloadStores(content)
   const configurationPath = path.join(env.ROOT_PATH, configurationName)
   fs.writeJson(configurationPath, content, {
-    spaces: 2,
+    spaces: 4,
   })
 }

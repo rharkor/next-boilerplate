@@ -40,10 +40,19 @@ export const fullPluginSchema = z.object({
   ),
 })
 
+export const storeNameRegex = /^(@[a-z0-9-~][a-z0-9-._~]*\/)?[a-z0-9-~][a-z0-9-._~]*$/
+// Regex that do not allow any kind of special characters
+export const storeVersionRegex = /^[~^]?[\da-z.-]+$/
+
 export const configSchema = z.object({
   name: z.string(),
   plugins: z.array(z.string().or(fullPluginSchema)),
-  stores: z.array(z.string()),
+  stores: z.array(
+    z.object({
+      name: z.string().regex(storeNameRegex),
+      version: z.string().regex(storeVersionRegex),
+    })
+  ),
 })
 export type TConfig = z.infer<typeof configSchema>
 
@@ -106,5 +115,6 @@ export const pluginConfigSchema = z.object({
 export type TPluginConfig = z.infer<typeof pluginConfigSchema>
 
 export const storeConfigSchema = z.object({
-  remote: z.string(),
+  name: z.string().regex(storeNameRegex),
+  version: z.string().regex(storeVersionRegex),
 })
