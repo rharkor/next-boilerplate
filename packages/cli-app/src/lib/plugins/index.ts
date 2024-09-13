@@ -6,6 +6,7 @@ import { pluginConfigSchema, TPluginConfig } from "@next-boilerplate/scripts/uti
 import { logger } from "@rharkor/logger"
 import { TRPCError } from "@trpc/server"
 
+import { env } from "../env"
 import { getStores } from "../stores"
 
 import {
@@ -16,14 +17,19 @@ import {
   TPluginStore,
 } from "./store"
 
+// Get the current package directory
+const cwd = process.cwd()
+// eslint-disable-next-line no-process-env
+const dir = path.resolve(cwd, env.CLI_REL_PATH ?? "../..")
+
 const configFileName = "config.json"
+export const rootPluginsDirectory = path.join(dir, "assets", "plugins")
 
 const loadPlugins = async () => {
   const pluginsFilled: TPluginStore[] = []
   const stores = await getStores()
   for (const store of stores) {
     const pluginsDirectory = path.join(store.fullPath, "data", "plugins")
-    logger.debug(`Loading plugins (${pluginsDirectory})`)
     if (!(await fs.exists(pluginsDirectory))) {
       throw new TRPCError({
         message: `The plugins directory doesn't exist at ${pluginsDirectory}`,
@@ -57,10 +63,6 @@ const loadPlugins = async () => {
   }
 
   pluginsFilled.sort((a, b) => a.name.localeCompare(b.name))
-
-  pluginsFilled.forEach((plugin) => {
-    logger.debug(`Plugin ${plugin.id} loaded`)
-  })
 
   setPluginsToStore(pluginsFilled)
   return pluginsFilled

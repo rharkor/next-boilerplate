@@ -55,6 +55,10 @@ export default function Sidenav({
           afterContent={
             <motion.div
               className="relative"
+              initial={{
+                scale: 0,
+                opacity: 0,
+              }}
               animate={
                 (configuration.data.configuration.plugins?.length ?? 0) > 0
                   ? {
@@ -84,6 +88,9 @@ export default function Sidenav({
         </Item>
         <Item href="/plugins" isCurrent={pathname === "/plugins"}>
           {dictionary.plugins}
+        </Item>
+        <Item href="/stores" isCurrent={pathname === "/stores"}>
+          {dictionary.stores}
         </Item>
       </ul>
     </nav>

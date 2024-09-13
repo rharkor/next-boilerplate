@@ -237,5 +237,10 @@
   "pluginSettings": "Plugin settings",
   "apply": "Apply",
   "configurationApplied": "Configuration applied",
-  "search": "Search"
+  "search": "Search",
+  "stores": "Stores",
+  "store": "Store",
+  "addStore": "Add store",
+  "storeRemote": "Store URL (git)",
+  "storeRemoteExample": "git@github.com:rharkor/next-boilerplate--store.git"
 }

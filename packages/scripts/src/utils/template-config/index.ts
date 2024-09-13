@@ -43,6 +43,7 @@ export const fullPluginSchema = z.object({
 export const configSchema = z.object({
   name: z.string(),
   plugins: z.array(z.string().or(fullPluginSchema)),
+  stores: z.array(z.string()),
 })
 export type TConfig = z.infer<typeof configSchema>
 

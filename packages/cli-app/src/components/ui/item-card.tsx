@@ -24,7 +24,7 @@ export default function ItemCard({
   title: string
   subTitle?: React.ReactNode
   actions?: React.ReactNode
-  description: string
+  description?: string
   className?: string
   endContent?: React.ReactNode
   href?: string
@@ -39,7 +39,7 @@ export default function ItemCard({
         </div>
         <div className="flex flex-row gap-2">{actions}</div>
       </div>
-      <p className="min-h-5 truncate text-sm">{description}</p>
+      {description !== undefined && <p className="min-h-5 truncate text-sm">{description}</p>}
       {endContent}
     </>
   )
