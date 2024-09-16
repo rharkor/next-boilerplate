@@ -17,9 +17,9 @@ export const getTemplatesQuery = async ({ input }: apiInputFromSchema<typeof get
   }
 }
 
-export const getTemplateQuery = async ({ input: { id } }: apiInputFromSchema<typeof getTemplateSchema>) => {
+export const getTemplateQuery = async ({ input: { name, store } }: apiInputFromSchema<typeof getTemplateSchema>) => {
   try {
-    const template = await getTemplate(id)
+    const template = await getTemplate(name, store)
 
     if (!template) {
       throw new Error("Template not found")

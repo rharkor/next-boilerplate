@@ -17,9 +17,9 @@ export const getPluginsQuery = async ({ input }: apiInputFromSchema<typeof getPl
   }
 }
 
-export const getPluginQuery = async ({ input: { id } }: apiInputFromSchema<typeof getPluginSchema>) => {
+export const getPluginQuery = async ({ input: { name, store } }: apiInputFromSchema<typeof getPluginSchema>) => {
   try {
-    const plugin = await getPlugin(id)
+    const plugin = await getPlugin(name, store)
 
     if (!plugin) {
       throw new Error("Plugin not found")

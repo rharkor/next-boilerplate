@@ -17,6 +17,9 @@
             "items": {
                 "anyOf": [
                     {
+                        "type": "string"
+                    },
+                    {
                         "type": "object",
                         "additionalProperties": false,
                         "properties": {

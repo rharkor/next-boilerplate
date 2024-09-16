@@ -35,8 +35,13 @@ export default function Plugin({
   })
 
   const isPluginInConfiguration = useMemo(() => {
-    return configuration.data.configuration.plugins?.some((_plugin) => _plugin.id === plugin.id)
-  }, [configuration.data.configuration.plugins, plugin.id])
+    return configuration.data.configuration.plugins?.some(
+      (_plugin) =>
+        _plugin.name === plugin.name &&
+        _plugin.store.name === plugin.store.name &&
+        _plugin.store.version === plugin.store.version
+    )
+  }, [configuration.data.configuration.plugins, plugin])
 
   const updateConfigurationMutation = trpc.configuration.updateConfiguration.useMutation({
     onSuccess: async () => {
@@ -57,10 +62,15 @@ export default function Plugin({
     await updateConfigurationMutation.mutateAsync({
       configuration: {
         ...configuration.data.configuration,
-        plugins: configuration.data.configuration.plugins?.filter((_plugin) => _plugin.id !== plugin.id),
+        plugins: configuration.data.configuration.plugins?.filter(
+          (_plugin) =>
+            _plugin.name !== plugin.name &&
+            _plugin.store.name !== plugin.store.name &&
+            _plugin.store.version !== plugin.store.version
+        ),
       },
     })
-  }, [configuration.data.configuration, plugin.id, updateConfigurationMutation])
+  }, [configuration.data.configuration, plugin, updateConfigurationMutation])
 
   const togglePlugin = useCallback(async () => {
     if (isPluginInConfiguration) {
@@ -72,8 +82,8 @@ export default function Plugin({
 
   return (
     <ItemCard
-      key={plugin.id}
-      id={plugin.id}
+      key={plugin.store.name + "@" + plugin.store.version + "/" + plugin.name}
+      id={plugin.store.name + "@" + plugin.store.version + "/" + plugin.name}
       title={plugin.name}
       subTitle={plugin.sourcePath}
       description={plugin.description}
@@ -120,7 +130,7 @@ export default function Plugin({
           </>
         )
       }
-      href={`/plugins/${encodeURIComponent(plugin.id)}`}
+      href={`/plugins/${encodeURIComponent(plugin.store.name + "@" + plugin.store.version + "/" + plugin.name)}`}
       className="pr-12"
     />
   )

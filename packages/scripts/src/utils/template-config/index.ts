@@ -44,15 +44,24 @@ export const storeNameRegex = /^(@[a-z0-9-~][a-z0-9-._~]*\/)?[a-z0-9-~][a-z0-9-.
 // Regex that do not allow any kind of special characters
 export const storeVersionRegex = /^[~^]?[\da-z.-]+$/
 
+// Group 1: Store name
+// Group 2: Store version
+// Group 3: Plugin name
+export const matchItemFull = /^((?:@[a-z0-9-~][a-z0-9-._~]*\/)?[a-z0-9-~][a-z0-9-._~]*)@([~^]?[\da-z.-]+)\/(.*)$/
+
+export const storeConfigSchema = z.object({
+  name: z.string().regex(storeNameRegex),
+  version: z.string().regex(storeVersionRegex),
+})
+
 export const configSchema = z.object({
   name: z.string(),
-  plugins: z.array(fullPluginSchema),
-  stores: z.array(
-    z.object({
-      name: z.string().regex(storeNameRegex),
-      version: z.string().regex(storeVersionRegex),
+  plugins: z.array(
+    fullPluginSchema.extend({
+      store: storeConfigSchema,
     })
   ),
+  stores: z.array(storeConfigSchema),
 })
 export type TConfig = z.infer<typeof configSchema>
 
@@ -60,18 +69,16 @@ export const templateSchema = z.object({
   name: z.string(),
   description: z.string().max(300),
   plugins: z.array(
-    fullPluginSchema.extend({
-      store: z.object({
-        name: z.string().regex(storeNameRegex),
-        version: z.string().regex(storeVersionRegex),
-      }),
-    })
+    fullPluginSchema
+      .extend({
+        store: storeConfigSchema,
+      })
+      .or(z.string())
   ),
 })
 
 export const pluginConfigSchema = z.object({
   name: z.string(),
-  store: z.string(), // Store name
   description: z.string().max(300),
   paths: z
     .array(
@@ -121,8 +128,3 @@ export const pluginConfigSchema = z.object({
 })
 
 export type TPluginConfig = z.infer<typeof pluginConfigSchema>
-
-export const storeConfigSchema = z.object({
-  name: z.string().regex(storeNameRegex),
-  version: z.string().regex(storeVersionRegex),
-})

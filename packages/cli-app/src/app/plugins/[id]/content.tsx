@@ -17,32 +17,38 @@ import { PluginContentDr } from "./content.dr"
 type TPlugin = RouterOutputs["plugins"]["getPlugin"]
 
 export default function PluginContent({
-  id,
+  pluginFull,
   dictionary,
   ssrPlugin,
   ssrConfiguration,
 }: {
-  id: string
+  pluginFull: {
+    store: {
+      name: string
+      version: string
+    }
+    name: string
+  }
   dictionary: TDictionary<typeof PluginContentDr>
   ssrPlugin: TPlugin
   ssrConfiguration: RouterOutputs["configuration"]["getConfiguration"]
 }) {
   const utils = trpc.useUtils()
 
-  const plugin = trpc.plugins.getPlugin.useQuery(
-    {
-      id,
-    },
-    {
-      initialData: ssrPlugin,
-    }
-  )
+  const plugin = trpc.plugins.getPlugin.useQuery(pluginFull, {
+    initialData: ssrPlugin,
+  })
   const configuration = trpc.configuration.getConfiguration.useQuery(undefined, {
     initialData: ssrConfiguration,
   })
 
   const isInstalled = useMemo(() => {
-    return configuration.data.configuration.plugins?.some((p) => p.id === plugin.data.plugin.id)
+    return configuration.data.configuration.plugins?.some(
+      (p) =>
+        p.name === plugin.data.plugin.name &&
+        p.store.name === plugin.data.plugin.store.name &&
+        p.store.version === plugin.data.plugin.store.version
+    )
   }, [configuration.data, plugin.data])
 
   const [isPluginUpdating, setIsPluginUpdating] = useState(false)
@@ -73,13 +79,24 @@ export default function PluginContent({
       await updateConfigurationMutation.mutateAsync({
         configuration: {
           ...configuration.data.configuration,
-          plugins: configuration.data.configuration.plugins?.filter((plugin) => plugin.id !== plugin.id),
+          plugins: configuration.data.configuration.plugins?.filter(
+            (p) =>
+              p.name !== plugin.data.plugin.name ||
+              p.store.name !== plugin.data.plugin.store.name ||
+              p.store.version !== plugin.data.plugin.store.version
+          ),
         },
       })
     } finally {
       setIsPluginUpdating(false)
     }
-  }, [configuration.data.configuration, updateConfigurationMutation])
+  }, [
+    configuration.data.configuration,
+    plugin.data.plugin.name,
+    plugin.data.plugin.store.name,
+    plugin.data.plugin.store.version,
+    updateConfigurationMutation,
+  ])
 
   const togglePlugin = useCallback(async () => {
     if (isInstalled) {
