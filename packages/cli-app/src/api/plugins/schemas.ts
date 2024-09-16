@@ -1,6 +1,6 @@
 import { z } from "zod"
 
-import { fullPluginSchema, singlePluginSchema } from "@/lib/plugins/store"
+import { fullPluginSchema, singlePluginSchema } from "@/lib/plugins/types"
 
 export const getPluginsSchema = () =>
   z.object({

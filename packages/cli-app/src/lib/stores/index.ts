@@ -8,16 +8,18 @@ import { storeConfigSchema } from "@next-boilerplate/scripts/utils/template-conf
 import { logger } from "@rharkor/logger"
 import { TRPCError } from "@trpc/server"
 
+export const fullStoreSchema = storeConfigSchema.extend({
+  fullPath: z.string(),
+})
+
+export type TStoreStore = z.infer<typeof fullStoreSchema>
+
 type TConfig = z.infer<typeof storeConfigSchema>
 
 import { z } from "zod"
 
 import { optionalConfigSchema } from "../configuration"
 import { env } from "../env"
-import { resetPluginsStore, resetSinglePluginStore } from "../plugins/store"
-import { resetSingleTemplateStore, resetTemplatesStore } from "../templates/store"
-
-import { getStoresFromStore, resetStoresStore, setStoresToStore, TStoreStore } from "./store"
 
 // Get the current package directory
 const cwd = process.cwd()
@@ -63,18 +65,11 @@ const loadStores = async () => {
 
   storesFilled.sort((a, b) => `${a.name}@${a.version}`.localeCompare(`${b.name}@${b.version}`))
 
-  setStoresToStore(storesFilled)
   return storesFilled
 }
 
 export const getStores = async (opts?: { search?: string }) => {
   const stores = await new Promise<TStoreStore[]>(async (resolve) => {
-    const storesFromStore = await getStoresFromStore()
-    if (storesFromStore) {
-      resolve(storesFromStore)
-      return
-    }
-
     const stores = await loadStores()
     resolve(stores)
     return
@@ -158,11 +153,4 @@ export const handleDownloadStores = async (config: z.infer<typeof optionalConfig
       })
     })
   }
-
-  // Refresh the cache
-  await resetStoresStore()
-  await resetPluginsStore()
-  await resetSinglePluginStore()
-  await resetTemplatesStore()
-  await resetSingleTemplateStore()
 }

@@ -14,13 +14,7 @@ import { z } from "zod"
 
 import { getStores } from "../stores"
 
-import {
-  getSingleTemplateFromStore,
-  getTemplatesFromStore,
-  setSingleTemplateToStore,
-  setTemplatesToStore,
-  TTemplateStore,
-} from "./store"
+import { TTemplateStore } from "./types"
 
 const configFileName = "config.json"
 
@@ -64,18 +58,11 @@ const loadTemplates = async () => {
 
   templatesFilled.sort((a, b) => a.name.localeCompare(b.name))
 
-  setTemplatesToStore(templatesFilled)
   return templatesFilled
 }
 
 export const getTemplates = async (opts?: { search?: string }) => {
   const templates = await new Promise<TTemplateStore[]>(async (resolve) => {
-    const templatesFromStore = await getTemplatesFromStore()
-    if (templatesFromStore) {
-      resolve(templatesFromStore)
-      return
-    }
-
     const templates = await loadTemplates()
     resolve(templates)
     return
@@ -87,9 +74,6 @@ export const getTemplates = async (opts?: { search?: string }) => {
 }
 
 export const getTemplate = async (id: string) => {
-  const templateFromStore = await getSingleTemplateFromStore(id)
-  if (templateFromStore) return templateFromStore
-
   const templates = await getTemplates()
   const template = templates.find((p) => p.id === id)
   if (!template) {
@@ -116,6 +100,5 @@ export const getTemplate = async (id: string) => {
     plugins: foundPlugins,
   }
 
-  setSingleTemplateToStore(id, filledTemplate)
   return filledTemplate
 }

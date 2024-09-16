@@ -1,6 +1,6 @@
 import { z } from "zod"
 
-import { fullPluginSchema } from "@/lib/plugins/store"
+import { fullPluginSchema } from "@/lib/plugins/types"
 import { storeNameRegex, storeVersionRegex } from "@next-boilerplate/scripts/utils/template-config/index.js"
 
 export const configurationSchema = () =>
