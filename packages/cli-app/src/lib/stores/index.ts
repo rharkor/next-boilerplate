@@ -31,12 +31,7 @@ const storesDirectory = path.join(dir, "assets", "stores")
 
 const loadStores = async () => {
   logger.debug(`Loading stores (${storesDirectory})`)
-  if (!(await fs.exists(storesDirectory))) {
-    throw new TRPCError({
-      message: `The stores directory doesn't exist at ${storesDirectory}`,
-      code: "INTERNAL_SERVER_ERROR",
-    })
-  }
+  await fs.ensureDir(storesDirectory)
 
   //* Get all the stores
   const formattedStoresDirectory = storesDirectory.replace(/\\/g, "/")
