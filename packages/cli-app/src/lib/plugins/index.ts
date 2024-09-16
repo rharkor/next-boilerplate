@@ -1,8 +1,13 @@
 import fs from "fs-extra"
 import { globby } from "globby"
 import path from "path"
+import { z } from "zod"
 
-import { pluginConfigSchema, TPluginConfig } from "@next-boilerplate/scripts/utils/template-config/index.js"
+import {
+  pluginConfigSchema,
+  storeConfigSchema,
+  TPluginConfig,
+} from "@next-boilerplate/scripts/utils/template-config/index.js"
 import { logger } from "@rharkor/logger"
 import { TRPCError } from "@trpc/server"
 
@@ -52,7 +57,7 @@ const loadPlugins = async () => {
       }
 
       const sourcePath = path.dirname(plugin).replace(formattedPluginsDirectory, "").replace(/^\//, "")
-      pluginsFilled.push({ ...pluginConfig, sourcePath, id: sourcePath })
+      pluginsFilled.push({ ...pluginConfig, sourcePath, store })
     }
   }
 
@@ -73,12 +78,14 @@ export const getPlugins = async (opts?: { search?: string }) => {
   })
 }
 
-export const getPlugin = async (id: string) => {
+export const getPlugin = async (name: string, store: z.infer<typeof storeConfigSchema>) => {
   const plugins = await getPlugins()
-  const plugin = plugins.find((p) => p.id === id)
+  const plugin = plugins.find(
+    (p) => p.name === name && p.store.name === store.name && p.store.version === store.version
+  )
   if (!plugin) {
     throw new TRPCError({
-      message: `Plugin ${id} not found`,
+      message: `Plugin ${name} not found (store: ${store.name}@${store.version})`,
       code: "INTERNAL_SERVER_ERROR",
     })
   }

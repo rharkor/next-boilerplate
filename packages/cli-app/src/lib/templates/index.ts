@@ -2,7 +2,7 @@ import fs from "fs-extra"
 import { globby } from "globby"
 import path from "path"
 
-import { templateSchema } from "@next-boilerplate/scripts/utils/template-config/index.js"
+import { storeConfigSchema, templateSchema } from "@next-boilerplate/scripts/utils/template-config/index.js"
 import { logger } from "@rharkor/logger"
 import { TRPCError } from "@trpc/server"
 
@@ -52,7 +52,7 @@ const loadTemplates = async () => {
       }
 
       const sourcePath = path.dirname(template).replace(formattedTemplatesDirectory, "").replace(/^\//, "")
-      templatesFilled.push({ ...templateConfig, sourcePath, id: sourcePath })
+      templatesFilled.push({ ...templateConfig, sourcePath, store })
     }
   }
 
@@ -73,12 +73,14 @@ export const getTemplates = async (opts?: { search?: string }) => {
   })
 }
 
-export const getTemplate = async (id: string) => {
+export const getTemplate = async (name: string, store: z.infer<typeof storeConfigSchema>) => {
   const templates = await getTemplates()
-  const template = templates.find((p) => p.id === id)
+  const template = templates.find(
+    (p) => p.name === name && p.store.name === store.name && p.store.version === store.version
+  )
   if (!template) {
     throw new TRPCError({
-      message: `Template ${id} not found`,
+      message: `Template ${name} not found (store: ${store.name}@${store.version})`,
       code: "INTERNAL_SERVER_ERROR",
     })
   }
@@ -86,11 +88,20 @@ export const getTemplate = async (id: string) => {
   //? Fill the template with the plugins
   const plugins = await getPlugins()
   const foundPlugins = template.plugins
-    .map((pluginInTemplate) => {
-      const plugin = plugins.find((p) => p.name === pluginInTemplate.name && p.store === pluginInTemplate.store)
+    .map((_pluginInTemplate) => {
+      const pluginInTemplate =
+        typeof _pluginInTemplate === "string" ? { name: _pluginInTemplate, store } : _pluginInTemplate
+      const plugin = plugins.find(
+        (p) =>
+          p.sourcePath === pluginInTemplate.name &&
+          p.store.name === pluginInTemplate.store.name &&
+          p.store.version === pluginInTemplate.store.version
+      )
       if (!plugin) {
-        logger.error(`Plugin ${pluginInTemplate.name} (store: ${pluginInTemplate.store}) in template ${id} not found`)
-        logger.error(`Current loaded plugins: ${plugins.map((p) => p.id).join(", ")}`)
+        logger.error(
+          `Plugin ${pluginInTemplate.name} (store: ${pluginInTemplate.store.name}@${pluginInTemplate.store.version}) in template ${name} not found`
+        )
+        logger.error(`Current loaded plugins: ${plugins.map((p) => p.sourcePath).join(", ")}`)
       }
       return plugin
     })

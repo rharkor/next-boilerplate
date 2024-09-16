@@ -167,7 +167,11 @@ export default function CurrentConfiguration({
     await updateConfiguration({
       configuration: {
         plugins: configuration.data.configuration.plugins?.map((p) => {
-          if (p.id === plugin.id) {
+          if (
+            p.name === plugin.name &&
+            p.store.name === plugin.store.name &&
+            p.store.version === plugin.store.version
+          ) {
             return plugin
           }
           return p
@@ -203,7 +207,7 @@ export default function CurrentConfiguration({
         <AnimatePresence>
           {plugins.map((plugin) => (
             <Plugin
-              key={plugin.id}
+              key={plugin.store.name + "@" + plugin.store.version + "/" + plugin.name}
               plugin={plugin}
               dictionary={dictionary}
               isPending={isPending}
@@ -298,12 +302,12 @@ function Plugin({
   return (
     <>
       <ItemCard
-        id={plugin.id}
+        id={plugin.store.name + "@" + plugin.store.version + "/" + plugin.name}
         liRef={liRef}
         title={plugin.name}
         subTitle={plugin.sourcePath}
         description={plugin.description}
-        href={`/plugins/${encodeURIComponent(plugin.id)}`}
+        href={`/plugins/${encodeURIComponent(plugin.store.name + "@" + plugin.store.version + "/" + plugin.name)}`}
         actions={
           <>
             <Button color="primary" variant="flat" className="h-max min-w-0 p-2.5">
