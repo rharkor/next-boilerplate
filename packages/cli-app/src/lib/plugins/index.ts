@@ -9,13 +9,7 @@ import { TRPCError } from "@trpc/server"
 import { env } from "../env"
 import { getStores } from "../stores"
 
-import {
-  getPluginsFromStore,
-  getSinglePluginFromStore,
-  setPluginsToStore,
-  setSinglePluginToStore,
-  TPluginStore,
-} from "./store"
+import { TPluginStore } from "./types"
 
 // Get the current package directory
 const cwd = process.cwd()
@@ -64,18 +58,11 @@ const loadPlugins = async () => {
 
   pluginsFilled.sort((a, b) => a.name.localeCompare(b.name))
 
-  setPluginsToStore(pluginsFilled)
   return pluginsFilled
 }
 
 export const getPlugins = async (opts?: { search?: string }) => {
   const plugins = await new Promise<TPluginStore[]>(async (resolve) => {
-    const pluginsFromStore = await getPluginsFromStore()
-    if (pluginsFromStore) {
-      resolve(pluginsFromStore)
-      return
-    }
-
     const plugins = await loadPlugins()
     resolve(plugins)
     return
@@ -87,9 +74,6 @@ export const getPlugins = async (opts?: { search?: string }) => {
 }
 
 export const getPlugin = async (id: string) => {
-  const pluginFromStore = await getSinglePluginFromStore(id)
-  if (pluginFromStore) return pluginFromStore
-
   const plugins = await getPlugins()
   const plugin = plugins.find((p) => p.id === id)
   if (!plugin) {
@@ -99,6 +83,5 @@ export const getPlugin = async (id: string) => {
     })
   }
 
-  setSinglePluginToStore(id, plugin)
   return plugin
 }

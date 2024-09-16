@@ -1,6 +1,6 @@
 import { z } from "zod"
 
-import { fullTemplateSchema, singleTemplateSchema } from "@/lib/templates/store"
+import { fullTemplateSchema, singleTemplateSchema } from "@/lib/templates/types"
 
 export const getTemplatesSchema = () =>
   z.object({

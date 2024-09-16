@@ -5,4 +5,4 @@
 ./tsconfig.json
 ./turbo.json
 !dist/app/**/*
-!assets/**/*
+assets/stores

@@ -17,22 +17,28 @@
             "items": {
                 "anyOf": [
                     {
-                        "type": "string"
-                    },
-                    {
                         "type": "object",
                         "additionalProperties": false,
                         "properties": {
                             "name": {
                                 "type": "string"
                             },
-                            "path": {
-                                "type": "string"
+                            "store": {
+                                "type": "object",
+                                "additionalProperties": false,
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "version": {
+                                        "type": "string"
+                                    }
+                                }
                             }
                         },
                         "required": [
                             "name",
-                            "path"
+                            "store"
                         ]
                     }
                 ]

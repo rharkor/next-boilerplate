@@ -1,4 +1,4 @@
-import { publicProcedure, router } from "@/lib/server/trpc"
+import { publicProcedure, router } from "@/lib/trpc/init"
 
 import { applyConfiguration, resetConfiguration, updateConfiguration } from "./mutations"
 import { getConfigurationQuery } from "./queries"

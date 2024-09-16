@@ -1,4 +1,4 @@
-import { publicProcedure, router } from "@/lib/server/trpc"
+import { publicProcedure, router } from "@/lib/trpc/init"
 
 import { getPluginQuery, getPluginsQuery } from "./queries"
 import { getPluginResponseSchema, getPluginSchema, getPluginsResponseSchema, getPluginsSchema } from "./schemas"

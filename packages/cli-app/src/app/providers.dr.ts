@@ -1,4 +1,4 @@
-import { TrpcProviderDr } from "@/lib/trpc/provider.dr"
+import { TRPCProviderDr } from "@/lib/trpc/client.dr"
 import { dictionaryRequirements } from "@/lib/utils/dictionary"
 
-export const RootProvidersDr = dictionaryRequirements(TrpcProviderDr)
+export const RootProvidersDr = dictionaryRequirements(TRPCProviderDr)

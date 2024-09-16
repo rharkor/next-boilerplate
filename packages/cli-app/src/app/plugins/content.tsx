@@ -56,7 +56,7 @@ export default function PluginsContent({
           ? [...Array(5)].map((_, i) => (
               <Plugin
                 key={i}
-                plugin={{ id: "", name: "", description: "", sourcePath: "", paths: [] }}
+                plugin={{ id: "", name: "", store: "", description: "", sourcePath: "", paths: [] }}
                 dictionary={dictionary}
                 ssrConfiguration={ssrConfiguration}
                 isLoading

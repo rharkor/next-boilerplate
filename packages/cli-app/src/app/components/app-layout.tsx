@@ -13,10 +13,10 @@ import ProjectInit from "./project-init"
 import Sidenav from "./sidenav"
 
 export default function AppLayout({
-  ssrConfiguration,
   lang,
   dictionary,
   children,
+  ssrConfiguration,
 }: {
   ssrConfiguration: RouterOutputs["configuration"]["getConfiguration"]
   lang: Locale

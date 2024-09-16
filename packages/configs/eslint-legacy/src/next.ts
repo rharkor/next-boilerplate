@@ -41,6 +41,8 @@ const config: Linter.Config = {
           "error",
           {
             groups: [
+              // Side effect imports
+              ["server-only", "client-only"],
               // `react` first, `next` second
               ["^react$", "^next"],
               // Packages starting with a character

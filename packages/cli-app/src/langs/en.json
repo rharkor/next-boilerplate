@@ -241,6 +241,10 @@
   "stores": "Stores",
   "store": "Store",
   "addStore": "Add store",
-  "storeRemote": "Store URL (git)",
-  "storeRemoteExample": "git@github.com:rharkor/next-boilerplate--store.git"
+  "storeName": "Store URL (git)",
+  "storeNameExample": "@next-boilerplate/store",
+  "storeVersion": "Store version",
+  "storeVersionExample": "latest",
+  "doNotTrustExternalStores": "Do not trust external stores, make sure to check the code before adding it to your configuration.",
+  "download": "Download"
 }
