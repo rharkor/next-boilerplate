@@ -245,5 +245,6 @@
   "storeNameExample": "@next-boilerplate/store",
   "storeVersion": "Store version",
   "storeVersionExample": "latest",
-  "doNotTrustExternalStores": "Do not trust external stores, make sure to check the code before adding it to your configuration."
+  "doNotTrustExternalStores": "Do not trust external stores, make sure to check the code before adding it to your configuration.",
+  "download": "Download"
 }

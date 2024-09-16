@@ -15,6 +15,7 @@ export const StoresContentDr = dictionaryRequirements(
     doNotTrustExternalStores: true,
     remove: true,
     update: true,
+    download: true,
   },
   HeaderDr
 )

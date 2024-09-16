@@ -93,7 +93,7 @@ export const handleDownloadStores = async (config: z.infer<typeof optionalConfig
   logger.info(`Downloading stores: ${storeToDownload?.map((s) => s.name).join(", ")}`)
   // Folder tree
   // stores
-  //  - 17627-22642-26525 (random unique id)
+  //  - %next-boilerplate%2Fcli (store name encoded)
   //    - config.json (store config)
   //    - data (folder containing the store files)
 
@@ -115,42 +115,59 @@ export const handleDownloadStores = async (config: z.infer<typeof optionalConfig
   logger.debug(`npm version: ${npmVersion}`)
 
   for (const store of storeToDownload) {
-    const storePath = path.join(storesDirectory, crypto.randomUUID())
-    const storeDataPath = path.join(storePath, "data")
-    const storeConfigPath = path.join(storePath, configFileName)
-    await fs.ensureDir(storeDataPath)
-    await fs.writeJson(storeConfigPath, store)
-
-    //* Download the store (from npmjs)
-    // npm view
-    await new Promise<void>((resolve, reject) => {
-      exec(`npm pack ${store.name}@${store.version}`, { cwd: storePath }, async (error, stdout) => {
-        if (error) {
-          reject(error)
-          return
-        }
-        try {
-          // Rename the tarball file
-          const tarball = stdout.trim()
-          const tarballPath = path.join(storePath, tarball)
-          // Extract the tarball
-          await tar.x({ file: tarballPath, cwd: storeDataPath, strip: 1 })
-          // Remove the tarball
-          await fs.remove(tarballPath)
-          logger.debug(`Downloaded the store ${store.name}@${store.version}`)
-          resolve()
-        } catch (e) {
-          reject(e)
-        }
-      })
-    }).catch(async (e) => {
-      logger.error(`Failed to download the store ${store.name}@${store.version}`, e)
-      // Also remove the store folder
-      await fs.remove(storePath)
-      throw new TRPCError({
-        message: `Failed to download the store ${store.name}@${store.version}`,
-        code: "INTERNAL_SERVER_ERROR",
-      })
-    })
+    await handleDownloadStore(store)
   }
+}
+
+export const handleDownloadStore = async (store: z.infer<typeof storeConfigSchema>, override?: boolean) => {
+  const storePath = path.join(storesDirectory, encodeURIComponent(store.name))
+  const storeDataPath = path.join(storePath, "data")
+  const storeConfigPath = path.join(storePath, configFileName)
+  await fs.ensureDir(storePath)
+  await fs.writeJson(storeConfigPath, store)
+
+  // Check if the store is already installed
+  if (!override && (await fs.exists(storeDataPath))) {
+    logger.warn(`The store ${store.name}@${store.version} is already installed at ${storeDataPath}`)
+    return
+  }
+
+  await fs.ensureDir(storeDataPath)
+
+  //* Download the store (from npmjs)
+  await new Promise<void>((resolve, reject) => {
+    exec(`npm pack ${store.name}@${store.version}`, { cwd: storePath }, async (error, stdout) => {
+      if (error) {
+        reject(error)
+        return
+      }
+      try {
+        // Rename the tarball file
+        const tarball = stdout.trim()
+        const tarballPath = path.join(storePath, tarball)
+        // Extract the tarball
+        await tar.x({ file: tarballPath, cwd: storeDataPath, strip: 1 })
+        // Remove the tarball
+        await fs.remove(tarballPath)
+        logger.debug(`Downloaded the store ${store.name}@${store.version}`)
+        resolve()
+      } catch (e) {
+        reject(e)
+      }
+    })
+  }).catch(async (e) => {
+    logger.error(`Failed to download the store ${store.name}@${store.version}`, e)
+    // Also remove the store folder
+    await fs.remove(storePath)
+    throw new TRPCError({
+      message: `Failed to download the store ${store.name}@${store.version}`,
+      code: "INTERNAL_SERVER_ERROR",
+    })
+  })
+}
+
+export const handleDeleteStore = async (store: z.infer<typeof storeConfigSchema>) => {
+  const storePath = path.join(storesDirectory, encodeURIComponent(store.name))
+  await fs.remove(storePath)
+  logger.info(`Deleted the store ${store.name}@${store.version}`)
 }

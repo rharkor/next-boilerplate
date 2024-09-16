@@ -25,13 +25,18 @@ const formSchema = updateConfigurationRequestSchema().shape.configuration.shape.
 
 export default function StoresContent({
   ssrConfiguration,
+  ssrStores,
   dictionary,
 }: {
   ssrConfiguration: RouterOutputs["configuration"]["getConfiguration"]
+  ssrStores: RouterOutputs["stores"]["getStores"]
   dictionary: TDictionary<typeof StoresContentDr>
 }) {
   const configuration = trpc.configuration.getConfiguration.useQuery(undefined, {
     initialData: ssrConfiguration,
+  })
+  const stores = trpc.stores.getStores.useQuery(undefined, {
+    initialData: ssrStores,
   })
 
   const [isAddStoreOpen, setIsAddStoreOpen] = useState(false)
@@ -66,7 +71,30 @@ export default function StoresContent({
     setIsAddStoreOpen(false)
   })
 
-  const isPending = updateConfigurationMutation.isPending
+  const installOrUpdateStoreMutation = trpc.stores.installOrUpdateStore.useMutation({
+    onSuccess: async () => {
+      await Promise.all([
+        utils.configuration.invalidate(),
+        utils.stores.invalidate(),
+        utils.plugins.invalidate(),
+        utils.templates.invalidate(),
+      ])
+    },
+  })
+
+  const deleteStoreMutation = trpc.stores.deleteStore.useMutation({
+    onSuccess: async () => {
+      await Promise.all([
+        utils.configuration.invalidate(),
+        utils.stores.invalidate(),
+        utils.plugins.invalidate(),
+        utils.templates.invalidate(),
+      ])
+    },
+  })
+
+  const isPending =
+    updateConfigurationMutation.isPending || installOrUpdateStoreMutation.isPending || deleteStoreMutation.isPending
 
   return (
     <>
@@ -86,24 +114,44 @@ export default function StoresContent({
             notClickable
             actions={
               <>
-                <Button
-                  variant="light"
-                  color="warning"
-                  onPress={() => {
-                    //TODO
-                  }}
-                  isLoading={isPending}
-                >
-                  <Download className="size-5" />
-                  {dictionary.update}
-                </Button>
+                {stores.data.stores.some((s) => s.name === store.name && s.version === store.version) ? (
+                  <Button
+                    variant="light"
+                    color="warning"
+                    onPress={() => {
+                      installOrUpdateStoreMutation.mutate({
+                        store,
+                      })
+                    }}
+                    isLoading={isPending}
+                  >
+                    <Download className="size-5" />
+                    {dictionary.update}
+                  </Button>
+                ) : (
+                  <Button
+                    variant="light"
+                    color="success"
+                    onPress={() => {
+                      installOrUpdateStoreMutation.mutate({
+                        store,
+                      })
+                    }}
+                    isLoading={isPending}
+                  >
+                    <Download className="size-5" />
+                    {dictionary.download}
+                  </Button>
+                )}
                 <Button
                   variant="light"
                   className="size-[40px] min-w-0 p-1"
                   color="danger"
                   aria-label={dictionary.remove}
                   onPress={() => {
-                    //TODO
+                    deleteStoreMutation.mutate({
+                      store,
+                    })
                   }}
                   isLoading={isPending}
                 >
@@ -114,7 +162,7 @@ export default function StoresContent({
             key={store.name}
             id={store.name}
             title={store.name}
-            description={store.version}
+            description={dictionary.storeVersion + ": " + store.version}
           />
         ))}
       </ul>

@@ -46,7 +46,7 @@ export const storeVersionRegex = /^[~^]?[\da-z.-]+$/
 
 export const configSchema = z.object({
   name: z.string(),
-  plugins: z.array(z.string().or(fullPluginSchema)),
+  plugins: z.array(fullPluginSchema),
   stores: z.array(
     z.object({
       name: z.string().regex(storeNameRegex),
@@ -59,11 +59,19 @@ export type TConfig = z.infer<typeof configSchema>
 export const templateSchema = z.object({
   name: z.string(),
   description: z.string().max(300),
-  plugins: z.array(z.string().or(fullPluginSchema)),
+  plugins: z.array(
+    fullPluginSchema.extend({
+      store: z.object({
+        name: z.string().regex(storeNameRegex),
+        version: z.string().regex(storeVersionRegex),
+      }),
+    })
+  ),
 })
 
 export const pluginConfigSchema = z.object({
   name: z.string(),
+  store: z.string(), // Store name
   description: z.string().max(300),
   paths: z
     .array(
