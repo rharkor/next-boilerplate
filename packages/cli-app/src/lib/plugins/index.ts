@@ -29,12 +29,7 @@ const loadPlugins = async () => {
   const stores = await getStores()
   for (const store of stores) {
     const pluginsDirectory = path.join(store.fullPath, "data", "plugins")
-    if (!(await fs.exists(pluginsDirectory))) {
-      throw new TRPCError({
-        message: `The plugins directory doesn't exist at ${pluginsDirectory}`,
-        code: "INTERNAL_SERVER_ERROR",
-      })
-    }
+    await fs.ensureDir(pluginsDirectory)
 
     //* Get all the plugins
     const formattedPluginsDirectory = pluginsDirectory.replace(/\\/g, "/")
