@@ -236,5 +236,15 @@
   "close": "Fermer",
   "pluginSettings": "Paramètres du plugin",
   "apply": "Appliquer",
-  "configurationApplied": "Configuration appliquée"
+  "configurationApplied": "Configuration appliquée",
+  "search": "Rechercher",
+  "stores": "Magasins",
+  "store": "Magasin",
+  "addStore": "Ajouter un magasin",
+  "storeName": "URL du magasin (git)",
+  "storeNameExample": "@next-boilerplate/store",
+  "storeVersion": "Version du magasin",
+  "storeVersionExample": "latest",
+  "doNotTrustExternalStores": "Ne faites pas confiance aux magasins externes, assurez-vous de vérifier le code avant de l'ajouter à votre configuration.",
+  "download": "Télécharger"
 }

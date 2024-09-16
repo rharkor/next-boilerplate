@@ -1,20 +1,15 @@
 import { z } from "zod"
 
-export type ITrpcContext = {
-  session: Session | null | undefined
-  headers: { [k: string]: string } | null | undefined
-  req: Request | null | undefined
-  fromServer?: boolean
+import { FetchCreateContextFnOptions } from "@trpc/server/adapters/fetch"
+import { CreateNextContextOptions } from "@trpc/server/adapters/next"
+
+export type ITrpcContext = Partial<CreateNextContextOptions | FetchCreateContextFnOptions> & {
+  session: Session | null
 }
 
 export type apiInputFromSchema<T extends (() => z.Schema) | undefined> = {
   input: T extends () => z.Schema ? z.infer<ReturnType<T>> : unknown
-  ctx: {
-    session: Session | null | undefined
-    headers?: { [k: string]: string } | null | undefined
-    req?: Request | null | undefined
-    fromServer?: boolean
-  }
+  ctx: ITrpcContext
 }
 
 export type ValueOf<T> = T[keyof T]

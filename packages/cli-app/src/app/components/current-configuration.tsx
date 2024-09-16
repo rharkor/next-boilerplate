@@ -155,6 +155,8 @@ export default function CurrentConfiguration({
   //   }
   // }, [configuration.data.configuration.plugins])
 
+  const [search, setSearch] = useState("")
+
   const hasEmptyConfiguration =
     !configuration.data.configuration.plugins || configuration.data.configuration.plugins.length === 0
   if (hasEmptyConfiguration) {
@@ -174,26 +176,32 @@ export default function CurrentConfiguration({
     })
   }
 
+  const plugins =
+    configuration.data.configuration.plugins?.filter((plugin) => {
+      return plugin.name.toLowerCase().includes(search.toLowerCase())
+    }) ?? []
+
   return (
     <Section>
       <Header
         title={dictionary.configuration}
         actions={
           <>
+            <Input value={search} onValueChange={setSearch} placeholder={dictionary.search} />
             <Button color="danger" variant="light" onPress={resetConfiguration} isLoading={isPending}>
               {dictionary.reset}
             </Button>
             <Button color="primary" onPress={applyConfiguration} isLoading={isPending}>
-              <ArrowDownToLine className="size-4" />
+              <ArrowDownToLine className="size-4 shrink-0" />
               {dictionary.apply}
             </Button>
           </>
         }
         dictionary={dictionary}
       />
-      <ul className="relative z-10 flex flex-1 flex-col gap-2 overflow-auto scrollbar-hide">
+      <ul className="relative z-10 flex flex-1 flex-col gap-2">
         <AnimatePresence>
-          {configuration.data.configuration.plugins?.map((plugin) => (
+          {plugins.map((plugin) => (
             <Plugin
               key={plugin.id}
               plugin={plugin}

@@ -236,5 +236,15 @@
   "close": "Close",
   "pluginSettings": "Plugin settings",
   "apply": "Apply",
-  "configurationApplied": "Configuration applied"
+  "configurationApplied": "Configuration applied",
+  "search": "Search",
+  "stores": "Stores",
+  "store": "Store",
+  "addStore": "Add store",
+  "storeName": "Store URL (git)",
+  "storeNameExample": "@next-boilerplate/store",
+  "storeVersion": "Store version",
+  "storeVersionExample": "latest",
+  "doNotTrustExternalStores": "Do not trust external stores, make sure to check the code before adding it to your configuration.",
+  "download": "Download"
 }

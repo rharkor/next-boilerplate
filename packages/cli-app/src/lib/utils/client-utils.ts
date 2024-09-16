@@ -1,4 +1,4 @@
-import { useRouter } from "next/navigation"
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime"
 
 import { toast } from "react-toastify"
 
@@ -13,8 +13,6 @@ import { handleApiError } from "."
 type TOptions = {
   showNotification?: boolean // default true
 }
-
-type AppRouterInstance = ReturnType<typeof useRouter>
 
 export const handleQueryError = <T extends TRPCClientErrorLike<AppRouter>>(
   error: T,

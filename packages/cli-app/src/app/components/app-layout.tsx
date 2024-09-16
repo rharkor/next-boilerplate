@@ -13,10 +13,10 @@ import ProjectInit from "./project-init"
 import Sidenav from "./sidenav"
 
 export default function AppLayout({
-  ssrConfiguration,
   lang,
   dictionary,
   children,
+  ssrConfiguration,
 }: {
   ssrConfiguration: RouterOutputs["configuration"]["getConfiguration"]
   lang: Locale
@@ -33,7 +33,7 @@ export default function AppLayout({
         {!configuration.data.configuration.name && <ProjectInit dictionary={dictionary} />}
       </AnimatePresence>
       <NavSettings lang={lang} ssrConfiguration={ssrConfiguration} dictionary={dictionary} />
-      <div className="flex flex-1 flex-row gap-4 pb-8">
+      <div className="flex h-full flex-1 flex-row gap-4 pb-8">
         <Sidenav dictionary={dictionary} ssrConfiguration={ssrConfiguration} />
         {children}
       </div>

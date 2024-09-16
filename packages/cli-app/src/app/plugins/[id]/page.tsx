@@ -1,5 +1,5 @@
 import { getDictionary } from "@/lib/langs"
-import { serverTrpc } from "@/lib/trpc/server"
+import { trpc } from "@/lib/trpc/server"
 import { dictionaryRequirements } from "@/lib/utils/dictionary"
 import { extractLocale } from "@/lib/utils/server-utils"
 
@@ -17,8 +17,8 @@ export default async function Plugin({
   const dictionary = await getDictionary(locale, dictionaryRequirements({}, PluginContentDr))
 
   const pluginId = decodeURIComponent(params.id)
-  const ssrPlugin = await serverTrpc.plugins.getPlugin({ id: pluginId })
-  const ssrConfiguration = await serverTrpc.configuration.getConfiguration()
+  const ssrPlugin = await trpc.plugins.getPlugin({ id: pluginId })
+  const ssrConfiguration = await trpc.configuration.getConfiguration()
 
   return (
     <PluginContent id={pluginId} dictionary={dictionary} ssrPlugin={ssrPlugin} ssrConfiguration={ssrConfiguration} />
