@@ -1,6 +1,7 @@
 import { z } from "zod"
 
 import { fullPluginSchema, singlePluginSchema } from "@/lib/plugins/types"
+import { storeConfigSchema } from "@next-boilerplate/scripts/utils/template-config/index.js"
 
 export const getPluginsSchema = () =>
   z.object({
@@ -14,7 +15,8 @@ export const getPluginsResponseSchema = () =>
 
 export const getPluginSchema = () =>
   z.object({
-    id: z.string(),
+    name: z.string(),
+    store: storeConfigSchema,
   })
 
 export const getPluginResponseSchema = () =>

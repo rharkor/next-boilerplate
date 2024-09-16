@@ -56,14 +56,28 @@ export default function PluginsContent({
           ? [...Array(5)].map((_, i) => (
               <Plugin
                 key={i}
-                plugin={{ id: "", name: "", store: "", description: "", sourcePath: "", paths: [] }}
+                plugin={{
+                  name: "",
+                  store: {
+                    name: "",
+                    version: "",
+                  },
+                  description: "",
+                  sourcePath: "",
+                  paths: [],
+                }}
                 dictionary={dictionary}
                 ssrConfiguration={ssrConfiguration}
                 isLoading
               />
             ))
           : plugins.data?.plugins.map((plugin) => (
-              <Plugin key={plugin.id} plugin={plugin} dictionary={dictionary} ssrConfiguration={ssrConfiguration} />
+              <Plugin
+                key={plugin.store.name + "@" + plugin.store.version + "/" + plugin.name}
+                plugin={plugin}
+                dictionary={dictionary}
+                ssrConfiguration={ssrConfiguration}
+              />
             ))}
       </ul>
     </>

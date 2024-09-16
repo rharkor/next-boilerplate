@@ -19,26 +19,27 @@ import { TemplateContentDr } from "./content.dr"
 type TTemplate = RouterOutputs["templates"]["getTemplate"]
 
 export default function TemplateContent({
-  id,
+  templateFull,
   dictionary,
   ssrTemplate,
   ssrConfiguration,
 }: {
-  id: string
+  templateFull: {
+    store: {
+      name: string
+      version: string
+    }
+    name: string
+  }
   dictionary: TDictionary<typeof TemplateContentDr>
   ssrTemplate: TTemplate
   ssrConfiguration: RouterOutputs["configuration"]["getConfiguration"]
 }) {
   const utils = trpc.useUtils()
 
-  const template = trpc.templates.getTemplate.useQuery(
-    {
-      id,
-    },
-    {
-      initialData: ssrTemplate,
-    }
-  )
+  const template = trpc.templates.getTemplate.useQuery(templateFull, {
+    initialData: ssrTemplate,
+  })
   const configuration = trpc.configuration.getConfiguration.useQuery(undefined, {
     initialData: ssrConfiguration,
   })
@@ -94,7 +95,12 @@ export default function TemplateContent({
         </div>
         <ul className="flex flex-1 flex-col gap-2">
           {plugins.map((plugin) => (
-            <Plugin key={plugin.id} plugin={plugin} dictionary={dictionary} ssrConfiguration={ssrConfiguration} />
+            <Plugin
+              key={plugin.store.name + "@" + plugin.store.version + "/" + plugin.name}
+              plugin={plugin}
+              dictionary={dictionary}
+              ssrConfiguration={ssrConfiguration}
+            />
           ))}
         </ul>
       </div>

@@ -54,13 +54,13 @@ export default function TemplatesContent({
           ? [...Array(5)].map((_, i) => <ItemCard key={i} description="" id="" title="" isLoading />)
           : templates.data?.templates.map((template) => (
               <ItemCard
-                key={template.id}
-                id={template.id}
+                key={template.store.name + "@" + template.store.version + "/" + template.name}
+                id={template.store.name + "@" + template.store.version + "/" + template.name}
                 title={template.name}
                 subTitle={template.sourcePath}
                 description={template.description}
                 endContent={<BookDashed className="absolute right-2 top-2 size-4 text-primary" />}
-                href={`/templates/${encodeURIComponent(template.id)}`}
+                href={`/templates/${encodeURIComponent(template.store.name + "@" + template.store.version + "/" + template.name)}`}
               />
             ))}
       </ul>
