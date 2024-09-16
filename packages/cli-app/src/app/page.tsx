@@ -1,5 +1,5 @@
 import { getDictionary } from "@/lib/langs"
-import { serverTrpc } from "@/lib/trpc/server"
+import { trpc } from "@/lib/trpc/server"
 import { dictionaryRequirements } from "@/lib/utils/dictionary"
 import { extractLocale } from "@/lib/utils/server-utils"
 
@@ -9,7 +9,7 @@ import { MainContentDr } from "./content.dr"
 export default async function Home() {
   const locale = extractLocale()
   const dictionary = await getDictionary(locale, dictionaryRequirements(MainContentDr))
-  const ssrConfiguration = await serverTrpc.configuration.getConfiguration()
+  const ssrConfiguration = await trpc.configuration.getConfiguration()
 
   return <MainContent dictionary={dictionary} ssrConfiguration={ssrConfiguration} />
 }

@@ -1,4 +1,4 @@
-import { router } from "../lib/server/trpc"
+import { router } from "@/lib/trpc/init"
 
 import { configurationRouter } from "./configuration/_router"
 import { pluginsRouter } from "./plugins/_router"

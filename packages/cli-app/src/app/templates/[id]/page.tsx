@@ -1,5 +1,5 @@
 import { getDictionary } from "@/lib/langs"
-import { serverTrpc } from "@/lib/trpc/server"
+import { trpc } from "@/lib/trpc/server"
 import { dictionaryRequirements } from "@/lib/utils/dictionary"
 import { extractLocale } from "@/lib/utils/server-utils"
 
@@ -17,8 +17,8 @@ export default async function Template({
   const dictionary = await getDictionary(locale, dictionaryRequirements({}, TemplateContentDr))
 
   const templateId = decodeURIComponent(params.id)
-  const ssrTemplate = await serverTrpc.templates.getTemplate({ id: templateId })
-  const ssrConfiguration = await serverTrpc.configuration.getConfiguration()
+  const ssrTemplate = await trpc.templates.getTemplate({ id: templateId })
+  const ssrConfiguration = await trpc.configuration.getConfiguration()
 
   return (
     <TemplateContent
