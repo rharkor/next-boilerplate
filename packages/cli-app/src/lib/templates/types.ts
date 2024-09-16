@@ -1,12 +1,12 @@
 import { z } from "zod"
 
-import { templateSchema } from "@next-boilerplate/scripts/utils/template-config/index.js"
+import { storeConfigSchema, templateSchema } from "@next-boilerplate/scripts/utils/template-config/index.js"
 
 import { fullPluginSchema } from "../plugins/types"
 
 export const fullTemplateSchema = templateSchema.extend({
   sourcePath: z.string(),
-  id: z.string(),
+  store: storeConfigSchema,
 })
 export type TTemplateStore = z.infer<typeof fullTemplateSchema>
 

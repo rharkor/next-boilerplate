@@ -74,10 +74,15 @@ const apiConfigToWebConfig = async (apiConfig: z.infer<typeof optionalConfigSche
     const content: TConfiguration = {
       name: apiConfig.name,
       plugins: apiConfig.plugins?.map((plugin) => {
-        const foundPlugin = plugins.find((p) => p.name === plugin.name && p.store === plugin.store)
+        const foundPlugin = plugins.find(
+          (p) =>
+            p.sourcePath === plugin.name &&
+            p.store.name === plugin.store.name &&
+            p.store.version === plugin.store.version
+        )
         if (!foundPlugin) {
           throw new TRPCError({
-            message: `The plugin ${plugin.name} not found (store: ${plugin.store})`,
+            message: `The plugin ${plugin.name} not found (store: ${plugin.store.name}@${plugin.store.version})`,
             code: "INTERNAL_SERVER_ERROR",
           })
         }
@@ -86,7 +91,6 @@ const apiConfigToWebConfig = async (apiConfig: z.infer<typeof optionalConfigSche
           name: foundPlugin.name,
           store: foundPlugin.store,
           description: foundPlugin.description,
-          id: foundPlugin.id,
           sourcePath: foundPlugin.sourcePath,
           paths: foundPlugin.paths.map((path) => {
             const overridedTo =
