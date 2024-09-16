@@ -9,10 +9,11 @@ import { TRPCError } from "@trpc/server"
 
 import { env } from "../env"
 import { getPlugins } from "../plugins"
+import { handleDownloadStores } from "../stores"
 
 const configurationName = "config.json"
 
-const optionalConfigSchema = configSchema.partial()
+export const optionalConfigSchema = configSchema.partial()
 
 const webConfigToApiConfig = (webConfig: TConfiguration): z.infer<typeof optionalConfigSchema> => {
   try {
@@ -31,17 +32,20 @@ const webConfigToApiConfig = (webConfig: TConfiguration): z.infer<typeof optiona
       plugins: (webConfig.plugins ?? []).map((plugin) => {
         const fullP = {
           name: plugin.sourcePath,
+          store: plugin.store,
           paths: plugin.paths.map((p) => ({
             from: p.from,
             to: p.overridedTo || p.to,
           })),
         }
-        //? If there's no override, or the override is the same as the original path, return the name
-        if (!plugin.paths.some((p) => p.overridedTo) || plugin.paths.every((p) => p.to === p.overridedTo)) {
-          return fullP.name
-        }
         return fullP
       }),
+      stores: webConfig.stores ?? [
+        {
+          name: "@next-boilerplate/store",
+          version: "latest",
+        },
+      ],
     })
     return content
   } catch (error) {
@@ -70,17 +74,17 @@ const apiConfigToWebConfig = async (apiConfig: z.infer<typeof optionalConfigSche
     const content: TConfiguration = {
       name: apiConfig.name,
       plugins: apiConfig.plugins?.map((plugin) => {
-        const pluginSP = typeof plugin === "string" ? plugin : plugin.name
-        const foundPlugin = plugins.find((p) => p.sourcePath === pluginSP)
+        const foundPlugin = plugins.find((p) => p.name === plugin.name && p.store === plugin.store)
         if (!foundPlugin) {
           throw new TRPCError({
-            message: `The plugin ${pluginSP} is not valid`,
+            message: `The plugin ${plugin.name} not found (store: ${plugin.store})`,
             code: "INTERNAL_SERVER_ERROR",
           })
         }
 
         return {
           name: foundPlugin.name,
+          store: foundPlugin.store,
           description: foundPlugin.description,
           id: foundPlugin.id,
           sourcePath: foundPlugin.sourcePath,
@@ -95,6 +99,7 @@ const apiConfigToWebConfig = async (apiConfig: z.infer<typeof optionalConfigSche
           }),
         }
       }),
+      stores: apiConfig.stores,
     }
     webConfigurationSchema().parse(content)
     return content
@@ -117,10 +122,11 @@ export const getConfiguration = async () => {
   return apiConfigToWebConfig(await fs.readJson(configurationPath))
 }
 
-export const setConfiguration = (newConfiguration: TConfiguration) => {
+export const setConfiguration = async (newConfiguration: TConfiguration) => {
   const content = webConfigToApiConfig(newConfiguration)
+  await handleDownloadStores(content)
   const configurationPath = path.join(env.ROOT_PATH, configurationName)
   fs.writeJson(configurationPath, content, {
-    spaces: 2,
+    spaces: 4,
   })
 }

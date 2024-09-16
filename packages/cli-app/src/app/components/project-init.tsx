@@ -26,23 +26,21 @@ export default function ProjectInit({ dictionary }: { dictionary: TDictionary<ty
   const [variant, setVariant] = useState<string>("welcome")
 
   const utils = trpc.useUtils()
-  const updateConfigurationMutation = trpc.configuration.updateConfiguration.useMutation()
+  const updateConfigurationMutation = trpc.configuration.updateConfiguration.useMutation({
+    onSuccess: async () => {
+      await utils.configuration.invalidate()
+    },
+  })
 
   const [name, setName] = useState<string>("")
 
-  const [isPending, setIsPending] = useState(false)
+  const isPending = updateConfigurationMutation.isPending
   const updateConfiguration = async () => {
-    setIsPending(true)
-    try {
-      await updateConfigurationMutation.mutateAsync({
-        configuration: {
-          name,
-        },
-      })
-      await utils.configuration.invalidate()
-    } finally {
-      setIsPending(false)
-    }
+    await updateConfigurationMutation.mutateAsync({
+      configuration: {
+        name,
+      },
+    })
   }
 
   // Set the variant to projectName after 2 seconds

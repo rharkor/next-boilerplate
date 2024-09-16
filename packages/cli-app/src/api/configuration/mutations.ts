@@ -2,7 +2,7 @@ import { z } from "zod"
 
 import { getConfiguration, setConfiguration } from "@/lib/configuration"
 import { env } from "@/lib/env"
-import { pluginsDirectory } from "@/lib/plugins"
+import { rootPluginsDirectory } from "@/lib/plugins"
 import { handleApiError } from "@/lib/utils/server-utils"
 import { apiInputFromSchema } from "@/types"
 import { applyConfigurationTask } from "@next-boilerplate/scripts/utils/template-config/apply.js"
@@ -16,7 +16,7 @@ export const updateConfiguration = async ({
     const configuration = await getConfiguration()
 
     // Merge the new configuration with the old one
-    setConfiguration({ ...configuration, ..._configuration })
+    await setConfiguration({ ...configuration, ..._configuration })
 
     const data: z.infer<ReturnType<typeof updateConfigurationResponseSchema>> = { configuration }
     return data
@@ -28,7 +28,7 @@ export const updateConfiguration = async ({
 export const resetConfiguration = async ({}: apiInputFromSchema<typeof undefined>) => {
   try {
     const configuration = await getConfiguration()
-    setConfiguration({
+    await setConfiguration({
       name: configuration.name,
     })
 
@@ -46,7 +46,7 @@ export const applyConfiguration = async ({}: apiInputFromSchema<typeof undefined
     //* Apply the configuration
     await applyConfigurationTask({
       configFileName: "config.json",
-      pluginsDirectory,
+      pluginsDirectory: rootPluginsDirectory,
       root: env.ROOT_PATH,
       noTask: true,
     })

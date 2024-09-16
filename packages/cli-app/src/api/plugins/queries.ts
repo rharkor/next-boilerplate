@@ -6,9 +6,9 @@ import { apiInputFromSchema } from "@/types"
 
 import { getPluginResponseSchema, getPluginSchema, getPluginsResponseSchema, getPluginsSchema } from "./schemas"
 
-export const getPluginsQuery = async ({}: apiInputFromSchema<typeof getPluginsSchema>) => {
+export const getPluginsQuery = async ({ input }: apiInputFromSchema<typeof getPluginsSchema>) => {
   try {
-    const plugins = await getPlugins()
+    const plugins = await getPlugins(input)
 
     const data: z.infer<ReturnType<typeof getPluginsResponseSchema>> = { plugins }
     return data

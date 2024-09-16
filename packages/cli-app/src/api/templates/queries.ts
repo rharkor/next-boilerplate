@@ -6,9 +6,9 @@ import { apiInputFromSchema } from "@/types"
 
 import { getTemplateResponseSchema, getTemplateSchema, getTemplatesResponseSchema, getTemplatesSchema } from "./schemas"
 
-export const getTemplatesQuery = async ({}: apiInputFromSchema<typeof getTemplatesSchema>) => {
+export const getTemplatesQuery = async ({ input }: apiInputFromSchema<typeof getTemplatesSchema>) => {
   try {
-    const templates = await getTemplates()
+    const templates = await getTemplates(input)
 
     const data: z.infer<ReturnType<typeof getTemplatesResponseSchema>> = { templates }
     return data

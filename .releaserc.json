@@ -139,8 +139,7 @@
     [
       "@semantic-release/github",
       {
-        "successCommentCondition": "<% return issue.user.type !== 'Bot'; %>",
-        "successComment": ":tada:2 <% return issue.pull_request; %>"
+        "successCommentCondition": "<% return !issue.pull_request; %>"
       }
     ],
     "@semantic-release/git",

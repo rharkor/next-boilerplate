@@ -1,5 +1,7 @@
 "use client"
 
+import { useState } from "react"
+
 import { BookUp } from "lucide-react"
 
 import Plugin from "@/app/plugins/plugin"
@@ -9,6 +11,7 @@ import { TDictionary } from "@/lib/langs"
 import { trpc } from "@/lib/trpc/client"
 import { RouterOutputs } from "@/lib/trpc/utils"
 import { Button } from "@nextui-org/button"
+import { Input } from "@nextui-org/input"
 import { Spinner } from "@nextui-org/spinner"
 
 import { TemplateContentDr } from "./content.dr"
@@ -55,7 +58,14 @@ export default function TemplateContent({
     })
   }
 
-  const plugins = template.data.template.plugins
+  const [search, setSearch] = useState("")
+
+  const plugins = template.data.template.plugins.filter(
+    (plugin) => {
+      return plugin.name.toLowerCase().includes(search.toLowerCase())
+    },
+    [search]
+  )
 
   return (
     <Section>
@@ -78,7 +88,10 @@ export default function TemplateContent({
         </Button>
       </div>
       <div className="mt-5 flex flex-col gap-2">
-        <h1 className="text-2xl">{dictionary.plugins}</h1>
+        <div className="flex items-center justify-between gap-2">
+          <h1 className="text-2xl">{dictionary.plugins}</h1>
+          <Input value={search} onValueChange={setSearch} placeholder={dictionary.search} className="w-auto" />
+        </div>
         <ul className="flex flex-1 flex-col gap-2">
           {plugins.map((plugin) => (
             <Plugin key={plugin.id} plugin={plugin} dictionary={dictionary} ssrConfiguration={ssrConfiguration} />
