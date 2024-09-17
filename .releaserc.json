@@ -18,6 +18,13 @@
       }
     ],
     [
+      "@semantic-release/npm",
+      {
+        "npmPublish": true,
+        "pkgRoot": "packages/cli-helpers"
+      }
+    ],
+    [
       "@semantic-release/commit-analyzer",
       {
         "preset": "conventionalCommits",
