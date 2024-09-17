@@ -9,6 +9,7 @@ import Section from "@/components/ui/section"
 import { TDictionary } from "@/lib/langs"
 import { trpc } from "@/lib/trpc/client"
 import { RouterOutputs } from "@/lib/trpc/utils"
+import { getStoreUID } from "@next-boilerplate/cli-helpers/stores"
 import { Button } from "@nextui-org/button"
 import { Spinner } from "@nextui-org/spinner"
 
@@ -44,10 +45,7 @@ export default function PluginContent({
 
   const isInstalled = useMemo(() => {
     return configuration.data.configuration.plugins?.some(
-      (p) =>
-        p.name === plugin.data.plugin.name &&
-        p.store.name === plugin.data.plugin.store.name &&
-        p.store.version === plugin.data.plugin.store.version
+      (p) => p.name === plugin.data.plugin.name && getStoreUID(p.store) === getStoreUID(plugin.data.plugin.store)
     )
   }, [configuration.data, plugin.data])
 

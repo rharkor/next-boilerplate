@@ -1,6 +1,7 @@
 import { z } from "zod"
 
 import { fullPluginSchema } from "@/lib/plugins/types"
+import { pluginSchema } from "@next-boilerplate/cli-helpers/plugins"
 import { storeSchema } from "@next-boilerplate/cli-helpers/stores"
 
 export const configurationSchema = () =>
@@ -11,7 +12,20 @@ export const configurationSchema = () =>
   })
 export type TConfiguration = z.infer<ReturnType<typeof configurationSchema>>
 
-export const getConfigurationResponseSchema = () => z.object({ configuration: configurationSchema() })
+export const getConfigurationResponseSchema = () =>
+  z.object({
+    configuration: configurationSchema()
+      .omit({ plugins: true })
+      .extend({
+        plugins: z
+          .array(
+            fullPluginSchema.extend({
+              remotePlugin: pluginSchema,
+            })
+          )
+          .optional(),
+      }),
+  })
 
 export const updateConfigurationRequestSchema = () => z.object({ configuration: configurationSchema() })
 export const updateConfigurationResponseSchema = () => z.object({ configuration: configurationSchema() })

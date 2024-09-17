@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 
 import { BookUp } from "lucide-react"
 
@@ -61,12 +61,22 @@ export default function TemplateContent({
   }
 
   const [search, setSearch] = useState("")
+  const [debouncedSearch, setDebouncedSearch] = useState("")
 
-  const plugins = template.data.template.plugins.filter(
-    (plugin) => {
-      return plugin.name.toLowerCase().includes(search.toLowerCase())
-    },
-    [search]
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setDebouncedSearch(search)
+    }, 300)
+
+    return () => clearTimeout(timeout)
+  }, [search])
+
+  const plugins = useMemo(
+    () =>
+      template.data.template.plugins.filter((plugin) => {
+        return plugin.name.toLowerCase().includes(debouncedSearch.toLowerCase())
+      }),
+    [template.data.template.plugins, debouncedSearch]
   )
 
   return (

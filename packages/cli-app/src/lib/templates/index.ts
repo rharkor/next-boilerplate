@@ -96,10 +96,7 @@ export const getTemplate = async (name: string, store: z.infer<typeof storeConfi
       const pluginInTemplate =
         typeof _pluginInTemplate === "string" ? { name: _pluginInTemplate, store } : _pluginInTemplate
       const plugin = plugins.find(
-        (p) =>
-          p.sourcePath === pluginInTemplate.name &&
-          p.store.name === pluginInTemplate.store.name &&
-          p.store.version === pluginInTemplate.store.version
+        (p) => p.sourcePath === pluginInTemplate.name && getStoreUID(p.store) === getStoreUID(pluginInTemplate.store)
       )
       if (!plugin) {
         logger.error(

@@ -1,4 +1,4 @@
-import { Fragment, useRef, useState } from "react"
+import { Fragment, useEffect, useMemo, useRef, useState } from "react"
 
 import { AnimatePresence, motion } from "framer-motion"
 import { ArrowDownToLine, Eye, MoreHorizontal, Pencil } from "lucide-react"
@@ -15,7 +15,7 @@ import Section from "@/components/ui/section"
 import { TDictionary } from "@/lib/langs"
 import { trpc } from "@/lib/trpc/client"
 import { RouterOutputs } from "@/lib/trpc/utils"
-import { getItemUID } from "@next-boilerplate/cli-helpers/stores"
+import { getItemUID, getStoreUID } from "@next-boilerplate/cli-helpers/stores"
 import { Button } from "@nextui-org/button"
 import { Divider } from "@nextui-org/divider"
 import { Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@nextui-org/dropdown"
@@ -157,6 +157,24 @@ export default function CurrentConfiguration({
   // }, [configuration.data.configuration.plugins])
 
   const [search, setSearch] = useState("")
+  const [debouncedSearch, setDebouncedSearch] = useState(search)
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setDebouncedSearch(search)
+    }, 300)
+    return () => {
+      clearTimeout(timeout)
+    }
+  }, [search])
+
+  const configPlugins = useMemo(() => {
+    return (
+      configuration.data.configuration.plugins?.filter((plugin) => {
+        return plugin.name.toLowerCase().includes(debouncedSearch.toLowerCase())
+      }) ?? []
+    )
+  }, [configuration.data.configuration.plugins, debouncedSearch])
 
   const hasEmptyConfiguration =
     !configuration.data.configuration.plugins || configuration.data.configuration.plugins.length === 0
@@ -168,11 +186,7 @@ export default function CurrentConfiguration({
     await updateConfiguration({
       configuration: {
         plugins: configuration.data.configuration.plugins?.map((p) => {
-          if (
-            p.name === plugin.name &&
-            p.store.name === plugin.store.name &&
-            p.store.version === plugin.store.version
-          ) {
+          if (p.name === plugin.name && getStoreUID(p.store) === getStoreUID(plugin.store)) {
             return plugin
           }
           return p
@@ -180,11 +194,6 @@ export default function CurrentConfiguration({
       },
     })
   }
-
-  const configPlugins =
-    configuration.data.configuration.plugins?.filter((plugin) => {
-      return plugin.name.toLowerCase().includes(search.toLowerCase())
-    }) ?? []
 
   return (
     <Section>
@@ -215,7 +224,7 @@ export default function CurrentConfiguration({
           {configPlugins.map((plugin) => (
             <Plugin
               key={getItemUID(plugin)}
-              pluginInConfiguration={plugin}
+              plugin={plugin}
               dictionary={dictionary}
               isPending={isPending}
               onDelete={onDelete(plugin)}
@@ -245,13 +254,13 @@ export default function CurrentConfiguration({
 }
 
 function Plugin({
-  pluginInConfiguration,
+  plugin,
   dictionary,
   onDelete: _onDelete,
   onEdit: _onEdit,
   isPending,
 }: {
-  pluginInConfiguration: TPlugin
+  plugin: TPlugin
   dictionary: TDictionary<typeof CurrentConfigurationDr>
   onDelete: (boundingBox: DOMRect) => Promise<void>
   onEdit: (plugin: TPlugin) => Promise<void>
@@ -275,14 +284,31 @@ function Plugin({
     onClose: onEditClose,
   } = useDisclosure()
 
+  const [overriddenPlugin, setOverriddenPlugin] = useState<TPlugin>(plugin)
+
+  useEffect(() => {
+    setOverriddenPlugin(plugin)
+  }, [plugin])
+
   const onEdit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    await _onEdit(plugin)
+    await _onEdit(overriddenPlugin)
     onEditClose()
   }
 
   const editPath = (fromKey: string) => (to: string) => {
-    // TODO
+    setOverriddenPlugin((prev) => ({
+      ...prev,
+      paths: prev.paths.map((p) => {
+        if (p.from === fromKey) {
+          return {
+            ...p,
+            to,
+          }
+        }
+        return p
+      }),
+    }))
   }
 
   return (
@@ -376,9 +402,8 @@ function Plugin({
                       <div className="flex flex-col gap-1">
                         <Input isDisabled isReadOnly value={p.from} label={dictionary.sourcePath} />
                         <Input
-                          value={p.to}
+                          value={overriddenPlugin.paths.find((op) => op.from === p.from)?.to ?? ""}
                           onValueChange={editPath(p.from)}
-                          /* TODO Replace with original to */
                           placeholder={p.to}
                           label={dictionary.outputPath}
                         />

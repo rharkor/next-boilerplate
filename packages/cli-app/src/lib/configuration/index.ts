@@ -4,6 +4,7 @@ import { z } from "zod"
 
 import { configurationSchema as webConfigurationSchema, TConfiguration } from "@/api/configuration/schemas"
 import { configSchema } from "@next-boilerplate/cli-helpers/config"
+import { getStoreUID } from "@next-boilerplate/cli-helpers/stores"
 import { handleDownloadStores } from "@next-boilerplate/cli-helpers/stores-helpers"
 import { logger } from "@rharkor/logger"
 import { TRPCError } from "@trpc/server"
@@ -78,10 +79,7 @@ const apiConfigToWebConfig = async (apiConfig: z.infer<typeof optionalConfigSche
       name: apiConfig.name,
       plugins: apiConfig.plugins?.map((plugin) => {
         const foundPlugin = plugins.find(
-          (p) =>
-            p.sourcePath === plugin.name &&
-            p.store.name === plugin.store.name &&
-            p.store.version === plugin.store.version
+          (p) => p.sourcePath === plugin.name && getStoreUID(p.store) === getStoreUID(plugin.store)
         )
         if (!foundPlugin) {
           throw new TRPCError({
