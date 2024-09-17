@@ -7,7 +7,7 @@ import path from "path"
 import { fileURLToPath } from "url"
 
 import { input } from "@inquirer/prompts"
-import { applyConfigurationTask } from "@next-boilerplate/scripts/utils/template-config/apply"
+import { applyConfigurationTask } from "@next-boilerplate/cli-helpers/apply"
 
 // Get the current package directory
 const __filename = fileURLToPath(import.meta.url) // get the resolved path to the file
@@ -15,7 +15,6 @@ const __dirname = path.dirname(__filename) // get the name of the directory
 const dir = path.resolve(__dirname, "../../..")
 
 const assetsDirectory = path.join(dir, "assets")
-const configFileName = "config.json"
 
 const argv = minimist(process.argv.slice(2))
 
@@ -34,7 +33,6 @@ export const applyConfig = async () => {
   }
 
   await applyConfigurationTask({
-    configFileName,
     assetsDirectory,
     root,
     noTask: false,

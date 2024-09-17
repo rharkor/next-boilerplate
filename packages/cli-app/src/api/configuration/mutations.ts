@@ -5,7 +5,7 @@ import { env } from "@/lib/env"
 import { rootAssetsDirectory } from "@/lib/plugins"
 import { handleApiError } from "@/lib/utils/server-utils"
 import { apiInputFromSchema } from "@/types"
-import { applyConfigurationTask } from "@next-boilerplate/scripts/utils/template-config/apply.js"
+import { applyConfigurationTask } from "@next-boilerplate/cli-helpers/apply"
 
 import { updateConfigurationRequestSchema, updateConfigurationResponseSchema } from "./schemas"
 
@@ -45,7 +45,6 @@ export const applyConfiguration = async ({}: apiInputFromSchema<typeof undefined
 
     //* Apply the configuration
     await applyConfigurationTask({
-      configFileName: "config.json",
       assetsDirectory: rootAssetsDirectory,
       root: env.ROOT_PATH,
       noTask: true,

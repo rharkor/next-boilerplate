@@ -20,19 +20,7 @@
         "prettier:fix": "prettier --write \"src/**/*.{js,jsx,ts,tsx}\""
     },
     "exports": {
-        "./*": "./dist/*",
-        "./utils/template-config": {
-            "types": "./dist/utils/template-config/index.d.ts",
-            "default": "./dist/utils/template-config/index.js"
-        },
-        "./utils/template-config/apply": {
-            "types": "./dist/utils/template-config/apply.d.ts",
-            "default": "./dist/utils/template-config/apply.js"
-        },
-        "./utils/template-config/stores": {
-            "types": "./dist/utils/template-config/stores.d.ts",
-            "default": "./dist/utils/template-config/stores.js"
-        }
+        "./*": "./dist/*"
     },
     "devDependencies": {
         "@next-boilerplate/eslint": "*",
