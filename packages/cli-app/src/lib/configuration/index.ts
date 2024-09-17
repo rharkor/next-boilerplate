@@ -3,15 +3,22 @@ import path from "path"
 import { z } from "zod"
 
 import { configurationSchema as webConfigurationSchema, TConfiguration } from "@/api/configuration/schemas"
-import { configSchema } from "@next-boilerplate/scripts/utils/template-config"
+import { configSchema } from "@next-boilerplate/cli-helpers/config"
+import { getStoreUID } from "@next-boilerplate/cli-helpers/stores"
+import { handleDownloadStores } from "@next-boilerplate/cli-helpers/stores-helpers"
 import { logger } from "@rharkor/logger"
 import { TRPCError } from "@trpc/server"
 
 import { env } from "../env"
 import { getPlugins } from "../plugins"
-import { handleDownloadStores } from "../stores"
 
 const configurationName = "config.json"
+// Get the current package directory
+const cwd = process.cwd()
+// eslint-disable-next-line no-process-env
+const dir = path.resolve(cwd, env.CLI_REL_PATH ?? "../..")
+
+export const assetsDirectory = path.join(dir, "assets")
 
 export const optionalConfigSchema = configSchema.partial()
 
@@ -33,10 +40,7 @@ const webConfigToApiConfig = (webConfig: TConfiguration): z.infer<typeof optiona
         const fullP = {
           name: plugin.sourcePath,
           store: plugin.store,
-          paths: plugin.paths.map((p) => ({
-            from: p.from,
-            to: p.overridedTo || p.to,
-          })),
+          paths: plugin.paths,
         }
         return fullP
       }),
@@ -75,14 +79,11 @@ const apiConfigToWebConfig = async (apiConfig: z.infer<typeof optionalConfigSche
       name: apiConfig.name,
       plugins: apiConfig.plugins?.map((plugin) => {
         const foundPlugin = plugins.find(
-          (p) =>
-            p.sourcePath === plugin.name &&
-            p.store.name === plugin.store.name &&
-            p.store.version === plugin.store.version
+          (p) => p.sourcePath === plugin.name && getStoreUID(p.store) === getStoreUID(plugin.store)
         )
         if (!foundPlugin) {
           throw new TRPCError({
-            message: `The plugin ${plugin.name} not found (store: ${plugin.store.name}@${plugin.store.version})`,
+            message: `The plugin ${plugin.name} was not found (store: ${plugin.store.name}@${plugin.store.version}). Currently available plugins: ${plugins.map((p) => p.sourcePath).join(", ")}`,
             code: "INTERNAL_SERVER_ERROR",
           })
         }
@@ -123,12 +124,14 @@ export const getConfiguration = async () => {
     // Create the configuration file
     await fs.writeJson(configurationPath, {})
   }
-  return apiConfigToWebConfig(await fs.readJson(configurationPath))
+  const content = await fs.readJson(configurationPath)
+  await handleDownloadStores({ assetsDirectory, config: content })
+  return apiConfigToWebConfig(content)
 }
 
 export const setConfiguration = async (newConfiguration: TConfiguration) => {
   const content = webConfigToApiConfig(newConfiguration)
-  await handleDownloadStores(content)
+  await handleDownloadStores({ assetsDirectory, config: content })
   const configurationPath = path.join(env.ROOT_PATH, configurationName)
   fs.writeJson(configurationPath, content, {
     spaces: 4,

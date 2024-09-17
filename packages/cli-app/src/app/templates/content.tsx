@@ -9,6 +9,7 @@ import ItemCard from "@/components/ui/item-card"
 import { TDictionary } from "@/lib/langs"
 import { trpc } from "@/lib/trpc/client"
 import { RouterOutputs } from "@/lib/trpc/utils"
+import { getItemUID } from "@next-boilerplate/cli-helpers/stores"
 import { Input } from "@nextui-org/input"
 
 import { TemplatesContentDr } from "./content.dr"
@@ -54,13 +55,13 @@ export default function TemplatesContent({
           ? [...Array(5)].map((_, i) => <ItemCard key={i} description="" id="" title="" isLoading />)
           : templates.data?.templates.map((template) => (
               <ItemCard
-                key={template.store.name + "@" + template.store.version + "/" + template.name}
-                id={template.store.name + "@" + template.store.version + "/" + template.name}
+                key={getItemUID(template)}
+                id={getItemUID(template)}
                 title={template.name}
                 subTitle={template.sourcePath}
                 description={template.description}
                 endContent={<BookDashed className="absolute right-2 top-2 size-4 text-primary" />}
-                href={`/templates/${encodeURIComponent(template.store.name + "@" + template.store.version + "/" + template.name)}`}
+                href={`/templates/${encodeURIComponent(getItemUID(template))}`}
               />
             ))}
       </ul>

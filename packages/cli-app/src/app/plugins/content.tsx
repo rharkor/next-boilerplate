@@ -6,6 +6,7 @@ import Header from "@/components/ui/header"
 import { TDictionary } from "@/lib/langs"
 import { trpc } from "@/lib/trpc/client"
 import { RouterOutputs } from "@/lib/trpc/utils"
+import { getItemUID } from "@next-boilerplate/cli-helpers/stores"
 import { Input } from "@nextui-org/input"
 
 import { PluginsContentDr } from "./content.dr"
@@ -73,7 +74,7 @@ export default function PluginsContent({
             ))
           : plugins.data?.plugins.map((plugin) => (
               <Plugin
-                key={plugin.store.name + "@" + plugin.store.version + "/" + plugin.name}
+                key={getItemUID(plugin)}
                 plugin={plugin}
                 dictionary={dictionary}
                 ssrConfiguration={ssrConfiguration}

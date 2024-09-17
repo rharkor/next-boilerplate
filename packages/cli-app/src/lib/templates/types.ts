@@ -1,6 +1,7 @@
 import { z } from "zod"
 
-import { storeConfigSchema, templateSchema } from "@next-boilerplate/scripts/utils/template-config/index.js"
+import { storeConfigSchema } from "@next-boilerplate/cli-helpers/stores"
+import { templateSchema } from "@next-boilerplate/cli-helpers/templates"
 
 import { fullPluginSchema } from "../plugins/types"
 
