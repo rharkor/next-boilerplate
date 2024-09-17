@@ -2,7 +2,7 @@ import { z } from "zod"
 
 import { getConfiguration, setConfiguration } from "@/lib/configuration"
 import { env } from "@/lib/env"
-import { rootPluginsDirectory } from "@/lib/plugins"
+import { rootAssetsDirectory } from "@/lib/plugins"
 import { handleApiError } from "@/lib/utils/server-utils"
 import { apiInputFromSchema } from "@/types"
 import { applyConfigurationTask } from "@next-boilerplate/scripts/utils/template-config/apply.js"
@@ -46,7 +46,7 @@ export const applyConfiguration = async ({}: apiInputFromSchema<typeof undefined
     //* Apply the configuration
     await applyConfigurationTask({
       configFileName: "config.json",
-      pluginsDirectory: rootPluginsDirectory,
+      assetsDirectory: rootAssetsDirectory,
       root: env.ROOT_PATH,
       noTask: true,
     })

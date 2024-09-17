@@ -28,6 +28,10 @@
         "./utils/template-config/apply": {
             "types": "./dist/utils/template-config/apply.d.ts",
             "default": "./dist/utils/template-config/apply.js"
+        },
+        "./utils/template-config/stores": {
+            "types": "./dist/utils/template-config/stores.d.ts",
+            "default": "./dist/utils/template-config/stores.js"
         }
     },
     "devDependencies": {

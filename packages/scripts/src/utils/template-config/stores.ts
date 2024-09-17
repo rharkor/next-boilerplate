@@ -3,8 +3,9 @@ import fs from "fs-extra"
 import { globby } from "globby"
 import path from "path"
 import * as tar from "tar"
+import { z } from "zod"
 
-import { storeConfigSchema } from "@next-boilerplate/scripts/utils/template-config"
+import { configSchema, storeConfigSchema } from "@next-boilerplate/scripts/utils/template-config"
 import { logger } from "@rharkor/logger"
 import { TRPCError } from "@trpc/server"
 
@@ -16,20 +17,14 @@ export type TStoreStore = z.infer<typeof fullStoreSchema>
 
 type TConfig = z.infer<typeof storeConfigSchema>
 
-import { z } from "zod"
-
-import { optionalConfigSchema } from "../configuration"
-import { env } from "../env"
-
-// Get the current package directory
-const cwd = process.cwd()
-// eslint-disable-next-line no-process-env
-const dir = path.resolve(cwd, env.CLI_REL_PATH ?? "../..")
-
 const configFileName = "config.json"
-const storesDirectory = path.join(dir, "assets", "stores")
+const getStoresDirectory = (assetsDirectory: string) => path.join(assetsDirectory, "stores")
 
-const loadStores = async () => {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const optionalConfigSchema = configSchema.partial()
+
+const loadStores = async ({ assetsDirectory }: { assetsDirectory: string }) => {
+  const storesDirectory = getStoresDirectory(assetsDirectory)
   logger.debug(`Loading stores (${storesDirectory})`)
   await fs.ensureDir(storesDirectory)
 
@@ -63,12 +58,8 @@ const loadStores = async () => {
   return storesFilled
 }
 
-export const getStores = async (opts?: { search?: string }) => {
-  const stores = await new Promise<TStoreStore[]>(async (resolve) => {
-    const stores = await loadStores()
-    resolve(stores)
-    return
-  })
+export const getStores = async (opts: { search?: string; assetsDirectory: string }) => {
+  const stores = await loadStores({ assetsDirectory: opts.assetsDirectory })
   return stores.filter((store) => {
     if (!opts?.search) return true
     return `${store.name}@${store.version}`.toLowerCase().includes(opts.search.toLowerCase())
@@ -76,8 +67,15 @@ export const getStores = async (opts?: { search?: string }) => {
 }
 
 //* Check for already installed store and download those not installed yet from npmjs
-export const handleDownloadStores = async (config: z.infer<typeof optionalConfigSchema>) => {
-  const stores = await getStores()
+export const handleDownloadStores = async (
+  config: z.infer<typeof optionalConfigSchema>,
+  {
+    assetsDirectory,
+  }: {
+    assetsDirectory: string
+  }
+) => {
+  const stores = await getStores({ assetsDirectory })
   const storeToDownload = config.stores?.filter(
     (store) => !stores.some((s) => s.name === store.name && s.version === store.version)
   )
@@ -110,11 +108,17 @@ export const handleDownloadStores = async (config: z.infer<typeof optionalConfig
   logger.debug(`npm version: ${npmVersion}`)
 
   for (const store of storeToDownload) {
-    await handleDownloadStore(store)
+    await handleDownloadStore(store, {
+      assetsDirectory,
+    })
   }
 }
 
-export const handleDownloadStore = async (store: z.infer<typeof storeConfigSchema>, override?: boolean) => {
+export const handleDownloadStore = async (
+  store: z.infer<typeof storeConfigSchema>,
+  { assetsDirectory, override }: { assetsDirectory: string; override?: boolean }
+) => {
+  const storesDirectory = getStoresDirectory(assetsDirectory)
   const storePath = path.join(storesDirectory, encodeURIComponent(store.name))
   const storeDataPath = path.join(storePath, "data")
   const storeConfigPath = path.join(storePath, configFileName)
@@ -161,7 +165,8 @@ export const handleDownloadStore = async (store: z.infer<typeof storeConfigSchem
   })
 }
 
-export const handleDeleteStore = async (store: z.infer<typeof storeConfigSchema>) => {
+export const handleDeleteStore = async (store: z.infer<typeof storeConfigSchema>, assetsDirectory: string) => {
+  const storesDirectory = getStoresDirectory(assetsDirectory)
   const storePath = path.join(storesDirectory, encodeURIComponent(store.name))
   await fs.remove(storePath)
   logger.info(`Deleted the store ${store.name}@${store.version}`)

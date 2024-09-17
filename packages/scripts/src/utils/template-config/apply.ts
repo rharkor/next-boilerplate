@@ -8,11 +8,11 @@ import { configSchema, pluginConfigSchema, TConfig, TPluginConfig } from "."
 
 export const applyConfigurationTask = async ({
   configFileName,
-  pluginsDirectory,
+  assetsDirectory,
   root,
   noTask,
 }: {
-  pluginsDirectory: string
+  assetsDirectory: string
   configFileName: string
   root: string
   noTask: boolean
@@ -22,16 +22,6 @@ export const applyConfigurationTask = async ({
     applyConfigTask = await task.startTask({
       name: "Apply template config... 🧰",
     })
-  }
-
-  //* Check if the plugins directory exists
-  if (applyConfigTask) applyConfigTask.log("Checking if the plugins directory exists")
-  else logger.info("Checking if the plugins directory exists")
-  if (!(await fs.exists(pluginsDirectory))) {
-    if (applyConfigTask) applyConfigTask.error(`The plugins directory doesn't exist at ${pluginsDirectory}`)
-    else logger.error(`The plugins directory doesn't exist at ${pluginsDirectory}`)
-    applyConfigTask?.stop()
-    throw new Error(`The plugins directory doesn't exist at ${pluginsDirectory}`)
   }
 
   //* Retrieve config
@@ -61,13 +51,19 @@ export const applyConfigurationTask = async ({
   else logger.info("Applying plugins")
 
   for (const plugin of config.plugins) {
-    const pluginName = typeof plugin === "string" ? plugin : plugin.name
-    const pluginPath = path.join(pluginsDirectory, pluginName)
+    const pluginPath = path.join(
+      assetsDirectory,
+      "stores",
+      encodeURIComponent(plugin.store.name),
+      "data",
+      "plugins",
+      plugin.name
+    )
     if (!(await fs.exists(pluginPath))) {
-      if (applyConfigTask) applyConfigTask.error(`The plugin ${pluginName} doesn't exist at ${pluginPath}`)
-      else logger.error(`The plugin ${pluginName} doesn't exist at ${pluginPath}`)
+      if (applyConfigTask) applyConfigTask.error(`The plugin ${plugin.name} doesn't exist at ${pluginPath}`)
+      else logger.error(`The plugin ${plugin.name} doesn't exist at ${pluginPath}`)
       applyConfigTask?.stop()
-      throw new Error(`The plugin ${pluginName} doesn't exist at ${pluginPath}`)
+      throw new Error(`The plugin ${plugin.name} doesn't exist at ${pluginPath}`)
     }
     const pluginConfigPath = path.join(pluginPath, configFileName)
     const pluginConfig = (await fs.readJson(pluginConfigPath)) as TPluginConfig
@@ -85,10 +81,10 @@ export const applyConfigurationTask = async ({
     //? Check if the plugin config exists
     if (!(await fs.exists(pluginConfigPath))) {
       if (applyConfigTask)
-        applyConfigTask.error(`The plugin config for ${pluginName} doesn't exist at ${pluginConfigPath}`)
-      else logger.error(`The plugin config for ${pluginName} doesn't exist at ${pluginConfigPath}`)
+        applyConfigTask.error(`The plugin config for ${plugin.name} doesn't exist at ${pluginConfigPath}`)
+      else logger.error(`The plugin config for ${plugin.name} doesn't exist at ${pluginConfigPath}`)
       applyConfigTask?.stop()
-      throw new Error(`The plugin config for ${pluginName} doesn't exist at ${pluginConfigPath}`)
+      throw new Error(`The plugin config for ${plugin.name} doesn't exist at ${pluginConfigPath}`)
     }
 
     const relativeDestinationPaths = pluginConfig.paths.map((p) => p.to)
@@ -109,8 +105,14 @@ export const applyConfigurationTask = async ({
   if (applyConfigTask) applyConfigTask.log("Applying the plugins")
   else logger.info("Applying the plugins")
   for (const plugin of config.plugins) {
-    const pluginName = typeof plugin === "string" ? plugin : plugin.name
-    const pluginPath = path.join(pluginsDirectory, pluginName)
+    const pluginPath = path.join(
+      assetsDirectory,
+      "stores",
+      encodeURIComponent(plugin.store.name),
+      "data",
+      "plugins",
+      plugin.name
+    )
     const pluginConfigPath = path.join(pluginPath, configFileName)
     const pluginConfig = (await fs.readJson(pluginConfigPath)) as TPluginConfig
     // Copy the plugin to the destination
@@ -118,8 +120,9 @@ export const applyConfigurationTask = async ({
       const to = typeof plugin === "string" ? defaultTo : (plugin.paths.find((p) => p.from === from)?.to ?? defaultTo)
       const sourcePath = path.join(pluginPath, from)
       const destinationPath = path.join(root, to)
-      if (applyConfigTask) applyConfigTask.log(`Copying the plugin ${pluginName} to the destination ${destinationPath}`)
-      else logger.info(`Copying the plugin ${pluginName} to the destination ${destinationPath}`)
+      if (applyConfigTask)
+        applyConfigTask.log(`Copying the plugin ${plugin.name} to the destination ${destinationPath}`)
+      else logger.info(`Copying the plugin ${plugin.name} to the destination ${destinationPath}`)
       await fs.copy(sourcePath, destinationPath)
     }
   }

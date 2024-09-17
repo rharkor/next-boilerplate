@@ -1,9 +1,9 @@
 import { z } from "zod"
 
-import { getConfiguration, setConfiguration } from "@/lib/configuration"
-import { handleDeleteStore, handleDownloadStore } from "@/lib/stores"
+import { assetsDirectory, getConfiguration, setConfiguration } from "@/lib/configuration"
 import { handleApiError } from "@/lib/utils/server-utils"
 import { apiInputFromSchema } from "@/types"
+import { handleDeleteStore, handleDownloadStore } from "@next-boilerplate/scripts/utils/template-config/stores.js"
 
 import {
   deleteStoreRequestSchema,
@@ -16,7 +16,10 @@ export const installOrUpdateStore = async ({
   input: { store },
 }: apiInputFromSchema<typeof installOrUpdateStoreRequestSchema>) => {
   try {
-    await handleDownloadStore(store, true)
+    await handleDownloadStore(store, {
+      override: true,
+      assetsDirectory,
+    })
 
     const data: z.infer<ReturnType<typeof installOrUpdateStoreResponseSchema>> = { success: true }
     return data
@@ -37,7 +40,7 @@ export const deleteStore = async ({ input: { store } }: apiInputFromSchema<typeo
     })
 
     // Delete form store folder
-    await handleDeleteStore(store)
+    await handleDeleteStore(store, assetsDirectory)
 
     const data: z.infer<ReturnType<typeof deleteStoreResponseSchema>> = { success: true }
     return data

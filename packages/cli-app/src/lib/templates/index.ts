@@ -1,27 +1,32 @@
 import fs from "fs-extra"
 import { globby } from "globby"
 import path from "path"
+import { z } from "zod"
 
 import { storeConfigSchema, templateSchema } from "@next-boilerplate/scripts/utils/template-config/index.js"
+import { getStores } from "@next-boilerplate/scripts/utils/template-config/stores.js"
 import { logger } from "@rharkor/logger"
 import { TRPCError } from "@trpc/server"
 
+import { env } from "../env"
 import { getPlugins } from "../plugins"
-
-type TConfig = z.infer<typeof templateSchema>
-
-import { z } from "zod"
-
-import { getStores } from "../stores"
 
 import { TTemplateStore } from "./types"
 
+type TConfig = z.infer<typeof templateSchema>
+
+// Get the current package directory
+const cwd = process.cwd()
+// eslint-disable-next-line no-process-env
+const dir = path.resolve(cwd, env.CLI_REL_PATH ?? "../..")
+
 const configFileName = "config.json"
+export const assetsDirectory = path.join(dir, "assets")
 
 const loadTemplates = async () => {
   //* Get all the templates
   const templatesFilled: TTemplateStore[] = []
-  const stores = await getStores()
+  const stores = await getStores({ assetsDirectory })
   for (const store of stores) {
     const templatesDirectory = path.join(store.fullPath, "data", "templates")
     logger.debug(`Loading templates (${templatesDirectory})`)

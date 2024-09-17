@@ -4,14 +4,20 @@ import { z } from "zod"
 
 import { configurationSchema as webConfigurationSchema, TConfiguration } from "@/api/configuration/schemas"
 import { configSchema } from "@next-boilerplate/scripts/utils/template-config"
+import { handleDownloadStores } from "@next-boilerplate/scripts/utils/template-config/stores"
 import { logger } from "@rharkor/logger"
 import { TRPCError } from "@trpc/server"
 
 import { env } from "../env"
 import { getPlugins } from "../plugins"
-import { handleDownloadStores } from "../stores"
 
 const configurationName = "config.json"
+// Get the current package directory
+const cwd = process.cwd()
+// eslint-disable-next-line no-process-env
+const dir = path.resolve(cwd, env.CLI_REL_PATH ?? "../..")
+
+export const assetsDirectory = path.join(dir, "assets")
 
 export const optionalConfigSchema = configSchema.partial()
 
@@ -82,7 +88,7 @@ const apiConfigToWebConfig = async (apiConfig: z.infer<typeof optionalConfigSche
         )
         if (!foundPlugin) {
           throw new TRPCError({
-            message: `The plugin ${plugin.name} not found (store: ${plugin.store.name}@${plugin.store.version})`,
+            message: `The plugin ${plugin.name} was not found (store: ${plugin.store.name}@${plugin.store.version}). Currently available plugins: ${plugins.map((p) => p.sourcePath).join(", ")}`,
             code: "INTERNAL_SERVER_ERROR",
           })
         }
@@ -123,12 +129,14 @@ export const getConfiguration = async () => {
     // Create the configuration file
     await fs.writeJson(configurationPath, {})
   }
-  return apiConfigToWebConfig(await fs.readJson(configurationPath))
+  const content = await fs.readJson(configurationPath)
+  await handleDownloadStores(content, { assetsDirectory })
+  return apiConfigToWebConfig(content)
 }
 
 export const setConfiguration = async (newConfiguration: TConfiguration) => {
   const content = webConfigToApiConfig(newConfiguration)
-  await handleDownloadStores(content)
+  await handleDownloadStores(content, { assetsDirectory })
   const configurationPath = path.join(env.ROOT_PATH, configurationName)
   fs.writeJson(configurationPath, content, {
     spaces: 4,

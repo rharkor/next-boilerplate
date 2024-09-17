@@ -8,11 +8,11 @@ import {
   storeConfigSchema,
   TPluginConfig,
 } from "@next-boilerplate/scripts/utils/template-config/index.js"
+import { getStores } from "@next-boilerplate/scripts/utils/template-config/stores.js"
 import { logger } from "@rharkor/logger"
 import { TRPCError } from "@trpc/server"
 
 import { env } from "../env"
-import { getStores } from "../stores"
 
 import { TPluginStore } from "./types"
 
@@ -22,11 +22,11 @@ const cwd = process.cwd()
 const dir = path.resolve(cwd, env.CLI_REL_PATH ?? "../..")
 
 const configFileName = "config.json"
-export const rootPluginsDirectory = path.join(dir, "assets", "plugins")
+export const rootAssetsDirectory = path.join(dir, "assets")
 
 const loadPlugins = async () => {
   const pluginsFilled: TPluginStore[] = []
-  const stores = await getStores()
+  const stores = await getStores({ assetsDirectory: rootAssetsDirectory })
   for (const store of stores) {
     const pluginsDirectory = path.join(store.fullPath, "data", "plugins")
     await fs.ensureDir(pluginsDirectory)
