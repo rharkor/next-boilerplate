@@ -1,0 +1,9 @@
+{
+    "ignoreMatches": [
+        "@babel/core",
+        "eslint",
+        "postcss",
+        "autoprefixer",
+        "client-only"
+    ]
+}

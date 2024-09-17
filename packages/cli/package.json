@@ -15,6 +15,10 @@
         "prettier": "prettier --check \"src/**/*.{js,jsx,ts,tsx}\"",
         "prettier:fix": "prettier --write \"src/**/*.{js,jsx,ts,tsx}\""
     },
+    "files": [
+        "dist",
+        "assets"
+    ],
     "exports": {
         ".": {
             "require": {
@@ -60,9 +64,9 @@
     "devDependencies": {
         "@inquirer/prompts": "^5.3.7",
         "@next-boilerplate/cli-app": "*",
+        "@next-boilerplate/cli-helpers": "*",
         "@next-boilerplate/eslint": "*",
         "@next-boilerplate/prettier": "*",
-        "@next-boilerplate/scripts": "*",
         "@next-boilerplate/tsconfig": "*",
         "@rharkor/logger": "^1.3.1",
         "@types/minimist": "^1.2.5",
