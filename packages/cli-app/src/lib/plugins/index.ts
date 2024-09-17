@@ -3,16 +3,13 @@ import { globby } from "globby"
 import path from "path"
 import { z } from "zod"
 
-import {
-  pluginConfigSchema,
-  storeConfigSchema,
-  TPluginConfig,
-} from "@next-boilerplate/scripts/utils/template-config/index.js"
+import { pluginConfigSchema, TPluginConfig } from "@next-boilerplate/cli-helpers/plugins"
+import { getStoreUID, storeConfigSchema } from "@next-boilerplate/cli-helpers/stores"
+import { getStores } from "@next-boilerplate/cli-helpers/stores-helpers"
 import { logger } from "@rharkor/logger"
 import { TRPCError } from "@trpc/server"
 
 import { env } from "../env"
-import { getStores } from "../stores"
 
 import { TPluginStore } from "./types"
 
@@ -22,11 +19,11 @@ const cwd = process.cwd()
 const dir = path.resolve(cwd, env.CLI_REL_PATH ?? "../..")
 
 const configFileName = "config.json"
-export const rootPluginsDirectory = path.join(dir, "assets", "plugins")
+export const rootAssetsDirectory = path.join(dir, "assets")
 
 const loadPlugins = async () => {
   const pluginsFilled: TPluginStore[] = []
-  const stores = await getStores()
+  const stores = await getStores({ assetsDirectory: rootAssetsDirectory })
   for (const store of stores) {
     const pluginsDirectory = path.join(store.fullPath, "data", "plugins")
     await fs.ensureDir(pluginsDirectory)
@@ -75,9 +72,7 @@ export const getPlugins = async (opts?: { search?: string }) => {
 
 export const getPlugin = async (name: string, store: z.infer<typeof storeConfigSchema>) => {
   const plugins = await getPlugins()
-  const plugin = plugins.find(
-    (p) => p.name === name && p.store.name === store.name && p.store.version === store.version
-  )
+  const plugin = plugins.find((p) => p.name === name && getStoreUID(p.store) === getStoreUID(store))
   if (!plugin) {
     throw new TRPCError({
       message: `Plugin ${name} not found (store: ${store.name}@${store.version})`,

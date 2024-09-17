@@ -1,4 +1,4 @@
-import { Fragment, useRef, useState } from "react"
+import { Fragment, useEffect, useMemo, useRef, useState } from "react"
 
 import { AnimatePresence, motion } from "framer-motion"
 import { ArrowDownToLine, Eye, MoreHorizontal, Pencil } from "lucide-react"
@@ -15,6 +15,7 @@ import Section from "@/components/ui/section"
 import { TDictionary } from "@/lib/langs"
 import { trpc } from "@/lib/trpc/client"
 import { RouterOutputs } from "@/lib/trpc/utils"
+import { getItemUID, getStoreUID } from "@next-boilerplate/cli-helpers/stores"
 import { Button } from "@nextui-org/button"
 import { Divider } from "@nextui-org/divider"
 import { Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@nextui-org/dropdown"
@@ -156,6 +157,24 @@ export default function CurrentConfiguration({
   // }, [configuration.data.configuration.plugins])
 
   const [search, setSearch] = useState("")
+  const [debouncedSearch, setDebouncedSearch] = useState(search)
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setDebouncedSearch(search)
+    }, 300)
+    return () => {
+      clearTimeout(timeout)
+    }
+  }, [search])
+
+  const configPlugins = useMemo(() => {
+    return (
+      configuration.data.configuration.plugins?.filter((plugin) => {
+        return plugin.name.toLowerCase().includes(debouncedSearch.toLowerCase())
+      }) ?? []
+    )
+  }, [configuration.data.configuration.plugins, debouncedSearch])
 
   const hasEmptyConfiguration =
     !configuration.data.configuration.plugins || configuration.data.configuration.plugins.length === 0
@@ -167,11 +186,7 @@ export default function CurrentConfiguration({
     await updateConfiguration({
       configuration: {
         plugins: configuration.data.configuration.plugins?.map((p) => {
-          if (
-            p.name === plugin.name &&
-            p.store.name === plugin.store.name &&
-            p.store.version === plugin.store.version
-          ) {
+          if (p.name === plugin.name && getStoreUID(p.store) === getStoreUID(plugin.store)) {
             return plugin
           }
           return p
@@ -180,11 +195,6 @@ export default function CurrentConfiguration({
     })
   }
 
-  const plugins =
-    configuration.data.configuration.plugins?.filter((plugin) => {
-      return plugin.name.toLowerCase().includes(search.toLowerCase())
-    }) ?? []
-
   return (
     <Section>
       <Header
@@ -192,10 +202,16 @@ export default function CurrentConfiguration({
         actions={
           <>
             <Input value={search} onValueChange={setSearch} placeholder={dictionary.search} />
-            <Button color="danger" variant="light" onPress={resetConfiguration} isLoading={isPending}>
+            <Button
+              color="danger"
+              variant="light"
+              onPress={resetConfiguration}
+              isLoading={isPending}
+              className="shrink-0"
+            >
               {dictionary.reset}
             </Button>
-            <Button color="primary" onPress={applyConfiguration} isLoading={isPending}>
+            <Button color="primary" onPress={applyConfiguration} isLoading={isPending} className="shrink-0">
               <ArrowDownToLine className="size-4 shrink-0" />
               {dictionary.apply}
             </Button>
@@ -205,9 +221,9 @@ export default function CurrentConfiguration({
       />
       <ul className="relative z-10 flex flex-1 flex-col gap-2">
         <AnimatePresence>
-          {plugins.map((plugin) => (
+          {configPlugins.map((plugin) => (
             <Plugin
-              key={plugin.store.name + "@" + plugin.store.version + "/" + plugin.name}
+              key={getItemUID(plugin)}
               plugin={plugin}
               dictionary={dictionary}
               isPending={isPending}
@@ -268,46 +284,42 @@ function Plugin({
     onClose: onEditClose,
   } = useDisclosure()
 
+  const [overriddenPlugin, setOverriddenPlugin] = useState<TPlugin>(plugin)
+
+  useEffect(() => {
+    setOverriddenPlugin(plugin)
+  }, [plugin])
+
   const onEdit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    await _onEdit(plugin)
+    await _onEdit(overriddenPlugin)
     onEditClose()
   }
 
-  const [overridedTo, setOverridedTo] = useState<Record<string, string>>(
-    plugin.paths.reduce(
-      (acc, p) => {
-        acc[p.from] = p.overridedTo ?? p.to
-        return acc
-      },
-      {} as Record<string, string>
-    )
-  )
   const editPath = (fromKey: string) => (to: string) => {
-    setOverridedTo((prev) => ({
+    setOverriddenPlugin((prev) => ({
       ...prev,
-      [fromKey]: to,
-    }))
-    plugin.paths = plugin.paths.map((p) => {
-      if (p.from === fromKey) {
-        return {
-          ...p,
-          overridedTo: to,
+      paths: prev.paths.map((p) => {
+        if (p.from === fromKey) {
+          return {
+            ...p,
+            to,
+          }
         }
-      }
-      return p
-    })
+        return p
+      }),
+    }))
   }
 
   return (
     <>
       <ItemCard
-        id={plugin.store.name + "@" + plugin.store.version + "/" + plugin.name}
+        id={getItemUID(plugin)}
         liRef={liRef}
         title={plugin.name}
         subTitle={plugin.sourcePath}
         description={plugin.description}
-        href={`/plugins/${encodeURIComponent(plugin.store.name + "@" + plugin.store.version + "/" + plugin.name)}`}
+        href={`/plugins/${encodeURIComponent(getItemUID(plugin))}`}
         actions={
           <>
             <Button color="primary" variant="flat" className="h-max min-w-0 p-2.5">
@@ -390,7 +402,7 @@ function Plugin({
                       <div className="flex flex-col gap-1">
                         <Input isDisabled isReadOnly value={p.from} label={dictionary.sourcePath} />
                         <Input
-                          value={overridedTo[p.from] ?? ""}
+                          value={overriddenPlugin.paths.find((op) => op.from === p.from)?.to ?? ""}
                           onValueChange={editPath(p.from)}
                           placeholder={p.to}
                           label={dictionary.outputPath}

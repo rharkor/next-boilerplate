@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 
 import { BookUp } from "lucide-react"
 
@@ -10,6 +10,7 @@ import Section from "@/components/ui/section"
 import { TDictionary } from "@/lib/langs"
 import { trpc } from "@/lib/trpc/client"
 import { RouterOutputs } from "@/lib/trpc/utils"
+import { getItemUID } from "@next-boilerplate/cli-helpers/stores"
 import { Button } from "@nextui-org/button"
 import { Input } from "@nextui-org/input"
 import { Spinner } from "@nextui-org/spinner"
@@ -60,12 +61,22 @@ export default function TemplateContent({
   }
 
   const [search, setSearch] = useState("")
+  const [debouncedSearch, setDebouncedSearch] = useState("")
 
-  const plugins = template.data.template.plugins.filter(
-    (plugin) => {
-      return plugin.name.toLowerCase().includes(search.toLowerCase())
-    },
-    [search]
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setDebouncedSearch(search)
+    }, 300)
+
+    return () => clearTimeout(timeout)
+  }, [search])
+
+  const plugins = useMemo(
+    () =>
+      template.data.template.plugins.filter((plugin) => {
+        return plugin.name.toLowerCase().includes(debouncedSearch.toLowerCase())
+      }),
+    [template.data.template.plugins, debouncedSearch]
   )
 
   return (
@@ -96,7 +107,7 @@ export default function TemplateContent({
         <ul className="flex flex-1 flex-col gap-2">
           {plugins.map((plugin) => (
             <Plugin
-              key={plugin.store.name + "@" + plugin.store.version + "/" + plugin.name}
+              key={getItemUID(plugin)}
               plugin={plugin}
               dictionary={dictionary}
               ssrConfiguration={ssrConfiguration}

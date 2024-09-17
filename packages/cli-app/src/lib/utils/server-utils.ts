@@ -10,6 +10,7 @@ import { logger } from "@rharkor/logger"
 import { TRPCError } from "@trpc/server"
 import { TRPC_ERROR_CODE_KEY } from "@trpc/server/rpc"
 
+import { doNotSendNotTranslatedError } from "../constants"
 import { i18n, Locale } from "../i18n-config"
 import { _getDictionary, TDictionary } from "../langs"
 
@@ -78,11 +79,11 @@ export async function ApiError(
   const locale = extractLocale()
   const dictionary = await _getDictionary("errors", locale, undefined)
   let message = findNestedKeyInDictionary(messageCode, dictionary)
-  if (!message) {
+  if (!message && doNotSendNotTranslatedError) {
     logger.error(new Error(`Error not found in dictionary: ${messageCode}`))
     message = dictionary.unknownError
   }
-  const data: TErrorMessage = { message, code: messageCode, extra }
+  const data: TErrorMessage = { message: message ?? messageCode, code: messageCode, extra }
   throw new TRPCError({
     code: code ?? "BAD_REQUEST",
     message: JSON.stringify(data),

@@ -1,27 +1,33 @@
 import fs from "fs-extra"
 import { globby } from "globby"
 import path from "path"
+import { z } from "zod"
 
-import { storeConfigSchema, templateSchema } from "@next-boilerplate/scripts/utils/template-config/index.js"
+import { getStoreUID, storeConfigSchema } from "@next-boilerplate/cli-helpers/stores"
+import { getStores } from "@next-boilerplate/cli-helpers/stores-helpers"
+import { templateSchema } from "@next-boilerplate/cli-helpers/templates"
 import { logger } from "@rharkor/logger"
 import { TRPCError } from "@trpc/server"
 
+import { env } from "../env"
 import { getPlugins } from "../plugins"
-
-type TConfig = z.infer<typeof templateSchema>
-
-import { z } from "zod"
-
-import { getStores } from "../stores"
 
 import { TTemplateStore } from "./types"
 
+type TConfig = z.infer<typeof templateSchema>
+
+// Get the current package directory
+const cwd = process.cwd()
+// eslint-disable-next-line no-process-env
+const dir = path.resolve(cwd, env.CLI_REL_PATH ?? "../..")
+
 const configFileName = "config.json"
+export const assetsDirectory = path.join(dir, "assets")
 
 const loadTemplates = async () => {
   //* Get all the templates
   const templatesFilled: TTemplateStore[] = []
-  const stores = await getStores()
+  const stores = await getStores({ assetsDirectory })
   for (const store of stores) {
     const templatesDirectory = path.join(store.fullPath, "data", "templates")
     logger.debug(`Loading templates (${templatesDirectory})`)
@@ -75,9 +81,7 @@ export const getTemplates = async (opts?: { search?: string }) => {
 
 export const getTemplate = async (name: string, store: z.infer<typeof storeConfigSchema>) => {
   const templates = await getTemplates()
-  const template = templates.find(
-    (p) => p.name === name && p.store.name === store.name && p.store.version === store.version
-  )
+  const template = templates.find((p) => p.name === name && getStoreUID(p.store) === getStoreUID(store))
   if (!template) {
     throw new TRPCError({
       message: `Template ${name} not found (store: ${store.name}@${store.version})`,
@@ -92,10 +96,7 @@ export const getTemplate = async (name: string, store: z.infer<typeof storeConfi
       const pluginInTemplate =
         typeof _pluginInTemplate === "string" ? { name: _pluginInTemplate, store } : _pluginInTemplate
       const plugin = plugins.find(
-        (p) =>
-          p.sourcePath === pluginInTemplate.name &&
-          p.store.name === pluginInTemplate.store.name &&
-          p.store.version === pluginInTemplate.store.version
+        (p) => p.sourcePath === pluginInTemplate.name && getStoreUID(p.store) === getStoreUID(pluginInTemplate.store)
       )
       if (!plugin) {
         logger.error(

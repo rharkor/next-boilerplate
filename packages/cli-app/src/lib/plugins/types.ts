@@ -1,6 +1,7 @@
 import { z } from "zod"
 
-import { pluginConfigSchema, storeConfigSchema } from "@next-boilerplate/scripts/utils/template-config/index.js"
+import { pluginConfigSchema } from "@next-boilerplate/cli-helpers/plugins"
+import { storeConfigSchema } from "@next-boilerplate/cli-helpers/stores"
 
 export const fullPluginSchema = pluginConfigSchema.extend({
   sourcePath: z.string(),

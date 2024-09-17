@@ -1,7 +1,7 @@
 import { z } from "zod"
 
 import { fullTemplateSchema, singleTemplateSchema } from "@/lib/templates/types"
-import { storeConfigSchema } from "@next-boilerplate/scripts/utils/template-config/index.js"
+import { storeConfigSchema } from "@next-boilerplate/cli-helpers/stores"
 
 export const getTemplatesSchema = () =>
   z.object({
