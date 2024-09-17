@@ -8,6 +8,7 @@ import ItemCard from "@/components/ui/item-card"
 import { TDictionary } from "@/lib/langs"
 import { trpc } from "@/lib/trpc/client"
 import { RouterOutputs } from "@/lib/trpc/utils"
+import { getItemUID } from "@next-boilerplate/cli-helpers/stores"
 import { Button } from "@nextui-org/button"
 import { Spinner } from "@nextui-org/spinner"
 import { Tooltip } from "@nextui-org/tooltip"
@@ -82,8 +83,8 @@ export default function Plugin({
 
   return (
     <ItemCard
-      key={plugin.store.name + "@" + plugin.store.version + "/" + plugin.name}
-      id={plugin.store.name + "@" + plugin.store.version + "/" + plugin.name}
+      key={getItemUID(plugin)}
+      id={getItemUID(plugin)}
       title={plugin.name}
       subTitle={plugin.sourcePath}
       description={plugin.description}
@@ -130,7 +131,7 @@ export default function Plugin({
           </>
         )
       }
-      href={`/plugins/${encodeURIComponent(plugin.store.name + "@" + plugin.store.version + "/" + plugin.name)}`}
+      href={`/plugins/${encodeURIComponent(getItemUID(plugin))}`}
       className="pr-12"
     />
   )

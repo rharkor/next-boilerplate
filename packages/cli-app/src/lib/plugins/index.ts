@@ -3,12 +3,9 @@ import { globby } from "globby"
 import path from "path"
 import { z } from "zod"
 
-import {
-  pluginConfigSchema,
-  storeConfigSchema,
-  TPluginConfig,
-} from "@next-boilerplate/scripts/utils/template-config/index.js"
-import { getStores } from "@next-boilerplate/scripts/utils/template-config/stores.js"
+import { pluginConfigSchema, TPluginConfig } from "@next-boilerplate/cli-helpers/plugins"
+import { getStoreUID, storeConfigSchema } from "@next-boilerplate/cli-helpers/stores"
+import { getStores } from "@next-boilerplate/cli-helpers/stores-helpers"
 import { logger } from "@rharkor/logger"
 import { TRPCError } from "@trpc/server"
 
@@ -75,9 +72,7 @@ export const getPlugins = async (opts?: { search?: string }) => {
 
 export const getPlugin = async (name: string, store: z.infer<typeof storeConfigSchema>) => {
   const plugins = await getPlugins()
-  const plugin = plugins.find(
-    (p) => p.name === name && p.store.name === store.name && p.store.version === store.version
-  )
+  const plugin = plugins.find((p) => p.name === name && getStoreUID(p.store) === getStoreUID(store))
   if (!plugin) {
     throw new TRPCError({
       message: `Plugin ${name} not found (store: ${store.name}@${store.version})`,

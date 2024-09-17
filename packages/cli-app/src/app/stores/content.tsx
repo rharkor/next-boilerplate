@@ -16,6 +16,7 @@ import { TDictionary } from "@/lib/langs"
 import { trpc } from "@/lib/trpc/client"
 import { RouterOutputs } from "@/lib/trpc/utils"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { getStoreUID } from "@next-boilerplate/cli-helpers/stores"
 import { Button } from "@nextui-org/button"
 import { Modal, ModalBody, ModalContent, ModalFooter } from "@nextui-org/modal"
 
@@ -44,7 +45,12 @@ export default function StoresContent({
   const utils = trpc.useUtils()
   const updateConfigurationMutation = trpc.configuration.updateConfiguration.useMutation({
     onSuccess: async () => {
-      await utils.configuration.invalidate()
+      await Promise.all([
+        utils.configuration.invalidate(),
+        utils.stores.invalidate(),
+        utils.plugins.invalidate(),
+        utils.templates.invalidate(),
+      ])
     },
   })
 
@@ -79,6 +85,7 @@ export default function StoresContent({
         utils.plugins.invalidate(),
         utils.templates.invalidate(),
       ])
+      form.reset()
     },
   })
 
@@ -114,7 +121,7 @@ export default function StoresContent({
             notClickable
             actions={
               <>
-                {stores.data.stores.some((s) => s.name === store.name && s.version === store.version) ? (
+                {stores.data.stores.some((s) => getStoreUID(s) === getStoreUID(store)) ? (
                   <Button
                     variant="light"
                     color="warning"

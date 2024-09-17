@@ -59,3 +59,38 @@ export const fullStoreSchema = storeConfigSchema.extend({
 })
 
 export type TFullStoreConfig = z.infer<typeof fullStoreSchema>
+
+/**
+ * Get the UID of a store.
+ * @param store
+ * @returns
+ */
+export const getStoreUID = (store: z.infer<typeof storeConfigSchema>) => `${store.name}@${store.version}`
+
+/**
+ * Get the UID of an item.
+ * @param item
+ * @returns
+ */
+export const getItemUID = (item: { name: string; store: z.infer<typeof storeConfigSchema> }) =>
+  `${item.store.name}@${item.store.version}/${item.name}`
+
+/**
+ * Extract the store name and version from an item UID.
+ * @param itemUID
+ * @returns
+ */
+export const extractItemUID = (itemUID: string) => {
+  const match = itemUID.match(matchItem)
+  if (!match) {
+    throw new Error(`Invalid item UID: ${itemUID}`)
+  }
+
+  return {
+    store: {
+      name: match[1],
+      version: match[2],
+    },
+    name: match[3],
+  }
+}

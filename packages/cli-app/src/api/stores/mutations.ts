@@ -3,7 +3,8 @@ import { z } from "zod"
 import { assetsDirectory, getConfiguration, setConfiguration } from "@/lib/configuration"
 import { handleApiError } from "@/lib/utils/server-utils"
 import { apiInputFromSchema } from "@/types"
-import { handleDeleteStore, handleDownloadStore } from "@next-boilerplate/scripts/utils/template-config/stores.js"
+import { getStoreUID } from "@next-boilerplate/cli-helpers/stores"
+import { handleDeleteStore, handleDownloadStore } from "@next-boilerplate/cli-helpers/stores-helpers"
 
 import {
   deleteStoreRequestSchema,
@@ -16,9 +17,10 @@ export const installOrUpdateStore = async ({
   input: { store },
 }: apiInputFromSchema<typeof installOrUpdateStoreRequestSchema>) => {
   try {
-    await handleDownloadStore(store, {
+    await handleDownloadStore({
       override: true,
       assetsDirectory,
+      store,
     })
 
     const data: z.infer<ReturnType<typeof installOrUpdateStoreResponseSchema>> = { success: true }
@@ -35,12 +37,15 @@ export const deleteStore = async ({ input: { store } }: apiInputFromSchema<typeo
     // Remove store from configuration
     await setConfiguration({
       ...configuration,
-      plugins: configuration.plugins?.filter((p) => p.name !== store.name),
-      stores: configuration.stores?.filter((s) => s.name !== store.name),
+      plugins: configuration.plugins?.filter((p) => getStoreUID(p.store) !== getStoreUID(store)),
+      stores: configuration.stores?.filter((s) => getStoreUID(s) !== getStoreUID(store)),
     })
 
     // Delete form store folder
-    await handleDeleteStore(store, assetsDirectory)
+    await handleDeleteStore({
+      assetsDirectory,
+      store,
+    })
 
     const data: z.infer<ReturnType<typeof deleteStoreResponseSchema>> = { success: true }
     return data

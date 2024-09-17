@@ -3,8 +3,8 @@ import path from "path"
 import { z } from "zod"
 
 import { configurationSchema as webConfigurationSchema, TConfiguration } from "@/api/configuration/schemas"
-import { configSchema } from "@next-boilerplate/scripts/utils/template-config"
-import { handleDownloadStores } from "@next-boilerplate/scripts/utils/template-config/stores"
+import { configSchema } from "@next-boilerplate/cli-helpers/config"
+import { handleDownloadStores } from "@next-boilerplate/cli-helpers/stores-helpers"
 import { logger } from "@rharkor/logger"
 import { TRPCError } from "@trpc/server"
 
@@ -39,10 +39,7 @@ const webConfigToApiConfig = (webConfig: TConfiguration): z.infer<typeof optiona
         const fullP = {
           name: plugin.sourcePath,
           store: plugin.store,
-          paths: plugin.paths.map((p) => ({
-            from: p.from,
-            to: p.overridedTo || p.to,
-          })),
+          paths: plugin.paths,
         }
         return fullP
       }),
@@ -130,13 +127,13 @@ export const getConfiguration = async () => {
     await fs.writeJson(configurationPath, {})
   }
   const content = await fs.readJson(configurationPath)
-  await handleDownloadStores(content, { assetsDirectory })
+  await handleDownloadStores({ assetsDirectory, config: content })
   return apiConfigToWebConfig(content)
 }
 
 export const setConfiguration = async (newConfiguration: TConfiguration) => {
   const content = webConfigToApiConfig(newConfiguration)
-  await handleDownloadStores(content, { assetsDirectory })
+  await handleDownloadStores({ assetsDirectory, config: content })
   const configurationPath = path.join(env.ROOT_PATH, configurationName)
   fs.writeJson(configurationPath, content, {
     spaces: 4,

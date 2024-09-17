@@ -9,7 +9,7 @@ import { logger } from "@rharkor/logger"
 
 import { TOptionalConfig } from "../config"
 
-import { storeConfigFileName, storeConfigSchema, TFullStoreConfig, TStoreConfig } from "."
+import { getStoreUID, storeConfigFileName, storeConfigSchema, TFullStoreConfig, TStoreConfig } from "."
 
 /**
  * Get the stores directory path relative to the assets directory.
@@ -20,13 +20,6 @@ export const getStoresDirectory = (assetsDirectory: string) => path.join(assetsD
 
 export const getStoreDataDirectory = ({ assetsDirectory, store }: { assetsDirectory: string; store: TStoreConfig }) =>
   path.join(getStoresDirectory(assetsDirectory), encodeURIComponent(getStoreUID(store)), "data")
-
-/**
- * Get the UID of a store.
- * @param store
- * @returns
- */
-export const getStoreUID = (store: z.infer<typeof storeConfigSchema>) => `${store.name}@${store.version}`
 
 /**
  * Load the stores from the assets directory.
@@ -109,8 +102,6 @@ export const handleDownloadStores = async ({
     return
   }
 
-  logger.info(`Downloading stores: ${storeToDownload?.map((s) => s.name).join(", ")}`)
-
   //* Folder tree
   // stores
   //  - %next-boilerplate%2Fcli (store name encoded)
@@ -127,7 +118,7 @@ export const handleDownloadStores = async ({
       resolve(stdout)
     })
   }).catch((e) => {
-    logger.error(`Failed to get the npm version`)
+    logger.error(`Failed to get the npm version when downloading the stores`)
     throw e
   })
   logger.debug(`npm version: ${npmVersion}`)
@@ -171,13 +162,31 @@ export const handleDownloadStore = async ({
 
   // Check if the store is already installed
   if (!override && (await fs.exists(storeDataPath))) {
-    logger.warn(`The store ${store.name}@${store.version} is already installed at ${storeDataPath}`)
-    return
+    // Ensure that the insallation is not pending (checking for the .lock file)
+    const lockFile = path.join(storeDataPath, ".lock")
+    // If the lockfile exists then recheck every second (max 60s)
+    let i = 0
+    while ((await fs.exists(lockFile)) && i < 60) {
+      await new Promise((resolve) => setTimeout(resolve, 1000))
+      i++
+    }
+    if (await fs.exists(lockFile)) {
+      logger.warn(`The store ${store.name}@${store.version} installation is pending (may be stuck)`)
+      return
+    } else {
+      logger.warn(`The store ${store.name}@${store.version} is already installed at ${storeDataPath}`)
+      return
+    }
   }
+
+  logger.info(`Downloading the store ${store.name}@${store.version}`)
 
   // Ensure the store data folder exists
   //? Created after the check to avoid triggering the warning
   await fs.ensureDir(storeDataPath)
+
+  // Create a lock file to prevent multiple installations
+  await fs.writeFile(path.join(storeDataPath, ".lock"), "")
 
   //* Download the store (from npmjs)
   await new Promise<void>((resolve, reject) => {
@@ -194,6 +203,8 @@ export const handleDownloadStore = async ({
         await tar.x({ file: tarballPath, cwd: storeDataPath, strip: 1 })
         // Remove the tarball
         await fs.remove(tarballPath)
+        // Remove the lock file
+        await fs.remove(path.join(storeDataPath, ".lock"))
         logger.debug(`Downloaded the store ${store.name}@${store.version}`)
         resolve()
       } catch (e) {

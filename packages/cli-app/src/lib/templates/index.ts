@@ -3,8 +3,9 @@ import { globby } from "globby"
 import path from "path"
 import { z } from "zod"
 
-import { storeConfigSchema, templateSchema } from "@next-boilerplate/scripts/utils/template-config/index.js"
-import { getStores } from "@next-boilerplate/scripts/utils/template-config/stores.js"
+import { getStoreUID, storeConfigSchema } from "@next-boilerplate/cli-helpers/stores"
+import { getStores } from "@next-boilerplate/cli-helpers/stores-helpers"
+import { templateSchema } from "@next-boilerplate/cli-helpers/templates"
 import { logger } from "@rharkor/logger"
 import { TRPCError } from "@trpc/server"
 
@@ -80,9 +81,7 @@ export const getTemplates = async (opts?: { search?: string }) => {
 
 export const getTemplate = async (name: string, store: z.infer<typeof storeConfigSchema>) => {
   const templates = await getTemplates()
-  const template = templates.find(
-    (p) => p.name === name && p.store.name === store.name && p.store.version === store.version
-  )
+  const template = templates.find((p) => p.name === name && getStoreUID(p.store) === getStoreUID(store))
   if (!template) {
     throw new TRPCError({
       message: `Template ${name} not found (store: ${store.name}@${store.version})`,

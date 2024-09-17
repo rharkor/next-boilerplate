@@ -3,7 +3,7 @@ import { z } from "zod"
 import { assetsDirectory } from "@/lib/configuration"
 import { handleApiError } from "@/lib/utils/server-utils"
 import { apiInputFromSchema } from "@/types"
-import { getStores } from "@next-boilerplate/scripts/utils/template-config/stores.js"
+import { getStores } from "@next-boilerplate/cli-helpers/stores-helpers"
 
 import { getStoresResponseSchema } from "./schemas"
 

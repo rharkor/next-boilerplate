@@ -1,7 +1,6 @@
 import { z } from "zod"
 
-import { storeConfigSchema } from "@next-boilerplate/scripts/utils/template-config/index.js"
-import { fullStoreSchema } from "@next-boilerplate/scripts/utils/template-config/stores.js"
+import { fullStoreSchema, storeConfigSchema } from "@next-boilerplate/cli-helpers/stores"
 
 export const getStoresResponseSchema = () => z.object({ stores: z.array(fullStoreSchema) })
 
