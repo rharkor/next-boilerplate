@@ -67,16 +67,21 @@ const loadTemplates = async () => {
   return templatesFilled
 }
 
-export const getTemplates = async (opts?: { search?: string }) => {
+export const getTemplates = async (opts?: { search?: string; store: { name: string; version: string } }) => {
   const templates = await new Promise<TTemplateStore[]>(async (resolve) => {
     const templates = await loadTemplates()
     resolve(templates)
     return
   })
-  return templates.filter((template) => {
-    if (!opts?.search) return true
-    return template.name.toLowerCase().includes(opts.search.toLowerCase())
-  })
+  return templates
+    .filter((template) => {
+      if (!opts?.store) return true
+      return getStoreUID(template.store) === getStoreUID(opts.store)
+    })
+    .filter((template) => {
+      if (!opts?.search) return true
+      return template.name.toLowerCase().includes(opts.search.toLowerCase())
+    })
 }
 
 export const getTemplate = async (name: string, store: z.infer<typeof storeConfigSchema>) => {
