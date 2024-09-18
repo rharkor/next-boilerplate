@@ -14,6 +14,7 @@ import { RouterOutputs } from "@/lib/trpc/utils"
 import { getItemUID } from "@next-boilerplate/cli-helpers/stores"
 import { Input } from "@nextui-org/input"
 import { Link } from "@nextui-org/link"
+import { Spinner } from "@nextui-org/spinner"
 
 import { TemplatesContentDr } from "./content.dr"
 
@@ -35,8 +36,14 @@ export default function TemplatesContent({
 
   const sp = useSearchParams()
 
-  const storeName = useMemo(() => sp.get("storeName"), [sp])
-  const storeVersion = useMemo(() => sp.get("storeVersion"), [sp])
+  const storeName = useMemo(() => {
+    const storeName = sp.get("storeName")
+    return storeName ? decodeURIComponent(storeName) : null
+  }, [sp])
+  const storeVersion = useMemo(() => {
+    const storeVersion = sp.get("storeVersion")
+    return storeVersion ? decodeURIComponent(storeVersion) : null
+  }, [sp])
 
   // Debounce search
   useEffect(() => {
@@ -95,22 +102,38 @@ export default function TemplatesContent({
           </>
         }
         dictionary={dictionary}
-        actions={<Input value={search} onValueChange={setSearch} placeholder={dictionary.search} />}
+        actions={
+          <Input
+            value={search}
+            onValueChange={setSearch}
+            placeholder={dictionary.search}
+            endContent={
+              templates.isLoading && (
+                <Spinner
+                  classNames={{
+                    wrapper: "!size-4",
+                  }}
+                  color="current"
+                  size="sm"
+                />
+              )
+            }
+            isDisabled={templates.isLoading}
+          />
+        }
       />
       <ul className="flex flex-1 flex-col gap-2">
-        {templates.isLoading
-          ? [...Array(5)].map((_, i) => <ItemCard key={i} description="" id="" title="" isLoading />)
-          : templates.data?.templates.map((template) => (
-              <ItemCard
-                key={getItemUID(template)}
-                id={getItemUID(template)}
-                title={template.name}
-                subTitle={template.sourcePath}
-                description={template.description}
-                endContent={<BookDashed className="absolute right-2 top-2 size-4 text-primary" />}
-                href={`/templates/${encodeURIComponent(getItemUID(template))}`}
-              />
-            ))}
+        {templates.data?.templates.map((template) => (
+          <ItemCard
+            key={getItemUID(template)}
+            id={getItemUID(template)}
+            title={template.name}
+            subTitle={template.sourcePath}
+            description={template.description}
+            endContent={<BookDashed className="absolute right-2 top-2 size-4 text-primary" />}
+            href={`/templates/${encodeURIComponent(getItemUID(template))}`}
+          />
+        ))}
       </ul>
     </>
   )

@@ -39,7 +39,7 @@ export default function ChooseStore({
                 id={store.uid}
                 title={store.name}
                 description={dictionary.storeVersion + ": " + store.version}
-                href={`${lnk}?storeName=${store.name}&storeVersion=${store.version}`}
+                href={`${lnk}?storeName=${encodeURIComponent(store.name)}&storeVersion=${encodeURIComponent(store.version)}`}
                 endContent={<Store className="absolute right-2 top-2 size-4 text-primary" />}
               />
             ))}

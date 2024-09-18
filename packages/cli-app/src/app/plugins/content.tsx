@@ -13,6 +13,7 @@ import { RouterOutputs } from "@/lib/trpc/utils"
 import { getItemUID } from "@next-boilerplate/cli-helpers/stores"
 import { Input } from "@nextui-org/input"
 import { Link } from "@nextui-org/link"
+import { Spinner } from "@nextui-org/spinner"
 
 import { PluginsContentDr } from "./content.dr"
 import Plugin from "./plugin"
@@ -39,8 +40,14 @@ export default function PluginsContent({
 
   const sp = useSearchParams()
 
-  const storeName = useMemo(() => sp.get("storeName"), [sp])
-  const storeVersion = useMemo(() => sp.get("storeVersion"), [sp])
+  const storeName = useMemo(() => {
+    const storeName = sp.get("storeName")
+    return storeName ? decodeURIComponent(storeName) : null
+  }, [sp])
+  const storeVersion = useMemo(() => {
+    const storeVersion = sp.get("storeVersion")
+    return storeVersion ? decodeURIComponent(storeVersion) : null
+  }, [sp])
 
   // Debounce search
   useEffect(() => {
@@ -65,6 +72,18 @@ export default function PluginsContent({
       enabled: storeName && storeVersion ? true : false,
     }
   )
+
+  // Do not set empty data to the cache
+  const [pluginsData, setPluginsData] = useState<TPlugins>(
+    ssrPlugins ?? {
+      plugins: [],
+    }
+  )
+  useEffect(() => {
+    if (plugins.data) {
+      setPluginsData(plugins.data)
+    }
+  }, [plugins.data])
 
   const stores = trpc.stores.getStores.useQuery(undefined, {
     initialData: ssrStores,
@@ -99,36 +118,35 @@ export default function PluginsContent({
           </>
         }
         dictionary={dictionary}
-        actions={<Input value={search} onValueChange={setSearch} placeholder={dictionary.search} />}
+        actions={
+          <Input
+            value={search}
+            onValueChange={setSearch}
+            placeholder={dictionary.search}
+            endContent={
+              plugins.isLoading && (
+                <Spinner
+                  classNames={{
+                    wrapper: "!size-4",
+                  }}
+                  color="current"
+                  size="sm"
+                />
+              )
+            }
+            isDisabled={plugins.isLoading}
+          />
+        }
       />
       <ul className="flex flex-1 flex-col gap-2">
-        {plugins.isLoading
-          ? [...Array(5)].map((_, i) => (
-              <Plugin
-                key={i}
-                plugin={{
-                  name: "",
-                  store: {
-                    name: "",
-                    version: "",
-                  },
-                  description: "",
-                  sourcePath: "",
-                  paths: [],
-                }}
-                dictionary={dictionary}
-                ssrConfiguration={ssrConfiguration}
-                isLoading
-              />
-            ))
-          : plugins.data?.plugins.map((plugin) => (
-              <Plugin
-                key={getItemUID(plugin)}
-                plugin={plugin}
-                dictionary={dictionary}
-                ssrConfiguration={ssrConfiguration}
-              />
-            ))}
+        {pluginsData.plugins.map((plugin) => (
+          <Plugin
+            key={getItemUID(plugin)}
+            plugin={plugin}
+            dictionary={dictionary}
+            ssrConfiguration={ssrConfiguration}
+          />
+        ))}
       </ul>
     </>
   )

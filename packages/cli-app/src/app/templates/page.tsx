@@ -15,8 +15,10 @@ export default async function Templates() {
 
   const headersStore = headers()
   const url = new URL(headersStore.get("x-url") as string)
-  const storeName = url.searchParams.get("storeName")
-  const storeVersion = url.searchParams.get("storeVersion")
+  let storeName = url.searchParams.get("storeName")
+  if (storeName) storeName = decodeURIComponent(storeName)
+  let storeVersion = url.searchParams.get("storeVersion")
+  if (storeVersion) storeVersion = decodeURIComponent(storeVersion)
 
   const ssrTemplates =
     storeName && storeVersion
