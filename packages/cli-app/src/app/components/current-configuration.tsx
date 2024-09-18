@@ -1,9 +1,8 @@
 import { Fragment, useEffect, useMemo, useRef, useState } from "react"
 
 import { AnimatePresence, motion } from "framer-motion"
-import { ArrowDownToLine, Eye, MoreHorizontal, Pencil } from "lucide-react"
+import { ArrowDownToLine, ChevronRight, Eye, MoreHorizontal, Pencil } from "lucide-react"
 import { toast } from "react-toastify"
-import { v4 as uuid } from "uuid"
 import { z } from "zod"
 
 import { updateConfigurationRequestSchema } from "@/api/configuration/schemas"
@@ -27,6 +26,13 @@ import { CurrentConfigurationDr } from "./current-configuration.dr"
 import NoConfiguration from "./no-configuration"
 
 type TPlugin = NonNullable<RouterOutputs["configuration"]["getConfiguration"]["configuration"]["plugins"]>[number]
+type TDeletionBubbles = {
+  key: string
+  position: { x: number; y: number }
+  destination: { x: number; y: number }
+  size: number
+  overCard?: boolean
+}[]
 
 export default function CurrentConfiguration({
   dictionary,
@@ -74,60 +80,45 @@ export default function CurrentConfiguration({
     resetConfigurationMutation.isPending ||
     applyConfigurationMutation.isPending
 
-  const bubblesDuration = 0.45
-  const animateBubbles = (boundingBox: DOMRect) => {
+  const bubblesDuration = 0.5
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const animateBubbles = (boundingBox: DOMRect, overCard?: boolean) => {
+    //* Add scrolling offset to bounding box
+    const scrollOffset = window.scrollY
+    boundingBox.y += scrollOffset
+
     //* Animate deletion
     const bubbles = 100
     const minSize = 5
-    const maxSize = 15
-    const startXRadius = 320
-    const startYRadius = 20
-    const endXRadius = 350
-    const endYRadius = 40
-    const xRandomness = 50
-    const yRandomness = 20
-    const angleStep = (2 * Math.PI) / bubbles
-    const center = {
-      x: boundingBox.x + boundingBox.width / 2,
-      y: boundingBox.y + boundingBox.height / 2,
-    }
-    const newBubbles = Array.from({ length: bubbles }, (_, i) => {
+    const maxSize = 10
+    const newBubbles: TDeletionBubbles = Array.from({ length: bubbles }, (_, i) => {
       const size = Math.random() * (maxSize - minSize) + minSize
-      const angle = angleStep * i
-      const cosAngle = Math.cos(angle)
-      const sinAngle = Math.sin(angle)
-      const xRandomnessValue = (Math.random() - 0.5) * xRandomness * 2
-      const yRandomnessValue = (Math.random() - 0.5) * yRandomness * 2
+      const randomX = Math.random() * boundingBox.width + boundingBox.x
+      const randomY = Math.random() * boundingBox.height + boundingBox.y
+      // between 0.5 and 1.5
+      const randomYSpeed = Math.random() + 0.5
       return {
-        key: uuid(),
+        key: `bubble-${i}`,
         position: {
-          x: center.x + startXRadius * cosAngle + xRandomnessValue * cosAngle,
-          y: center.y + startYRadius * sinAngle + yRandomnessValue * sinAngle,
+          x: randomX,
+          y: randomY,
         },
         destination: {
-          x: center.x + endXRadius * cosAngle + xRandomnessValue,
-          y: center.y + endYRadius * sinAngle + yRandomnessValue,
+          x: randomX,
+          y: randomY + randomYSpeed * 25,
         },
         size,
+        overCard,
       }
     })
     setDeletionBubbles((prev) => [...prev, ...newBubbles])
-    setTimeout(
-      () => {
-        setDeletionBubbles((prev) => prev.filter((bubble) => !newBubbles.includes(bubble)))
-      },
-      bubblesDuration * 1000 + 3000
-    )
+    setTimeout(() => {
+      setDeletionBubbles((prev) => prev.filter((bubble) => !newBubbles.includes(bubble)))
+    }, bubblesDuration * 1000)
   }
 
-  const [deletionBubbles, setDeletionBubbles] = useState<
-    {
-      key: string
-      position: { x: number; y: number }
-      destination: { x: number; y: number }
-      size: number
-    }[]
-  >([])
+  const [deletionBubbles, setDeletionBubbles] = useState<TDeletionBubbles>([])
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const onDelete = (plugin: TPlugin) => async (boundingBox: DOMRect) => {
     const plugins = configuration.data.configuration.plugins?.filter((p) => p.name !== plugin.name)
     await updateConfiguration({
@@ -136,7 +127,8 @@ export default function CurrentConfiguration({
       },
     })
 
-    animateBubbles(boundingBox)
+    // Remove because not performant
+    // animateBubbles(boundingBox)
   }
 
   /**
@@ -146,9 +138,9 @@ export default function CurrentConfiguration({
   //   const debug = () => {
   //     const firstPlugin = configuration.data.configuration.plugins?.[0]
   //     if (!firstPlugin) return
-  //     const boundingBox = document.querySelector("li.plugin")?.getBoundingClientRect()
+  //     const boundingBox = document.querySelector("li .plugin")?.getBoundingClientRect()
   //     if (!boundingBox) return
-  //     animateBubbles(boundingBox)
+  //     animateBubbles(boundingBox, true)
   //   }
   //   document.addEventListener("click", debug)
   //   return () => {
@@ -242,10 +234,11 @@ export default function CurrentConfiguration({
             height: `${bubble.size}px`,
             top: 0,
             left: 0,
+            zIndex: bubble.overCard ? 100 : 0,
           }}
           transition={{ duration: bubblesDuration }}
           initial={{ x: bubble.position.x, y: bubble.position.y, scale: 1, opacity: 1 }}
-          animate={{ x: bubble.destination.x, y: bubble.destination.y, opacity: 0, scale: 0.5 }}
+          animate={{ x: bubble.destination.x, y: bubble.destination.y, opacity: 0, scale: 0.2 }}
           className="absolute rounded-full bg-foreground"
         />
       ))}
@@ -317,7 +310,13 @@ function Plugin({
         id={getItemUID(plugin)}
         liRef={liRef}
         title={plugin.name}
-        subTitle={plugin.sourcePath}
+        subTitle={
+          <>
+            <span>{getStoreUID(plugin.store)}</span>
+            <ChevronRight className="size-3" />
+            <span>{plugin.sourcePath}</span>
+          </>
+        }
         description={plugin.description}
         href={`/plugins/${encodeURIComponent(getItemUID(plugin))}`}
         actions={

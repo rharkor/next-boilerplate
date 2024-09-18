@@ -1,3 +1,5 @@
+import { headers } from "next/headers"
+
 import Section from "@/components/ui/section"
 import { getDictionary } from "@/lib/langs"
 import { trpc } from "@/lib/trpc/server"
@@ -10,12 +12,36 @@ import { PluginsContentDr } from "./content.dr"
 export default async function Plugins() {
   const locale = extractLocale()
   const dictionary = await getDictionary(locale, dictionaryRequirements(PluginsContentDr))
-  const ssrPlugins = await trpc.plugins.getPlugins({})
+
+  const headersStore = headers()
+  const url = new URL(headersStore.get("x-url") as string)
+  let storeName = url.searchParams.get("storeName")
+  if (storeName) storeName = decodeURIComponent(storeName)
+  let storeVersion = url.searchParams.get("storeVersion")
+  if (storeVersion) storeVersion = decodeURIComponent(storeVersion)
+
+  const ssrPlugins =
+    storeName && storeVersion
+      ? await trpc.plugins.getPlugins({
+          store: {
+            name: storeName,
+            version: storeVersion,
+          },
+        })
+      : undefined
+  const ssrStores = await trpc.stores.getStores({ onlyInstalled: true })
   const ssrConfiguration = await trpc.configuration.getConfiguration()
 
   return (
     <Section>
-      <PluginsContent ssrPlugins={ssrPlugins} dictionary={dictionary} ssrConfiguration={ssrConfiguration} />
+      <PluginsContent
+        initialStoreName={storeName}
+        initialStoreVersion={storeVersion}
+        ssrStores={ssrStores}
+        ssrPlugins={ssrPlugins}
+        dictionary={dictionary}
+        ssrConfiguration={ssrConfiguration}
+      />
     </Section>
   )
 }

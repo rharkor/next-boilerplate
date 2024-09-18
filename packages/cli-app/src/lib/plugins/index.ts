@@ -58,16 +58,27 @@ const loadPlugins = async () => {
   return pluginsFilled
 }
 
-export const getPlugins = async (opts?: { search?: string }) => {
+export const getPlugins = async (opts?: {
+  search?: string
+  store: {
+    name: string
+    version: string
+  }
+}) => {
   const plugins = await new Promise<TPluginStore[]>(async (resolve) => {
     const plugins = await loadPlugins()
     resolve(plugins)
     return
   })
-  return plugins.filter((plugin) => {
-    if (!opts?.search) return true
-    return plugin.name.toLowerCase().includes(opts.search.toLowerCase())
-  })
+  return plugins
+    .filter((plugin) => {
+      if (!opts?.store) return true
+      return getStoreUID(plugin.store) === getStoreUID(opts.store)
+    })
+    .filter((plugin) => {
+      if (!opts?.search) return true
+      return plugin.name.toLowerCase().includes(opts.search.toLowerCase())
+    })
 }
 
 export const getPlugin = async (name: string, store: z.infer<typeof storeConfigSchema>) => {
