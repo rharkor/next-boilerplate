@@ -71,7 +71,9 @@ export default function StoresContent({
             name: data.name,
             version: data.version,
           },
-        ].filter((store, index, self) => self.findIndex((s) => s.name === store.name) === index),
+        ]
+          // Remove duplicates
+          .filter((store, index, self) => self.findIndex((s) => getStoreUID(s) === getStoreUID(store)) === index),
       },
     })
     setIsAddStoreOpen(false)
@@ -121,35 +123,38 @@ export default function StoresContent({
             notClickable
             actions={
               <>
-                {stores.data.stores.some((s) => getStoreUID(s) === getStoreUID(store)) ? (
-                  <Button
-                    variant="light"
-                    color="warning"
-                    onPress={() => {
-                      installOrUpdateStoreMutation.mutate({
-                        store,
-                      })
-                    }}
-                    isLoading={isPending}
-                  >
-                    <Download className="size-5" />
-                    {dictionary.update}
-                  </Button>
-                ) : (
-                  <Button
-                    variant="light"
-                    color="success"
-                    onPress={() => {
-                      installOrUpdateStoreMutation.mutate({
-                        store,
-                      })
-                    }}
-                    isLoading={isPending}
-                  >
-                    <Download className="size-5" />
-                    {dictionary.download}
-                  </Button>
-                )}
+                {
+                  // Check if the store is already installed
+                  stores.data.stores.some((s) => getStoreUID(s) === getStoreUID(store)) ? (
+                    <Button
+                      variant="light"
+                      color="warning"
+                      onPress={() => {
+                        installOrUpdateStoreMutation.mutate({
+                          store,
+                        })
+                      }}
+                      isLoading={isPending}
+                    >
+                      <Download className="size-5" />
+                      {dictionary.update}
+                    </Button>
+                  ) : (
+                    <Button
+                      variant="light"
+                      color="success"
+                      onPress={() => {
+                        installOrUpdateStoreMutation.mutate({
+                          store,
+                        })
+                      }}
+                      isLoading={isPending}
+                    >
+                      <Download className="size-5" />
+                      {dictionary.download}
+                    </Button>
+                  )
+                }
                 <Button
                   variant="light"
                   className="size-[40px] min-w-0 p-1"
@@ -166,8 +171,8 @@ export default function StoresContent({
                 </Button>
               </>
             }
-            key={store.name}
-            id={store.name}
+            key={getStoreUID(store)}
+            id={getStoreUID(store)}
             title={store.name}
             description={dictionary.storeVersion + ": " + store.version}
           />
