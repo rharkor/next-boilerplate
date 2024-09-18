@@ -5,13 +5,14 @@ import { getStoresQuery } from "./queries"
 import {
   deleteStoreRequestSchema,
   deleteStoreResponseSchema,
+  getStoresRequestSchema,
   getStoresResponseSchema,
   installOrUpdateStoreRequestSchema,
   installOrUpdateStoreResponseSchema,
 } from "./schemas"
 
 export const storesRouter = router({
-  getStores: publicProcedure.output(getStoresResponseSchema()).query(getStoresQuery),
+  getStores: publicProcedure.input(getStoresRequestSchema()).output(getStoresResponseSchema()).query(getStoresQuery),
   installOrUpdateStore: publicProcedure
     .input(installOrUpdateStoreRequestSchema())
     .output(installOrUpdateStoreResponseSchema())
