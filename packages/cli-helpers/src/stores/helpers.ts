@@ -161,21 +161,26 @@ export const handleDownloadStore = async ({
   await fs.writeJson(storeConfigPath, store)
 
   // Check if the store is already installed
-  if (!override && (await fs.exists(storeDataPath))) {
-    // Ensure that the insallation is not pending (checking for the .lock file)
-    const lockFile = path.join(storeDataPath, ".lock")
-    // If the lockfile exists then recheck every second (max 60s)
-    let i = 0
-    while ((await fs.exists(lockFile)) && i < 60) {
-      await new Promise((resolve) => setTimeout(resolve, 1000))
-      i++
-    }
-    if (await fs.exists(lockFile)) {
-      logger.warn(`The store ${store.name}@${store.version} installation is pending (may be stuck)`)
-      return
+  if (await fs.exists(storeDataPath)) {
+    if (override) {
+      // Remove the store folder
+      await fs.remove(storePath)
     } else {
-      logger.warn(`The store ${store.name}@${store.version} is already installed at ${storeDataPath}`)
-      return
+      // Ensure that the insallation is not pending (checking for the .lock file)
+      const lockFile = path.join(storeDataPath, ".lock")
+      // If the lockfile exists then recheck every second (max 60s)
+      let i = 0
+      while ((await fs.exists(lockFile)) && i < 60) {
+        await new Promise((resolve) => setTimeout(resolve, 1000))
+        i++
+      }
+      if (await fs.exists(lockFile)) {
+        logger.warn(`The store ${store.name}@${store.version} installation is pending (may be stuck)`)
+        return
+      } else {
+        logger.warn(`The store ${store.name}@${store.version} is already installed at ${storeDataPath}`)
+        return
+      }
     }
   }
 
