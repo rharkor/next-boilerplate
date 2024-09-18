@@ -13,7 +13,7 @@ import { Button } from "@nextui-org/button"
 import { Spinner } from "@nextui-org/spinner"
 import { Tooltip } from "@nextui-org/tooltip"
 
-import { PluginsContentDr } from "./content.dr"
+import { PluginDr } from "./plugin.dr"
 
 type TPlugins = RouterOutputs["plugins"]["getPlugins"]
 type TPlugin = TPlugins["plugins"][number]
@@ -26,7 +26,7 @@ export default function Plugin({
 }: {
   plugin: TPlugin
   ssrConfiguration: RouterOutputs["configuration"]["getConfiguration"]
-  dictionary: TDictionary<typeof PluginsContentDr>
+  dictionary: TDictionary<typeof PluginDr>
   isLoading?: boolean
 }) {
   const utils = trpc.useUtils()
