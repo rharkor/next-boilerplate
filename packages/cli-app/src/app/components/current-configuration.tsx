@@ -1,7 +1,7 @@
 import { Fragment, useEffect, useMemo, useRef, useState } from "react"
 
 import { AnimatePresence, motion } from "framer-motion"
-import { ArrowDownToLine, Eye, MoreHorizontal, Pencil } from "lucide-react"
+import { ArrowDownToLine, ChevronRight, Eye, MoreHorizontal, Pencil } from "lucide-react"
 import { toast } from "react-toastify"
 import { v4 as uuid } from "uuid"
 import { z } from "zod"
@@ -317,7 +317,13 @@ function Plugin({
         id={getItemUID(plugin)}
         liRef={liRef}
         title={plugin.name}
-        subTitle={plugin.sourcePath}
+        subTitle={
+          <>
+            <span>{getStoreUID(plugin.store)}</span>
+            <ChevronRight className="size-3" />
+            <span>{plugin.sourcePath}</span>
+          </>
+        }
         description={plugin.description}
         href={`/plugins/${encodeURIComponent(getItemUID(plugin))}`}
         actions={
