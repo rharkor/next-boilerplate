@@ -17,7 +17,7 @@ export default function Header({
   withBack,
   dictionary,
 }: {
-  title: string
+  title: string | React.ReactNode
   actions?: React.ReactNode
   withBack?: boolean
   dictionary: TDictionary<typeof HeaderDr>
@@ -26,7 +26,7 @@ export default function Header({
 
   const content = (
     <div className="flex items-center justify-between gap-3">
-      <h1 className="text-3xl">{title}</h1>
+      <h1 className="flex flex-col gap-1 text-3xl">{title}</h1>
       <div className="flex flex-row gap-2">{actions}</div>
     </div>
   )

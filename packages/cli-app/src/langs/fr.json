@@ -246,5 +246,6 @@
   "storeVersion": "Version du magasin",
   "storeVersionExample": "latest",
   "doNotTrustExternalStores": "Ne faites pas confiance aux magasins externes, assurez-vous de vérifier le code avant de l'ajouter à votre configuration.",
-  "download": "Télécharger"
+  "download": "Télécharger",
+  "selectStore": "Sélectionner un magasin"
 }

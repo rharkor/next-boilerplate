@@ -6,6 +6,7 @@ import { storeConfigSchema } from "@next-boilerplate/cli-helpers/stores"
 export const getTemplatesSchema = () =>
   z.object({
     search: z.string().optional(),
+    store: storeConfigSchema,
   })
 
 export const getTemplatesResponseSchema = () =>
