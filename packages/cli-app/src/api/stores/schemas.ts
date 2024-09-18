@@ -2,6 +2,11 @@ import { z } from "zod"
 
 import { fullStoreSchema, storeConfigSchema } from "@next-boilerplate/cli-helpers/stores"
 
+export const getStoresRequestSchema = () =>
+  z.object({
+    onlyInstalled: z.boolean().optional(),
+  })
+
 export const getStoresResponseSchema = () => z.object({ stores: z.array(fullStoreSchema) })
 
 export const installOrUpdateStoreRequestSchema = () =>

@@ -29,7 +29,7 @@ export default async function Templates() {
           },
         })
       : undefined
-  const ssrStores = await trpc.stores.getStores()
+  const ssrStores = await trpc.stores.getStores({ onlyInstalled: true })
 
   return (
     <Section>

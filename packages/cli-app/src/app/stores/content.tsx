@@ -36,9 +36,12 @@ export default function StoresContent({
   const configuration = trpc.configuration.getConfiguration.useQuery(undefined, {
     initialData: ssrConfiguration,
   })
-  const stores = trpc.stores.getStores.useQuery(undefined, {
-    initialData: ssrStores,
-  })
+  const stores = trpc.stores.getStores.useQuery(
+    {},
+    {
+      initialData: ssrStores,
+    }
+  )
 
   const [isAddStoreOpen, setIsAddStoreOpen] = useState(false)
 

@@ -29,7 +29,7 @@ export default async function Plugins() {
           },
         })
       : undefined
-  const ssrStores = await trpc.stores.getStores()
+  const ssrStores = await trpc.stores.getStores({ onlyInstalled: true })
   const ssrConfiguration = await trpc.configuration.getConfiguration()
 
   return (

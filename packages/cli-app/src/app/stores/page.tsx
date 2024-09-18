@@ -11,7 +11,7 @@ export default async function Stores() {
   const locale = extractLocale()
   const dictionary = await getDictionary(locale, dictionaryRequirements(StoresContentDr))
   const ssrConfiguration = await trpc.configuration.getConfiguration()
-  const ssrStores = await trpc.stores.getStores()
+  const ssrStores = await trpc.stores.getStores({})
 
   return (
     <Section>

@@ -85,9 +85,12 @@ export default function PluginsContent({
     }
   }, [plugins.data])
 
-  const stores = trpc.stores.getStores.useQuery(undefined, {
-    initialData: ssrStores,
-  })
+  const stores = trpc.stores.getStores.useQuery(
+    { onlyInstalled: true },
+    {
+      initialData: ssrStores,
+    }
+  )
 
   if (!storeName || !storeVersion) {
     return (
