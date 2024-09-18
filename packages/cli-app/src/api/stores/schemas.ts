@@ -4,6 +4,7 @@ import { fullStoreSchema, storeConfigSchema } from "@next-boilerplate/cli-helper
 
 export const getStoresRequestSchema = () =>
   z.object({
+    search: z.string().optional(),
     onlyInstalled: z.boolean().optional(),
   })
 

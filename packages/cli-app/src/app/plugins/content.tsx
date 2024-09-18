@@ -10,6 +10,7 @@ import Header from "@/components/ui/header"
 import { TDictionary } from "@/lib/langs"
 import { trpc } from "@/lib/trpc/client"
 import { RouterOutputs } from "@/lib/trpc/utils"
+import { cn } from "@/lib/utils"
 import { getItemUID } from "@next-boilerplate/cli-helpers/stores"
 import { Input } from "@nextui-org/input"
 import { Link } from "@nextui-org/link"
@@ -86,17 +87,24 @@ export default function PluginsContent({
   }, [plugins.data])
 
   const stores = trpc.stores.getStores.useQuery(
-    { onlyInstalled: true },
+    { onlyInstalled: true, search: _search },
     {
-      initialData: ssrStores,
+      initialData: isInitialFilter ? ssrStores : undefined,
     }
   )
+
+  const [storesData, setStoresData] = useState(ssrStores)
+  useEffect(() => {
+    if (stores.data) {
+      setStoresData(stores.data)
+    }
+  }, [stores.data])
 
   if (!storeName || !storeVersion) {
     return (
       <ChooseStore
         dictionary={dictionary}
-        stores={stores.data}
+        stores={storesData}
         isLoading={stores.isLoading}
         search={search}
         setSearch={setSearch}
@@ -137,7 +145,10 @@ export default function PluginsContent({
                 />
               )
             }
-            isDisabled={plugins.isLoading}
+            className={cn("w-64", {
+              "opacity-50": plugins.isLoading,
+            })}
+            isReadOnly={plugins.isLoading}
           />
         }
       />

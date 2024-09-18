@@ -11,12 +11,15 @@ import ItemCard from "@/components/ui/item-card"
 import { TDictionary } from "@/lib/langs"
 import { trpc } from "@/lib/trpc/client"
 import { RouterOutputs } from "@/lib/trpc/utils"
+import { cn } from "@/lib/utils"
 import { getItemUID } from "@next-boilerplate/cli-helpers/stores"
 import { Input } from "@nextui-org/input"
 import { Link } from "@nextui-org/link"
 import { Spinner } from "@nextui-org/spinner"
 
 import { TemplatesContentDr } from "./content.dr"
+
+type TTemplates = RouterOutputs["templates"]["getTemplates"]
 
 export default function TemplatesContent({
   initialStoreName,
@@ -69,18 +72,37 @@ export default function TemplatesContent({
     }
   )
 
-  const stores = trpc.stores.getStores.useQuery(
-    { onlyInstalled: true },
-    {
-      initialData: ssrStores,
+  // Do not set empty data to the cache
+  const [templatesData, setTemplatesData] = useState<TTemplates>(
+    ssrTemplates ?? {
+      templates: [],
     }
   )
+  useEffect(() => {
+    if (templates.data) {
+      setTemplatesData(templates.data)
+    }
+  }, [templates.data])
+
+  const stores = trpc.stores.getStores.useQuery(
+    { onlyInstalled: true, search: _search },
+    {
+      initialData: isInitialFilter ? ssrStores : undefined,
+    }
+  )
+
+  const [storesData, setStoresData] = useState(ssrStores)
+  useEffect(() => {
+    if (stores.data) {
+      setStoresData(stores.data)
+    }
+  }, [stores.data])
 
   if (!storeName || !storeVersion) {
     return (
       <ChooseStore
         dictionary={dictionary}
-        stores={stores.data}
+        stores={storesData}
         isLoading={stores.isLoading}
         search={search}
         setSearch={setSearch}
@@ -121,12 +143,15 @@ export default function TemplatesContent({
                 />
               )
             }
-            isDisabled={templates.isLoading}
+            className={cn("w-64", {
+              "opacity-50": templates.isLoading,
+            })}
+            isReadOnly={templates.isLoading}
           />
         }
       />
       <ul className="flex flex-1 flex-col gap-2">
-        {templates.data?.templates.map((template) => (
+        {templatesData.templates.map((template) => (
           <ItemCard
             key={getItemUID(template)}
             id={getItemUID(template)}

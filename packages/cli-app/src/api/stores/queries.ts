@@ -9,10 +9,10 @@ import { getStores } from "@next-boilerplate/cli-helpers/stores-helpers"
 import { getStoresRequestSchema, getStoresResponseSchema } from "./schemas"
 
 export const getStoresQuery = async ({
-  input: { onlyInstalled },
+  input: { onlyInstalled, search },
 }: apiInputFromSchema<typeof getStoresRequestSchema>) => {
   try {
-    let stores = await getStores({ assetsDirectory })
+    let stores = await getStores({ assetsDirectory, search })
     const configuration = await getConfiguration()
 
     // Filter to get stores that are already in the configuration
