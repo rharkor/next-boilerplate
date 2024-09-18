@@ -1,13 +1,18 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
+import { useSearchParams } from "next/navigation"
 
+import { ChevronRight } from "lucide-react"
+
+import ChooseStore from "@/components/choose-store"
 import Header from "@/components/ui/header"
 import { TDictionary } from "@/lib/langs"
 import { trpc } from "@/lib/trpc/client"
 import { RouterOutputs } from "@/lib/trpc/utils"
 import { getItemUID } from "@next-boilerplate/cli-helpers/stores"
 import { Input } from "@nextui-org/input"
+import { Link } from "@nextui-org/link"
 
 import { PluginsContentDr } from "./content.dr"
 import Plugin from "./plugin"
@@ -16,15 +21,26 @@ type TPlugins = RouterOutputs["plugins"]["getPlugins"]
 
 export default function PluginsContent({
   ssrPlugins,
+  ssrStores,
+  initialStoreName,
+  initialStoreVersion,
   ssrConfiguration,
   dictionary,
 }: {
-  ssrPlugins: TPlugins
+  ssrPlugins: TPlugins | undefined
+  ssrStores: RouterOutputs["stores"]["getStores"]
   ssrConfiguration: RouterOutputs["configuration"]["getConfiguration"]
+  initialStoreName: string | null
+  initialStoreVersion: string | null
   dictionary: TDictionary<typeof PluginsContentDr>
 }) {
   const [_search, _setSearch] = useState("")
   const [search, setSearch] = useState(_search)
+
+  const sp = useSearchParams()
+
+  const storeName = useMemo(() => sp.get("storeName"), [sp])
+  const storeVersion = useMemo(() => sp.get("storeVersion"), [sp])
 
   // Debounce search
   useEffect(() => {
@@ -34,21 +50,54 @@ export default function PluginsContent({
     return () => clearTimeout(timeout)
   }, [search])
 
-  const isInitialFilter = search === ""
+  const isInitialFilter = search === "" && storeName === initialStoreName && storeVersion === initialStoreVersion
 
   const plugins = trpc.plugins.getPlugins.useQuery(
     {
       search: _search,
+      store: {
+        name: storeName ?? "",
+        version: storeVersion ?? "",
+      },
     },
     {
       initialData: isInitialFilter ? ssrPlugins : undefined,
+      enabled: storeName && storeVersion ? true : false,
     }
   )
+
+  const stores = trpc.stores.getStores.useQuery(undefined, {
+    initialData: ssrStores,
+  })
+
+  if (!storeName || !storeVersion) {
+    return (
+      <ChooseStore
+        dictionary={dictionary}
+        stores={stores.data}
+        isLoading={stores.isLoading}
+        search={search}
+        setSearch={setSearch}
+        lnk="/plugins"
+      />
+    )
+  }
 
   return (
     <>
       <Header
-        title={dictionary.plugins}
+        title={
+          <>
+            {dictionary.plugins}
+            <span className="flex items-center gap-0.5 text-xs text-muted-foreground">
+              <Link href={"/plugins"} className="text-xs">
+                {dictionary.stores}
+              </Link>
+              <ChevronRight className="size-4" />
+              {storeName}
+            </span>
+          </>
+        }
         dictionary={dictionary}
         actions={<Input value={search} onValueChange={setSearch} placeholder={dictionary.search} />}
       />

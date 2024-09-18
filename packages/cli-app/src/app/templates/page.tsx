@@ -1,3 +1,5 @@
+import { headers } from "next/headers"
+
 import Section from "@/components/ui/section"
 import { getDictionary } from "@/lib/langs"
 import { trpc } from "@/lib/trpc/server"
@@ -10,11 +12,32 @@ import { TemplatesContentDr } from "./content.dr"
 export default async function Templates() {
   const locale = extractLocale()
   const dictionary = await getDictionary(locale, dictionaryRequirements(TemplatesContentDr))
-  const ssrTemplates = await trpc.templates.getTemplates({})
+
+  const headersStore = headers()
+  const url = new URL(headersStore.get("x-url") as string)
+  const storeName = url.searchParams.get("storeName")
+  const storeVersion = url.searchParams.get("storeVersion")
+
+  const ssrTemplates =
+    storeName && storeVersion
+      ? await trpc.templates.getTemplates({
+          store: {
+            name: storeName,
+            version: storeVersion,
+          },
+        })
+      : undefined
+  const ssrStores = await trpc.stores.getStores()
 
   return (
     <Section>
-      <TemplatesContent ssrTemplates={ssrTemplates} dictionary={dictionary} />
+      <TemplatesContent
+        initialStoreName={storeName}
+        initialStoreVersion={storeVersion}
+        ssrStores={ssrStores}
+        ssrTemplates={ssrTemplates}
+        dictionary={dictionary}
+      />
     </Section>
   )
 }
