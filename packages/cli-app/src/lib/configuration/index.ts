@@ -102,6 +102,7 @@ const apiConfigToWebConfig = async (apiConfig: z.infer<typeof optionalConfigSche
               overridedTo,
             }
           }),
+          scripts: foundPlugin.scripts,
         }
       }),
       stores: apiConfig.stores,

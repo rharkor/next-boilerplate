@@ -65,6 +65,34 @@ export const pluginConfigSchema = z.object({
       ),
     })
   ),
+  scripts: z.object({
+    replaceByProjectName: z
+      .object({
+        search: z.string(),
+        root: z.string().refine(
+          (value) => {
+            if (!isPathInCurrentScope(value)) {
+              return false
+            }
+            return true
+          },
+          { message: "The path should be relative and in the current directory" }
+        ),
+      })
+      .or(
+        z.object({
+          search: z.string(),
+          paths: z.array(
+            z.string().refine((value) => {
+              if (!isPathInCurrentScope(value)) {
+                return false
+              }
+              return true
+            })
+          ),
+        })
+      ),
+  }),
 })
 
 export type TPluginConfig = z.infer<typeof pluginConfigSchema>
