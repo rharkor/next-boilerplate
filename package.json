@@ -14,6 +14,7 @@
         "test": "turbo run test",
         "ci-check": "turbo run ci-check",
         "init": "npm run init -s -w packages/scripts",
+        "build-deps": "turbo run build --filter='@next-boilerplate/*'^...",
         "depcheck": "npm run depcheck -s -w packages/scripts"
     },
     "homepage": "https://github.com/rharkor/next-boilerplate",
