@@ -127,7 +127,7 @@ export const applyConfigurationTask = async ({
     }
   }
 
-  //*** Apply scripts ***
+  //*** Apply scripts
   for (const plugin of config.plugins) {
     const pluginPath = getPluginPath({ assetsDirectory, plugin })
     const pluginConfigPath = path.join(pluginPath, pluginConfigFileName)
@@ -150,10 +150,12 @@ export const applyConfigurationTask = async ({
 
         // Replace in each file
         for (const filePath of files) {
-          applyConfigTask.log(`Replacing "${search}" with project name in ${filePath}`)
           const content = await fs.readFile(filePath, "utf-8")
-          const updatedContent = content.replaceAll(search, config.name)
-          await fs.writeFile(filePath, updatedContent)
+          if (content.includes(search)) {
+            applyConfigTask.log(`Replacing "${search}" with project name in ${filePath}`)
+            const updatedContent = content.replaceAll(search, config.name)
+            await fs.writeFile(filePath, updatedContent)
+          }
         }
       } else {
         const { paths: searchPaths } = scripts.replaceByProjectName
@@ -166,10 +168,12 @@ export const applyConfigurationTask = async ({
           })
 
           for (const filePath of files) {
-            applyConfigTask.log(`Replacing "${search}" with project name in ${filePath}`)
             const content = await fs.readFile(filePath, "utf-8")
-            const updatedContent = content.replaceAll(search, config.name)
-            await fs.writeFile(filePath, updatedContent)
+            if (content.includes(search)) {
+              applyConfigTask.log(`Replacing "${search}" with project name in ${filePath}`)
+              const updatedContent = content.replaceAll(search, config.name)
+              await fs.writeFile(filePath, updatedContent)
+            }
           }
         }
       }
