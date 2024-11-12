@@ -12,9 +12,6 @@
         "description": {
             "type": "string"
         },
-        "source": {
-            "type": "string"
-        },
         "paths": {
             "type": "array",
             "items": {

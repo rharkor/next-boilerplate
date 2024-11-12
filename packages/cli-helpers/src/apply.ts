@@ -1,4 +1,5 @@
 import fs from "fs-extra"
+import { globby } from "globby"
 import path from "path"
 
 import { logger } from "@rharkor/logger"
@@ -7,7 +8,6 @@ import { task } from "@rharkor/task"
 import { getStoreDataDirectory } from "./stores/helpers"
 import { configSchema, TConfig } from "./config"
 import { pluginConfigFileName, pluginConfigSchema, pluginsFolder, TPluginConfig } from "./plugins"
-import { globby } from "globby"
 
 const getPluginPath = ({ assetsDirectory, plugin }: { plugin: TConfig["plugins"][number]; assetsDirectory: string }) =>
   path.join(
