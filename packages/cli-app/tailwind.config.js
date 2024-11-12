@@ -23,12 +23,10 @@ module.exports = {
     nextui({
       themes: {
         light: {
-          colors: {
-          },
+          colors: {},
         },
         dark: {
-          colors: {
-          },
+          colors: {},
         },
       },
     }),
