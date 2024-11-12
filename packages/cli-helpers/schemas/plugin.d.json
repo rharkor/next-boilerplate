@@ -29,6 +29,47 @@
                     }
                 }
             }
+        },
+        "scripts": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "replaceByProjectName": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                        "search": {
+                            "type": "string",
+                            "description": "The string to search for and replace"
+                        },
+                        "root": {
+                            "type": "string",
+                            "description": "Root path to search in"
+                        },
+                        "paths": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            },
+                            "description": "Specific file or folder paths to search in"
+                        }
+                    },
+                    "oneOf": [
+                        {
+                            "required": [
+                                "search",
+                                "root"
+                            ]
+                        },
+                        {
+                            "required": [
+                                "search",
+                                "paths"
+                            ]
+                        }
+                    ]
+                }
+            }
         }
     },
     "required": [

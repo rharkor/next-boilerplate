@@ -7,6 +7,7 @@ import { task } from "@rharkor/task"
 import { getStoreDataDirectory } from "./stores/helpers"
 import { configSchema, TConfig } from "./config"
 import { pluginConfigFileName, pluginConfigSchema, pluginsFolder, TPluginConfig } from "./plugins"
+import { globby } from "globby"
 
 const getPluginPath = ({ assetsDirectory, plugin }: { plugin: TConfig["plugins"][number]; assetsDirectory: string }) =>
   path.join(
@@ -123,6 +124,55 @@ export const applyConfigurationTask = async ({
       const destinationPath = path.join(root, to)
       applyConfigTask.log(`Copying the plugin ${plugin.name} to the destination ${destinationPath}`)
       await fs.copy(sourcePath, destinationPath)
+    }
+  }
+
+  //*** Apply scripts ***
+  for (const plugin of config.plugins) {
+    const pluginPath = getPluginPath({ assetsDirectory, plugin })
+    const pluginConfigPath = path.join(pluginPath, pluginConfigFileName)
+    const pluginConfig = (await fs.readJson(pluginConfigPath)) as TPluginConfig
+    const { scripts } = pluginConfig
+    //* Replace by project name
+    if (scripts?.replaceByProjectName) {
+      const { search } = scripts.replaceByProjectName
+
+      // Handle either root-based or paths-based replacement
+      if ("root" in scripts.replaceByProjectName) {
+        const { root: searchRoot } = scripts.replaceByProjectName
+        const fullSearchPath = path.join(root, searchRoot)
+
+        // Find all files under root path using globby
+        const files = await globby("**/*", {
+          cwd: fullSearchPath,
+          absolute: true,
+        })
+
+        // Replace in each file
+        for (const filePath of files) {
+          applyConfigTask.log(`Replacing "${search}" with project name in ${filePath}`)
+          const content = await fs.readFile(filePath, "utf-8")
+          const updatedContent = content.replaceAll(search, config.name)
+          await fs.writeFile(filePath, updatedContent)
+        }
+      } else {
+        const { paths: searchPaths } = scripts.replaceByProjectName
+        // Replace in specific paths using globby
+        for (const searchPath of searchPaths) {
+          const fullPath = path.join(root, searchPath)
+
+          const files = await globby(fullPath, {
+            absolute: true,
+          })
+
+          for (const filePath of files) {
+            applyConfigTask.log(`Replacing "${search}" with project name in ${filePath}`)
+            const content = await fs.readFile(filePath, "utf-8")
+            const updatedContent = content.replaceAll(search, config.name)
+            await fs.writeFile(filePath, updatedContent)
+          }
+        }
+      }
     }
   }
 
