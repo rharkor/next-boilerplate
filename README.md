@@ -1,3 +1,18 @@
+# 🚨 DEPRECATED
+## This project is officially archived and no longer maintained.
+I appreciate all the support and interest this boilerplate has received.
+Unfortunately, due to time constraints and shifting priorities, I am no longer able to actively maintain or update the Next.js Enterprise Boilerplate.
+
+Feel free to fork and continue using the project as a foundation for your own needs.
+However, please be aware that issues will not be addressed and new features or updates will not be added.
+
+Thank you again for your understanding and for being part of this journey!
+If you'd like to stay in touch or discuss the project, you can still reach me through GitHub.
+
+
+
+
+
 # Next.js Enterprise Boilerplate
 
 ![Project intro image](./project-logo.png)
